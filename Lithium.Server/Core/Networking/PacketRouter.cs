@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Lithium.Core.Networking;
+using Lithium.Core.Networking.Packets;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -18,6 +19,8 @@ public sealed class PacketRouter
         _packetRegistry = packetRegistry;
         _routes = new Dictionary<ushort, Action<ReadOnlySpan<byte>, PacketContext>>();
 
+        Register<ClientConnectPacket, ClientConnectHandler>(services);
+        Register<ClientDisconnectPacket, ClientDisconnectHandler>(services);
         Register<EntityPositionPacket, EntityPositionHandler>(services);
     }
 
@@ -38,7 +41,7 @@ public sealed class PacketRouter
                     "Invalid payload size for {Packet}: {Size}",
                     typeof(TPacket).Name,
                     payload.Length);
-                
+
                 return;
             }
 
