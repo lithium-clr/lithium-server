@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Lithium.Server.Core;
+namespace Lithium.Server.Core.Logging;
 
 public interface ILoggerService;
 
