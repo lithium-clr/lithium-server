@@ -3,6 +3,7 @@
 using System.Net;
 using Lithium.Client;
 using Lithium.Client.Core.Networking;
+using Lithium.Core;
 using Lithium.Core.Networking;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,7 +31,7 @@ builder.Services.AddSingleton(new QuicClientOptions
 
 builder.Services.AddSingleton<PacketRegistry>();
 
-if (OperatingSystem.IsWindows() || OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+if (OperatingSystem.IsSupported())
 {
     builder.Services.AddSingleton<IGameClient, QuicGameClient>();
 }

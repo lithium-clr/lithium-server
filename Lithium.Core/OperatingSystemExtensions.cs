@@ -1,14 +1,14 @@
 ﻿using System.Runtime.Versioning;
 
-namespace Lithium.Server;
+namespace Lithium.Core;
 
 public static class OperatingSystemExtensions
 {
     extension(OperatingSystem)
     {
-        [SupportedOSPlatform("windows")]
-        [SupportedOSPlatform("linux")]
-        [SupportedOSPlatform("macos")]
+        [SupportedOSPlatformGuard("windows")] 
+        [SupportedOSPlatformGuard("linux")] 
+        [SupportedOSPlatformGuard("macos")] 
         public static bool IsSupported() =>
             OperatingSystem.IsWindows() || OperatingSystem.IsLinux() || OperatingSystem.IsMacOS();
     }
