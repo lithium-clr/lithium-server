@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Plugins/">
+    <Project Path="Hytale.InventoryPlugin/Hytale.InventoryPlugin.csproj" />
+    <Project Path="Hytale.TestPlugin.Abstractions/Hytale.TestPlugin.Abstractions.csproj" />
+    <Project Path="Hytale.TestPlugin/Hytale.TestPlugin.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="compose.yaml" />
+  </Folder>
+  <Project Path="Hytale.Client/Hytale.Client.csproj" />
+  <Project Path="Hytale.Core/Hytale.Core.csproj" />
+  <Project Path="Hytale.Server.Core/Hytale.Server.Core.csproj" />
+  <Project Path="Hytale.Server/Hytale.Server.csproj" />
+</Solution>
