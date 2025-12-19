@@ -15,7 +15,7 @@ Here is the current development roadmap, with progress tracked using checkboxes:
 
 - [x] **Experiment with UDP/QUIC networking**  
   - Testing packet transmission, latency, and reliability.  
-- [] **Define server architecture**  
+- [ ] **Define server architecture**  
   - Decide on module separation, packet handling, threading, and memory management.  
 - [ ] **Server interpretation (Java → C#)**  
   - Once the official Hytale Java server is available, analyze and interpret the logic in C#.  
