@@ -1,0 +1,6 @@
+{
+  "Plugins": [
+    "InventoryPlugin",
+    "TestPlugin"
+  ]
+}

@@ -1,0 +1,7 @@
+﻿services:
+  hytale.server:
+    image: hytale.server
+    build:
+      context: .
+      dockerfile: Hytale.Server/Dockerfile
+

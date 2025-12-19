@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <OutputPath>C:\Users\bubbl\Desktop\Hytale\Build\Plugins</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <OutputPath>C:\Users\bubbl\Desktop\Hytale\Build\Plugins</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Hytale.Server.Core.GlobalNamespace" Static="true"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Hytale.Server.Core\Hytale.Server.Core.csproj"/>
+    </ItemGroup>
+
+</Project>
