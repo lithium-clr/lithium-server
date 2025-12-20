@@ -20,7 +20,6 @@ public sealed class PacketRouter
         _routes = new Dictionary<ushort, Action<ReadOnlySpan<byte>, PacketContext>>();
 
         Register<ClientConnectPacket, ClientConnectHandler>(services);
-        Register<ClientDisconnectPacket, ClientDisconnectHandler>(services);
         Register<EntityPositionPacket, EntityPositionHandler>(services);
     }
 
