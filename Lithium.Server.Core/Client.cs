@@ -29,6 +29,11 @@ public sealed class Client(QuicConnection connection, int protocolVersion, int s
     public static Client? Get(int serverId) =>
         _clientManager?.GetClient(serverId);
 
+    public ValueTask DisconnectAsync()
+    {
+        return _clientManager?.RemoveClient(Connection) ?? default;
+    }
+
     public async Task SendPacket<T>(T packet, CancellationToken ct = default)
         where T : unmanaged, IPacket
     {

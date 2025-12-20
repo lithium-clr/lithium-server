@@ -6,7 +6,7 @@ namespace Lithium.Server.Core;
 public interface IClientManager
 {
     void CreateClient(QuicConnection connection, int protocolVersion);
-    void RemoveClient(QuicConnection connection);
+    ValueTask RemoveClient(QuicConnection connection);
     Client? GetClient(QuicConnection connection);
     Client? GetClient(int serverId);
     IEnumerable<Client> GetAllClients();

@@ -7,7 +7,7 @@ namespace Lithium.Server.Core.Networking;
 public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager, IAsyncDisposable
 {
     private readonly ILogger<ClientManager> _logger = loggerFactory.CreateLogger<ClientManager>();
-    
+
     private int _currentServerId;
     private readonly Dictionary<QuicConnection, Client> _clients = new();
     private bool _disposed;
@@ -25,8 +25,10 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
             protocolVersion);
     }
 
-    public void RemoveClient(QuicConnection connection)
+    public async ValueTask RemoveClient(QuicConnection connection)
     {
+        await connection.DisposeAsync();
+
         if (_clients.Remove(connection, out var client))
         {
             _logger.LogInformation("Client {ClientId} disconnected", client.ServerId);
