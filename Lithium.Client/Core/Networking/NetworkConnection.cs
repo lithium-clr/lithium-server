@@ -5,7 +5,7 @@ using Lithium.Core.Networking.Packets;
 
 namespace Lithium.Client.Core.Networking;
 
-public interface IGameClient : IAsyncDisposable
+public interface INetworkConnection : IAsyncDisposable
 {
     ValueTask ConnectAsync(CancellationToken ct = default);
     ValueTask ClientConnectAsync(CancellationToken ct = default);
@@ -13,7 +13,7 @@ public interface IGameClient : IAsyncDisposable
     ValueTask SendPacketAsync<T>(T packet, CancellationToken ct = default) where T : unmanaged, IPacket;
 }
 
-public sealed class QuicGameClient : IGameClient
+public sealed class NetworkConnection : INetworkConnection
 {
     private readonly QuicClientOptions _options;
     private QuicConnection? _connection;
@@ -21,7 +21,7 @@ public sealed class QuicGameClient : IGameClient
 
     private readonly PacketRegistry _packetRegistry;
 
-    public QuicGameClient(PacketRegistry packetRegistry, QuicClientOptions options)
+    public NetworkConnection(PacketRegistry packetRegistry, QuicClientOptions options)
     {
         _packetRegistry = packetRegistry;
 

@@ -24,13 +24,10 @@ builder.Logging.AddFilter("System", LogLevel.Warning);
 
 // Core services
 builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
-builder.Services.AddSingleton<EventSystem>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
 builder.Services.AddSingleton<IPluginRegistry, PluginRegistry>();
 builder.Services.AddSingleton<IPluginManager, PluginManager>();
-builder.Services.AddSingleton<IWorldService, WorldService>();
-builder.Services.AddSingleton<IEntityManager, EntityManager>();
 
 builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 

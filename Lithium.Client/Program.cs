@@ -1,8 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Net;
+using System.Reflection;
 using Lithium.Client;
 using Lithium.Client.Core.Networking;
+using Lithium.Client.Core.Networking.Extensions;
 using Lithium.Core;
 using Lithium.Core.Extensions;
 using Lithium.Core.Networking;
@@ -30,11 +32,11 @@ builder.Services.AddSingleton(new QuicClientOptions
     ApplicationProtocol = "hytale"
 });
 
-builder.Services.AddSingleton<PacketRegistry>();
+builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 
 if (OperatingSystem.IsSupported())
 {
-    builder.Services.AddSingleton<IGameClient, QuicGameClient>();
+    builder.Services.AddSingleton<INetworkConnection, NetworkConnection>();
 }
 
 builder.Services.AddHostedService<ClientLifetime>();

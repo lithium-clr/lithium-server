@@ -1,6 +1,6 @@
 ﻿using System.Net.Quic;
 
-namespace Lithium.Server.Core.Networking;
+namespace Lithium.Core.Networking;
 
 public readonly struct PacketContext(QuicConnection connection, QuicStream stream)
 {

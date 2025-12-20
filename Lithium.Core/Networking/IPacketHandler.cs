@@ -1,6 +1,4 @@
-﻿using Lithium.Core.Networking;
-
-namespace Lithium.Server.Core.Networking;
+﻿namespace Lithium.Core.Networking;
 
 public interface IPacketHandler<T> where T : unmanaged, IPacket
 {

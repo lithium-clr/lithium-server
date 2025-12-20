@@ -2,7 +2,7 @@
 using Lithium.Core.Networking;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lithium.Server.Core.Networking.Extensions;
+namespace Lithium.Client.Core.Networking.Extensions;
 
 public static class PacketServiceCollectionExtensions
 {

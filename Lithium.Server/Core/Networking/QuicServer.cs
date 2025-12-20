@@ -2,6 +2,7 @@
 using System.Net.Quic;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using Lithium.Core.Networking;
 using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Networking;

@@ -1,15 +1,13 @@
 ﻿using System.Net.Quic;
-using System.Runtime.CompilerServices;
 using Lithium.Core.Extensions;
-using Lithium.Core.Networking;
 using Microsoft.Extensions.Logging;
 
-namespace Lithium.Server.Core.Networking;
+namespace Lithium.Core.Networking;
 
 public sealed class PacketHandler(
     ILogger<PacketHandler> logger,
     PacketRegistry packetRegistry,
-    PacketRouter packetRouter
+    IPacketRouter packetRouter
 )
 {
     public async Task HandleAsync(QuicConnection connection)

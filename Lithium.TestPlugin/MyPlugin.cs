@@ -1,10 +1,9 @@
 ﻿using Lithium.Server.Core;
-using Lithium.TestPlugin.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace Lithium.TestPlugin;
 
-public sealed class MyPlugin(ILogger<MyPlugin> logger, EventSystem eventSystem) : Component
+public sealed class MyPlugin(ILogger<MyPlugin> logger) : Component
 {
     public override void OnLoad()
     {

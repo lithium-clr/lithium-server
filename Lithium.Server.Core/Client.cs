@@ -1,5 +1,4 @@
 using System.Net.Quic;
-using System.Runtime.CompilerServices;
 using Lithium.Core.Extensions;
 using Lithium.Core.Networking;
 using Microsoft.Extensions.Logging;

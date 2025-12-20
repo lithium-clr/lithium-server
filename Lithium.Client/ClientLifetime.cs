@@ -6,7 +6,7 @@ namespace Lithium.Client;
 
 public sealed class ClientLifetime(
     ILogger<ClientLifetime> logger,
-    IGameClient client
+    INetworkConnection client
 ) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
