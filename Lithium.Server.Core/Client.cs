@@ -1,4 +1,6 @@
 using System.Net.Quic;
+using System.Runtime.CompilerServices;
+using Lithium.Core.Extensions;
 using Lithium.Core.Networking;
 using Microsoft.Extensions.Logging;
 
@@ -40,7 +42,8 @@ public sealed class Client(QuicConnection connection, int protocolVersion, int s
         try
         {
             var packetId = PacketRegistry.GetPacketId<T>();
-            var packetSize = (ushort)System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
+            var packetSize = packet.GetSize();
+            
             var header = new PacketHeader(packetId, packetSize);
             var data = PacketSerializer.SerializePacket(packet, header.TypeId);
 

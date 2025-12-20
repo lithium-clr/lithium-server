@@ -1,5 +1,6 @@
 ﻿using System.Net.Quic;
 using System.Runtime.CompilerServices;
+using Lithium.Core.Extensions;
 using Lithium.Core.Networking;
 using Microsoft.Extensions.Logging;
 
@@ -17,7 +18,7 @@ public sealed class PacketHandler(
             await connection.AcceptInboundStreamAsync();
 
         // Lire le header
-        var headerBytes = new byte[Unsafe.SizeOf<PacketHeader>()];
+        var headerBytes = new byte[PacketHeader.SizeOf()];
         _ = await stream.ReadAsync(headerBytes, CancellationToken.None);
         var header = PacketSerializer.DeserializeHeader(headerBytes);
 

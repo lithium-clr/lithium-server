@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Lithium.Core.Extensions;
 
 namespace Lithium.Core.Networking;
 
@@ -25,13 +26,13 @@ public static class PacketSerializer
     public static ReadOnlyMemory<byte> SerializePacket<T>(in T packet, ushort typeId)
         where T : unmanaged, IPacket
     {
-        var packetSize = Unsafe.SizeOf<T>();
-        var headerSize = Unsafe.SizeOf<PacketHeader>();
+        var packetSize = packet.GetSize();
+        var headerSize = PacketHeader.SizeOf();
 
         var buffer = new byte[headerSize + packetSize];
         var span = buffer.AsSpan();
 
-        var header = new PacketHeader(typeId, (ushort)packetSize);
+        var header = new PacketHeader(typeId, packetSize);
 
         MemoryMarshal.Write(span, in header);
         MemoryMarshal.Write(span[headerSize..], in packet);
