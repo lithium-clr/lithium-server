@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Concurrent;
+using System.Net;
 using System.Net.Quic;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -14,63 +15,61 @@ public sealed class QuicServer(
     ILogger<QuicServer> logger,
     IHubContext<ServerHub, IServerHub> hub,
     IPacketHandler packetHandler
-)
+) : IAsyncDisposable
 {
     private const int HeartbeatInterval = 15;
     private const string Protocol = "hytale";
+
+    private QuicListener _listener = null!;
+    private readonly ConcurrentDictionary<QuicConnection, QuicStream> _connections = new();
 
     public async Task StartAsync(CancellationToken ct)
     {
         var cert = X509CertificateLoader.LoadPkcs12FromFile(
             "localhost.pfx", "devtest");
 
-        var listener = await QuicListener.ListenAsync(
-            new QuicListenerOptions
+        _listener = await QuicListener.ListenAsync(new QuicListenerOptions
+        {
+            ListenEndPoint = new IPEndPoint(IPAddress.Any, 7777),
+            ApplicationProtocols = [new SslApplicationProtocol(Protocol)],
+            ConnectionOptionsCallback = (_, _, _) => ValueTask.FromResult(new QuicServerConnectionOptions
             {
-                ListenEndPoint = new IPEndPoint(IPAddress.Any, 7777),
-                ApplicationProtocols = [new SslApplicationProtocol(Protocol)],
-                ConnectionOptionsCallback = (_, _, _) =>
-                    ValueTask.FromResult(new QuicServerConnectionOptions
-                    {
-                        IdleTimeout = TimeSpan.FromMinutes(2),
-                        DefaultCloseErrorCode = 0,
-                        DefaultStreamErrorCode = 0,
-                        MaxInboundBidirectionalStreams = 1,
-                        MaxInboundUnidirectionalStreams = 0,
-                        ServerAuthenticationOptions = new SslServerAuthenticationOptions
-                        {
-                            ApplicationProtocols = [new SslApplicationProtocol(Protocol)],
-                            ServerCertificate = cert
-                        }
-                    })
-            },
-            ct);
+                IdleTimeout = TimeSpan.FromMinutes(2),
+                DefaultCloseErrorCode = 0,
+                DefaultStreamErrorCode = 0,
+                MaxInboundBidirectionalStreams = 1,
+                MaxInboundUnidirectionalStreams = 0,
+                ServerAuthenticationOptions = new SslServerAuthenticationOptions
+                {
+                    ApplicationProtocols = [new SslApplicationProtocol(Protocol)],
+                    ServerCertificate = cert
+                }
+            })
+        }, ct);
 
         logger.LogInformation("QUIC server listening");
 
+        _ = Task.Run(() => HeartbeatLoopAsync(ct), ct);
+
         while (!ct.IsCancellationRequested)
         {
-            var connection = await listener.AcceptConnectionAsync(ct);
+            var connection = await _listener.AcceptConnectionAsync(ct);
             _ = Task.Run(() => HandleConnectionAsync(connection, ct), ct);
         }
     }
 
-    private async Task HandleConnectionAsync(
-        QuicConnection connection,
-        CancellationToken ct)
+    private async Task HandleConnectionAsync(QuicConnection connection, CancellationToken ct)
     {
         try
         {
             // === UNIQUE STREAM ===
             var stream = await connection.AcceptInboundStreamAsync(ct);
+            _connections[connection] = stream;
 
             // lecture packets
-            _ = Task.Run(
-                () => packetHandler.HandleAsync(connection, stream),
-                ct);
+            _ = Task.Run(() => packetHandler.HandleAsync(connection, stream), ct);
 
-            // heartbeat sur le même stream
-            await HeartbeatLoopAsync(stream, ct);
+            await KeepOpenAsync(ct);
         }
         catch (QuicException ex)
         {
@@ -93,7 +92,15 @@ public sealed class QuicServer(
         }
     }
 
-    private async Task HeartbeatLoopAsync(QuicStream stream, CancellationToken ct)
+    private static async Task KeepOpenAsync(CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            await Task.Delay(1000, ct);
+        }
+    }
+
+    private async Task HeartbeatLoopAsync(CancellationToken ct)
     {
         try
         {
@@ -104,23 +111,26 @@ public sealed class QuicServer(
                 var packet = new HeartbeatPacket(DateTime.UtcNow.Ticks);
                 var packetId = PacketRegistry.GetPacketId<HeartbeatPacket>();
                 var header = new PacketHeader(packetId, packet.GetSize());
-
                 var data = PacketSerializer.SerializePacket(packet, header.TypeId);
 
-                try
+                foreach (var kv in _connections)
                 {
-                    await stream.WriteAsync(data, ct);
-                    await stream.FlushAsync(ct);
+                    var stream = kv.Value;
 
-                    logger.LogInformation("Sending Heartbeat..");
-                    await hub.Clients.All.Heartbeat();
-                    logger.LogInformation("Heartbeat sent");
+                    try
+                    {
+                        await stream.WriteAsync(data, ct);
+                        await stream.FlushAsync(ct);
+                    }
+                    catch (Exception ex) when (ex is not OperationCanceledException)
+                    {
+                        logger.LogWarning(ex, "Failed to send heartbeat");
+                        break;
+                    }
                 }
-                catch (Exception ex) when (ex is not OperationCanceledException)
-                {
-                    logger.LogWarning(ex, "Failed to send heartbeat");
-                    break;
-                }
+
+                await hub.Clients.All.Heartbeat();
+                logger.LogInformation("Heartbeat sent to all clients");
             }
         }
         catch (OperationCanceledException)
@@ -133,5 +143,17 @@ public sealed class QuicServer(
             logger.LogError(ex, "Error in heartbeat loop");
             throw;
         }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        foreach (var (connection, stream) in _connections)
+        {
+            await stream.DisposeAsync();
+            await connection.CloseAsync(0);
+            await connection.DisposeAsync();
+        }
+
+        await _listener.DisposeAsync();
     }
 }

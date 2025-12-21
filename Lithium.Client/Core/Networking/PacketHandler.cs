@@ -8,27 +8,26 @@ namespace Lithium.Client.Core.Networking;
 public sealed class PacketHandler(
     ILogger<PacketHandler> logger,
     PacketRegistry packetRegistry,
-    IPacketRouter packetRouter) : IPacketHandler
+    IPacketRouter packetRouter
+) : IPacketHandler
 {
-    public async Task HandleAsync(
-        QuicConnection connection,
-        QuicStream stream)
+    public async Task HandleAsync(QuicConnection connection, QuicStream stream)
     {
         try
         {
-                var headerBuffer = new byte[PacketHeader.SizeOf()];
-                await ReadExactAsync(stream, headerBuffer);
+            var headerBuffer = new byte[PacketHeader.SizeOf()];
+            await ReadExactAsync(stream, headerBuffer);
 
-                var header = PacketSerializer.DeserializeHeader(headerBuffer);
+            var header = PacketSerializer.DeserializeHeader(headerBuffer);
 
-                var payloadBuffer = new byte[header.Length];
-                await ReadExactAsync(stream, payloadBuffer);
+            var payloadBuffer = new byte[header.Length];
+            await ReadExactAsync(stream, payloadBuffer);
 
-                var packetType = packetRegistry.GetPacketType(header.TypeId);
-                if (packetType is null) return;
+            var packetType = packetRegistry.GetPacketType(header.TypeId);
+            if (packetType is null) return;
 
-                var context = new PacketContext(connection, stream);
-                packetRouter.Route(header.TypeId, payloadBuffer, context);
+            var context = new PacketContext(connection, stream);
+            packetRouter.Route(header.TypeId, payloadBuffer, context);
         }
         catch (OperationCanceledException)
         {
@@ -44,9 +43,7 @@ public sealed class PacketHandler(
         }
     }
 
-    private static async Task ReadExactAsync(
-        QuicStream stream,
-        byte[] buffer)
+    private static async Task ReadExactAsync(QuicStream stream, byte[] buffer)
     {
         var offset = 0;
 

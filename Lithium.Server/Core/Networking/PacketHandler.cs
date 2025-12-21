@@ -8,11 +8,10 @@ namespace Lithium.Server.Core.Networking;
 public sealed class PacketHandler(
     ILogger<PacketHandler> logger,
     PacketRegistry packetRegistry,
-    IPacketRouter packetRouter) : IPacketHandler
+    IPacketRouter packetRouter
+) : IPacketHandler
 {
-    public async Task HandleAsync(
-        QuicConnection connection,
-        QuicStream stream)
+    public async Task HandleAsync(QuicConnection connection, QuicStream stream)
     {
         try
         {
@@ -54,9 +53,7 @@ public sealed class PacketHandler(
         }
     }
 
-    private static async Task ReadExactAsync(
-        QuicStream stream,
-        byte[] buffer)
+    private static async Task ReadExactAsync(QuicStream stream, byte[] buffer)
     {
         var offset = 0;
 
