@@ -108,7 +108,8 @@ public sealed class QuicServer(
             {
                 await Task.Delay(TimeSpan.FromSeconds(HeartbeatInterval), ct);
 
-                var packet = new HeartbeatPacket(DateTime.UtcNow.Ticks);
+                var ticks = DateTime.UtcNow.Ticks;
+                var packet = new HeartbeatPacket(ticks);
                 var packetId = PacketRegistry.GetPacketId<HeartbeatPacket>();
                 var header = new PacketHeader(packetId, packet.GetSize());
                 var data = PacketSerializer.SerializePacket(packet, header.TypeId);
@@ -129,7 +130,7 @@ public sealed class QuicServer(
                     }
                 }
 
-                await hub.Clients.All.Heartbeat();
+                await hub.Clients.All.Heartbeat(ticks);
                 logger.LogInformation("Heartbeat sent to all clients");
             }
         }
