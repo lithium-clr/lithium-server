@@ -7,9 +7,9 @@ namespace Lithium.Server.Core.Networking;
 public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager, IAsyncDisposable
 {
     private readonly ILogger<ClientManager> _logger = loggerFactory.CreateLogger<ClientManager>();
+    private readonly Dictionary<QuicConnection, Client> _clients = new();
 
     private int _currentServerId = -1;
-    private readonly Dictionary<QuicConnection, Client> _clients = new();
     private bool _disposed;
 
     public void CreateClient(QuicConnection connection, int protocolVersion)

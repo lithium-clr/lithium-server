@@ -94,7 +94,7 @@ public sealed class QuicClient(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Receive loop failed");
+            logger.LogError(ex, "Unexpected error:");
         }
     }
 

@@ -11,7 +11,7 @@ namespace Lithium.Server.Core.Networking;
 
 public sealed class QuicServer(
     ILogger<QuicServer> logger,
-    PacketHandler packetHandler)
+    IPacketHandler packetHandler)
 {
     private const int HeartbeatInterval = 15;
     private const string Protocol = "hytale";
@@ -56,33 +56,36 @@ public sealed class QuicServer(
         QuicConnection connection,
         CancellationToken ct)
     {
-        using var linkedCts =
-            CancellationTokenSource.CreateLinkedTokenSource(ct);
-
         try
         {
             // === UNIQUE STREAM ===
-            var stream = await connection.AcceptInboundStreamAsync(linkedCts.Token);
+            var stream = await connection.AcceptInboundStreamAsync(ct);
 
             // lecture packets
             _ = Task.Run(
-                () => packetHandler.HandleAsync(connection, stream, linkedCts.Token),
-                linkedCts.Token);
+                () => packetHandler.HandleAsync(connection, stream),
+                ct);
 
             // heartbeat sur le même stream
-            await HeartbeatLoopAsync(stream, linkedCts.Token);
+            await HeartbeatLoopAsync(stream, ct);
         }
-        catch (OperationCanceledException)
+        catch (QuicException ex)
         {
+            if(ex.QuicError is QuicError.StreamAborted)
+            {
+                logger.LogInformation("Client stream aborted");
+                return;
+            }
+            
+            logger.LogError(ex, "Quic Error:");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Connection failed");
+            logger.LogError(ex, "Unexpected error:");
         }
         finally
         {
-            await linkedCts.CancelAsync();
-            await connection.CloseAsync(0, linkedCts.Token);
+            await connection.CloseAsync(0, ct);
             await connection.DisposeAsync();
         }
     }

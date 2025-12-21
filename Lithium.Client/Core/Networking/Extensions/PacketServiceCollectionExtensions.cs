@@ -25,7 +25,7 @@ public static class PacketServiceCollectionExtensions
             }
         }
 
-        services.AddSingleton<PacketHandler>();
+        services.AddSingleton<IPacketHandler, PacketHandler>();
         services.AddSingleton<PacketRegistry>();
         services.AddSingleton<IPacketRouter, PacketRouter>();
 
