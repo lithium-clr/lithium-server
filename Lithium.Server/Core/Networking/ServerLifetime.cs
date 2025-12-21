@@ -9,7 +9,7 @@ public sealed class ServerLifetime(
     ILoggerService loggerService,
     IPluginManager pluginManager,
     IServerConfigurationProvider configurationProvider,
-    IQuicServer server
+    QuicServer server
     ) : BackgroundService
 {
     private readonly LoggerService _loggerService = (LoggerService)loggerService;

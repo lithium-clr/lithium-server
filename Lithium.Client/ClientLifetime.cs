@@ -6,16 +6,13 @@ namespace Lithium.Client;
 
 public sealed class ClientLifetime(
     ILogger<ClientLifetime> logger,
-    INetworkConnection client
+    QuicClient connection
 ) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation("Starting client");
 
-        await client.ConnectAsync(stoppingToken);
-
-        logger.LogInformation("Trying to connect..");
-        await client.ClientConnectAsync(stoppingToken);
+        await connection.ConnectAsync(stoppingToken);
     }
 }

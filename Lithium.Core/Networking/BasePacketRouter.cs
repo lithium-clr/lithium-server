@@ -34,6 +34,8 @@ public abstract class BasePacketRouter(ILogger<BasePacketRouter> logger, PacketR
             var packet = MemoryMarshal.Read<TPacket>(payload);
             handler.Handle(in packet, ctx);
         };
+        
+        logger.LogInformation("Registered {Packet} handler", typeof(TPacket).Name);
     }
 
     public void Route(ushort packetTypeId, ReadOnlySpan<byte> buffer, PacketContext ctx)

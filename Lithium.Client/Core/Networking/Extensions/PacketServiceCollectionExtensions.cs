@@ -22,7 +22,6 @@ public static class PacketServiceCollectionExtensions
                     continue;
 
                 services.AddSingleton(type);
-                Console.WriteLine($"Register {type.Name} packet.");
             }
         }
 

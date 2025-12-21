@@ -1,4 +1,5 @@
 ﻿using Lithium.Core.Networking;
+using Lithium.Core.Networking.Packets;
 using Microsoft.Extensions.Logging;
 
 namespace Lithium.Client.Core.Networking;
@@ -11,7 +12,7 @@ public sealed class PacketRouter : BasePacketRouter
         PacketRegistry packetRegistry
     ) : base(logger, packetRegistry)
     {
-        // Register<ClientConnectPacket, ClientConnectHandler>(services);
-        // Register<EntityPositionPacket, EntityPositionHandler>(services);
+        Register<ServerAcceptPacket, ServerAcceptHandler>(services);
+        Register<HeartbeatPacket, HeartbeatHandler>(services);
     }
 }

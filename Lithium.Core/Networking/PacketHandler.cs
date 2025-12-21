@@ -7,36 +7,67 @@ namespace Lithium.Core.Networking;
 public sealed class PacketHandler(
     ILogger<PacketHandler> logger,
     PacketRegistry packetRegistry,
-    IPacketRouter packetRouter
-)
+    IPacketRouter packetRouter)
 {
-    public async Task HandleAsync(QuicConnection connection)
+    public async Task HandleAsync(
+        QuicConnection connection,
+        QuicStream stream,
+        CancellationToken ct = default)
     {
-        await using var stream =
-            await connection.AcceptInboundStreamAsync();
-
-        // Lire le header
-        var headerBytes = new byte[PacketHeader.SizeOf()];
-        _ = await stream.ReadAsync(headerBytes, CancellationToken.None);
-        var header = PacketSerializer.DeserializeHeader(headerBytes);
-
-        // Lire le payload
-        var payloadBytes = new byte[header.Length];
-        _ = await stream.ReadAsync(payloadBytes, CancellationToken.None);
-
-        var packetType = packetRegistry.GetPacketType(header.TypeId);
-        logger.LogInformation("Packet: " + header.TypeId + " " + packetType);
-
-        if (packetType is null)
+        try
         {
-            Console.WriteLine($"Unknown packet type {header.TypeId}");
-            return;
+            while (!ct.IsCancellationRequested)
+            {
+                var headerBuffer = new byte[PacketHeader.SizeOf()];
+                await ReadExactAsync(stream, headerBuffer, ct);
+
+                var header = PacketSerializer.DeserializeHeader(headerBuffer);
+
+                var payloadBuffer = new byte[header.Length];
+                await ReadExactAsync(stream, payloadBuffer, ct);
+
+                var packetType = packetRegistry.GetPacketType(header.TypeId);
+                if (packetType is null) continue;
+
+                var context = new PacketContext(connection, stream);
+                packetRouter.Route(header.TypeId, payloadBuffer, context);
+            }
         }
+        catch (OperationCanceledException)
+        {
+            logger.LogInformation("QUIC connection closed");
+        }
+        catch (QuicException ex) when (
+            ex.Message.Contains("inactivity", StringComparison.OrdinalIgnoreCase))
+        {
+            logger.LogInformation("QUIC connection closed due to inactivity");
+        }
+        catch (EndOfStreamException)
+        {
+            logger.LogInformation("QUIC stream closed by peer");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "PacketHandler failed");
+        }
+    }
 
-        var packetContext = new PacketContext(connection, stream);
-        packetRouter.Route(header.TypeId, payloadBytes, packetContext);
+    private static async Task ReadExactAsync(
+        QuicStream stream,
+        byte[] buffer,
+        CancellationToken ct)
+    {
+        var offset = 0;
 
-        // var packet3 = "pong"u8.ToArray();
-        // await stream.WriteAsync(PacketSerializer.SerializePacket(packet, header.TypeId));
+        while (offset < buffer.Length)
+        {
+            var read = await stream.ReadAsync(
+                buffer.AsMemory(offset), ct);
+
+            if (read is 0)
+                throw new EndOfStreamException();
+
+            offset += read;
+        }
     }
 }

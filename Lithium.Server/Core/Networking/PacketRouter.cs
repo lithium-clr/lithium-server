@@ -13,5 +13,6 @@ public sealed class PacketRouter : BasePacketRouter
     ) : base(logger, packetRegistry)
     {
         Register<ClientConnectPacket, ClientConnectHandler>(services);
+        Register<HeartbeatPacket, PingHandler>(services);
     }
 }

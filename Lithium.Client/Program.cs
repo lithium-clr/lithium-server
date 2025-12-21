@@ -36,7 +36,7 @@ builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 
 if (OperatingSystem.IsSupported())
 {
-    builder.Services.AddSingleton<INetworkConnection, NetworkConnection>();
+    builder.Services.AddSingleton<QuicClient>();
 }
 
 builder.Services.AddHostedService<ClientLifetime>();

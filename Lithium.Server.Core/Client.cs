@@ -45,7 +45,7 @@ public sealed class Client(QuicConnection connection, int protocolVersion, int s
             
             var header = new PacketHeader(packetId, packetSize);
             var data = PacketSerializer.SerializePacket(packet, header.TypeId);
-
+            
             await using var stream = await Connection.OpenOutboundStreamAsync(QuicStreamType.Bidirectional, ct);
             await stream.WriteAsync(data, ct);
         }

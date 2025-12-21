@@ -32,7 +32,7 @@ builder.Services.AddSingleton<IPluginManager, PluginManager>();
 builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 
 // Networking
-builder.Services.AddSingleton<IQuicServer, QuicServer>();
+builder.Services.AddSingleton<QuicServer>();
 
 // Lifetime
 builder.Services.AddHostedService<ServerLifetime>();

@@ -2,9 +2,9 @@
 
 namespace Lithium.Core.Networking.Packets;
 
-[PacketId(2)]
+[PacketId(3)]
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public readonly struct ServerAcceptPacket(int serverId) : IPacket
+public readonly struct HeartbeatPacket(long ticks) : IPacket
 {
-    public readonly int ServerId = serverId;
+    public readonly long Ticks = ticks;
 }
