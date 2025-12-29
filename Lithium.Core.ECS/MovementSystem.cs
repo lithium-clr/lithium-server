@@ -2,7 +2,7 @@ namespace Lithium.Core.ECS;
 
 public sealed class MovementSystem : System
 {
-    public override void Update()
+    public override void OnUpdate()
     {
         foreach (var (entity, pos, vel) in World.Query<Position, Velocity>())
         {

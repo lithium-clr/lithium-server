@@ -12,7 +12,7 @@ public partial class World
         {
             system.World = this;
             system.DeltaTime = deltaTime;
-            system.Update();
+            system.OnUpdate();
         }
     }
 
