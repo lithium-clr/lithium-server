@@ -13,8 +13,12 @@ public class Game
         var dog = World.CreateEntity();
         var cat = World.CreateEntity();
         
+        dog.AddTag<DogTag>();
+        
         dog.AddComponent(new Position(0, 0, 0));
         dog.AddComponent(new Rotation(0, 0, 0));
+        
+        cat.AddTag<CatTag>();
         
         cat.AddComponent(new Position(100, 100, 100));
         cat.AddComponent(new Rotation(100, 100, 100));
