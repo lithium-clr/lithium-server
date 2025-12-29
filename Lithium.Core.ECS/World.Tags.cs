@@ -8,6 +8,12 @@ public partial class World
     {
         GetOrCreateTagSet<T>().Add(entity, tag);
     }
+    
+    public void RemoveTag<T>(Entity entity) where T : struct, ITag
+    {
+        if (_tags.TryGetValue(typeof(T), out var set))
+            ((SparseSet<T>)set).Remove(entity);
+    }
 
     public bool HasTag(Entity entity, Type tagType)
     {
@@ -36,25 +42,6 @@ public partial class World
         return tagTypes.All(tagType => HasTag(entity, tagType));
     }
 
-    public void RemoveTag<T>(Entity entity) where T : struct, ITag
-    {
-        if (_tags.TryGetValue(typeof(T), out var set))
-            ((SparseSet<T>)set).Remove(entity);
-    }
-
-    private bool HasAnyTag(Entity entity, Func<ITag, bool> filter)
-    {
-        foreach (var (tagType, set) in _tags)
-        {
-            if (!set.Has(entity)) continue;
-
-            if (Activator.CreateInstance(tagType) is ITag tagInstance && filter(tagInstance))
-                return true;
-        }
-
-        return false;
-    }
-
     private SparseSet<T> GetOrCreateTagSet<T>() where T : struct, ITag
     {
         if (_tags.TryGetValue(typeof(T), out var obj))
@@ -62,6 +49,7 @@ public partial class World
 
         var set = new SparseSet<T>();
         _tags[typeof(T)] = set;
+        
         return set;
     }
 }
