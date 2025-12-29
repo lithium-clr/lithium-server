@@ -8,7 +8,7 @@ public interface ISparseSet
     bool Has(Entity entity);
 }
 
-public sealed class SparseSet<T> : ISparseSet where T : struct, IComponent
+public sealed class SparseSet<T> : ISparseSet where T : struct
 {
     private readonly List<T> _dense = [];
     private readonly List<EntityId> _entities = [];
