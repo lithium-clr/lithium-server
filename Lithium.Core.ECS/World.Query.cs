@@ -10,9 +10,10 @@ public partial class World
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Archetype GetArchetype(Type t1, Type t2)
-        => _archetypes.TryGetValue(new ArchetypeKey([t1, t2]), out var a)
-            ? a
-            : Archetype.Empty;
+    {
+        var key = new ArchetypeKey([t1, t2]);
+        return _archetypes.GetValueOrDefault(key, Archetype.Empty);
+    }
 
     public WorldQuery<T1, T2> Query<T1, T2>()
         where T1 : struct, IComponent where T2 : struct, IComponent =>
