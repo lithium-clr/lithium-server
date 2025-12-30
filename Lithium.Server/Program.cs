@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Lithium.Core.ECS;
 using Lithium.Server;
 using Lithium.Server.Core;
 using Lithium.Server.Core.Logging;
@@ -37,6 +38,7 @@ builder.Services.AddSingleton<QuicServer>();
 
 // Lifetime
 builder.Services.AddHostedService<ServerLifetime>();
+builder.Services.AddHostedService<TestService>();
 
 var app = builder.Build();
 

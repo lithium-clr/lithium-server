@@ -23,7 +23,7 @@ public class Game
         cat.AddComponent(new Position(100, 100, 100));
         cat.AddComponent(new Rotation(100, 100, 100));
 
-        foreach (var e in World.Query<Position, Rotation>().HasTag<DogTag>())
+        foreach (var e in World.Query<Position, Velocity>().HasTag<DogTag>())
         {
             ref readonly var entity = ref e.Entity;
             ref readonly var pos = ref e.Component1;
@@ -44,9 +44,10 @@ public class Game
         foreach (var query in queries)
         {
             ref readonly var entity = ref query.Entity;
-            ref readonly var pos = ref query.Component1;
-            ref readonly var rot = ref query.Component2;
+            ref var pos = ref query.Component1;
+            ref var rot = ref query.Component2;
 
+            pos.X = 6;
             Console.WriteLine($"{entity}: {pos} / {rot}");
         }
 

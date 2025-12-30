@@ -16,7 +16,51 @@ public partial class World
 
     public WorldQuery<T1, T2> Query<T1, T2>()
         where T1 : struct, IComponent where T2 : struct, IComponent =>
-        new(this, GetArchetype(typeof(T1), typeof(T2)));
+        new(new FilteredQuery(this, GetArchetype(typeof(T1), typeof(T2))));
+
+    internal class FilteredQuery(World world, Archetype archetype, int[]? with = null, int[]? without = null)
+    {
+        public readonly World World = world;
+        public readonly Archetype Archetype = archetype;
+        public readonly int[]? With = with;
+        public readonly int[]? Without = without;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Matches(Entity entity)
+        {
+            if (With is not null && !World.HasAllTags(entity, With)) return false;
+            if (Without is not null && World.HasAnyTag(entity, Without)) return false;
+            
+            return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int[] Append(int[]? src, int value)
+        {
+            var pool = ArrayPool<int>.Shared;
+            
+            if (src is null)
+            {
+                var arr = pool.Rent(4);
+                arr[0] = value;
+                
+                return arr[..1];
+            }
+
+            var dst = pool.Rent(src.Length + 1);
+            Array.Copy(src, dst, src.Length);
+            dst[src.Length] = value;
+            
+            return dst[..(src.Length + 1)];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ReturnArray(int[]? array)
+        {
+            if (array is not null)
+                ArrayPool<int>.Shared.Return(array, clearArray: false);
+        }
+    }
 
     public readonly ref struct QueryResult<T1, T2>
         where T1 : struct, IComponent
@@ -27,11 +71,7 @@ public partial class World
         private readonly ref T2 _c2;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public QueryResult(
-            ref readonly Entity entity,
-            ref T1 c1,
-            ref T2 c2
-        )
+        public QueryResult(ref readonly Entity entity, ref T1 c1, ref T2 c2)
         {
             _entity = ref entity;
             _c1 = ref c1;
@@ -39,15 +79,11 @@ public partial class World
         }
 
         public ref readonly Entity Entity => ref _entity;
-        public ref readonly T1 Component1 => ref _c1;
-        public ref readonly T2 Component2 => ref _c2;
+        public ref T1 Component1 => ref _c1;
+        public ref T2 Component2 => ref _c2;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Deconstruct(
-            out Entity entity,
-            out T1 c1,
-            out T2 c2
-        )
+        public void Deconstruct(out Entity entity, out T1 c1, out T2 c2)
         {
             entity = _entity;
             c1 = _c1;
@@ -55,123 +91,81 @@ public partial class World
         }
     }
 
-    public readonly struct WorldQuery<T1, T2> : IDisposable
+    public readonly ref struct WorldQuery<T1, T2>
         where T1 : struct, IComponent
         where T2 : struct, IComponent
     {
-        private readonly World _world;
-        private readonly Archetype _archetype;
-        private readonly int[]? _with;
-        private readonly int[]? _without;
+        private readonly FilteredQuery _base;
 
-        public delegate void QueryAction(
-            ref readonly Entity entity,
-            ref T1 c1,
-            ref T2 c2);
+        public delegate void QueryAction(ref readonly Entity entity, ref T1 c1, ref T2 c2);
 
-        internal WorldQuery(World world, Archetype archetype, int[]? with = null, int[]? without = null)
+        internal WorldQuery(FilteredQuery b)
         {
-            _world = world;
-            _archetype = archetype;
-            _with = with;
-            _without = without;
+            _base = b;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public WorldQuery<T1, T2> HasTag<T>() where T : struct, ITag
         {
-            var id = TagTypeId<T>.Id;
-            var newWith = Append(_with, id);
-
-            return new WorldQuery<T1, T2>(_world, _archetype, newWith, _without);
+            var newWith = FilteredQuery.Append(_base.With, TagTypeId<T>.Id);
+            return new WorldQuery<T1, T2>(new FilteredQuery(_base.World, _base.Archetype, newWith, _base.Without));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public WorldQuery<T1, T2> WithoutTag<T>() where T : struct, ITag
         {
-            var id = TagTypeId<T>.Id;
-            var newWithout = Append(_without, id);
-
-            return new WorldQuery<T1, T2>(_world, _archetype, _with, newWithout);
+            var newWithout = FilteredQuery.Append(_base.Without, TagTypeId<T>.Id);
+            return new WorldQuery<T1, T2>(new FilteredQuery(_base.World, _base.Archetype, _base.With, newWithout));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ForEachEntity(QueryAction action)
         {
-            var entities = _archetype.AsSpan();
+            var span = _base.Archetype.AsSpan();
 
-            foreach (var ent in entities)
+            for (var i = 0; i < span.Length; i++)
             {
-                ref readonly var entity = ref ent;
+                ref var entity = ref span[i];
+                if (!_base.Matches(entity)) continue;
 
-                if (_with is not null && !_world.HasAllTags(entity, _with)) continue;
-                if (_without is not null && _world.HasAnyTag(entity, _without)) continue;
-
-                action(in entity, ref _world.GetComponentRef<T1>(entity), ref _world.GetComponentRef<T2>(entity));
+                action(
+                    ref entity,
+                    ref _base.World.GetComponentRef<T1>(entity),
+                    ref _base.World.GetComponentRef<T2>(entity)
+                );
             }
         }
-
-        public Enumerator GetEnumerator() => new(_world, _archetype, _with, _without);
-
-        private static int[] Append(int[]? src, int value)
+        
+        public Enumerator GetEnumerator()
         {
-            var pool = ArrayPool<int>.Shared;
-
-            if (src is null)
-            {
-                var arr = pool.Rent(4);
-                arr[0] = value;
-
-                return arr[..1];
-            }
-
-            var dst = pool.Rent(src.Length + 1);
-            Array.Copy(src, dst, src.Length);
-            dst[src.Length] = value;
-
-            return dst[..(src.Length + 1)];
-        }
-
-        public void Dispose()
-        {
-            if (_with is not null) ArrayPool<int>.Shared.Return(_with, clearArray: false);
-            if (_without is not null) ArrayPool<int>.Shared.Return(_without, clearArray: false);
+            return new Enumerator(_base.World, _base.Archetype.AsReadOnlySpan().ToArray());
         }
 
         public ref struct Enumerator
         {
             private readonly World _world;
-            private readonly Archetype _archetype;
-            private readonly int[]? _with;
-            private readonly int[]? _without;
+            private readonly Entity[] _entities;
             private int _index;
 
             public QueryResult<T1, T2> Current { get; private set; }
 
-            internal Enumerator(World world, Archetype archetype, int[]? with, int[]? without)
+            internal Enumerator(World world, Entity[] entities)
             {
                 _world = world;
-                _archetype = archetype;
-                _with = with;
-                _without = without;
+                _entities = entities;
                 _index = -1;
 
                 Current = default;
             }
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool MoveNext()
             {
-                var entities = _archetype.AsSpan();
-
-                while (++_index < entities.Length)
+                while (++_index < _entities.Length)
                 {
-                    ref readonly var entity = ref entities[_index];
-
-                    if (_with != null && !_world.HasAllTags(entity, _with)) continue;
-                    if (_without != null && _world.HasAnyTag(entity, _without)) continue;
+                    ref var entity = ref _entities[_index];
 
                     Current = new QueryResult<T1, T2>(
-                        in entity,
+                        ref entity,
                         ref _world.GetComponentRef<T1>(entity),
                         ref _world.GetComponentRef<T2>(entity)
                     );
