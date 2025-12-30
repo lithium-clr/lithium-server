@@ -15,7 +15,7 @@ public sealed class SparseSet<T> : ISparseSet where T : struct
 {
     private T[] _dense = new T[16];
     private EntityId[] _entities = new EntityId[16];
-    private readonly Dictionary<EntityId, int> _sparse = [];
+    private readonly Dictionary<EntityId, int> _sparse = new();
 
     public int Count { get; private set; }
     public ReadOnlySpan<EntityId> Entities => _entities.AsSpan(0, Count);
@@ -34,7 +34,6 @@ public sealed class SparseSet<T> : ISparseSet where T : struct
         _dense[Count] = component;
         _entities[Count] = entity.Id;
         _sparse[entity.Id] = Count;
-
         Count++;
     }
 
@@ -44,11 +43,9 @@ public sealed class SparseSet<T> : ISparseSet where T : struct
             return;
 
         var last = --Count;
-
         _dense[idx] = _dense[last];
         _entities[idx] = _entities[last];
         _sparse[_entities[idx]] = idx;
-
         _sparse.Remove(entity.Id);
     }
 

@@ -7,12 +7,12 @@ public partial class World
     public Entity CreateEntity()
     {
         var entity = new Entity(this, ++_nextEntityId);
-        var key = ArchetypeKey.Empty;
-        
-        if (!_archetypes.TryGetValue(key, out var archetype))
-            _archetypes[key] = archetype = new Archetype();
 
-        archetype.Entities.Add(entity);
+        var archetype = _archetypes.TryGetValue(ArchetypeKey.Empty, out var a)
+            ? a
+            : _archetypes[ArchetypeKey.Empty] = new Archetype(4);
+
+        archetype.Add(entity);
         _entityArchetype[entity.Id] = archetype;
 
         return entity;
