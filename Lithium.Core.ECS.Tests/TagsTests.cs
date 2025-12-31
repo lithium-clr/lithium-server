@@ -2,18 +2,6 @@ namespace Lithium.Core.ECS.Tests;
 
 public class TagsTests
 {
-    #region Setup & Helpers
-
-    private static Tags CreateTagsWithSampleData()
-    {
-        var tags = new Tags();
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
-        return tags;
-    }
-
-    #endregion
-
     #region Constructor Tests
 
     [Fact]
@@ -24,20 +12,6 @@ public class TagsTests
 
         // Assert
         Assert.Empty(tags);
-    }
-
-    [Fact]
-    public void Constructor_WithReadOnlySpan_ShouldCreateTagsFromSpan()
-    {
-        // Arrange
-        var span = new[] { TagTypeId<DogTag>.Id, TagTypeId<CatTag>.Id };
-
-        // Act
-        var tags = new Tags(span);
-
-        // Assert
-        Assert.True(tags.Has<DogTag>());
-        Assert.True(tags.Has<CatTag>());
     }
 
     #endregion
@@ -63,13 +37,13 @@ public class TagsTests
         
         // Arrange
         tags.Add<DogTag>();
-        var initialCount = tags.Count();
+        var initialCount = tags.Count;
 
         // Act
         tags.Add<DogTag>();
 
         // Assert
-        Assert.Equal(initialCount, tags.Count());
+        Assert.Equal(initialCount, tags.Count);
     }
 
     [Fact]
@@ -86,15 +60,6 @@ public class TagsTests
         // Assert
         Assert.False(tags.Has<DogTag>());
     }
-
-    // [Fact]
-    // public void Remove_WhenTagDoesNotExist_ShouldNotThrow()
-    // {
-    //     var tags = new Tags();
-    //     
-    //     // Act & Assert (should not throw)
-    //     tags.Remove<DogTag>();
-    // }
 
     #endregion
 
@@ -154,21 +119,7 @@ public class TagsTests
         otherTags.Add<DogTag>();
 
         // Act & Assert
-        Assert.True(tags.Contains(otherTags));
-    }
-
-    [Fact]
-    public void HasAll_WithReadOnlySpan_WhenAllTagsExist_ShouldReturnTrue()
-    {
-        var tags = new Tags();
-        
-        // Arrange
-        tags.Add<DogTag>();
-        
-        var span = new[] { TagTypeId<DogTag>.Id };
-
-        // Act & Assert
-        Assert.True(tags.HasAll(span));
+        Assert.True(tags.Has(otherTags));
     }
 
     #endregion
@@ -189,20 +140,6 @@ public class TagsTests
 
         // Act & Assert
         Assert.True(tags.HasAny(otherTags));
-    }
-
-    [Fact]
-    public void HasAny_WithReadOnlySpan_WhenAnyTagExists_ShouldReturnTrue()
-    {
-        var tags = new Tags();
-        
-        // Arrange
-        tags.Add<DogTag>();
-        
-        var span = new[] { TagTypeId<DogTag>.Id, TagTypeId<CatTag>.Id };
-
-        // Act & Assert
-        Assert.True(tags.HasAny(span));
     }
 
     #endregion
@@ -234,12 +171,11 @@ public class TagsTests
         tags.Add<CatTag>();
 
         // Act
-        var result = tags.Get<DogTag, CatTag>();
+        var (dogTag, catTag) = tags.Get<DogTag, CatTag>();
 
         // Assert
-        Assert.Equal(2, result.Length);
-        Assert.Equal(TagTypeId<DogTag>.Id, result[0].Id);
-        Assert.Equal(TagTypeId<CatTag>.Id, result[1].Id);
+        Assert.Equal(TagTypeId<DogTag>.Id, dogTag.Id);
+        Assert.Equal(TagTypeId<CatTag>.Id, catTag.Id);
     }
 
     #endregion
@@ -300,56 +236,6 @@ public class TagsTests
 
     #endregion
 
-    #region Conversion Tests
-
-    [Fact]
-    public void ImplicitConversion_FromReadOnlySpan_ShouldCreateTags()
-    {
-        // Arrange
-        var span = new[] { TagTypeId<DogTag>.Id, TagTypeId<CatTag>.Id };
-
-        // Act
-        Tags tags = span;
-
-        // Assert
-        Assert.True(tags.Has<DogTag>());
-        Assert.True(tags.Has<CatTag>());
-    }
-
-    [Fact]
-    public void ImplicitConversion_ToReadOnlySpan_ShouldReturnTagsAsSpan()
-    {
-        var tags = new Tags();
-        
-        // Arrange
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
-
-        // Act
-        ReadOnlySpan<int> span = tags;
-
-        // Assert
-        Assert.Equal(2, span.Length);
-        Assert.Contains(TagTypeId<DogTag>.Id, span.ToArray());
-        Assert.Contains(TagTypeId<CatTag>.Id, span.ToArray());
-    }
-
-    [Fact]
-    public void ImplicitConversion_FromIntArray_ShouldCreateTags()
-    {
-        // Arrange
-        var array = new[] { TagTypeId<DogTag>.Id, TagTypeId<CatTag>.Id };
-
-        // Act
-        Tags tags = array;
-
-        // Assert
-        Assert.True(tags.Has<DogTag>());
-        Assert.True(tags.Has<CatTag>());
-    }
-
-    #endregion
-
     #region Other Functionality Tests
 
     [Fact]
@@ -360,14 +246,16 @@ public class TagsTests
         // Arrange
         tags.Add<DogTag>();
         tags.Add<CatTag>();
-
-        // Act
-        var span = tags.AsSpan();
+        
+        Span<int> buffer = stackalloc int[TagBitset.BitsPerBlock];
+        
+        var count = tags.AsSpan(buffer);
+        var ids = buffer[..count].ToArray();
 
         // Assert
-        Assert.Equal(2, span.Length);
-        Assert.Contains(TagTypeId<DogTag>.Id, span.ToArray());
-        Assert.Contains(TagTypeId<CatTag>.Id, span.ToArray());
+        Assert.Equal(2, count);
+        Assert.Contains(TagTypeId<DogTag>.Id, ids);
+        Assert.Contains(TagTypeId<CatTag>.Id, ids);
     }
 
     [Fact]
@@ -380,20 +268,6 @@ public class TagsTests
         // Assert.NotNull(empty);
         Assert.Empty(empty);
     }
-
-    [Fact]
-    public void Add_WhenExceedingInitialCapacity_ShouldResizeArray()
-    {
-        var tags = new Tags();
-        
-        // Arrange & Act
-        for (var i = 0; i < 10; i++)
-            tags.Add(TagTypeId<DogTag>.Id + i);
-
-        // Assert
-        Assert.Equal(10, tags.Count());
-    }
-
 
     #endregion
 }

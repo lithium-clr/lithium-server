@@ -13,10 +13,10 @@ public class TagTests
     }
 
     [Fact]
-    public void FromDefinition_WhenCalled_ShouldReturnTagWithCorrectId()
+    public void New_WhenCalled_ShouldReturnTagWithCorrectId()
     {
         // Act
-        var tag = Tag.FromDefinition<DogTag>();
+        var tag = Tag.New<DogTag>();
 
         // Assert
         Assert.Equal(TagTypeId<DogTag>.Id, tag.Id);
@@ -26,8 +26,8 @@ public class TagTests
     public void Equals_WithSameTag_ShouldReturnTrue()
     {
         // Arrange
-        var tag1 = Tag.FromDefinition<DogTag>();
-        var tag2 = Tag.FromDefinition<DogTag>();
+        var tag1 = Tag.New<DogTag>();
+        var tag2 = Tag.New<DogTag>();
 
         // Act & Assert
         Assert.True(tag1.Equals(tag2));
@@ -39,8 +39,8 @@ public class TagTests
     public void Equals_WithDifferentTags_ShouldReturnFalse()
     {
         // Arrange
-        var tag1 = Tag.FromDefinition<DogTag>();
-        var tag2 = Tag.FromDefinition<CatTag>();
+        var tag1 = Tag.New<DogTag>();
+        var tag2 = Tag.New<CatTag>();
 
         // Act & Assert
         Assert.False(tag1.Equals(tag2));
@@ -52,8 +52,8 @@ public class TagTests
     public void GetHashCode_ForEqualTags_ShouldBeEqual()
     {
         // Arrange
-        var tag1 = Tag.FromDefinition<DogTag>();
-        var tag2 = Tag.FromDefinition<DogTag>();
+        var tag1 = Tag.New<DogTag>();
+        var tag2 = Tag.New<DogTag>();
 
         // Act & Assert
         Assert.Equal(tag1.GetHashCode(), tag2.GetHashCode());
@@ -63,80 +63,18 @@ public class TagTests
     public void Name_ShouldReturnTypeName()
     {
         // Arrange
-        var tag = Tag.FromDefinition<DogTag>();
-
+        var tag = Tag.New<DogTag>();
+    
         // Act & Assert
         Assert.Equal(nameof(DogTag), tag.Name);
     }
-
-    [Fact]
-    public void Type_ShouldReturnCorrectType()
-    {
-        // Arrange
-        var tag = Tag.FromDefinition<DogTag>();
-
-        // Act & Assert
-        Assert.Equal(typeof(DogTag), tag.Type);
-    }
-
-    [Fact]
-    public void ImplicitConversion_FromInt_ShouldCreateCorrectTag()
-    {
-        // Arrange
-        var id = TagTypeId<DogTag>.Id;
-
-        // Act
-        Tag tag = id;
-
-        // Assert
-        Assert.Equal(id, tag.Id);
-    }
-
-    [Fact]
-    public void ImplicitConversion_ToInt_ShouldReturnId()
-    {
-        // Arrange
-        var tag = Tag.FromDefinition<DogTag>();
-
-        // Act
-        int id = tag;
-
-        // Assert
-        Assert.Equal(tag.Id, id);
-    }
-
-    [Fact]
-    public void ImplicitConversion_ToReadOnlySpan_ShouldReturnNameAsSpan()
-    {
-        // Arrange
-        var tag = Tag.FromDefinition<DogTag>();
-
-        // Act
-        ReadOnlySpan<char> span = tag;
-
-        // Assert
-        Assert.Equal(tag.Name, span.ToString());
-    }
-
-    [Fact]
-    public void ImplicitConversion_ToType_ShouldReturnTagType()
-    {
-        // Arrange
-        var tag = Tag.FromDefinition<DogTag>();
-
-        // Act
-        Type type = tag;
-
-        // Assert
-        Assert.Equal(tag.Type, type);
-    }
-
+  
     [Fact]
     public void ToString_ShouldReturnName()
     {
         // Arrange
-        var tag = Tag.FromDefinition<DogTag>();
-
+        var tag = Tag.New<DogTag>();
+    
         // Act & Assert
         Assert.Equal(tag.Name, tag.ToString());
     }
