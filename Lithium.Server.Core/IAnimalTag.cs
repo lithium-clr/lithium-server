@@ -1,4 +1,6 @@
-namespace Lithium.Core.ECS;
+using Lithium.Core.ECS;
+
+namespace Lithium.Server.Core;
 
 public interface IAnimalTag : ITag;
 

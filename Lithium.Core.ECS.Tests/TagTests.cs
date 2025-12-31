@@ -38,18 +38,18 @@ public class TagTests
     public void New_WhenCalled_ShouldReturnTagWithCorrectId()
     {
         // Act
-        var tag = Tag.New<DogTag>();
+        var tag = Tag.New<TestTag1>();
 
         // Assert
-        Assert.Equal(TagTypeId<DogTag>.Id, tag.Id);
+        Assert.Equal(TagTypeId<TestTag1>.Id, tag.Id);
     }
 
     [Fact]
     public void Equals_WithSameTag_ShouldReturnTrue()
     {
         // Arrange
-        var tag1 = Tag.New<DogTag>();
-        var tag2 = Tag.New<DogTag>();
+        var tag1 = Tag.New<TestTag1>();
+        var tag2 = Tag.New<TestTag1>();
 
         // Act & Assert
         Assert.True(tag1.Equals(tag2));
@@ -61,8 +61,8 @@ public class TagTests
     public void Equals_WithDifferentTags_ShouldReturnFalse()
     {
         // Arrange
-        var tag1 = Tag.New<DogTag>();
-        var tag2 = Tag.New<CatTag>();
+        var tag1 = Tag.New<TestTag1>();
+        var tag2 = Tag.New<TestTag2>();
 
         // Act & Assert
         Assert.False(tag1.Equals(tag2));
@@ -74,8 +74,8 @@ public class TagTests
     public void GetHashCode_ForEqualTags_ShouldBeEqual()
     {
         // Arrange
-        var tag1 = Tag.New<DogTag>();
-        var tag2 = Tag.New<DogTag>();
+        var tag1 = Tag.New<TestTag1>();
+        var tag2 = Tag.New<TestTag1>();
 
         // Act & Assert
         Assert.Equal(tag1.GetHashCode(), tag2.GetHashCode());
@@ -85,17 +85,17 @@ public class TagTests
     public void Name_ShouldReturnTypeName()
     {
         // Arrange
-        var tag = Tag.New<DogTag>();
+        var tag = Tag.New<TestTag1>();
 
         // Act & Assert
-        Assert.Equal(nameof(DogTag), tag.Name);
+        Assert.Equal(nameof(TestTag1), tag.Name);
     }
 
     [Fact]
     public void ToString_ShouldReturnName()
     {
         // Arrange
-        var tag = Tag.New<DogTag>();
+        var tag = Tag.New<TestTag1>();
 
         // Act & Assert
         Assert.Equal(tag.Name, tag.ToString());
@@ -109,26 +109,26 @@ public class TagTests
     public void GetNameAsSpan_ShouldReturnCorrectName()
     {
         // Arrange
-        var tag = Tag.New<DogTag>();
+        var tag = Tag.New<TestTag1>();
 
         // Act
         var nameSpan = tag.GetNameAsSpan();
 
         // Assert
-        Assert.Equal(nameof(DogTag), nameSpan);
+        Assert.Equal(nameof(TestTag1), nameSpan);
     }
 
     [Fact]
     public void GetNameAsString_ShouldReturnCorrectName()
     {
         // Arrange
-        var tag = Tag.New<DogTag>();
+        var tag = Tag.New<TestTag1>();
 
         // Act
         var name = tag.GetNameAsString();
 
         // Assert
-        Assert.Equal(nameof(DogTag), name);
+        Assert.Equal(nameof(TestTag1), name);
     }
 
     [Fact]
@@ -149,7 +149,7 @@ public class TagTests
     public void Equals_WithNull_ShouldReturnFalse()
     {
         // Arrange
-        var tag = Tag.New<DogTag>();
+        var tag = Tag.New<TestTag1>();
 
         // Act & Assert
         Assert.False(tag.Equals(null));
@@ -159,7 +159,7 @@ public class TagTests
     public void Equals_WithNonTagObject_ShouldReturnFalse()
     {
         // Arrange
-        var tag = Tag.New<DogTag>();
+        var tag = Tag.New<TestTag1>();
         var obj = new object();
 
         // Act & Assert
@@ -170,8 +170,8 @@ public class TagTests
     public void GetHashCode_ForDifferentTags_ShouldBeDifferent()
     {
         // Arrange
-        var tag1 = Tag.New<DogTag>();
-        var tag2 = Tag.New<CatTag>();
+        var tag1 = Tag.New<TestTag1>();
+        var tag2 = Tag.New<TestTag2>();
 
         // Act & Assert
         Assert.NotEqual(tag1.GetHashCode(), tag2.GetHashCode());

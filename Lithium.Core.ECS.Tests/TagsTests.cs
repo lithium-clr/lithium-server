@@ -2,16 +2,6 @@ namespace Lithium.Core.ECS.Tests;
 
 public class TagsTests
 {
-    #region Test Tags
-
-    private struct TestTag1 : ITag;
-
-    private struct TestTag2 : ITag;
-
-    private struct TestTag3 : ITag;
-
-    #endregion
-
     #region Constructor Tests
 
     [Fact]
@@ -35,10 +25,10 @@ public class TagsTests
         var tags = new Tags();
 
         // Act
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
 
         // Assert
-        Assert.True(tags.Has<DogTag>());
+        Assert.True(tags.Has<TestTag1>());
         Assert.Equal(1, tags.Count);
     }
 
@@ -49,9 +39,9 @@ public class TagsTests
         var tags = new Tags();
 
         // Act
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
         tags.Add<TestTag1>();
+        tags.Add<TestTag2>();
+        tags.Add<TestTag3>();
 
         // Assert
         Assert.Equal(3, tags.Count);
@@ -62,7 +52,7 @@ public class TagsTests
     {
         // Arrange
         var tags = new Tags();
-        var tagId = TagTypeId<DogTag>.Id;
+        var tagId = TagTypeId<TestTag1>.Id;
 
         // Act
         tags.Add(tagId);
@@ -77,11 +67,11 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
         var initialCount = tags.Count;
 
         // Act
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
 
         // Assert
         Assert.Equal(initialCount, tags.Count);
@@ -92,13 +82,13 @@ public class TagsTests
     {
         // Arrange
         var tags = new Tags();
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
 
         // Act
-        tags.Remove<DogTag>();
+        tags.Remove<TestTag1>();
 
         // Assert
-        Assert.False(tags.Has<DogTag>());
+        Assert.False(tags.Has<TestTag1>());
         Assert.Equal(0, tags.Count);
     }
 
@@ -107,11 +97,11 @@ public class TagsTests
     {
         // Arrange
         var tags = new Tags();
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
         var initialCount = tags.Count;
 
         // Act
-        tags.Remove<CatTag>();
+        tags.Remove<TestTag2>();
 
         // Assert
         Assert.Equal(initialCount, tags.Count);
@@ -122,7 +112,7 @@ public class TagsTests
     {
         // Arrange
         var tags = new Tags();
-        var tagId = TagTypeId<DogTag>.Id;
+        var tagId = TagTypeId<TestTag1>.Id;
         tags.Add(tagId);
 
         // Act
@@ -142,10 +132,10 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
 
         // Act & Assert
-        Assert.True(tags.Has<DogTag>());
+        Assert.True(tags.Has<TestTag1>());
     }
 
     [Fact]
@@ -154,11 +144,11 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
+        tags.Add<TestTag1>();
+        tags.Add<TestTag2>();
 
         // Act & Assert
-        Assert.True(tags.Has<DogTag, CatTag>());
+        Assert.True(tags.Has<TestTag1, TestTag2>());
     }
 
     [Fact]
@@ -167,10 +157,10 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
 
         // Act & Assert
-        Assert.False(tags.Has<DogTag, CatTag>());
+        Assert.False(tags.Has<TestTag1, TestTag2>());
     }
 
     #endregion
@@ -183,11 +173,11 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
+        tags.Add<TestTag1>();
+        tags.Add<TestTag2>();
 
         var otherTags = new Tags();
-        otherTags.Add<DogTag>();
+        otherTags.Add<TestTag1>();
 
         // Act & Assert
         Assert.True(tags.Has(otherTags));
@@ -203,11 +193,11 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
 
         var otherTags = new Tags();
-        otherTags.Add<DogTag>();
-        otherTags.Add<CatTag>();
+        otherTags.Add<TestTag1>();
+        otherTags.Add<TestTag2>();
 
         // Act & Assert
         Assert.True(tags.HasAny(otherTags));
@@ -223,13 +213,13 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
 
         // Act
-        var tag = tags.Get<DogTag>();
+        var tag = tags.Get<TestTag1>();
 
         // Assert
-        Assert.Equal(TagTypeId<DogTag>.Id, tag.Id);
+        Assert.Equal(TagTypeId<TestTag1>.Id, tag.Id);
     }
 
     [Fact]
@@ -238,15 +228,15 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
+        tags.Add<TestTag1>();
+        tags.Add<TestTag2>();
 
         // Act
-        var (dogTag, catTag) = tags.Get<DogTag, CatTag>();
+        var (tag1, tag2) = tags.Get<TestTag1, TestTag2>();
 
         // Assert
-        Assert.Equal(TagTypeId<DogTag>.Id, dogTag.Id);
-        Assert.Equal(TagTypeId<CatTag>.Id, catTag.Id);
+        Assert.Equal(TagTypeId<TestTag1>.Id, tag1.Id);
+        Assert.Equal(TagTypeId<TestTag2>.Id, tag2.Id);
     }
 
     #endregion
@@ -259,12 +249,12 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
+        tags.Add<TestTag1>();
+        tags.Add<TestTag2>();
 
         // Act & Assert
-        Assert.Equal(TagTypeId<DogTag>.Id, tags[0].Id);
-        Assert.Equal(TagTypeId<CatTag>.Id, tags[1].Id);
+        Assert.Equal(TagTypeId<TestTag1>.Id, tags[0].Id);
+        Assert.Equal(TagTypeId<TestTag2>.Id, tags[1].Id);
     }
 
     [Fact]
@@ -273,7 +263,7 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
+        tags.Add<TestTag1>();
 
         // Act & Assert
         Assert.Throws<IndexOutOfRangeException>(() => tags[1]);
@@ -289,10 +279,10 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
+        tags.Add<TestTag1>();
+        tags.Add<TestTag2>();
 
-        var expectedIds = new HashSet<int> { TagTypeId<DogTag>.Id, TagTypeId<CatTag>.Id };
+        var expectedIds = new HashSet<int> { TagTypeId<TestTag1>.Id, TagTypeId<TestTag2>.Id };
         var actualIds = new HashSet<int>();
 
         // Act
@@ -315,8 +305,8 @@ public class TagsTests
         var tags = new Tags();
 
         // Arrange
-        tags.Add<DogTag>();
-        tags.Add<CatTag>();
+        tags.Add<TestTag1>();
+        tags.Add<TestTag2>();
 
         Span<int> buffer = stackalloc int[TagBitset.BitsPerBlock];
 
@@ -325,8 +315,8 @@ public class TagsTests
 
         // Assert
         Assert.Equal(2, count);
-        Assert.Contains(TagTypeId<DogTag>.Id, ids);
-        Assert.Contains(TagTypeId<CatTag>.Id, ids);
+        Assert.Contains(TagTypeId<TestTag1>.Id, ids);
+        Assert.Contains(TagTypeId<TestTag2>.Id, ids);
     }
 
     [Fact]
