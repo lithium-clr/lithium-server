@@ -18,26 +18,20 @@ public partial class World
         where T1 : struct, IComponent where T2 : struct, IComponent =>
         new(new FilteredQuery(this, GetArchetype(typeof(T1), typeof(T2))));
 
-    internal readonly struct FilteredQuery
+    internal readonly struct FilteredQuery(
+        World world,
+        Archetype archetype,
+        int[]? with = null,
+        int[]? without = null,
+        int[]? hasAnyOf = null
+    )
     {
-        public readonly World World;
-        public readonly Archetype Archetype;
-        private readonly int[]? with;
-        private readonly int[]? without;
-        public readonly int[]? HasAnyOf;
+        public readonly World World = world;
+        public readonly Archetype Archetype = archetype;
+        public readonly int[]? HasAnyOf = hasAnyOf;
 
         public ReadOnlySpan<int> With => with ?? [];
         public ReadOnlySpan<int> Without => without ?? [];
-
-        public FilteredQuery(World world, Archetype archetype, int[]? with = null, int[]? without = null,
-            int[]? hasAnyOf = null)
-        {
-            World = world;
-            Archetype = archetype;
-            this.with = with;
-            this.without = without;
-            this.HasAnyOf = hasAnyOf;
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Matches(Entity entity)

@@ -62,18 +62,13 @@ internal static class TagTypeRegistry
         return ids;
     }
     
-    // public static ReadOnlySpan<int> Register(params ITag[] tags)
-    // {
-    //     Span<int> ids = new int[tags.Length];
-    //     
-    //     for (var i = 0; i < tags.Length; i++)
-    //         ids[i] = Register(tags[i]);
-    //     
-    //     return ids;
-    // }
-    
     public static string GetName(int id)
     {
         return Map.FirstOrDefault(x => x.Value == id).Key.Name;
+    }
+    
+    public static Type GetType(int id)
+    {
+        return Map.FirstOrDefault(x => x.Value == id).Key;
     }
 }
