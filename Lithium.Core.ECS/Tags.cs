@@ -5,229 +5,130 @@ namespace Lithium.Core.ECS;
 
 public struct Tags : IEnumerable<Tag>
 {
-    private int[] _tags = new int[4];
-    private int _count = 0;
+    private int[] _tags;
+    public int Count { get; private set; }
 
-    public static Tags Empty => [];
+    public static Tags Empty => default;
 
     public Tags()
     {
+        _tags = new int[4];
+        Count = 0;
     }
 
     public Tags(ReadOnlySpan<int> tags)
     {
-        foreach (var tag in tags)
-            Add(tag);
+        _tags = new int[Math.Max(4, tags.Length)];
+        Count = 0;
+
+        foreach (var t in tags)
+            Add(t);
     }
 
-    public Tag this[int index]
+    public int this[int index]
     {
-        get
-        {
-            if (index < 0 || index >= _count)
-                throw new IndexOutOfRangeException();
-
-            return _tags[index];
-        }
-        set => _tags[index] = value;
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Add(Tag tag)
-    {
-        if (Contains(tag.Id)) return;
-
-        if (_count == _tags.Length)
-            Array.Resize(ref _tags, _tags.Length * 2);
-
-        _tags[_count++] = tag.Id;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _tags[index];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Add<T>()
-        where T : struct, ITag
+    public void Add(int tagId)
     {
-        Add(TagTypeId<T>.Id);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Remove<T>()
-        where T : struct, ITag
-    {
-        if (!Contains(TagTypeId<T>.Id)) return;
-
-        for (var i = 0; i < _count; i++)
-            if (_tags[i] == TagTypeId<T>.Id)
-                _tags[i] = _tags[_count--];
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly Tag Get<T>()
-        where T : struct, ITag
-    {
-        return _tags[TagTypeId<T>.Id];
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly ReadOnlySpan<Tag> Get<T1, T2>()
-        where T1 : struct, ITag
-        where T2 : struct, ITag
-    {
-        return new[] { Get<T1>(), Get<T2>() };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly ReadOnlySpan<Tag> Get<T1, T2, T3>()
-        where T1 : struct, ITag
-        where T2 : struct, ITag
-        where T3 : struct, ITag
-    {
-        return new[] { Get<T1>(), Get<T2>(), Get<T3>() };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly ReadOnlySpan<Tag> Get<T1, T2, T3, T4>()
-        where T1 : struct, ITag
-        where T2 : struct, ITag
-        where T3 : struct, ITag
-        where T4 : struct, ITag
-    {
-        return new[] { Get<T1>(), Get<T2>(), Get<T3>(), Get<T4>() };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly ReadOnlySpan<Tag> Get<T1, T2, T3, T4, T5>()
-        where T1 : struct, ITag
-        where T2 : struct, ITag
-        where T3 : struct, ITag
-        where T4 : struct, ITag
-        where T5 : struct, ITag
-    {
-        return new[] { Get<T1>(), Get<T2>(), Get<T3>(), Get<T4>(), Get<T5>() };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private readonly bool Contains(int tagId)
-    {
-        for (var i = 0; i < _count; i++)
+        for (var i = 0; i < Count; i++)
             if (_tags[i] == tagId)
-                return true;
+                return;
 
-        return false;
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Contains(Tags tags)
-    {
-        foreach (var tag in tags)
-            if (!Contains(tag))
-                return false;
+        if (Count == _tags.Length)
+            Grow();
 
-        return true;
+        _tags[Count++] = tagId;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Has<T1>()
-        where T1 : struct, ITag
+    public void Add<T>() where T : struct, ITag
+        => Add(TagTypeId<T>.Id);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Remove<T>() where T : struct, ITag
     {
-        return Contains(TagTypeId<T1>.Id);
+        var id = TagTypeId<T>.Id;
+
+        for (var i = 0; i < Count; i++)
+        {
+            if (_tags[i] != id) continue;
+            _tags[i] = _tags[--Count];
+
+            return;
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private void Grow()
+    {
+        Array.Resize(ref _tags, _tags.Length * 2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Has<T1, T2>()
-        where T1 : struct, ITag
-        where T2 : struct, ITag
+    public bool Has(int id)
     {
-        return Contains(TagTypeId<T1>.Id)
-               && Contains(TagTypeId<T2>.Id);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Has<T1, T2, T3>()
-        where T1 : struct, ITag
-        where T2 : struct, ITag
-        where T3 : struct, ITag
-    {
-        return Contains(TagTypeId<T1>.Id)
-               && Contains(TagTypeId<T2>.Id)
-               && Contains(TagTypeId<T3>.Id);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Has<T1, T2, T3, T4>()
-        where T1 : struct, ITag
-        where T2 : struct, ITag
-        where T3 : struct, ITag
-        where T4 : struct, ITag
-    {
-        return Contains(TagTypeId<T1>.Id)
-               && Contains(TagTypeId<T2>.Id)
-               && Contains(TagTypeId<T3>.Id)
-               && Contains(TagTypeId<T4>.Id);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool Has<T1, T2, T3, T4, T5>()
-        where T1 : struct, ITag
-        where T2 : struct, ITag
-        where T3 : struct, ITag
-        where T4 : struct, ITag
-        where T5 : struct, ITag
-    {
-        return Contains(TagTypeId<T1>.Id)
-               && Contains(TagTypeId<T2>.Id)
-               && Contains(TagTypeId<T3>.Id)
-               && Contains(TagTypeId<T4>.Id)
-               && Contains(TagTypeId<T5>.Id);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool HasAny(Tags tags)
-    {
-        return tags.HasAll(_tags);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool HasAny(ReadOnlySpan<int> tags)
-    {
-        foreach (var t in tags)
-            if (Contains(t))
+        for (var i = 0; i < Count; i++)
+            if (_tags[i] == id)
                 return true;
 
         return false;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool HasAll(Tags tags)
-    {
-        return tags.HasAll(_tags);
-    }
+    public bool Has<T>() where T : struct, ITag
+        => Has(TagTypeId<T>.Id);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly bool HasAll(ReadOnlySpan<int> tags)
-    {
-        foreach (var t in tags)
-            if (!Contains(t))
-                return false;
+    public bool Has<T1, T2>()
+        where T1 : struct, ITag
+        where T2 : struct, ITag
+        => Has<T1>() & Has<T2>();
 
-        return true;
-    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Has<T1, T2, T3>()
+        where T1 : struct, ITag
+        where T2 : struct, ITag
+        where T3 : struct, ITag
+        => Has<T1>() & Has<T2>() & Has<T3>();
 
-    public IEnumerator<Tag> GetEnumerator()
-    {
-        for (var i = 0; i < _count; i++)
-            yield return _tags[i];
-    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlySpan<int> AsSpan()
+        => _tags.AsSpan(0, Count);
+
+    public Enumerator GetEnumerator()
+        => new(_tags, Count);
+
+    IEnumerator<Tag> IEnumerable<Tag>.GetEnumerator()
+        => GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator()
+        => GetEnumerator();
+
+    public struct Enumerator : IEnumerator<Tag>
     {
-        return GetEnumerator();
+        private readonly int[] _tags;
+        private readonly int _count;
+        private int _index;
+
+        internal Enumerator(int[] tags, int count)
+        {
+            _tags = tags;
+            _count = count;
+            _index = -1;
+        }
+
+        public Tag Current => new(_tags[_index]);
+        object IEnumerator.Current => Current;
+
+        public bool MoveNext() => ++_index < _count;
+        public void Reset() => _index = -1;
+
+        public void Dispose()
+        {
+        }
     }
-
-    public ReadOnlySpan<int> AsSpan()
-        => _tags.AsSpan(0, _count);
-
-    public static implicit operator Tags(ReadOnlySpan<int> tags) => new(tags);
-    public static implicit operator ReadOnlySpan<int>(Tags tags) => tags.AsSpan();
-    public static implicit operator Tags(int[] tags) => new(tags);
 }

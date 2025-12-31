@@ -7,20 +7,30 @@ public interface ITag;
 public readonly struct DisabledTag : ITag;
 
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly record struct Tag(int Id) : ITag
+public readonly struct Tag(int id) : IEquatable<Tag>
 {
-    public string Name => TagTypeId.GetName(Id);
-    public Type Type => TagTypeId.GetType(Id);
-
-    public static implicit operator Tag(int id) => new(id);
-    public static implicit operator int(Tag tag) => tag.Id;
-    public static implicit operator ReadOnlySpan<char>(Tag tag) => tag.Name;
-    public static implicit operator Type(Tag tag) => tag.Type;
+    public readonly int Id = id;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tag FromDefinition<T>()
-        where T : struct, ITag
-        => new(TagTypeId<T>.Id);
+    public bool Equals(Tag other) => Id == other.Id;
 
-    public override string ToString() => Name;
+    public override bool Equals(object? obj)
+    {
+        return obj is Tag tag && Equals(tag);
+    }
+    
+    public override int GetHashCode() => Id;
+
+    public override string ToString()
+        => TagTypeId.GetName(Id);
+    
+    public static bool operator ==(Tag left, Tag right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Tag left, Tag right)
+    {
+        return !(left == right);
+    }
 }

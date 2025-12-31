@@ -1,44 +1,28 @@
+using System.Runtime.CompilerServices;
+
 namespace Lithium.Core.ECS;
 
 public partial record struct Entity
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void AddTag<T>() where T : struct, ITag
-    {
-        World.AddTag<T>(this);
-    }
-    
+        => World.AddTag<T>(this);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void RemoveTag<T>() where T : struct, ITag
-    {
-        World.RemoveTag<T>(this);
-    }
-    
+        => World.RemoveTag<T>(this);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasTag<T>() where T : struct, ITag
-    {
-        return World.HasTag<T>(this);
-    }
-    
+        => World.HasTag<T>(this);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasAnyTag(ReadOnlySpan<int> tagIds)
-    {
-        return World.HasAnyTag(this, tagIds);
-    }
-    
-    public bool HasAnyTag(params Type[] types)
-    {
-        return World.HasAnyTag(this, TagTypeId.GetIds(types));
-    }
-    
+        => World.HasAnyTag(this, tagIds);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasAllTags(ReadOnlySpan<int> tagIds)
-    {
-        return World.HasAllTags(this, tagIds);
-    }
-    
-    public bool HasAllTags(params Type[] types)
-    {
-        return World.HasAllTags(this, TagTypeId.GetIds(types));
-    }
-    
-    public ReadOnlySpan<int> GetTags()
-    {
-        return World.GetTags(this);
-    }
+        => World.HasAllTags(this, tagIds);
+
+    public int[] GetTags() => World.GetTags(this);
 }
