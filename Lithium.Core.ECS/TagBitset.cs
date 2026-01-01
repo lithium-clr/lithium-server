@@ -14,7 +14,7 @@ public unsafe struct TagBitset : IEquatable<TagBitset>
 
     public readonly Span<ulong> Data
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
             fixed (ulong* ptr = _data)
@@ -22,7 +22,7 @@ public unsafe struct TagBitset : IEquatable<TagBitset>
         }
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Add(int tagId)
     {
         var idx = tagId / BitsPerUlong;
@@ -31,7 +31,7 @@ public unsafe struct TagBitset : IEquatable<TagBitset>
         _data[idx] |= 1UL << bit;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Remove(int tagId)
     {
         var idx = tagId / BitsPerUlong;
@@ -40,7 +40,7 @@ public unsafe struct TagBitset : IEquatable<TagBitset>
         _data[idx] &= ~(1UL << bit);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has(int tagId)
     {
         var idx = tagId / BitsPerUlong;
@@ -49,7 +49,7 @@ public unsafe struct TagBitset : IEquatable<TagBitset>
         return (_data[idx] & (1UL << bit)) != 0;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasAll(in TagBitset other)
     {
         fixed (ulong* a = _data)
@@ -71,7 +71,7 @@ public unsafe struct TagBitset : IEquatable<TagBitset>
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasAny(in TagBitset other)
     {
         fixed (ulong* a = _data)
@@ -94,7 +94,7 @@ public unsafe struct TagBitset : IEquatable<TagBitset>
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Clear()
     {
         for (var i = 0; i < ULongsPerBlock; i++)

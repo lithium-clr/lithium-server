@@ -38,7 +38,7 @@ builder.Services.AddSingleton<QuicServer>();
 
 // Lifetime
 builder.Services.AddHostedService<ServerLifetime>();
-builder.Services.AddHostedService<TestService>();
+builder.Services.AddHostedService<WorldService>();
 
 var app = builder.Build();
 

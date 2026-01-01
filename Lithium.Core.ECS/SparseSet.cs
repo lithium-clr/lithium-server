@@ -20,7 +20,7 @@ public sealed class SparseSet<T> : ISparseSet where T : struct
     public int Count { get; private set; }
     public ReadOnlySpan<EntityId> Entities => _entities.AsSpan(0, Count);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Add(Entity entity, T component)
     {
         if (_sparse.TryGetValue(entity.Id, out var idx))
@@ -38,7 +38,7 @@ public sealed class SparseSet<T> : ISparseSet where T : struct
         Count++;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Remove(Entity entity)
     {
         if (!_sparse.TryGetValue(entity.Id, out var idx))
@@ -51,7 +51,7 @@ public sealed class SparseSet<T> : ISparseSet where T : struct
         _sparse.Remove(entity.Id);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGet(Entity entity, out T component)
     {
         if (_sparse.TryGetValue(entity.Id, out var idx))
@@ -64,7 +64,7 @@ public sealed class SparseSet<T> : ISparseSet where T : struct
         return false;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ref T GetComponentRef(Entity entity)
     {
         if (_sparse.TryGetValue(entity.Id, out var idx))
@@ -76,7 +76,7 @@ public sealed class SparseSet<T> : ISparseSet where T : struct
     IComponent ISparseSet.GetComponent(Entity entity)
         => (IComponent)GetComponentRef(entity);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has(Entity entity)
         => _sparse.ContainsKey(entity.Id);
 

@@ -17,20 +17,20 @@ public ref struct NetworkWriter(Span<byte> buffer)
 
     public int Written => _offset;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteInt(int value)
     {
         BinaryPrimitives.WriteInt32LittleEndian(_buffer[_offset..], value);
         _offset += 4;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteBool(bool value)
     {
         _buffer[_offset++] = value ? (byte)1 : (byte)0;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteFloat(float value)
     {
         BinaryPrimitives.WriteSingleLittleEndian(_buffer[_offset..], value);
@@ -60,14 +60,14 @@ public ref struct NetworkReader(ReadOnlySpan<byte> buffer)
     public int Consumed => _offset;
     public int Remaining => _buffer.Length - _offset;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void Ensure(int size)
     {
         if (_offset + size > _buffer.Length)
             throw new InvalidOperationException("Buffer underflow");
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt()
     {
         Ensure(4);
@@ -76,14 +76,14 @@ public ref struct NetworkReader(ReadOnlySpan<byte> buffer)
         return value;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool ReadBool()
     {
         Ensure(1);
         return _buffer[_offset++] != 0;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float ReadFloat()
     {
         Ensure(4);
@@ -92,7 +92,7 @@ public ref struct NetworkReader(ReadOnlySpan<byte> buffer)
         return value;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<byte> ReadBytes(int length)
     {
         Ensure(length);

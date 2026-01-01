@@ -74,7 +74,7 @@ public sealed class Archetype(int capacity = 16)
         SortTypesById(_componentTypes, _componentCount);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void SortTypesById(Type[] types, int length = -1)
     {
         if (length < 0) length = types.Length;

@@ -9,7 +9,7 @@ internal static class TagTypeRegistry
     private static readonly Dictionary<Type, int> TypeToId = new(64);
     private static readonly List<Type> IdToType = new(64);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int GetOrCreate(Type type)
     {
         if (TypeToId.TryGetValue(type, out var id))
@@ -22,7 +22,7 @@ internal static class TagTypeRegistry
         return id;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlySpan<char> GetName(int id)
         => IdToType[id].Name;
 }

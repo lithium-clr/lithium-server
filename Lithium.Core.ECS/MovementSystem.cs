@@ -6,6 +6,7 @@ public sealed class MovementSystem : System
     {
         foreach (var query in World.Query<Position, Velocity>())
         {
+            // ref readonly var entity = ref query.Entity;
             ref var pos = ref query.Component1;
             ref readonly var vel = ref query.Component2;
             
@@ -13,14 +14,8 @@ public sealed class MovementSystem : System
             pos.Y += vel.Y * DeltaTime;
             pos.Z += vel.Z * DeltaTime;
             
-            // var newPos = new Position(
-            //     pos.X + vel.X * DeltaTime,
-            //     pos.Y + vel.Y * DeltaTime,
-            //     pos.Z + vel.Z * DeltaTime
-            // );
-            //
-            // // Update position
-            // World.AddComponent(entity, newPos);
+            // foreach (var tag in entity.GetTags())
+            //     Console.WriteLine($"{entity}: {tag.GetNameAsSpan()} | {pos}, {vel}");
         }
     }
 }

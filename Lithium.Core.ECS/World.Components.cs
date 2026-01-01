@@ -77,7 +77,7 @@ public partial class World
         return (SparseSet<T>)set;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ref T GetComponentRef<T>(Entity entity)
         where T : struct, IComponent
     {

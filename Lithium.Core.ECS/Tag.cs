@@ -21,7 +21,7 @@ public readonly struct Tag(int id) : IEquatable<Tag>
     public ReadOnlySpan<char> GetNameAsSpan() => TagTypeId.GetName(Id);
     public string GetNameAsString() => TagTypeId.GetNameString(Id);
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(Tag other) => Id == other.Id;
 
     public override bool Equals(object? obj)

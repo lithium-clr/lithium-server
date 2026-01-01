@@ -7,7 +7,7 @@ public partial class World
     private readonly Dictionary<ArchetypeKey, Archetype> _archetypes = [];
     private readonly Dictionary<EntityId, Archetype> _entityArchetype = new();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Archetype GetArchetype(params Type[] types)
     {
         var key = new ArchetypeKey(types);
@@ -33,7 +33,7 @@ public partial class World
         public ReadOnlySpan<int> With => with ?? [];
         public ReadOnlySpan<int> Without => without ?? [];
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Matches(Entity entity)
         {
             // Vérifier si l'entité a tous les tags requis
@@ -60,7 +60,7 @@ public partial class World
         private readonly ref T1 _c1;
         private readonly ref T2 _c2;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public QueryResult(ref readonly Entity entity, ref T1 c1, ref T2 c2)
         {
             _entity = ref entity;
@@ -72,7 +72,7 @@ public partial class World
         public ref T1 Component1 => ref _c1;
         public ref T2 Component2 => ref _c2;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Deconstruct(out Entity entity, out T1 c1, out T2 c2)
         {
             entity = _entity;
@@ -96,7 +96,7 @@ public partial class World
             _base = b;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ArchetypeQuery<T1, T2> WithAllTags(params Type[] types)
         {
             var with = _base.With.ToArray();
@@ -111,7 +111,7 @@ public partial class World
                 _base.Without.ToArray()));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ArchetypeQuery<T1, T2> WithAnyTags(params Type[] types)
         {
             var tagIds = new int[types.Length];
@@ -130,7 +130,7 @@ public partial class World
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ArchetypeQuery<T1, T2> WithoutTags(params Type[] types)
         {
             var without = _base.Without.ToArray();
@@ -152,7 +152,7 @@ public partial class World
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ArchetypeQuery<T1, T2> WithTag<T>() where T : struct, ITag
         {
             var with = _base.With.ToArray();
@@ -165,7 +165,7 @@ public partial class World
                 _base.Without.ToArray()));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ArchetypeQuery<T1, T2> WithoutTag<T>() where T : struct, ITag
         {
             var without = _base.Without.ToArray();
@@ -178,7 +178,7 @@ public partial class World
                 newWithout));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ForEachEntity(QueryFunc<T1, T2> action)
         {
             foreach (var item in this)
