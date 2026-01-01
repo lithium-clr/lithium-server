@@ -6,8 +6,6 @@ public sealed class ConsoleCommandExecutor(IServiceProvider services)
     {
         using var scope = services.CreateScope();
 
-        var instance = scope.ServiceProvider.GetRequiredService(command.DeclaringType);
-
         var parameters = CommandArgumentBinder.Bind(
             command.Method.GetParameters(),
             args
@@ -16,7 +14,17 @@ public sealed class ConsoleCommandExecutor(IServiceProvider services)
         if (parameters.Length != command.Method.GetParameters().Length)
             return;
 
-        var result = command.Method.Invoke(instance, parameters);
-        if (result is Task task) await task;
+        if (command.Method.IsStatic)
+        {
+            var result = command.Method.Invoke(null, parameters);
+            if (result is Task task) await task;
+        }
+        else
+        {
+            var instance = scope.ServiceProvider.GetRequiredService(command.DeclaringType);
+
+            var result = command.Method.Invoke(instance, parameters);
+            if (result is Task task) await task;
+        }
     }
 }

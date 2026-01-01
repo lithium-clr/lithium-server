@@ -19,7 +19,7 @@ public sealed class ConsoleCommandRegistry
         foreach (var type in assembly.GetTypes())
         {
             foreach (var method in type.GetMethods(
-                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
             {
                 var attr = method.GetCustomAttribute<ConsoleCommandAttribute>();
                 if (attr is null) continue;
