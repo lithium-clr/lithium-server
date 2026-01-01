@@ -13,7 +13,7 @@ public sealed class ConsoleInputService(
             var line = Console.ReadLine();
             if (line is null) break;
 
-            var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var parts = CommandLineTokenizer.Tokenize(line);
             if (parts.Length is 0) continue;
 
             var name = parts[0].ToLowerInvariant();
