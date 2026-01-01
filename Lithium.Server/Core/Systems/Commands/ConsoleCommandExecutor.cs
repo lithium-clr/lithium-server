@@ -1,12 +1,15 @@
 namespace Lithium.Server.Core.Systems.Commands;
 
-public sealed class ConsoleCommandExecutor(IServiceProvider services)
+public sealed class ConsoleCommandExecutor(
+    IServiceProvider services,
+    CommandArgumentBinder binder
+)
 {
     public async Task ExecuteAsync(ConsoleCommand command, string[] args)
     {
         using var scope = services.CreateScope();
 
-        var parameters = CommandArgumentBinder.Bind(
+        var parameters = binder.Bind(
             command.Method.GetParameters(),
             args
         );

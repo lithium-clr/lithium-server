@@ -4,7 +4,8 @@ namespace Lithium.Server.Core.Systems.Commands;
 
 public sealed class ConsoleCommandRegistry
 {
-    private readonly Dictionary<string, ConsoleCommand> _commands = new();
+    private readonly Dictionary<string, ConsoleCommand> _commands =
+        new(StringComparer.OrdinalIgnoreCase);
 
     public IReadOnlyDictionary<string, ConsoleCommand> Commands => _commands;
 
@@ -19,20 +20,27 @@ public sealed class ConsoleCommandRegistry
         foreach (var type in assembly.GetTypes())
         {
             foreach (var method in type.GetMethods(
-                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static))
+                         BindingFlags.Instance |
+                         BindingFlags.Static |
+                         BindingFlags.Public |
+                         BindingFlags.NonPublic))
             {
                 var attr = method.GetCustomAttribute<ConsoleCommandAttribute>();
                 if (attr is null) continue;
 
                 ValidateMethod(method, attr.Name);
 
-                _commands[attr.Name] = new ConsoleCommand
+                if (!_commands.TryAdd(attr.Name, new ConsoleCommand
                 {
                     Name = attr.Name,
                     Description = attr.Description,
                     Method = method,
-                    DeclaringType = type
-                };
+                    DeclaringType = method.IsStatic ? null : type,
+                }))
+                {
+                    throw new InvalidOperationException(
+                        $"Command '{attr.Name}' is already registered.");
+                }
             }
         }
     }
@@ -42,37 +50,18 @@ public sealed class ConsoleCommandRegistry
         if (method.ReturnType != typeof(void) &&
             !typeof(Task).IsAssignableFrom(method.ReturnType))
         {
-            Console.WriteLine(
-                $"Command '{commandName}' must return {typeof(void)} or {typeof(Task)}");
+            throw new InvalidOperationException(
+                $"Command '{commandName}' must return void or Task.");
         }
 
-        foreach (var p in method.GetParameters())
+        foreach (var parameter in method.GetParameters())
         {
-            if (!IsBindable(p.ParameterType))
+            if (parameter.ParameterType.IsByRef)
             {
-                var supportedTypes = string.Join(", ", GetSupportedTypes().Select(x => x.Name));
-
-                Console.WriteLine(
-                    $"Command '{commandName}' has unsupported parameter type '{p.ParameterType.Name}'. Supported types: {supportedTypes}");
+                throw new InvalidOperationException(
+                    $"Command '{commandName}' has ref/out parameter '{parameter.Name}'.");
             }
         }
-    }
-
-    private static IEnumerable<Type> GetSupportedTypes()
-    {
-        var asm = Assembly.GetExecutingAssembly();
-        return asm.GetTypes().Where(x => x.IsPrimitive || x.IsEnum || x == typeof(string) || x == typeof(decimal));
-    }
-
-    private static bool IsSupportedType(Type type)
-    {
-        return GetSupportedTypes().Contains(type);
-    }
-
-    private static bool IsBindable(Type type)
-    {
-        type = Nullable.GetUnderlyingType(type) ?? type;
-        return IsSupportedType(type);
     }
 
     public bool TryGet(string name, out ConsoleCommand command)

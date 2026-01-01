@@ -1,11 +1,10 @@
-using System.Globalization;
 using System.Reflection;
 
 namespace Lithium.Server.Core.Systems.Commands;
 
-internal static class CommandArgumentBinder
+public sealed class CommandArgumentBinder(CommandArgumentParserRegistry parsers)
 {
-    public static object[] Bind(ParameterInfo[] parameters, string[] args)
+    public object[] Bind(ParameterInfo[] parameters, string[] args)
     {
         if (args.Length != parameters.Length)
         {
@@ -16,36 +15,40 @@ internal static class CommandArgumentBinder
         var result = new object[parameters.Length];
 
         for (var i = 0; i < parameters.Length; i++)
-            result[i] = ConvertArg(args[i], parameters[i].ParameterType);
+        {
+            var targetType = parameters[i].ParameterType;
+            Console.WriteLine("Target: " + targetType);
+
+            if (parsers.TryGet(targetType, out var parser))
+            {
+                result[i] = parser.Parse(args[i]);
+                continue;
+            }
+            else
+            {
+                throw new Exception($"Failed to parse: {targetType}");
+            }
+
+            // result[i] = ConvertFallback(args[i], targetType);
+        }
 
         return result;
     }
 
-    private static object ConvertArg(string value, Type targetType)
-    {
-        var nullable = Nullable.GetUnderlyingType(targetType);
-
-        if (nullable is not null)
-        {
-            if (string.Equals(value, "null", StringComparison.OrdinalIgnoreCase))
-                return null!;
-
-            targetType = nullable;
-        }
-
-        if (targetType == typeof(string))
-            return value;
-
-        if (targetType == typeof(bool))
-            return bool.Parse(value);
-
-        if (targetType.IsEnum)
-            return Enum.Parse(targetType, value, ignoreCase: true);
-
-        return Convert.ChangeType(
-            value,
-            targetType,
-            CultureInfo.InvariantCulture
-        );
-    }
+    // private static object ConvertFallback(string value, Type targetType)
+    // {
+    //     var nullable = Nullable.GetUnderlyingType(targetType);
+    //
+    //     if (nullable is not null)
+    //     {
+    //         if (string.Equals(value, "null", StringComparison.OrdinalIgnoreCase))
+    //             return null!;
+    //
+    //         targetType = nullable;
+    //     }
+    //
+    //     return targetType.IsEnum
+    //         ? Enum.Parse(targetType, value, true)
+    //         : Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
+    // }
 }

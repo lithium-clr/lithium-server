@@ -5,6 +5,12 @@ public sealed class CoreCommands(
     ConsoleCommandRegistry registry
 )
 {
+    [ConsoleCommand("ban", "Ban a player")]
+    private void Ban(bool age)
+    {
+        Console.WriteLine("Ban: " + string.Join(", ", age));
+    }
+    
     [ConsoleCommand("stop", "Stop the server")]
     private void Stop()
     {

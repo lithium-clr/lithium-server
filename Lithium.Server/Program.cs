@@ -6,6 +6,7 @@ using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Extensions;
 using Lithium.Server.Core.Systems.Commands;
+using Lithium.Server.Core.Systems.Commands.Parsers;
 using Lithium.Server.Dashboard;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,9 +49,17 @@ builder.Services.AddSingleton(
     ])
 );
 
+builder.Services.AddSingleton<CommandArgumentParserRegistry>();
+builder.Services.AddSingleton<CommandArgumentBinder>();
 builder.Services.AddSingleton<ConsoleCommandExecutor>();
-builder.Services.AddHostedService<ConsoleInputService>();
 builder.Services.AddSingleton<CoreCommands>();
+
+builder.Services.AddSingleton<ICommandArgumentParser, StringParser>();
+builder.Services.AddSingleton<ICommandArgumentParser, BoolParser>();
+builder.Services.AddSingleton<ICommandArgumentParser, Vector3Parser>();
+
+builder.Services.AddHostedService<CommandParserInitializer>();
+builder.Services.AddHostedService<ConsoleInputService>();
 
 var app = builder.Build();
 
