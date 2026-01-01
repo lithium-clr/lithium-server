@@ -12,7 +12,7 @@ public sealed class ConsoleCommandRegister(
     CommandArgumentParserRegistry parserRegistry,
     ConsoleCommandRegistry commandRegistry,
     IOptions<ConsoleCommandRegisterOptions> options
-    ) : IHostedService
+) : IHostedService
 {
     public Task StartAsync(CancellationToken cancellationToken)
     {
@@ -21,7 +21,7 @@ public sealed class ConsoleCommandRegister(
             parserRegistry.RegisterAssembly(assembly);
             commandRegistry.RegisterAssembly(assembly);
         }
-        
+
         return Task.CompletedTask;
     }
 
