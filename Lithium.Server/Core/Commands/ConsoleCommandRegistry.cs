@@ -22,8 +22,7 @@ public sealed class ConsoleCommandRegistry
                          BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
                 var attr = method.GetCustomAttribute<ConsoleCommandAttribute>();
-                if (attr == null)
-                    continue;
+                if (attr is null) continue;
 
                 ValidateMethod(method, attr.Name);
 
@@ -44,27 +43,36 @@ public sealed class ConsoleCommandRegistry
             !typeof(Task).IsAssignableFrom(method.ReturnType))
         {
             throw new InvalidOperationException(
-                $"Command '{commandName}' must return void or Task");
+                $"Command '{commandName}' must return {typeof(void)} or {typeof(Task)}");
         }
 
         foreach (var p in method.GetParameters())
         {
             if (!IsBindable(p.ParameterType))
             {
+                var supportedTypes = string.Join(", ", GetSupportedTypes().Select(x => x.Name));
+
                 throw new InvalidOperationException(
-                    $"Command '{commandName}' has unsupported parameter type '{p.ParameterType.Name}'");
+                    $"Command '{commandName}' has unsupported parameter type '{p.ParameterType.Name}'. Supported types: {supportedTypes}");
             }
         }
+    }
+
+    private static IEnumerable<Type> GetSupportedTypes()
+    {
+        var asm = Assembly.GetExecutingAssembly();
+        return asm.GetTypes().Where(x => x.IsPrimitive || x.IsEnum || x == typeof(string) || x == typeof(decimal));
+    }
+
+    private static bool IsSupportedType(Type type)
+    {
+        return GetSupportedTypes().Contains(type);
     }
 
     private static bool IsBindable(Type type)
     {
         type = Nullable.GetUnderlyingType(type) ?? type;
-
-        return type.IsPrimitive ||
-               type == typeof(string) ||
-               type == typeof(decimal) ||
-               type.IsEnum;
+        return IsSupportedType(type);
     }
 
     public bool TryGet(string name, out ConsoleCommand command)
