@@ -1,9 +1,16 @@
 namespace Lithium.Server.Core.Commands;
 
 public sealed class CoreCommands(
+    IHostApplicationLifetime lifetime,
     ConsoleCommandRegistry registry
 )
 {
+    [ConsoleCommand("stop", "Stop the server")]
+    private void Stop()
+    {
+        lifetime.StopApplication();
+    }
+
     [ConsoleCommand("help", "List available commands")]
     private void Help()
     {
