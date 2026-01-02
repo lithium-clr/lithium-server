@@ -1,8 +1,12 @@
-name: Discord notification
+name: Discord Notifications
 
 on:
   push:
   pull_request:
+  issues:
+    types: [opened, closed, reopened, edited]
+  issue_comment:
+    types: [created, edited, deleted]
 
 jobs:
   notify:
@@ -10,10 +14,8 @@ jobs:
     steps:
       - name: Send Discord webhook
         run: |
-          # Default message
-          MESSAGE="${{ github.event_name }}"
-
           if [ "${{ github.event_name }}" = "push" ]; then
+            # === PUSH NOTIFICATION ===
             COMMIT_AUTHOR="${{ github.actor }}"
             COMMIT_MESSAGE=$(jq -r '.head_commit.message' <<< '${{ toJSON(github.event) }}')
             COMMIT_URL=$(jq -r '.head_commit.url' <<< '${{ toJSON(github.event) }}')
@@ -23,7 +25,14 @@ jobs:
             MESSAGE="${COMMIT_MESSAGE}
             - [${COMMIT_AUTHOR}](<https://github.com/${COMMIT_AUTHOR}>) on [${REPO}](<${{ github.server_url }}/${{ github.repository }}>)/[${BRANCH}](<${{ github.server_url }}/${{ github.repository }}/tree/${BRANCH}>)"
 
+            MESSAGE_JSON=$(echo "$MESSAGE" | awk '{printf "%s\\n", $0}' | sed 's/\\n$//')
+
+            curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+              -H "Content-Type: application/json" \
+              -d "{\"username\":\"${{ github.actor }}\",\"avatar_url\":\"https://github.com/${{ github.actor }}.png\",\"content\":\"${MESSAGE_JSON}\"}"
+
           elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            # === PULL REQUEST NOTIFICATION ===
             PR_AUTHOR="${{ github.actor }}"
             PR_TITLE=$(jq -r '.pull_request.title' <<< '${{ toJSON(github.event) }}')
             PR_URL="${{ github.event.pull_request.html_url }}"
@@ -36,11 +45,88 @@ jobs:
             MESSAGE="Pull Request #${PR_NUMBER} ${PR_ACTION}: ${PR_TITLE}
             - [${PR_AUTHOR}](<https://github.com/${PR_AUTHOR}>) on [${REPO}](<${{ github.server_url }}/${{ github.repository }}>) - [${BRANCH}](<${{ github.server_url }}/${{ github.repository }}/tree/${BRANCH}>) → [${BASE_BRANCH}](<${{ github.server_url }}/${{ github.repository }}/tree/${BASE_BRANCH}>)
             - [View PR](<${PR_URL}>)"
+
+            MESSAGE_JSON=$(echo "$MESSAGE" | awk '{printf "%s\\n", $0}' | sed 's/\\n$//')
+
+            curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+              -H "Content-Type: application/json" \
+              -d "{\"username\":\"${{ github.actor }}\",\"avatar_url\":\"https://github.com/${{ github.actor }}.png\",\"content\":\"${MESSAGE_JSON}\"}"
+
+          elif [ "${{ github.event_name }}" = "issues" ]; then
+            # === ISSUES NOTIFICATION (EMBED) ===
+            ACTION="${{ github.event.action }}"
+            ISSUE_TITLE=$(jq -r '.issue.title' <<< '${{ toJSON(github.event) }}')
+            ISSUE_NUMBER="${{ github.event.issue.number }}"
+            ISSUE_URL="${{ github.event.issue.html_url }}"
+            ISSUE_BODY=$(jq -r '.issue.body // "No description provided"' <<< '${{ toJSON(github.event) }}')
+            AUTHOR="${{ github.event.issue.user.login }}"
+            AVATAR_URL="https://github.com/${{ github.event.issue.user.login }}.png"
+            REPO="${{ github.repository }}"
+            
+            ISSUE_BODY=$(echo "$ISSUE_BODY" | head -c 2000)
+            DESCRIPTION="**Issue #${ISSUE_NUMBER} ${ACTION}**\n\n${ISSUE_BODY}\n\n[View Issue](<${ISSUE_URL}>)"
+            
+            cat > payload.json << EOF
+            {
+              "username": "GitHub",
+              "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+              "embeds": [{
+                "author": {
+                  "name": "${AUTHOR}",
+                  "icon_url": "${AVATAR_URL}"
+                },
+                "title": "[${REPO}] ${ISSUE_TITLE}",
+                "url": "${ISSUE_URL}",
+                "description": $(echo "$DESCRIPTION" | jq -Rs .),
+                "color": 5814783,
+                "footer": {
+                  "text": "GitHub APP"
+                },
+                "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+              }]
+            }
+          EOF
+            
+            curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+              -H "Content-Type: application/json" \
+              -d @payload.json
+
+          elif [ "${{ github.event_name }}" = "issue_comment" ]; then
+            # === ISSUE COMMENT NOTIFICATION (EMBED) ===
+            ACTION="${{ github.event.action }}"
+            ISSUE_TITLE=$(jq -r '.issue.title' <<< '${{ toJSON(github.event) }}')
+            ISSUE_NUMBER="${{ github.event.issue.number }}"
+            ISSUE_URL="${{ github.event.comment.html_url }}"
+            COMMENT_BODY=$(jq -r '.comment.body' <<< '${{ toJSON(github.event) }}')
+            AUTHOR="${{ github.event.comment.user.login }}"
+            AVATAR_URL="https://github.com/${{ github.event.comment.user.login }}.png"
+            REPO="${{ github.repository }}"
+            
+            COMMENT_BODY=$(echo "$COMMENT_BODY" | head -c 2000)
+            DESCRIPTION="**New comment on issue #${ISSUE_NUMBER}**\n\n${COMMENT_BODY}\n\n[View Comment](<${ISSUE_URL}>)"
+            
+            cat > payload.json << EOF
+            {
+              "username": "GitHub",
+              "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+              "embeds": [{
+                "author": {
+                  "name": "${AUTHOR}",
+                  "icon_url": "${AVATAR_URL}"
+                },
+                "title": "[${REPO}] ${ISSUE_TITLE}",
+                "url": "${ISSUE_URL}",
+                "description": $(echo "$DESCRIPTION" | jq -Rs .),
+                "color": 5814783,
+                "footer": {
+                  "text": "GitHub APP"
+                },
+                "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+              }]
+            }
+          EOF
+            
+            curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+              -H "Content-Type: application/json" \
+              -d @payload.json
           fi
-
-          MESSAGE_JSON=$(echo "$MESSAGE" | awk '{printf "%s\\n", $0}' | sed 's/\\n$//')
-
-          # Send webhook
-          curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"username\":\"${{ github.actor }}\",\"avatar_url\":\"https://github.com/${{ github.actor }}.png\",\"content\":\"${MESSAGE_JSON}\"}"
