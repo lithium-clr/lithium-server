@@ -1,8 +1,7 @@
-name: Discord notification
+name: Discord – Custom GitHub Events
 
 on:
   push:
-  pull_request:
 
 jobs:
   notify:
@@ -10,26 +9,23 @@ jobs:
     steps:
       - name: Send Discord webhook
         run: |
-          # Default message
-          MESSAGE="${{ github.event_name }}"
+          # Variables
+          COMMIT_AUTHOR="${{ github.actor }}"
+          COMMIT_MESSAGE=$(jq -r '.head_commit.message' <<< "${{ toJSON(github.event) }}")
+          COMMIT_URL=$(jq -r '.head_commit.url' <<< "${{ toJSON(github.event) }}")
+          BRANCH="${{ github.ref_name }}"
+          REPO="${{ github.event.repository.name }}"
 
-          if [ "${{ github.event_name }}" = "push" ]; then
-            # Récupérer le commit
-            COMMIT_AUTHOR="${{ github.actor }}"
-            COMMIT_MESSAGE=$(jq -r '.head_commit.message' <<< "${{ toJSON(github.event) }}")
-            COMMIT_URL=$(jq -r '.head_commit.url' <<< "${{ toJSON(github.event) }}")
-            BRANCH="${{ github.ref_name }}"
-            REPO="${{ github.event.repository.name }}"
-
-            # Construire le message selon ton format
-            MESSAGE="[${COMMIT_AUTHOR}](https://github.com/${COMMIT_AUTHOR})\n[${COMMIT_MESSAGE}](${COMMIT_URL})\n\n• [${COMMIT_AUTHOR}](https://github.com/${COMMIT_AUTHOR}) on [${REPO}](${{ github.server_url }}/${{ github.repository }}/tree/${BRANCH}) / ${BRANCH}"
-          fi
+          # Créer le JSON dans un fichier
+          cat > payload.json <<EOF
+          {
+            "username": "${COMMIT_AUTHOR}",
+            "avatar_url": "https://github.com/${COMMIT_AUTHOR}.png",
+            "content": "[${COMMIT_AUTHOR}](https://github.com/${COMMIT_AUTHOR})\n[${COMMIT_MESSAGE}](${COMMIT_URL})\n\n• [${COMMIT_AUTHOR}](https://github.com/${COMMIT_AUTHOR}) on [${REPO}](${{ github.server_url }}/${{ github.repository }}/tree/${BRANCH}) / ${BRANCH}"
+          }
+          EOF
 
           # Envoyer le webhook
           curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
             -H "Content-Type: application/json" \
-            -d "{
-              \"username\": \"${{ github.actor }}\",
-              \"avatar_url\": \"https://github.com/${{ github.actor }}.png\",
-              \"content\": \"${MESSAGE}\"
-            }"
+            --data @payload.json
