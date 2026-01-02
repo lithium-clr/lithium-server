@@ -28,7 +28,8 @@ jobs:
             # Limiter le body à 2000 caractères
             ISSUE_BODY=$(echo "$ISSUE_BODY" | head -c 2000)
             
-            DESCRIPTION="**Issue #${ISSUE_NUMBER} ${ACTION}**\n\n${ISSUE_BODY}\n\n[View Issue](<${ISSUE_URL}>)"
+            DESCRIPTION="${ISSUE_BODY}
+            - [View Issue](<${ISSUE_URL}>)"
             
           elif [ "${{ github.event_name }}" = "issue_comment" ]; then
             # Notification pour commentaire
@@ -57,14 +58,10 @@ jobs:
                 "name": "${AUTHOR}",
                 "icon_url": "${AVATAR_URL}"
               },
-              "title": "[${REPO}] ${ISSUE_TITLE}",
+              "title": "[${REPO}] Issue ${ACTION}: #${ISSUE_NUMBER} ${ISSUE_TITLE}",
               "url": "${ISSUE_URL}",
               "description": $(echo "$DESCRIPTION" | jq -Rs .),
-              "color": 5814783,
-              "footer": {
-                "text": "GitHub APP"
-              },
-              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+              "color": 5814783
             }]
           }
           EOF
