@@ -1,0 +1,75 @@
+name: Discord Issue Notification
+
+on:
+  issues:
+    types: [opened, closed, reopened, edited]
+  issue_comment:
+    types: [created, edited, deleted]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord webhook
+        run: |
+          TIMESTAMP=$(date -u +"%d/%m/%Y %H:%M")
+          
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            # Notification pour issue
+            ACTION="${{ github.event.action }}"
+            ISSUE_TITLE=$(jq -r '.issue.title' <<< '${{ toJSON(github.event) }}')
+            ISSUE_NUMBER="${{ github.event.issue.number }}"
+            ISSUE_URL="${{ github.event.issue.html_url }}"
+            ISSUE_BODY=$(jq -r '.issue.body // "No description provided"' <<< '${{ toJSON(github.event) }}')
+            AUTHOR="${{ github.event.issue.user.login }}"
+            AVATAR_URL="https://github.com/${{ github.event.issue.user.login }}.png"
+            REPO="${{ github.repository }}"
+            
+            # Limiter le body à 2000 caractères
+            ISSUE_BODY=$(echo "$ISSUE_BODY" | head -c 2000)
+            
+            DESCRIPTION="**Issue #${ISSUE_NUMBER} ${ACTION}**\n\n${ISSUE_BODY}\n\n[View Issue](<${ISSUE_URL}>)"
+            
+          elif [ "${{ github.event_name }}" = "issue_comment" ]; then
+            # Notification pour commentaire
+            ACTION="${{ github.event.action }}"
+            ISSUE_TITLE=$(jq -r '.issue.title' <<< '${{ toJSON(github.event) }}')
+            ISSUE_NUMBER="${{ github.event.issue.number }}"
+            ISSUE_URL="${{ github.event.comment.html_url }}"
+            COMMENT_BODY=$(jq -r '.comment.body' <<< '${{ toJSON(github.event) }}')
+            AUTHOR="${{ github.event.comment.user.login }}"
+            AVATAR_URL="https://github.com/${{ github.event.comment.user.login }}.png"
+            REPO="${{ github.repository }}"
+            
+            # Limiter le commentaire à 2000 caractères
+            COMMENT_BODY=$(echo "$COMMENT_BODY" | head -c 2000)
+            
+            DESCRIPTION="**New comment on issue #${ISSUE_NUMBER}**\n\n${COMMENT_BODY}\n\n[View Comment](<${ISSUE_URL}>)"
+          fi
+          
+          # Créer le JSON pour l'embed
+          cat > payload.json << EOF
+          {
+            "username": "GitHub",
+            "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+            "embeds": [{
+              "author": {
+                "name": "${AUTHOR}",
+                "icon_url": "${AVATAR_URL}"
+              },
+              "title": "[${REPO}] ${ISSUE_TITLE}",
+              "url": "${ISSUE_URL}",
+              "description": $(echo "$DESCRIPTION" | jq -Rs .),
+              "color": 5814783,
+              "footer": {
+                "text": "GitHub APP"
+              },
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+            }]
+          }
+          EOF
+          
+          # Envoyer le webhook
+          curl -X POST "${{ secrets.DISCORD_ISSUES_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d @payload.json

@@ -64,6 +64,7 @@ builder.Services.AddSerilog();
 
 builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
 builder.Logging.AddFilter("System", LogLevel.Warning);
+//
 
 // SignalR
 builder.Services.AddSignalR();
