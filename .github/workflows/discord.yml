@@ -7,14 +7,45 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-
     steps:
       - name: Send Discord webhook
         run: |
+          # Default message
+          MESSAGE="${{ github.event_name }}"
+
+          if [ "${{ github.event_name }}" = "push" ]; then
+            # Récupérer le commit
+            COMMIT_AUTHOR="${{ github.actor }}"
+            COMMIT_MESSAGE=$(jq -r '.head_commit.message' <<< '${{ toJSON(github.event) }}')
+            COMMIT_URL=$(jq -r '.head_commit.url' <<< '${{ toJSON(github.event) }}')
+            BRANCH="${{ github.ref_name }}"
+            REPO="${{ github.event.repository.name }}"
+
+            # Construire le message avec de vrais sauts de ligne
+            MESSAGE="${COMMIT_MESSAGE}
+            - [${COMMIT_AUTHOR}](<https://github.com/${COMMIT_AUTHOR}>) on [${REPO}](<${{ github.server_url }}/${{ github.repository }}>)/[${BRANCH}](<${{ github.server_url }}/${{ github.repository }}/tree/${BRANCH}>)"
+
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Récupérer les infos de la PR
+            PR_AUTHOR="${{ github.actor }}"
+            PR_TITLE=$(jq -r '.pull_request.title' <<< '${{ toJSON(github.event) }}')
+            PR_URL="${{ github.event.pull_request.html_url }}"
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            PR_ACTION="${{ github.event.action }}"
+            BRANCH="${{ github.event.pull_request.head.ref }}"
+            BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
+            REPO="${{ github.event.repository.name }}"
+
+            # Construire le message pour la PR
+            MESSAGE="Pull Request #${PR_NUMBER} ${PR_ACTION}: ${PR_TITLE}
+            - [${PR_AUTHOR}](<https://github.com/${PR_AUTHOR}>) on [${REPO}](<${{ github.server_url }}/${{ github.repository }}>) - [${BRANCH}](<${{ github.server_url }}/${{ github.repository }}/tree/${BRANCH}>) → [${BASE_BRANCH}](<${{ github.server_url }}/${{ github.repository }}/tree/${BASE_BRANCH}>)
+            - [View PR](<${PR_URL}>)"
+          fi
+
+          # Convertir les sauts de ligne en \n pour JSON
+          MESSAGE_JSON=$(echo "$MESSAGE" | awk '{printf "%s\\n", $0}' | sed 's/\\n$//')
+
+          # Envoyer le webhook
           curl -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
             -H "Content-Type: application/json" \
-            -d '{
-              "username": "${{ github.actor }}",
-              "avatar_url": "https://github.com/${{ github.actor }}.png",
-              "content": "${{ github.event_name }}\n\n●  [${{ github.actor }}](<https://github.com/${{ github.actor }}>) on [${{ github.event.repository.name }}](<${{ github.server_url }}/${{ github.repository }}>)/[${{ github.ref_name }}](<${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}>)"
-            }'
+            -d "{\"username\":\"${{ github.actor }}\",\"avatar_url\":\"https://github.com/${{ github.actor }}.png\",\"content\":\"${MESSAGE_JSON}\"}"
