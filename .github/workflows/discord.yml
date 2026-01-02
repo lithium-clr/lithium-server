@@ -16,5 +16,5 @@ jobs:
             -d '{
               "username": "${{ github.actor }}",
               "avatar_url": "${{ github.event.sender.avatar_url }}",
-              "content": "${{ github.event_name }}\n\n● [${{ github.actor }}](${{ github.event.sender.html_url }}) on [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }}) / [${{ github.ref_name }}](${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }})"
+              "content": "${{ github.event_name }}\n\n● [${{ github.actor }}](${{ github.event.sender.html_url }}) on [${{ github.event.repository.name }}](${{ github.server_url }}/${{ github.repository }}) / [${{ github.ref_name }}](${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }})"
             }'
