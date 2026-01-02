@@ -12,6 +12,8 @@ using Log = Serilog.Log;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+
 SentrySdk.Init(options =>
 {
     options.Dsn = builder.Configuration["Sentry:Dsn"];
@@ -27,8 +29,6 @@ SentrySdk.Init(options =>
         };
     });
 });
-
-builder.Logging.ClearProviders();
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -61,7 +61,7 @@ Log.Logger = new LoggerConfiguration()
             // Filter out all info logs
             return log.Level switch
             {
-                SentryLogLevel.Error or SentryLogLevel.Fatal => log,
+                SentryLogLevel.Warning or SentryLogLevel.Error or SentryLogLevel.Fatal => log,
                 _ => null
             };
         });
@@ -69,9 +69,6 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services.AddSerilog();
-
-builder.Logging.AddConfiguration(builder.Configuration);
-builder.Logging.AddSentry();
 
 builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
 builder.Logging.AddFilter("System", LogLevel.Warning);
