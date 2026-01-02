@@ -22,10 +22,9 @@ jobs:
             REPO="${{ github.event.repository.name }}"
 
             # Construire le message avec de vrais sauts de ligne
-            MESSAGE="[${COMMIT_AUTHOR}](https://github.com/${COMMIT_AUTHOR})
-            [${COMMIT_MESSAGE}](${COMMIT_URL})
+            MESSAGE="${COMMIT_MESSAGE}
 
-            - [${COMMIT_AUTHOR}](https://github.com/${COMMIT_AUTHOR}) on [${REPO}](${{ github.server_url }}/${{ github.repository }}/tree/${BRANCH}) / ${BRANCH}"
+            - [${COMMIT_AUTHOR}](<https://github.com/${COMMIT_AUTHOR}>) on [${REPO}](<${{ github.server_url }}/${{ github.repository }}/tree/${BRANCH}>)/${BRANCH}"
           fi
 
           # Convertir les sauts de ligne en \n pour JSON
