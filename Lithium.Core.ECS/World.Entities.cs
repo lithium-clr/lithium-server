@@ -2,11 +2,14 @@ namespace Lithium.Core.ECS;
 
 public partial class World
 {
-    private uint _nextEntityId;
+    private int _nextEntityId;
 
     public Entity CreateEntity()
     {
         var entity = new Entity(this, ++_nextEntityId);
+
+        EnsureEntityTagsSize((int)_nextEntityId);
+        EnsureEntityArchetypesSize((int)_nextEntityId);
 
         if (!_archetypes.TryGetValue(ArchetypeKey.Empty, out var archetype))
         {
@@ -15,7 +18,7 @@ public partial class World
         }
 
         archetype.Add(entity);
-        _entityArchetype[entity.Id] = archetype;
+        _entityArchetypes[entity.Id] = archetype;
 
         return entity;
     }

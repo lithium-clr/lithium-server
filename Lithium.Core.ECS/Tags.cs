@@ -6,14 +6,14 @@ namespace Lithium.Core.ECS;
 
 public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
 {
-    private TagBitset _bitset;
+    internal TagBitset _bitset;
     public int Count { get; private set; }
 
     public static Tags Empty => default;
 
     public Tag this[int index] => Get(index);
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Tag Get(int index)
     {
         if (index < 0 || index >= Count)
@@ -40,14 +40,14 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         throw new IndexOutOfRangeException();
     }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Tag Get<T1>() where T1 : struct, ITag
     {
         var id = TagTypeId<T1>.Id;
         return _bitset.Has(id) ? new Tag(id) : throw new KeyNotFoundException();
     }
     
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (Tag, Tag) Get<T1, T2>() where T1 : struct, ITag where T2 : struct, ITag
     {
         var id1 = TagTypeId<T1>.Id;
@@ -56,7 +56,7 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         return _bitset.Has(id1) & _bitset.Has(id2) ? (new Tag(id1), new Tag(id2)) : throw new KeyNotFoundException();
     }
     
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (Tag, Tag, Tag) Get<T1, T2, T3>() where T1 : struct, ITag where T2 : struct, ITag where T3 : struct, ITag
     {
         var id1 = TagTypeId<T1>.Id;
@@ -66,7 +66,7 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         return _bitset.Has(id1) & _bitset.Has(id2) & _bitset.Has(id3) ? (new Tag(id1), new Tag(id2), new Tag(id3)) : throw new KeyNotFoundException();
     }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Add(int id)
     {
         if (_bitset.Has(id)) return;
@@ -75,7 +75,7 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         Count++;
     }
     
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Add<T>() where T : struct, ITag
     {
         var id = TagTypeId<T>.Id;
@@ -86,7 +86,7 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         Count++;
     }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Remove(int id)
     {
         if (!_bitset.Has(id)) return;
@@ -95,7 +95,7 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         Count--;
     }
     
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Remove<T>() where T : struct, ITag
     {
         var id = TagTypeId<T>.Id;
@@ -106,25 +106,25 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         Count--;
     }
    
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has(int tagId)
     {
         return _bitset.Has(tagId);
     }
     
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has(in Tags other)
     {
         return _bitset.HasAll(other._bitset);
     }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has<T>() where T : struct, ITag
     {
         return _bitset.Has(TagTypeId<T>.Id);
     }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has<T1, T2>()
         where T1 : struct, ITag
         where T2 : struct, ITag
@@ -132,7 +132,7 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         return Has<T1>() & Has<T2>();
     }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has<T1, T2, T3>()
         where T1 : struct, ITag
         where T2 : struct, ITag
@@ -141,19 +141,31 @@ public struct Tags : IEnumerable<Tag>, IEquatable<Tags>
         return Has<T1>() & Has<T2>() & Has<T3>();
     }
     
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasAll(in Tags other)
     {
         return _bitset.HasAll(other._bitset);
     }
     
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool HasAll(in TagBitset other)
+    {
+        return _bitset.HasAll(other);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasAny(in Tags other)
     {
         return _bitset.HasAny(other._bitset);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool HasAny(in TagBitset other)
+    {
+        return _bitset.HasAny(other);
+    }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int AsSpan(Span<int> destination)
     {
         var count = 0;

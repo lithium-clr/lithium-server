@@ -18,10 +18,13 @@ public partial class World
 
         set.Add(entity, component);
 
-        if (!_entityArchetype.TryGetValue(entity.Id, out var oldArchetype))
+        EnsureEntityArchetypesSize((int)entity.Id);
+        var oldArchetype = _entityArchetypes[entity.Id];
+        
+        if (oldArchetype == null)
         {
             oldArchetype = _archetypes.GetValueOrDefault(ArchetypeKey.Empty, Archetype.Empty);
-            _entityArchetype[entity.Id] = oldArchetype;
+            _entityArchetypes[entity.Id] = oldArchetype;
         }
 
         var newKey = oldArchetype.GetKeyWith(typeof(T));
@@ -42,7 +45,7 @@ public partial class World
         {
             oldArchetype.Remove(entity);
             newArchetype.Add(entity);
-            _entityArchetype[entity.Id] = newArchetype;
+            _entityArchetypes[entity.Id] = newArchetype;
         }
     }
 
@@ -50,7 +53,11 @@ public partial class World
     {
         GetSet<T>().Remove(entity);
 
-        var oldArchetype = _entityArchetype[entity.Id];
+        EnsureEntityArchetypesSize((int)entity.Id);
+        var oldArchetype = _entityArchetypes[entity.Id];
+        
+        if (oldArchetype == null) return; // Should not happen if entity exists
+
         var newKey = oldArchetype.GetKeyWithout(typeof(T));
 
         if (!_archetypes.TryGetValue(newKey, out var newArchetype))
@@ -58,7 +65,7 @@ public partial class World
 
         oldArchetype.Remove(entity);
         newArchetype.Add(entity);
-        _entityArchetype[entity.Id] = newArchetype;
+        _entityArchetypes[entity.Id] = newArchetype;
     }
 
     public bool TryGetComponent<T>(Entity e, out T component)
@@ -82,5 +89,17 @@ public partial class World
         where T : struct, IComponent
     {
         return ref ((SparseSet<T>)_components[typeof(T)]).GetComponentRef(entity);
+    }
+    
+    public SparseSet<T> GetComponentSet<T>() where T : struct, IComponent
+    {
+        return GetSet<T>();
+    }
+    
+    private void EnsureEntityArchetypesSize(int id)
+    {
+        if (id < _entityArchetypes.Length) return;
+        var newSize = Math.Max(id + 1, _entityArchetypes.Length * 2);
+        Array.Resize(ref _entityArchetypes, newSize);
     }
 }

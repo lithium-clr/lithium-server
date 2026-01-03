@@ -2,19 +2,28 @@ using System.Runtime.CompilerServices;
 
 namespace Lithium.Core.ECS;
 
-public sealed class Archetype(int capacity = 16)
+public sealed class Archetype
 {
-    private Entity[] _entities = new Entity[capacity];
+    private Entity[] _entities;
     public int Count { get; private set; }
 
     private Type[] _componentTypes = [];
     public ReadOnlySpan<Type> ComponentTypes => _componentTypes.AsSpan(0, _componentCount);
     private int _componentCount;
 
+    public Archetype(int capacity = 16)
+    {
+        // Ensure capacity is at least 1 to avoid resize issues on first add if 0 passed
+        _entities = new Entity[Math.Max(1, capacity)];
+    }
+
     public void Add(Entity entity)
     {
         if (Count == _entities.Length)
-            Array.Resize(ref _entities, _entities.Length * 2);
+        {
+            var newSize = _entities.Length == 0 ? 4 : _entities.Length * 2;
+            Array.Resize(ref _entities, newSize);
+        }
 
         _entities[Count++] = entity;
     }
@@ -74,13 +83,25 @@ public sealed class Archetype(int capacity = 16)
         SortTypesById(_componentTypes, _componentCount);
     }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void SortTypesById(Type[] types, int length = -1)
     {
         if (length < 0) length = types.Length;
         
-        Array.Sort(types, 0, length,
-            Comparer<Type>.Create((a, b) => ComponentTypeId.GetId(a) - ComponentTypeId.GetId(b)));
+        // Insertion sort to avoid allocations and overhead of Array.Sort with delegate
+        for (int i = 1; i < length; i++)
+        {
+            var key = types[i];
+            var keyId = ComponentTypeId.GetId(key);
+            int j = i - 1;
+
+            while (j >= 0 && ComponentTypeId.GetId(types[j]) > keyId)
+            {
+                types[j + 1] = types[j];
+                j--;
+            }
+            types[j + 1] = key;
+        }
     }
 
     public ref Entity this[int index] => ref _entities[index];
