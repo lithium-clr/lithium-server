@@ -25,7 +25,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Lithium.Core\Lithium.Core.csproj"/>
         <ProjectReference Include="..\Lithium.Server.Core\Lithium.Server.Core.csproj"/>
-        <ProjectReference Include="..\Lithium.Server.Dashboard\Lithium.Server.Dashboard.csproj" />
     </ItemGroup>
 
     <ItemGroup>
