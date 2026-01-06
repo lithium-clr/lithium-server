@@ -8,9 +8,12 @@ using Lithium.Server.Core.Systems.Commands;
 using Lithium.Server.Dashboard;
 using Serilog;
 using Serilog.Events;
+using Spectre.Console;
 using Log = Serilog.Log;
 
 var builder = WebApplication.CreateBuilder(args);
+
+AnsiConsole.Write(new FigletText(FigletFont.Default, "LITHIUM").LeftJustified().Color(Color.White));
 
 // Add CORS services
 builder.Services.AddCors(options =>
