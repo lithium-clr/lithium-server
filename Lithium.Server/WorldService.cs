@@ -27,7 +27,7 @@ public sealed class WorldService(ILogger<WorldService> logger) : IHostedService
         cat.AddComponent(new Velocity(1, 1, 1));
 
         _world.AddSystem(new MovementSystem());
-        
+
         Task.Run(() =>
         {
             while (!cancellationToken.IsCancellationRequested)

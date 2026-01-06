@@ -14,6 +14,7 @@ namespace Lithium.Server.Core.Networking;
 public sealed class QuicServer(
     ILogger<QuicServer> logger,
     IHubContext<ServerHub, IServerHub> hub,
+    IHubContext<ServerConsoleHub, IServerConsoleHub> hubConsole,
     IPacketHandler packetHandler
 ) : IAsyncDisposable
 {
@@ -129,7 +130,7 @@ public sealed class QuicServer(
                         break;
                     }
                 }
-                
+
                 await hub.Clients.All.Heartbeat(ticks);
                 logger.LogInformation("Heartbeat sent to all clients");
             }

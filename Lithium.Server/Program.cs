@@ -12,6 +12,19 @@ using Log = Serilog.Log;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:7244") // Correct port for the web app
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
+
 builder.Logging.ClearProviders();
 
 SentrySdk.Init(options =>
@@ -35,6 +48,7 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .WriteTo.Console(
         outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.Sink(new SignalRSink())
     .WriteTo.Sentry(s =>
     {
         s.Dsn = builder.Configuration["Sentry:Dsn"];
@@ -84,12 +98,23 @@ builder.Services.AddSingleton<QuicServer>();
 // Lifetime
 builder.Services.AddHostedService<ServerLifetime>();
 builder.Services.AddHostedService<WorldService>();
+builder.Services.AddHostedService<SignalRLogForwarder>();
 
 // Console command service
 builder.Services.AddConsoleCommands();
 
 var app = builder.Build();
 
+// Use CORS
+app.UseCors();
+
 app.MapHub<ServerHub>("/hub/admin");
+app.MapHub<ServerConsoleHub>("/hub/console");
+
+// Add a log to test the system
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    Log.Information("Server has started. Logging to SignalR is active.");
+});
 
 await app.RunAsync();
