@@ -3,5 +3,4 @@
     image: lithium.server
     build:
       context: .
-      dockerfile: Lithium.Server/Dockerfile
-
+      dockerfile: src/Lithium.Server/Dockerfile
