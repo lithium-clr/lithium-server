@@ -18,10 +18,6 @@ The solution is organized into the following projects:
 | `Lithium.Core.ECS.Tests`            | Unit tests for the ECS framework.                                                                         |
 | `Lithium.Server`                    | The game server, built with ASP.NET Core. It manages game logic, networking, and plugins.                 |
 | `Lithium.Server.Core`               | Core functionalities for the server.                                                                      |
-| `Lithium.Server.Dashboard`          | Dashboard-related functionalities for the server.                                                         |
-| `Lithium.InventoryPlugin`           | An example of a plugin for managing inventory.                                                            |
-| `Lithium.TestPlugin`                | An example of a plugin for testing purposes.                                                              |
-| `Lithium.TestPlugin.Abstractions`   | Abstractions for the test plugin.                                                                         |
 
 ## Getting Started
 
