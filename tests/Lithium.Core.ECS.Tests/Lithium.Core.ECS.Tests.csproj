@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Lithium.Core.ECS\Lithium.Core.ECS.csproj" />
     <ProjectReference Include="..\Lithium.Core.ECS\Lithium.Core.ECS.csproj" />
   </ItemGroup>
 
