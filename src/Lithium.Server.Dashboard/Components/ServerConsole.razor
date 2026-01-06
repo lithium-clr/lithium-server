@@ -1,0 +1,140 @@
+@using Microsoft.AspNetCore.SignalR.Client
+
+<div class="flex flex-col gap-2 p-2 h-96 bg-lithium-50 border border-white/5 rounded-lg relative">
+    <div class="shrink-0 mb-2 flex justify-between items-center">
+        <div class="flex items-center gap-1.5">
+            @{
+                var status = _hubConnection?.State ?? HubConnectionState.Disconnected;
+                
+                var statusColor = status switch
+                {
+                    HubConnectionState.Disconnected => "bg-white/20",
+                    HubConnectionState.Connected => "bg-lime-500",
+                    HubConnectionState.Connecting => "bg-blue-400",
+                    HubConnectionState.Reconnecting => "bg-orange-500",
+                    _ => "bg-white/20"
+                };
+            }
+            <div class="w-2 h-2 @statusColor rounded-full"></div>
+            <p class="text-xs text-white/40">Status: @_connectionStatus</p>
+        </div>
+        <div class="flex items-center gap-1">
+            @foreach (LogLevel level in Enum.GetValues(typeof(LogLevel)))
+            {
+                if (level is LogLevel.None) continue;
+                
+                var bgColor = level switch
+                {
+                    LogLevel.Debug or LogLevel.Trace or LogLevel.Information => "bg-transparent hover:bg-white/5",
+                    LogLevel.Warning => "bg-yellow-500/10 hover:bg-yellow-500/20",
+                    LogLevel.Error or LogLevel.Critical => "bg-red-500/10 hover:bg-red-500/20",
+                    _ => ""
+                };
+                
+                var borderColor = level switch
+                {
+                    LogLevel.Debug or LogLevel.Trace => "border-white/10 hover:border-white/5",
+                    LogLevel.Information => "border-white/20 hover:border-white/40",
+                    LogLevel.Warning => "border-yellow-500/20 hover:border-yellow-500/40",
+                    LogLevel.Error or LogLevel.Critical => "border-red-500/20 hover:border-red-500/40",
+                    _ => ""
+                };
+                
+                var textColor = level switch
+                {
+                    LogLevel.Debug or LogLevel.Trace => "text-white/30 hover:text-white/40",
+                    LogLevel.Information => "text-white/60 hover:text-white/80",
+                    LogLevel.Warning => "text-yellow-500/60 hover:text-yellow-500/80",
+                    LogLevel.Error or LogLevel.Critical => "text-red-500/60 hover:text-red-500/80",
+                    _ => ""
+                };
+
+                <button @onclick="() => SetFilter(level)"
+                        class="px-2 py-1 text-xs font-bold rounded-md transition-all @bgColor border @borderColor @textColor @GetFilterButtonClass(level)">
+                    @level.ToShortName()
+                </button>
+            }
+            <button @onclick="() => SetFilter(null)"
+                    class="px-2 py-1 text-xs font-bold rounded-md transition-all @(_activeFilter is null ? "bg-white/20 text-white" : "bg-lithium-100 hover:bg-lithium-200 text-white/60")">
+                All
+            </button>
+        </div>
+    </div>
+    <ul class="w-full h-full overflow-y-auto flex flex-col-reverse">
+        @foreach (var (timestamp, level, message) in FilteredLogs.TakeLast(100).Reverse())
+        {
+            var logLevel = (LogLevel)level;
+            
+            var bgColor = logLevel switch
+            {
+                LogLevel.Debug or LogLevel.Trace or LogLevel.Information => "bg-transparent hover:bg-white/5",
+                LogLevel.Warning => "bg-yellow-500/5 hover:bg-yellow-500/10",
+                LogLevel.Error or LogLevel.Critical => "bg-red-500/5 hover:bg-red-500/10",
+                _ => ""
+            };
+            
+            var levelTextColor = logLevel switch
+            {
+                LogLevel.Debug or LogLevel.Trace => "text-white/30",
+                LogLevel.Information => "text-white/80",
+                LogLevel.Warning => "text-yellow-500/80",
+                LogLevel.Error or LogLevel.Critical => "text-red-500/80",
+                _ => ""
+            };
+            
+            var messageTextColor = logLevel switch
+            {
+                LogLevel.Debug or LogLevel.Trace => "text-white",
+                LogLevel.Information => "text-white",
+                LogLevel.Warning => "text-yellow-500",
+                LogLevel.Error or LogLevel.Critical => "text-red-500",
+                _ => ""
+            };
+            
+            <li class="group flex items-center w-full text-white cursor-pointer @(bgColor) rounded-md shrink-0">
+                <p class="flex justify-between items-center pl-2 w-full h-full py-1">
+                    <span>
+                        <span
+                            class="text-white/40 text-xs mr-2 tabular-nums slashed-zero">@timestamp.ToString("HH:mm:ss")</span>
+                        <span class="text-xs font-bold mr-2 @levelTextColor">@logLevel.ToShortName()</span>
+                        <span
+                            class="text-sm font-mono whitespace-pre-wrap break-all @messageTextColor">@message.ToFormattedMarkup()</span>
+                    </span>
+                </p>
+            </li>
+        }
+    </ul>
+
+    <div class="w-full relative shrink-0">
+        @if (_showSuggestions && _suggestions.Count > 0)
+        {
+            <div
+                class="absolute bottom-full left-0 w-full mb-2 bg-lithium-100/50 backdrop-blur-lg border border-white/5 rounded-md shadow-lg overflow-hidden z-10">
+                <ul class="py-1">
+                    @for (var i = 0; i < _suggestions.Count; i++)
+                    {
+                        var suggestion = _suggestions[i];
+                        var isSelected = i == _selectedSuggestionIndex;
+                        
+                        <li class="px-3 py-2 text-sm text-white cursor-pointer hover:bg-white/5 @(isSelected ? "bg-white/10" : "")"
+                            @onclick="() => SelectSuggestion(suggestion)">
+                            /@suggestion
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div
+            class="w-full h-8 flex items-center px-2 text-white text-sm bg-lithium-100 rounded-md border border-transparent focus-within:border-lithium-200 transition-colors">
+            <input class="w-full h-full bg-transparent outline-none placeholder:text-white/20"
+                   type="text"
+                   placeholder="Type command..."
+                   @bind="_commandInput"
+                   @oninput="HandleInput"
+                   @onkeydown="HandleKeyDown"
+                   @onkeydown:preventDefault="_preventKeyDefault"
+            >
+        </div>
+    </div>
+</div>

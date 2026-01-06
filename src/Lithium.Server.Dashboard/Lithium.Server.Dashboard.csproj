@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>aspnet-Lithium_Web-50478f15-0f12-4ede-aa07-71be1761ce16</UserSecretsId>
+        <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.11"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.11"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.11"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.11"/>
+        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="9.0.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Lithium.Snowflake\Lithium.Snowflake.csproj" />
+        <ProjectReference Include="..\Lithium.Server\Lithium.Server.csproj" />
+        <ProjectReference Include="C:\Users\bubbl\Documents\GitHub\LucideBlazor\LucideBlazor\LucideBlazor.csproj"/>
+        <ProjectReference Include="..\..\Game\src\Lithium.Server\Lithium.Server.csproj" />
+        <ProjectReference Include="..\..\Lithium.Snowflake\Lithium.Snowflake.csproj" />
+    </ItemGroup>
+
+</Project>

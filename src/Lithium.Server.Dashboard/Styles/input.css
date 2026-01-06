@@ -1,0 +1,32 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap");
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('fonts/Satoshi-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@theme {
+    --color-lithium-0: #0a0a0e;
+    --color-lithium-50: #121218;
+    --color-lithium-100: #222229;
+    --color-lithium-200: #33333b;
+    --color-lithium-300: #43434c;
+    --color-lithium-400: #54545d;
+    --color-lithium-500: #64646f;
+    --color-lithium-600: #747480;
+    --color-lithium-700: #858591;
+    --color-lithium-800: #9595a2;
+    --color-lithium-900: #b6b6c5;
+
+    --font-satoshi: 'Satoshi', sans-serif;
+    --font-googlesans: 'Google Sans', sans-serif;
+}
+
+@layer base {
+    * {
+        @apply font-googlesans select-none;
+    }
+}

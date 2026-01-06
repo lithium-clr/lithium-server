@@ -1,0 +1,14 @@
+@using LucideBlazor
+
+<NavLink @attributes="AdditionalAttributes" 
+         href="@Href" 
+         class="group w-full px-2 py-1.5 rounded-md bg-transparent hover:bg-lithium-100 border border-transparent hover:border-lithium-200 aria-[current=page]:bg-lithium-100 aria-[current=page]:border-lithium-200"
+         Match="@Match">
+    <div class="flex gap-3 items-center">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <LucideIcon ClassName="stroke-lithium-900 group-hover:stroke-white group-aria-[current=page]:stroke-white" Name="@Icon" Size="18"/>
+        }
+        <span class="text-sm text-lithium-900 group-hover:text-white group-aria-[current=page]:text-white">@Text</span>
+    </div>
+</NavLink>

@@ -1,0 +1,64 @@
+﻿@page "/"
+@layout EmptyLayout
+@implements IAsyncDisposable
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<div class="p-4">
+    <span class="text-white">Heartbeat: @_heartbeatCount</span>
+</div>
+
+<ServerConsole Client="_client"/>
+
+@code {
+
+    private DashboardClient _client = null!;
+    private int _heartbeatCount;
+
+    [Inject] private ILogger<Home> Logger { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Initializing dashboard..");
+
+        _client = new DashboardClient("http://localhost:7144/hub/admin");
+        _client.Heartbeat += OnHeartbeat;
+
+        try
+        {
+            await _client.ConnectAsync();
+        }
+        catch (Exception exception)
+        {
+            Logger.LogInformation("Ex: " + exception.Message);
+        }
+
+        Logger.LogInformation("Dashboard initialized");
+    }
+
+    private void OnHeartbeat(object? sender, HeartbeatEventArgs args)
+    {
+        _ = InvokeAsync(() =>
+        {
+            _heartbeatCount++;
+            Logger.LogInformation("Heartbeat received: {Count} with ticks {Ticks}", _heartbeatCount, args.Ticks);
+            StateHasChanged();
+        });
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _client.Heartbeat -= OnHeartbeat;
+
+        try
+        {
+            await _client.DisconnectAsync();
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+}

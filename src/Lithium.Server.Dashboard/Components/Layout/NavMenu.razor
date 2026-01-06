@@ -1,0 +1,95 @@
+﻿@using LucideBlazor
+
+<nav class="relative z-10 flex h-full bg-lithium-50 border-r border-white/5">
+    <div class="w-16 h-full py-6 flex flex-col gap-4 items-center border-r border-white/5 bg-lithium-50">
+        <div class="flex-1 flex flex-col gap-2 w-full items-center">
+            <a href=""
+               class="group relative w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/0 hover:shadow-indigo-500/40 transition-all">
+                <LucideIcon ClassName="stroke-lithium-400 group-hover:stroke-white transition-colors" Name="store"
+                            Size="24"/>
+            </a>
+            <a href=""
+               class="group relative w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/0 hover:shadow-indigo-500/40 transition-all">
+                <LucideIcon ClassName="stroke-lithium-400 group-hover:stroke-white transition-colors"
+                            Name="arrow-left-to-line" Size="24"/>
+            </a>
+
+            @foreach (var server in _servers)
+            {
+                var isActive = _activeServerId == server.Id;
+
+                <a href="@($"/servers/{server.Id}/overview")"
+                   class="relative w-10 h-10 rounded-xl bg-linear-to-br from-lithium-100 to-lithium-400 flex items-center justify-center
+after:w-2 after:h-3/4 after:bg-white after:rounded-md after:drop-shadow-[0_30px_30px_rgba(255,255,255,1)]/80 hover:after:opacity-100 after:transition-all after:absolute hover:after:-left-1/3 after:top-[50%] after:-translate-y-[50%] @(isActive ? "after:opacity-100 after:-left-1/3" : "after:opacity-0 after:-left-full")">
+                    <span class="text-white font-bold text-xl">@server.Name.FirstOrDefault()</span>
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="w-64 h-full flex flex-col bg-lithium-50">
+        <div class="p-6">
+            <h2 class="text-white font-bold text-lg tracking-tight">@(ActiveServer?.Name ?? "Dashboard")</h2>
+            <p class="text-white/40 text-xs">Manage your server</p>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-4 pb-6 flex flex-col gap-4">
+            <Category Text="General">
+                <ChildContent>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/overview")" Icon="gauge" Text="Overview"
+                                      @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/console")" Icon="terminal" Text="Console"
+                                      @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/statistics")" Icon="chart-line"
+                                      Text="Statistics" @onclick="OnNavigationChanged"/>
+                </ChildContent>
+            </Category>
+
+            <Category Text="Server Management">
+                <ChildContent>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/players")" Icon="users"
+                                      Text="Players" @onclick="OnNavigationChanged"/>
+                    @* <DashboardNavLink href="@($"/servers/{_activeServerId}/permissions")" Icon="key-round" *@
+                    @*                   Text="Permissions" @onclick="OnNavigationChanged"/> *@
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/commands")" Icon="code" Text="Commands"
+                                      @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/backups")" Icon="database-backup"
+                                      Text="Backups" @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/database")" Icon="database"
+                                      Text="Database" @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/worlds")" Icon="blocks"
+                                      Text="Worlds" @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/files")" Icon="files"
+                                      Text="Files" @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/plugins")" Icon="toy-brick"
+                                      Text="Plugins" @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/crons")" Icon="calendar-check"
+                                      Text="Automation" @onclick="OnNavigationChanged"/>
+                </ChildContent>
+            </Category>
+
+            <Category Text="Resources">
+                <ChildContent>
+                    <DashboardNavLink href="docs" Icon="book" Text="Documentation"/>
+                    <DashboardNavLink href="support" Icon="toolbox" Text="Support"/>
+                </ChildContent>
+            </Category>
+        </div>
+
+        <div class="p-4 px-4 flex flex-col gap-4 border-t border-white/5">
+            <DashboardNavLink href="settings" Icon="settings" Text="Settings"/>
+        </div>
+
+        @* <div class="p-4 border-t border-white/5"> *@
+        @*     <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-colors"> *@
+        @*         <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center"> *@
+        @*             <span class="text-xs text-white">U</span> *@
+        @*         </div> *@
+        @*         <div class="flex flex-col"> *@
+        @*             <span class="text-sm text-white font-medium">User</span> *@
+        @*             <span class="text-xs text-white/40">Admin</span> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
+    </div>
+</nav>
