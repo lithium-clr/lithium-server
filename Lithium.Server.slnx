@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Server/">
+    <Project Path="Server/src/Lithium.Client/Lithium.Client.csproj" />
+    <Project Path="Server/tests/Lithium.Core.ECS.Tests/Lithium.Core.ECS.Tests.csproj" />
+    <Project Path="Server/src/Lithium.Core.ECS/Lithium.Core.ECS.csproj" />
+    <Project Path="Server/src/Lithium.Core/Lithium.Core.csproj" />
+    <Project Path="Server/src/Lithium.Server.Core/Lithium.Server.Core.csproj" />
+    <Project Path="Server/src/Lithium.Server.Dashboard/Lithium.Server.Dashboard.csproj" />
+    <Project Path="Server/src/Lithium.Server/Lithium.Server.csproj" />
+  </Folder>
+</Solution>
