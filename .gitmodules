@@ -1,0 +1,3 @@
+[submodule "src/Lucide"]
+	path = src/Lucide
+	url = https://github.com/bub-bl/LucideBlazor.git
