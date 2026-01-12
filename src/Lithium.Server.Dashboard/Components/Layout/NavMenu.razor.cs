@@ -1,7 +1,7 @@
 using Lithium.Snowflake;
-using Lithium.Snowflake.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using IIdGenerator = Lithium.Snowflake.Services.IIdGenerator;
 
 namespace Lithium.Server.Dashboard.Components.Layout;
 

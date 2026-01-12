@@ -24,11 +24,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Lithium.Snowflake\Lithium.Snowflake.csproj" />
         <ProjectReference Include="..\Lithium.Server\Lithium.Server.csproj" />
-        <ProjectReference Include="C:\Users\bubbl\Documents\GitHub\LucideBlazor\LucideBlazor\LucideBlazor.csproj"/>
-        <ProjectReference Include="..\..\Game\src\Lithium.Server\Lithium.Server.csproj" />
-        <ProjectReference Include="..\..\Lithium.Snowflake\Lithium.Snowflake.csproj" />
+        <ProjectReference Include="..\Lithium.Snowflake\Lithium.Snowflake.csproj" />
+        <ProjectReference Include="..\Lucide\LucideBlazor\LucideBlazor.csproj" />
     </ItemGroup>
 
 </Project>
