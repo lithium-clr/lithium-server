@@ -1,11 +1,22 @@
 <Solution>
-  <Folder Name="/Server/">
-    <Project Path="Server/src/Lithium.Client/Lithium.Client.csproj" />
-    <Project Path="Server/tests/Lithium.Core.ECS.Tests/Lithium.Core.ECS.Tests.csproj" />
-    <Project Path="Server/src/Lithium.Core.ECS/Lithium.Core.ECS.csproj" />
-    <Project Path="Server/src/Lithium.Core/Lithium.Core.csproj" />
-    <Project Path="Server/src/Lithium.Server.Core/Lithium.Server.Core.csproj" />
-    <Project Path="Server/src/Lithium.Server.Dashboard/Lithium.Server.Dashboard.csproj" />
-    <Project Path="Server/src/Lithium.Server/Lithium.Server.csproj" />
+  <Folder Name="/Src/">
+    <Project Path="src/Lithium.Client/Lithium.Client.csproj" />
+    <Project Path="src/Lithium.Core.ECS/Lithium.Core.ECS.csproj" />
+    <Project Path="src/Lithium.Core/Lithium.Core.csproj" />
+    <Project Path="src/Lithium.Server.Core/Lithium.Server.Core.csproj" />
+    <Project Path="src/Lithium.Server/Lithium.Server.csproj" />
+    <Project Path="src/Lithium.Snowflake/Lithium.Snowflake.csproj" />
+    <Folder Name="/Dashboard/">
+      <Project Path="src/Lucide/LucideBlazor/LucideBlazor.Generator/LucideBlazor.Generator.csproj" />
+      <Project Path="src/Lucide/LucideBlazor/LucideBlazor/LucideBlazor.csproj" />
+    </Folder>
+  </Folder>
+  <Folder Name="/Src/Dashboard/">
+    <Project Path="src/Lithium.Server.Dashboard/Lithium.Server.Dashboard.csproj" />
+    <Project Path="src/Lucide/LucideBlazor.Generator/LucideBlazor.Generator.csproj" />
+    <Project Path="src/Lucide/LucideBlazor/LucideBlazor.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/Lithium.Core.ECS.Tests/Lithium.Core.ECS.Tests.csproj" />
   </Folder>
 </Solution>
