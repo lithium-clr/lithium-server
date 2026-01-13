@@ -10,6 +10,8 @@ Build/*
 # dotenv files
 .env
 
+*GEMINI.md
+
 # User-specific files
 *.rsuser
 *.suo
