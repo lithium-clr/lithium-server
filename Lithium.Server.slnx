@@ -7,10 +7,6 @@
     <Project Path="src/Lithium.Server.Core/Lithium.Server.Core.csproj" />
     <Project Path="src/Lithium.Server/Lithium.Server.csproj" />
     <Project Path="src/Lithium.Snowflake/Lithium.Snowflake.csproj" />
-    <Folder Name="/Dashboard/">
-      <Project Path="src/Lucide/LucideBlazor/LucideBlazor.Generator/LucideBlazor.Generator.csproj" />
-      <Project Path="src/Lucide/LucideBlazor/LucideBlazor/LucideBlazor.csproj" />
-    </Folder>
   </Folder>
   <Folder Name="/Src/Dashboard/">
     <Project Path="src/Lithium.Server.Dashboard/Lithium.Server.Dashboard.csproj" />
