@@ -15,7 +15,7 @@ public static class ManifestConstants
     public const string PatchLine = "release";
 
     // Implementation-Revision-Id
-    public const string RevisionId = "dcad8778f19e4e56af55d74b58575c91c50a018d";
+    public const string RevisionId = "c04fdfe1050a70829ff6aaf01da2d7d679220f86";
 
     // Implementation-Title
     public const string Title = "Server";
@@ -24,5 +24,5 @@ public static class ManifestConstants
     public const string VendorId = "com.hypixel.hytale";
 
     // Implementation-Version
-    public const string Version = "2026.01.13-dcad8778f";
+    public const string Version = "2026.01.15-c04fdfe10";
 }
