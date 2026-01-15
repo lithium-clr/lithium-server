@@ -4,7 +4,7 @@ using Lithium.Codecs;
 namespace Lithium.Server.Core.Auth;
 
 [Codec]
-public sealed record AccessTokenResponse
+public sealed class AccessTokenResponse
 {
     [JsonPropertyName("accessToken")] public string AccessToken { get; init; } = null!;
 }
