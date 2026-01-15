@@ -8,7 +8,13 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddLithiumCodecs(this IServiceCollection services)
     {
         services.AddSingleton<ICodecRegistry, CodecRegistry>();
+        services.AddSingleton<ICodec<byte>, ByteCodec>();
         services.AddSingleton<ICodec<int>, IntegerCodec>();
+        services.AddSingleton<ICodec<short>, ShortCodec>();
+        services.AddSingleton<ICodec<long>, LongCodec>();
+        services.AddSingleton<ICodec<float>, FloatCodec>();
+        services.AddSingleton<ICodec<double>, DoubleCodec>();
+        services.AddSingleton<ICodec<bool>, BoolCodec>();
 
         return services;
     }
