@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Lithium.Codecs\Lithium.Codecs.csproj" />
+    </ItemGroup>
+
 </Project>
