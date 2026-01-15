@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Lithium.Server;
 using Lithium.Server.Core;
+using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Extensions;
@@ -82,6 +83,14 @@ builder.Logging.AddFilter("System", LogLevel.Warning);
 
 // SignalR
 builder.Services.AddSignalR();
+
+// Hytale authentication services
+builder.Services.Configure<SessionServiceConfig>(options =>
+{
+    options.Url = AuthConstants.SessionServiceUrl;
+});
+builder.Services.AddSingleton<ISessionServiceProvider, SessionServiceProvider>();
+builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
 
 // Core services
 builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
