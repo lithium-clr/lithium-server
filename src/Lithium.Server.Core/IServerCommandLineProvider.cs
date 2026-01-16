@@ -5,5 +5,5 @@ namespace Lithium.Server.Core;
 public interface IServerCommandLineProvider
 {
     Option<bool> IsSinglePlayerOption { get; }
-    Option<Guid> OwnerUuidOption { get; }
+    Option<string> OwnerUuidOption { get; }
 }

@@ -31,13 +31,36 @@ public sealed partial class ServerLifetime(
 
         // _pluginManager.LoadPlugins();
 
+        // logger.LogInformation("Option: " + _commands.GetValue(OwnerUuidOption));
+        
+        bool isSinglePlayer;
+        Guid? ownerUuid = null;
+        string? ownerName;
+        string? sessionToken;
+        string? identityToken;
+        
+        if (_commands.GetValue(IsSinglePlayerOption) is var singlePlayer)
+            isSinglePlayer = singlePlayer;
+        
+        if (_commands.GetValue(OwnerUuidOption) is var ownerUuidString && Guid.TryParse(ownerUuidString, out var parsedUuid))
+            ownerUuid = parsedUuid;
+        
+        if (_commands.GetValue(OwnerNameOption) is var ownerNameString)
+            ownerName = ownerNameString;
+        
+        if (_commands.GetValue(SessionTokenOption) is var sessionTokenString)
+            sessionToken = sessionTokenString;
+
+        if (_commands.GetValue(IdentityTokenOption) is var identityTokenString)
+            identityToken = identityTokenString;
+        
         var context = new ServerAuthManager.ServerAuthContext
         {
-            IsSinglePlayer = _commands.GetValue(IsSinglePlayerOption),
-            OwnerUuid = _commands.GetValue(OwnerUuidOption),
-            OwnerName = _commands.GetValue(OwnerNameOption),
-            SessionToken = _commands.GetValue(SessionTokenOption),
-            IdentityToken = _commands.GetValue(IdentityTokenOption)
+            IsSinglePlayer = isSinglePlayer,
+            OwnerUuid = ownerUuid,
+            OwnerName = ownerName,
+            SessionToken = sessionToken,
+            IdentityToken = identityToken
         };
 
         logger.LogInformation("Initializing hytale server...");
