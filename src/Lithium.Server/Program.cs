@@ -91,6 +91,7 @@ builder.Services.Configure<SessionServiceConfig>(options =>
 });
 builder.Services.AddSingleton<ISessionServiceProvider, SessionServiceProvider>();
 builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
+builder.Services.AddSingleton<IAuthCredentialStore, DefaultAuthCredentialStore>();
 
 // Core services
 builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
