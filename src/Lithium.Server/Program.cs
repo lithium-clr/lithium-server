@@ -2,6 +2,7 @@
 using Lithium.Server;
 using Lithium.Server.Core;
 using Lithium.Server.Core.Auth;
+using Lithium.Server.Core.Auth.OAuth;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Extensions;

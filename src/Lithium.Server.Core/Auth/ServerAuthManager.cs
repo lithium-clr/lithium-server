@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Security.Cryptography.X509Certificates;
+using Lithium.Server.Core.Auth.OAuth;
 using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Auth;

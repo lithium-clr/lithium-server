@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Auth;
+namespace Lithium.Server.Core.Auth.OAuth;
 
 public abstract class OAuthDeviceFlow : OAuthFlow
 {

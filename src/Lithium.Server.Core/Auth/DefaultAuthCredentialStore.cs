@@ -1,3 +1,5 @@
+using Lithium.Server.Core.Auth.OAuth;
+
 namespace Lithium.Server.Core.Auth;
 
 public sealed class DefaultAuthCredentialStore : IAuthCredentialStore

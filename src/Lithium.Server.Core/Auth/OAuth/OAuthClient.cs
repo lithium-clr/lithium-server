@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 
-namespace Lithium.Server.Core.Auth;
+namespace Lithium.Server.Core.Auth.OAuth;
 
 public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logger)
 {

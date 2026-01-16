@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Auth;
+namespace Lithium.Server.Core.Auth.OAuth;
 
 public sealed record OAuthTokens(string? AccessToken, string? RefreshToken, DateTimeOffset? AccessTokenExpiresAt)
 {
