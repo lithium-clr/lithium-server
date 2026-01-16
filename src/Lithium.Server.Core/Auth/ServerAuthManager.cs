@@ -8,6 +8,19 @@ namespace Lithium.Server.Core.Auth;
 public interface IServerAuthManager
 {
     Guid ServerSessionId { get; }
+    bool IsSinglePlayer { get; }
+    string? SessionToken { get; }
+    string? IdentityToken { get; }
+    AuthMode AuthMode { get; }
+    GameProfile[] PendingProfiles { get; }
+
+    Task InitializeAsync(ServerAuthManager.ServerAuthContext context);
+    Task InitializeCredentialStore();
+    // ValueTask<AuthResult> StartFlowAsync(OAuthBrowserFlow flow);
+    ValueTask<AuthResult> StartFlowAsync(OAuthBrowserFlow flow, CancellationTokenSource cts);
+    // ValueTask<AuthResult> StartFlowAsync(OAuthDeviceFlow flow);
+    bool CancelActiveFlow();
+    Task Shutdown();
 }
 
 public sealed class ServerAuthManager(
@@ -21,7 +34,6 @@ public sealed class ServerAuthManager(
     private const int RefreshBufferSeconds = 300;
 
     private CancellationTokenSource? _refreshCts;
-    private AuthMode _authMode = AuthMode.None;
     private DateTimeOffset? _tokenExpiry = DateTimeOffset.MinValue;
 
     public GameSessionResponse? GameSession { get; private set; }
@@ -29,15 +41,17 @@ public sealed class ServerAuthManager(
     private readonly ConcurrentDictionary<Guid, GameProfile> _availableProfiles = new();
     private X509Certificate _serverCertificate;
 
-    private GameProfile[] _pendingProfiles = [];
     private AuthMode _pendingAuthMode;
     private Action? _cancelActiveFlow;
     private Timer? _refreshScheduler;
     private ServerAuthContext _context = null!;
 
+    public GameProfile[] PendingProfiles { get; private set; } = [];
+    public AuthMode AuthMode { get; private set; } = AuthMode.None;
     public Guid ServerSessionId { get; private set; } = Guid.NewGuid();
     public string? SessionToken => _context.SessionToken;
     public string? IdentityToken => _context.IdentityToken;
+    public bool IsSinglePlayer => _context.IsSinglePlayer;
 
     public sealed class ServerAuthContext
     {
@@ -48,11 +62,19 @@ public sealed class ServerAuthManager(
         public string? IdentityToken { get; init; }
     }
 
-    internal async Task Initialize(ServerAuthContext context)
+    public async Task InitializeAsync(ServerAuthContext context)
     {
         _context = context;
 
         InitializeRefreshScheduler();
+
+        logger.LogInformation("Initializing ServerAuthManager...");
+        logger.LogInformation("Context:");
+        logger.LogInformation("- IsSinglePlayer: " + context.IsSinglePlayer);
+        logger.LogInformation("- OwnerUuid: " + context.OwnerUuid);
+        logger.LogInformation("- OwnerName: " + context.OwnerName);
+        logger.LogInformation("- SessionToken: " + context.SessionToken);
+        logger.LogInformation("- IdentityToken: " + context.IdentityToken);
 
         if (context is { IsSinglePlayer: true, OwnerUuid: not null })
         {
@@ -109,10 +131,15 @@ public sealed class ServerAuthManager(
 
                 GameSession = session;
                 hasCliTokens = true;
+
+                logger.LogInformation("Tokens validation success");
             }
             else
             {
-                logger.LogWarning(
+                // logger.LogWarning(
+                //     "Token validation failed. Server starting unauthenticated. Use /auth login to authenticate.");
+
+                throw new ArgumentNullException(
                     "Token validation failed. Server starting unauthenticated. Use /auth login to authenticate.");
             }
         }
@@ -121,12 +148,12 @@ public sealed class ServerAuthManager(
         {
             if (context.IsSinglePlayer)
             {
-                _authMode = AuthMode.Singleplayer;
+                AuthMode = AuthMode.Singleplayer;
                 logger.LogInformation("Auth mode: SinglePlayer");
             }
             else
             {
-                _authMode = AuthMode.ExternalSession;
+                AuthMode = AuthMode.ExternalSession;
                 logger.LogInformation("Auth mode: ExternalSession");
             }
 
@@ -140,7 +167,7 @@ public sealed class ServerAuthManager(
 
         logger.LogInformation("Server session ID: " + ServerSessionId);
         logger.LogDebug(
-            $"ServerAuthManager initialized - session token: {(sessionTokenValue is not null ? "present" : "missing")}, identity token: {(identityTokenValue is not null ? "present" : "missing")}, auth mode: {_authMode}");
+            $"ServerAuthManager initialized - session token: {(sessionTokenValue is not null ? "present" : "missing")}, identity token: {(identityTokenValue is not null ? "present" : "missing")}, auth mode: {AuthMode}");
     }
 
     public async Task InitializeCredentialStore()
@@ -175,6 +202,112 @@ public sealed class ServerAuthManager(
             }
         }
     }
+
+    public async ValueTask<AuthResult> StartFlowAsync(OAuthBrowserFlow flow, CancellationTokenSource cts)
+    {
+        if (IsSinglePlayer)
+            return AuthResult.Failed;
+
+        CancelActiveFlow();
+
+        // _cancelActiveFlow = oAuthClient.StartFlow(flow, cts);
+        await oAuthClient.StartFlow(flow, cts);
+
+        var authResult = await flow.Completion;
+
+        switch (authResult)
+        {
+            case OAuthResult.Success:
+            {
+                var tokens = flow.TokenResponse;
+
+                credentialStore.Tokens = new OAuthTokens(
+                    tokens.AccessToken,
+                    tokens.RefreshToken,
+                    DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn)
+                );
+
+                return await CreateGameSessionFromOAuthAsync(AuthMode.OauthBrowser);
+            }
+
+            case OAuthResult.Failed:
+                logger.LogWarning("OAuth browser flow failed: {Error}", flow.ErrorMessage);
+                return AuthResult.Failed;
+
+            default:
+                logger.LogWarning("OAuth browser flow completed with unexpected result: {Result}", authResult);
+                return AuthResult.Failed;
+        }
+
+        // var task = await flow.Completion.ContinueWith(async task =>
+        // {
+        //     var result = task.Result;
+        //
+        //     switch (result)
+        //     {
+        //         case OAuthResult.Success:
+        //         {
+        //             var tokens = flow.TokenResponse;
+        //
+        //             credentialStore.Tokens = new OAuthTokens(
+        //                 tokens.AccessToken,
+        //                 tokens.RefreshToken,
+        //                 DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn)
+        //             );
+        //             
+        //             return await CreateGameSessionFromOAuthAsync(AuthMode.OauthBrowser);
+        //         }
+        //
+        //         case OAuthResult.Failed:
+        //             logger.LogWarning("OAuth browser flow failed: {Error}", flow.ErrorMessage);
+        //             return AuthResult.Failed;
+        //
+        //         default:
+        //             logger.LogWarning("OAuth browser flow completed with unexpected result: {Result}", result);
+        //             return AuthResult.Failed;
+        //     }
+        // }, TaskScheduler.Default);
+        //
+        // return await task; 
+    }
+
+    // public async ValueTask<AuthResult> StartFlowAsync(OAuthDeviceFlow flow)
+    // {
+    //     if (IsSinglePlayer)
+    //         return AuthResult.Failed;
+    //
+    //     CancelActiveFlow();
+    //     _cancelActiveFlow = oAuthClient.StartFlow(flow);
+    //
+    //     return flow.Completion.ContinueWith(task =>
+    //     {
+    //         var result = task.Result;
+    //
+    //         switch (result)
+    //         {
+    //             case OAuthResult.Success:
+    //             {
+    //                 var tokens = flow.TokenResponse;
+    //
+    //                 credentialStore.Tokens = new OAuthTokens(
+    //                     tokens.AccessToken,
+    //                     tokens.RefreshToken,
+    //                     DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn)
+    //                 );
+    //
+    //                 return await CreateGameSessionFromOAuthAsync(AuthMode.OauthDevice);
+    //             }
+    //
+    //             case OAuthResult.Failed:
+    //                 logger.LogWarning("OAuth device flow failed: {Error}", flow.ErrorMessage);
+    //                 return AuthResult.Failed;
+    //
+    //             default:
+    //                 logger.LogWarning("OAuth device flow completed with unexpected result: {Result}", result);
+    //                 return AuthResult.Failed;
+    //         }
+    //     }, TaskScheduler.Default);
+    // }
 
     private async ValueTask<AuthResult> CreateGameSessionFromOAuthAsync(AuthMode mode)
     {
@@ -214,7 +347,7 @@ public sealed class ServerAuthManager(
                 : AuthResult.Failed;
         }
 
-        _pendingProfiles = profiles;
+        PendingProfiles = profiles;
         _pendingAuthMode = mode;
         _cancelActiveFlow = null;
 
@@ -289,9 +422,9 @@ public sealed class ServerAuthManager(
         }
 
         GameSession = newSession;
-        _authMode = mode;
+        AuthMode = mode;
         _cancelActiveFlow = null;
-        _pendingProfiles = [];
+        PendingProfiles = [];
         _pendingAuthMode = AuthMode.None;
 
         if (newSession.TryGetExpiresAtInstant(out var expiresAt))
@@ -451,7 +584,7 @@ public sealed class ServerAuthManager(
     private async Task<bool> RefreshGameSessionViaOAuthAsync(CancellationToken ct = default)
     {
         // Check if the authentication mode supports OAuth
-        var supported = _authMode is AuthMode.OauthBrowser or AuthMode.OauthDevice or AuthMode.OauthStore;
+        var supported = AuthMode is AuthMode.OauthBrowser or AuthMode.OauthDevice or AuthMode.OauthStore;
 
         if (!supported)
         {
@@ -615,11 +748,11 @@ public sealed class ServerAuthManager(
         credentialStore.Clear();
 
         _availableProfiles.Clear();
-        _pendingProfiles = [];
+        PendingProfiles = [];
         _pendingAuthMode = AuthMode.None;
 
         _tokenExpiry = null;
-        _authMode = AuthMode.None;
+        AuthMode = AuthMode.None;
 
         logger.LogInformation("Server logged out");
     }

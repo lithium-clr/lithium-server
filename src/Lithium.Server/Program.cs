@@ -85,7 +85,7 @@ builder.Logging.AddFilter("System", LogLevel.Warning);
 // SignalR
 builder.Services.AddSignalR();
 
-// builder.Services.AddHttpClient();
+builder.Services.AddHttpClient();
 
 // Hytale authentication services
 builder.Services.Configure<SessionServiceConfig>(options =>
@@ -95,6 +95,7 @@ builder.Services.Configure<SessionServiceConfig>(options =>
 builder.Services.AddSingleton<ISessionServiceProvider, SessionServiceProvider>();
 builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
 builder.Services.AddSingleton<IAuthCredentialStore, DefaultAuthCredentialStore>();
+builder.Services.AddSingleton<IServerAuthManager, ServerAuthManager>();
 builder.Services.AddSingleton<OAuthClient>();
 builder.Services.Configure<JwtOptions>(options =>
 {
@@ -105,6 +106,7 @@ builder.Services.Configure<JwtOptions>(options =>
 builder.Services.AddSingleton<JwtValidator>();
 
 // Core services
+builder.Services.AddSingleton<HytaleServer>();
 builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
@@ -117,7 +119,8 @@ builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<QuicServer>();
 
 // Lifetime
-builder.Services.AddHostedService<ServerLifetime>();
+builder.Services.AddSingleton<ServerLifetime>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<ServerLifetime>());
 builder.Services.AddHostedService<WorldService>();
 builder.Services.AddHostedService<SignalRLogForwarder>();
 
