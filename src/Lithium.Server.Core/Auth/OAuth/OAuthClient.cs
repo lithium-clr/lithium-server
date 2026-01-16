@@ -77,123 +77,120 @@ public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logg
     //         }
     //     }, cts.Token);
     // }
-    
+
     public async Task StartFlow(OAuthDeviceFlow flow, CancellationTokenSource cts)
     {
-        _ = Task.Run(async () =>
+        try
         {
-            try
+            var deviceAuth = await RequestDeviceAuthorizationAsync(cts.Token);
+
+            if (deviceAuth is null)
             {
-                var deviceAuth = await RequestDeviceAuthorizationAsync(cts.Token);
-    
-                if (deviceAuth is null)
+                flow.OnFailure("Failed to start device authorization");
+                return;
+            }
+
+            flow.OnFlowInfo(
+                deviceAuth.UserCode,
+                deviceAuth.VerificationUri,
+                deviceAuth.VerificationUriComplete,
+                deviceAuth.ExpiresIn);
+
+            var pollInterval = Math.Max(deviceAuth.Interval, 5);
+            var deadline = DateTimeOffset.UtcNow.AddSeconds(deviceAuth.ExpiresIn);
+
+            while (DateTimeOffset.UtcNow < deadline && !cts.IsCancellationRequested)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(pollInterval), cts.Token);
+
+                var token = await PollDeviceTokenAsync(deviceAuth.DeviceCode, cts.Token);
+                if (token is null) continue;
+
+                if (token.IsSuccess())
                 {
-                    flow.OnFailure("Failed to start device authorization");
+                    flow.OnSuccess(token);
                     return;
                 }
-    
-                flow.OnFlowInfo(
-                    deviceAuth.UserCode,
-                    deviceAuth.VerificationUri,
-                    deviceAuth.VerificationUriComplete,
-                    deviceAuth.ExpiresIn);
-    
-                var pollInterval = Math.Max(deviceAuth.Interval, 5);
-                var deadline = DateTimeOffset.UtcNow.AddSeconds(deviceAuth.ExpiresIn);
-    
-                while (DateTimeOffset.UtcNow < deadline && !cts.IsCancellationRequested)
+
+                if (token.Error is "slow_down")
+                    pollInterval += 5;
+
+                else if (token.Error is not "authorization_pending")
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(pollInterval), cts.Token);
-    
-                    var token = await PollDeviceTokenAsync(deviceAuth.DeviceCode, cts.Token);
-                    if (token is null) continue;
-    
-                    if (token.IsSuccess())
-                    {
-                        flow.OnSuccess(token);
-                        return;
-                    }
-    
-                    if (token.Error is "slow_down")
-                        pollInterval += 5;
-    
-                    else if (token.Error is not "authorization_pending")
-                    {
-                        flow.OnFailure($"Device auth failed: {token.Error}");
-                        return;
-                    }
+                    flow.OnFailure($"Device auth failed: {token.Error}");
+                    return;
                 }
-    
-                flow.OnFailure(cts.IsCancellationRequested
-                    ? "Authentication cancelled"
-                    : "Device authorization expired");
             }
-            catch (Exception ex)
-            {
-                logger.LogWarning(ex, "OAuth device flow failed");
-                flow.OnFailure(ex.Message);
-            }
-        }, cts.Token);
+
+            flow.OnFailure(cts.IsCancellationRequested
+                ? "Authentication cancelled"
+                : "Device authorization expired");
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "OAuth device flow failed");
+            flow.OnFailure(ex.Message);
+        }
     }
 
-    private static async Task HandleBrowserCallbackAsync(
-        HttpListener listener,
-        string expectedState,
-        TaskCompletionSource<string> tcs
-    )
-    {
-        var context = await listener.GetContextAsync();
-        var query = context.Request.Url!.Query;
-
-        var code = ExtractQueryParam(query, "code");
-        var state = ExtractQueryParam(query, "state");
-
-        string html;
-        int status;
-
-        if (state != expectedState)
-        {
-            html = BuildHtmlPage(
-                false,
-                "Authentication Failed",
-                "Authentication Failed",
-                "Something went wrong during authentication. Please close this window and try again.",
-                "Invalid state parameter"
-            );
-            status = 400;
-            tcs.TrySetException(new InvalidOperationException("Invalid state"));
-        }
-        else if (!string.IsNullOrEmpty(code))
-        {
-            html = BuildHtmlPage(
-                true,
-                "Authentication Successful",
-                "Authentication Successful",
-                "You have been logged in successfully. You can now close this window and return to the server.",
-                null
-            );
-            status = 200;
-            tcs.TrySetResult(code);
-        }
-        else
-        {
-            var errorMessage = ExtractQueryParam(query, "error") ?? "No code received";
-
-            html = BuildHtmlPage(
-                false,
-                "Authentication Failed",
-                "Authentication Failed",
-                "Something went wrong during authentication. Please close this window and try again.",
-                errorMessage
-            );
-            status = 400;
-            tcs.TrySetException(new InvalidOperationException(errorMessage));
-        }
-
-        context.Response.StatusCode = status;
-        await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes(html));
-        context.Response.Close();
-    }
+    // private static async Task HandleBrowserCallbackAsync(
+    //     HttpListener listener,
+    //     string expectedState,
+    //     TaskCompletionSource<string> tcs
+    // )
+    // {
+    //     var context = await listener.GetContextAsync();
+    //     var query = context.Request.Url!.Query;
+    //
+    //     var code = ExtractQueryParam(query, "code");
+    //     var state = ExtractQueryParam(query, "state");
+    //
+    //     string html;
+    //     int status;
+    //
+    //     if (state != expectedState)
+    //     {
+    //         html = BuildHtmlPage(
+    //             false,
+    //             "Authentication Failed",
+    //             "Authentication Failed",
+    //             "Something went wrong during authentication. Please close this window and try again.",
+    //             "Invalid state parameter"
+    //         );
+    //         status = 400;
+    //         tcs.TrySetException(new InvalidOperationException("Invalid state"));
+    //     }
+    //     else if (!string.IsNullOrEmpty(code))
+    //     {
+    //         html = BuildHtmlPage(
+    //             true,
+    //             "Authentication Successful",
+    //             "Authentication Successful",
+    //             "You have been logged in successfully. You can now close this window and return to the server.",
+    //             null
+    //         );
+    //         status = 200;
+    //         tcs.TrySetResult(code);
+    //     }
+    //     else
+    //     {
+    //         var errorMessage = ExtractQueryParam(query, "error") ?? "No code received";
+    //
+    //         html = BuildHtmlPage(
+    //             false,
+    //             "Authentication Failed",
+    //             "Authentication Failed",
+    //             "Something went wrong during authentication. Please close this window and try again.",
+    //             errorMessage
+    //         );
+    //         status = 400;
+    //         tcs.TrySetException(new InvalidOperationException(errorMessage));
+    //     }
+    //
+    //     context.Response.StatusCode = status;
+    //     await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes(html));
+    //     context.Response.Close();
+    // }
 
     public async ValueTask<TokenResponse?> RefreshTokensAsync(
         string refreshToken,
@@ -257,73 +254,73 @@ public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logg
         }
     }
 
-    private async ValueTask<TokenResponse?> ExchangeCodeForTokensAsync(
-        string code,
-        string codeVerifier,
-        string redirectUri,
-        CancellationToken cancellationToken = default
-    )
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(code);
-        ArgumentException.ThrowIfNullOrWhiteSpace(codeVerifier);
-        ArgumentException.ThrowIfNullOrWhiteSpace(redirectUri);
-
-        try
-        {
-            using var request = new HttpRequestMessage(
-                HttpMethod.Post,
-                AuthConstants.OauthTokenUrl
-            );
-
-            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                ["grant_type"] = "authorization_code",
-                ["client_id"] = AuthConstants.ClientId,
-                ["code"] = code,
-                ["redirect_uri"] = redirectUri,
-                ["code_verifier"] = codeVerifier
-            });
-
-            request.Headers.UserAgent.ParseAdd(AuthConstants.UserAgent);
-            request.Headers.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            using var response = await httpClient.SendAsync(
-                request,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync(cancellationToken);
-
-                logger.LogWarning(
-                    "Token exchange failed: HTTP {StatusCode} - {Body}",
-                    response.StatusCode,
-                    body);
-
-                return null;
-            }
-
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            return ParseTokenResponse(json);
-        }
-        catch (OperationCanceledException)
-        {
-            logger.LogWarning("Token exchange request was canceled");
-            throw;
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogWarning(ex, "HTTP error during token exchange");
-            return null;
-        }
-        catch (Exception ex)
-        {
-            logger.LogWarning(ex, "Token exchange failed");
-            return null;
-        }
-    }
+    // private async ValueTask<TokenResponse?> ExchangeCodeForTokensAsync(
+    //     string code,
+    //     string codeVerifier,
+    //     string redirectUri,
+    //     CancellationToken cancellationToken = default
+    // )
+    // {
+    //     ArgumentException.ThrowIfNullOrWhiteSpace(code);
+    //     ArgumentException.ThrowIfNullOrWhiteSpace(codeVerifier);
+    //     ArgumentException.ThrowIfNullOrWhiteSpace(redirectUri);
+    //
+    //     try
+    //     {
+    //         using var request = new HttpRequestMessage(
+    //             HttpMethod.Post,
+    //             AuthConstants.OauthTokenUrl
+    //         );
+    //
+    //         request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+    //         {
+    //             ["grant_type"] = "authorization_code",
+    //             ["client_id"] = AuthConstants.ClientId,
+    //             ["code"] = code,
+    //             ["redirect_uri"] = redirectUri,
+    //             ["code_verifier"] = codeVerifier
+    //         });
+    //
+    //         request.Headers.UserAgent.ParseAdd(AuthConstants.UserAgent);
+    //         request.Headers.Accept.Add(
+    //             new MediaTypeWithQualityHeaderValue("application/json"));
+    //
+    //         using var response = await httpClient.SendAsync(
+    //             request,
+    //             HttpCompletionOption.ResponseHeadersRead,
+    //             cancellationToken);
+    //
+    //         if (!response.IsSuccessStatusCode)
+    //         {
+    //             var body = await response.Content.ReadAsStringAsync(cancellationToken);
+    //
+    //             logger.LogWarning(
+    //                 "Token exchange failed: HTTP {StatusCode} - {Body}",
+    //                 response.StatusCode,
+    //                 body);
+    //
+    //             return null;
+    //         }
+    //
+    //         var json = await response.Content.ReadAsStringAsync(cancellationToken);
+    //         return ParseTokenResponse(json);
+    //     }
+    //     catch (OperationCanceledException)
+    //     {
+    //         logger.LogWarning("Token exchange request was canceled");
+    //         throw;
+    //     }
+    //     catch (HttpRequestException ex)
+    //     {
+    //         logger.LogWarning(ex, "HTTP error during token exchange");
+    //         return null;
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         logger.LogWarning(ex, "Token exchange failed");
+    //         return null;
+    //     }
+    // }
 
     private async ValueTask<DeviceAuthResponse?> RequestDeviceAuthorizationAsync(
         CancellationToken cancellationToken = default
@@ -335,33 +332,33 @@ public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logg
                 HttpMethod.Post,
                 AuthConstants.DeviceAuthUrl
             );
-    
+
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["client_id"] = AuthConstants.ClientId,
                 ["scope"] = string.Join(' ', AuthConstants.Scopes)
             });
-    
+
             request.Headers.UserAgent.ParseAdd(AuthConstants.UserAgent);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-    
+
             using var response = await httpClient.SendAsync(
                 request,
                 HttpCompletionOption.ResponseHeadersRead,
                 cancellationToken);
-    
+
             if (!response.IsSuccessStatusCode)
             {
                 var body = await response.Content.ReadAsStringAsync(cancellationToken);
-    
+
                 logger.LogWarning(
                     "Device authorization request failed: HTTP {StatusCode} - {Body}",
                     response.StatusCode,
                     body);
-    
+
                 return null;
             }
-    
+
             var json = await response.Content.ReadAsStringAsync(cancellationToken);
             return ParseDeviceAuthResponse(json);
         }
@@ -381,56 +378,56 @@ public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logg
             return null;
         }
     }
-    
+
     private async ValueTask<TokenResponse?> PollDeviceTokenAsync(
         string deviceCode,
         CancellationToken cancellationToken = default
     )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(deviceCode);
-    
+
         try
         {
             using var request = new HttpRequestMessage(
                 HttpMethod.Post,
                 AuthConstants.OauthTokenUrl
             );
-    
+
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["grant_type"] = "urn:ietf:params:oauth:grant-type:device_code",
                 ["client_id"] = AuthConstants.ClientId,
                 ["device_code"] = deviceCode
             });
-    
+
             request.Headers.UserAgent.ParseAdd(AuthConstants.UserAgent);
             request.Headers.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-    
+
             using var response = await httpClient.SendAsync(
                 request,
                 HttpCompletionOption.ResponseHeadersRead,
                 cancellationToken
             );
-    
+
             var body = await response.Content.ReadAsStringAsync(cancellationToken);
-    
+
             if (response.StatusCode is HttpStatusCode.BadRequest)
             {
                 // Comme le Java : code 400 → parse token response
                 return ParseTokenResponse(body);
             }
-    
+
             if (!response.IsSuccessStatusCode)
             {
                 logger.LogWarning(
                     "Device token poll failed: HTTP {StatusCode} - {Body}",
                     response.StatusCode,
                     body);
-    
+
                 return null;
             }
-    
+
             return ParseTokenResponse(body);
         }
         catch (OperationCanceledException)
@@ -511,7 +508,8 @@ public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logg
         string title,
         string heading,
         string message,
-        string? errorDetail)
+        string? errorDetail
+    )
     {
         var detail = !string.IsNullOrEmpty(errorDetail)
             ? $"<div class=\"error\">{WebUtility.HtmlEncode(errorDetail)}</div>"
