@@ -1,4 +1,5 @@
 using System.CommandLine;
+using Lithium.Server.Core;
 using Lithium.Server.Core.Auth;
 
 namespace Lithium.Server;

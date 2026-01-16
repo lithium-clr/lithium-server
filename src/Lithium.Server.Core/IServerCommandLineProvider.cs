@@ -1,6 +1,6 @@
 using System.CommandLine;
 
-namespace Lithium.Server.Core.Auth;
+namespace Lithium.Server.Core;
 
 public interface IServerCommandLineProvider
 {

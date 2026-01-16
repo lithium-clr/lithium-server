@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Auth;
+namespace Lithium.Server.Core;
 
 // The java version read the manifest file (META-INF/MANIFEST.MF) to get the following informations,
 // but in our cases, we dont have a manifest file, so we need to hardcode it for now.
