@@ -84,7 +84,7 @@ builder.Logging.AddFilter("System", LogLevel.Warning);
 // SignalR
 builder.Services.AddSignalR();
 
-builder.Services.AddHttpClient();
+// builder.Services.AddHttpClient();
 
 // Hytale authentication services
 builder.Services.Configure<SessionServiceConfig>(options =>
@@ -95,6 +95,13 @@ builder.Services.AddSingleton<ISessionServiceProvider, SessionServiceProvider>()
 builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
 builder.Services.AddSingleton<IAuthCredentialStore, DefaultAuthCredentialStore>();
 builder.Services.AddSingleton<OAuthClient>();
+builder.Services.Configure<JwtOptions>(options =>
+{
+    options.Audience = "";
+    options.Issuer = AuthConstants.SessionServiceUrl;
+    options.JwksUri = "https://sessions.hytale.com/.well-known/jwks.json";
+});
+builder.Services.AddSingleton<JwtValidator>();
 
 // Core services
 builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
