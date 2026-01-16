@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Lithium.Codecs.SourceGenerators\Lithium.Codecs.SourceGenerators.csproj" />
         <ProjectReference Include="..\Lithium.Core\Lithium.Core.csproj"/>
         <ProjectReference Include="..\Lithium.Server.Core\Lithium.Server.Core.csproj"/>
     </ItemGroup>
