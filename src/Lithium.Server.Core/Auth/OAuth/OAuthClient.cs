@@ -11,72 +11,72 @@ namespace Lithium.Server.Core.Auth.OAuth;
 
 public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logger)
 {
-    public async Task StartFlow(OAuthBrowserFlow flow, CancellationTokenSource cts)
-    {
-        _ = Task.Run(async () =>
-        {
-            HttpListener? listener = null;
-
-            try
-            {
-                var state = GenerateRandomString(32);
-                var verifier = GenerateRandomString(64);
-                var challenge = GenerateCodeChallenge(verifier);
-
-                var port = GetFreePort();
-                const string redirectUri = AuthConstants.ConsentRedirectUrl;
-
-                listener = new HttpListener();
-                listener.Prefixes.Add($"http://127.0.0.1:{port}/");
-                listener.Start();
-
-                var authCodeTcs = new TaskCompletionSource<string>(
-                    TaskCreationOptions.RunContinuationsAsynchronously);
-
-                _ = HandleBrowserCallbackAsync(listener, state, authCodeTcs);
-
-                var authUrl = BuildAuthUrl(state, challenge, redirectUri);
-                flow.OnFlowInfo(authUrl);
-
-                logger.LogInformation("Waiting for code...");
-                
-                var code = await authCodeTcs.Task
-                    .WaitAsync(TimeSpan.FromMinutes(5), cts.Token);
-                
-                logger.LogInformation("Authentication code received: " + code);
-
-                if (cts.IsCancellationRequested)
-                {
-                    flow.OnFailure("Authentication cancelled");
-                    return;
-                }
-
-                var tokens = await ExchangeCodeForTokensAsync(code, verifier, redirectUri, cts.Token);
-
-                if (tokens is null)
-                {
-                    flow.OnFailure("Token exchange failed");
-                    return;
-                }
-
-                logger.LogInformation("Token exchange successful: " + tokens.AccessToken);
-                flow.OnSuccess(tokens);
-            }
-            catch (OperationCanceledException)
-            {
-                flow.OnFailure("Authentication cancelled");
-            }
-            catch (Exception ex)
-            {
-                logger.LogWarning(ex, "OAuth browser flow failed");
-                flow.OnFailure(ex.Message);
-            }
-            finally
-            {
-                listener?.Close();
-            }
-        }, cts.Token);
-    }
+    // public async Task StartFlow(OAuthBrowserFlow flow, CancellationTokenSource cts)
+    // {
+    //     _ = Task.Run(async () =>
+    //     {
+    //         HttpListener? listener = null;
+    //
+    //         try
+    //         {
+    //             var state = GenerateRandomString(32);
+    //             var verifier = GenerateRandomString(64);
+    //             var challenge = GenerateCodeChallenge(verifier);
+    //
+    //             var port = GetFreePort();
+    //             const string redirectUri = AuthConstants.ConsentRedirectUrl;
+    //
+    //             listener = new HttpListener();
+    //             listener.Prefixes.Add($"http://127.0.0.1:{port}/");
+    //             listener.Start();
+    //
+    //             var authCodeTcs = new TaskCompletionSource<string>(
+    //                 TaskCreationOptions.RunContinuationsAsynchronously);
+    //
+    //             _ = HandleBrowserCallbackAsync(listener, state, authCodeTcs);
+    //
+    //             var authUrl = BuildAuthUrl(state, challenge, redirectUri);
+    //             flow.OnFlowInfo(authUrl);
+    //
+    //             logger.LogInformation("Waiting for code...");
+    //             
+    //             var code = await authCodeTcs.Task
+    //                 .WaitAsync(TimeSpan.FromMinutes(5), cts.Token);
+    //             
+    //             logger.LogInformation("Authentication code received: " + code);
+    //
+    //             if (cts.IsCancellationRequested)
+    //             {
+    //                 flow.OnFailure("Authentication cancelled");
+    //                 return;
+    //             }
+    //
+    //             var tokens = await ExchangeCodeForTokensAsync(code, verifier, redirectUri, cts.Token);
+    //
+    //             if (tokens is null)
+    //             {
+    //                 flow.OnFailure("Token exchange failed");
+    //                 return;
+    //             }
+    //
+    //             logger.LogInformation("Token exchange successful: " + tokens.AccessToken);
+    //             flow.OnSuccess(tokens);
+    //         }
+    //         catch (OperationCanceledException)
+    //         {
+    //             flow.OnFailure("Authentication cancelled");
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             logger.LogWarning(ex, "OAuth browser flow failed");
+    //             flow.OnFailure(ex.Message);
+    //         }
+    //         finally
+    //         {
+    //             listener?.Close();
+    //         }
+    //     }, cts.Token);
+    // }
     
     public async Task StartFlow(OAuthDeviceFlow flow, CancellationTokenSource cts)
     {

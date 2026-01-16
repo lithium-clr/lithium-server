@@ -16,9 +16,7 @@ public interface IServerAuthManager
 
     Task InitializeAsync(ServerAuthManager.ServerAuthContext context);
     Task InitializeCredentialStore();
-    // ValueTask<AuthResult> StartFlowAsync(OAuthBrowserFlow flow);
-    ValueTask<AuthResult> StartFlowAsync(OAuthBrowserFlow flow, CancellationTokenSource cts);
-    // ValueTask<AuthResult> StartFlowAsync(OAuthDeviceFlow flow);
+    // ValueTask<AuthResult> StartFlowAsync(OAuthBrowserFlow flow, CancellationTokenSource cts);
     ValueTask<AuthResult> StartFlowAsync(OAuthDeviceFlow flow, CancellationTokenSource cts);
     bool CancelActiveFlow();
     Task Shutdown();
@@ -204,73 +202,41 @@ public sealed class ServerAuthManager(
         }
     }
 
-    public async ValueTask<AuthResult> StartFlowAsync(OAuthBrowserFlow flow, CancellationTokenSource cts)
-    {
-        if (IsSinglePlayer)
-            return AuthResult.Failed;
-
-        CancelActiveFlow();
-
-        // _cancelActiveFlow = oAuthClient.StartFlow(flow, cts);
-        await oAuthClient.StartFlow(flow, cts);
-
-        var authResult = await flow.Completion;
-
-        switch (authResult)
-        {
-            case OAuthResult.Success:
-            {
-                var tokens = flow.TokenResponse;
-
-                credentialStore.Tokens = new OAuthTokens(
-                    tokens.AccessToken,
-                    tokens.RefreshToken,
-                    DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn)
-                );
-
-                return await CreateGameSessionFromOAuthAsync(AuthMode.OauthBrowser);
-            }
-
-            case OAuthResult.Failed:
-                logger.LogWarning("OAuth browser flow failed: {Error}", flow.ErrorMessage);
-                return AuthResult.Failed;
-
-            default:
-                logger.LogWarning("OAuth browser flow completed with unexpected result: {Result}", authResult);
-                return AuthResult.Failed;
-        }
-
-        // var task = await flow.Completion.ContinueWith(async task =>
-        // {
-        //     var result = task.Result;
-        //
-        //     switch (result)
-        //     {
-        //         case OAuthResult.Success:
-        //         {
-        //             var tokens = flow.TokenResponse;
-        //
-        //             credentialStore.Tokens = new OAuthTokens(
-        //                 tokens.AccessToken,
-        //                 tokens.RefreshToken,
-        //                 DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn)
-        //             );
-        //             
-        //             return await CreateGameSessionFromOAuthAsync(AuthMode.OauthBrowser);
-        //         }
-        //
-        //         case OAuthResult.Failed:
-        //             logger.LogWarning("OAuth browser flow failed: {Error}", flow.ErrorMessage);
-        //             return AuthResult.Failed;
-        //
-        //         default:
-        //             logger.LogWarning("OAuth browser flow completed with unexpected result: {Result}", result);
-        //             return AuthResult.Failed;
-        //     }
-        // }, TaskScheduler.Default);
-        //
-        // return await task; 
-    }
+    // public async ValueTask<AuthResult> StartFlowAsync(OAuthBrowserFlow flow, CancellationTokenSource cts)
+    // {
+    //     if (IsSinglePlayer)
+    //         return AuthResult.Failed;
+    //
+    //     CancelActiveFlow();
+    //
+    //     await oAuthClient.StartFlow(flow, cts);
+    //
+    //     var authResult = await flow.Completion;
+    //
+    //     switch (authResult)
+    //     {
+    //         case OAuthResult.Success:
+    //         {
+    //             var tokens = flow.TokenResponse;
+    //
+    //             credentialStore.Tokens = new OAuthTokens(
+    //                 tokens.AccessToken,
+    //                 tokens.RefreshToken,
+    //                 DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn)
+    //             );
+    //
+    //             return await CreateGameSessionFromOAuthAsync(AuthMode.OauthBrowser);
+    //         }
+    //
+    //         case OAuthResult.Failed:
+    //             logger.LogWarning("OAuth browser flow failed: {Error}", flow.ErrorMessage);
+    //             return AuthResult.Failed;
+    //
+    //         default:
+    //             logger.LogWarning("OAuth browser flow completed with unexpected result: {Result}", authResult);
+    //             return AuthResult.Failed;
+    //     }
+    // }
 
     public async ValueTask<AuthResult> StartFlowAsync(OAuthDeviceFlow flow, CancellationTokenSource cts)
     {
@@ -278,7 +244,7 @@ public sealed class ServerAuthManager(
             return AuthResult.Failed;
     
         CancelActiveFlow();
-        // _cancelActiveFlow = oAuthClient.StartFlow(flow);
+
         await oAuthClient.StartFlow(flow, cts);
     
         var task = await flow.Completion.ContinueWith(async task =>
