@@ -84,6 +84,8 @@ builder.Logging.AddFilter("System", LogLevel.Warning);
 // SignalR
 builder.Services.AddSignalR();
 
+builder.Services.AddHttpClient();
+
 // Hytale authentication services
 builder.Services.Configure<SessionServiceConfig>(options =>
 {
@@ -92,6 +94,7 @@ builder.Services.Configure<SessionServiceConfig>(options =>
 builder.Services.AddSingleton<ISessionServiceProvider, SessionServiceProvider>();
 builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
 builder.Services.AddSingleton<IAuthCredentialStore, DefaultAuthCredentialStore>();
+builder.Services.AddSingleton<OAuthClient>();
 
 // Core services
 builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
