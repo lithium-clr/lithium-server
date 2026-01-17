@@ -1,15 +1,14 @@
 using Lithium.Server.Core.Auth;
-using Lithium.Server.Core.Auth.OAuth;
 using Lithium.Server.Core.Systems.Commands;
 
 namespace Lithium.Server;
 
 public partial class HytaleServer
 {
-    private async Task EnsureAuthenticationAsync(ServerAuthManager.ServerAuthContext context)
+    private async Task EnsureAuthenticationAsync()
     {
         logger.LogInformation("Ensuring authentication...");
-
+        
         if (serverAuthManager.IsSinglePlayer)
         {
             logger.LogInformation("Single player selected");
@@ -60,7 +59,7 @@ public partial class HytaleServer
                     case "browser":
                         throw new NotImplementedException();
                     case "device":
-                        await EnsureAuthenticationAsync(_context);
+                        await EnsureAuthenticationAsync();
                         break;
                 }
 

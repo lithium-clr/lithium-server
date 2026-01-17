@@ -12,19 +12,15 @@ public sealed partial class HytaleServer(
 {
     public const int DefaultPort = 5520;
 
-    private ServerAuthManager.ServerAuthContext _context;
-    
     public async Task InitializeAsync(ServerAuthManager.ServerAuthContext context)
     {
-        _context = context;
-        
         logger.LogInformation("Initializing Hytale Authentication...");
         await serverAuthManager.InitializeAsync(context);
 
         logger.LogInformation("Initializing Hytale Credential Store...");
         await serverAuthManager.InitializeCredentialStore();
         
-        await EnsureAuthenticationAsync(context);
+        await EnsureAuthenticationAsync();
 
         logger.LogInformation(
             "===============================================================================================");
