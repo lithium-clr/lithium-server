@@ -705,7 +705,6 @@ public sealed class ServerAuthManager(
         logger.LogInformation("Server shutdown completed");
     }
 
-
     public void Logout()
     {
         CancelActiveFlow();
