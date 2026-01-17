@@ -15,6 +15,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ICodec<float>, FloatCodec>();
         services.AddSingleton<ICodec<double>, DoubleCodec>();
         services.AddSingleton<ICodec<bool>, BoolCodec>();
+        services.AddSingleton<ICodec<string?>, StringCodec>();
+        services.AddSingleton<ICodec<string>, NonNullStringCodec>();
         
         return services;
     }
