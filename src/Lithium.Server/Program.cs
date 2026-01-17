@@ -120,6 +120,13 @@ builder.Services.AddSingleton<JwtValidator>();
 
 // Codecs
 builder.Services.AddLithiumCodecs();
+builder.Services.AddJwkCodec();
+builder.Services.AddJwksResponseCodec();
+builder.Services.AddAccessTokenResponseCodec();
+builder.Services.AddAuthCredentialsCodec();
+builder.Services.AddAuthGrantResponseCodec();
+builder.Services.AddGameProfileCodec();
+builder.Services.AddGameSessionResponseCodec();
 
 // Core services
 builder.Services.AddSingleton<HytaleServer>();
