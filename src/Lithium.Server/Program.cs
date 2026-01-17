@@ -118,6 +118,9 @@ builder.Services.Configure<JwtValidatorOptions>(options =>
 });
 builder.Services.AddSingleton<JwtValidator>();
 
+// Codecs
+builder.Services.AddLithiumCodecs();
+
 // Core services
 builder.Services.AddSingleton<HytaleServer>();
 builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
