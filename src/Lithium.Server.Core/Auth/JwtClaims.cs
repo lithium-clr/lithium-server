@@ -3,7 +3,7 @@ namespace Lithium.Server.Core.Auth;
 /// <summary>
 /// Represents the claims extracted from a Hytale access token.
 /// </summary>
-public record JwtClaims(
+public sealed record JwtClaims(
     string Issuer,
     string? Audience,
     Guid Subject,

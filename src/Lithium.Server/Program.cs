@@ -90,7 +90,7 @@ builder.Services.AddSignalR();
 builder.Services.AddHttpClient();
 
 // Hytale authentication services
-builder.Services.Configure<SessionServiceConfig>(options =>
+builder.Services.Configure<SessionServiceOptions>(options =>
 {
     options.Url = AuthConstants.SessionServiceUrl;
 });
@@ -108,7 +108,7 @@ builder.Services.AddSingleton<IAuthCredentialStore, AuthCredentialStore>();
 builder.Services.AddSingleton<IServerAuthManager, ServerAuthManager>();
 builder.Services.AddSingleton<OAuthClient>();
 builder.Services.AddSingleton<IOAuthDeviceFlow, AuthDeviceFlow>();
-builder.Services.Configure<JwtOptions>(options =>
+builder.Services.Configure<JwtValidatorOptions>(options =>
 {
     options.Audience = "";
     options.Issuer = AuthConstants.SessionServiceUrl;

@@ -8,13 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Lithium.Server.Core.Auth;
 
-public class JwtOptions
-{
-    public string JwksUri { get; set; } = null!;
-    public string Issuer { get; set; } = null!;
-    public string? Audience { get; set; }
-}
-
 public sealed class JwtValidator : IDisposable
 {
     private readonly ILogger<JwtValidator> _logger;
@@ -25,7 +18,7 @@ public sealed class JwtValidator : IDisposable
     private static readonly TimeSpan ClockSkew = TimeSpan.FromMinutes(5);
 
     public JwtValidator(
-        IOptions<JwtOptions> options,
+        IOptions<JwtValidatorOptions> options,
         ILogger<JwtValidator> logger
     )
     {

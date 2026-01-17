@@ -3,7 +3,7 @@ using Lithium.Codecs;
 namespace Lithium.Server.Core.Auth;
 
 [Codec]
-public sealed partial class AuthCredentials
+public sealed class AuthCredentials
 {
     public string? AccessToken { get; set; }
     public string? RefreshToken { get; set; }
