@@ -6,5 +6,5 @@ namespace Lithium.Server.Core.Auth;
 [Codec]
 public sealed class AccessTokenResponse
 {
-    [JsonPropertyName("accessToken")] public string AccessToken { get; init; } = null!;
+    [JsonPropertyName("accessToken")] public string AccessToken { get; set; } = null!;
 }

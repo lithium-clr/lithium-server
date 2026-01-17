@@ -7,5 +7,5 @@ namespace Lithium.Server.Core.Auth;
 public sealed class AuthGrantResponse
 {
     [JsonPropertyName("authorizationGrant")]
-    public string AuthorizationGrant { get; init; } = null!;
+    public string AuthorizationGrant { get; set; } = null!;
 }

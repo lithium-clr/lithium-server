@@ -6,9 +6,9 @@ namespace Lithium.Server.Core.Auth;
 [Codec]
 public sealed class GameSessionResponse
 {
-    [JsonPropertyName("sessionToken")] public string SessionToken { get; init; } = null!;
-    [JsonPropertyName("identityToken")] public string IdentityToken { get; init; } = null!;
-    [JsonPropertyName("expiresAt")] public string? ExpiresAt { get; init; }
+    [JsonPropertyName("sessionToken")] public string SessionToken { get; set; } = null!;
+    [JsonPropertyName("identityToken")] public string IdentityToken { get; set; } = null!;
+    [JsonPropertyName("expiresAt")] public string? ExpiresAt { get; set; }
 
     public bool TryGetExpiresAtInstant(out DateTimeOffset expiresAt)
     {

@@ -6,5 +6,5 @@ namespace Lithium.Server.Core.Auth;
 [Codec]
 public sealed class JwksResponse
 {
-    [JsonPropertyName("keys")] public Jwk[] Keys { get; init; } = [];
+    [JsonPropertyName("keys")] public Jwk[] Keys { get; set; } = [];
 }
