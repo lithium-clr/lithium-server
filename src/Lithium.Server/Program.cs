@@ -96,7 +96,15 @@ builder.Services.Configure<SessionServiceConfig>(options =>
 });
 builder.Services.AddSingleton<ISessionServiceProvider, SessionServiceProvider>();
 builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
-builder.Services.AddSingleton<IAuthCredentialStore, DefaultAuthCredentialStore>();
+
+// Register the credential store
+// Use FileAuthCredentialStore by default for persistence
+builder.Services.Configure<FileSystemStoreOptions>(options =>
+{
+    options.Path = Path.Combine(AppContext.BaseDirectory, "credentials.json");
+});
+builder.Services.AddSingleton<IAuthCredentialStore, AuthCredentialStore>();
+
 builder.Services.AddSingleton<IServerAuthManager, ServerAuthManager>();
 builder.Services.AddSingleton<OAuthClient>();
 builder.Services.AddSingleton<IOAuthDeviceFlow, AuthDeviceFlow>();
