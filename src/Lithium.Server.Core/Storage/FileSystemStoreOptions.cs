@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Auth;
+namespace Lithium.Server.Core.Storage;
 
 public sealed class FileSystemStoreOptions
 {

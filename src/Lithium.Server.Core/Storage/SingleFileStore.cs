@@ -2,7 +2,7 @@ using Lithium.Codecs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Lithium.Server.Core.Auth;
+namespace Lithium.Server.Core.Storage;
 
 public abstract class SingleFileStore<TModel>(
     ILogger<FileStore<TModel>> logger,

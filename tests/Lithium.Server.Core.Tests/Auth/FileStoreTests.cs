@@ -3,6 +3,7 @@ using System.Text;
 using FluentAssertions;
 using Lithium.Codecs;
 using Lithium.Server.Core.Auth;
+using Lithium.Server.Core.Storage;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;

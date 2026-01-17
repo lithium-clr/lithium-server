@@ -1,11 +1,12 @@
 using System.Buffers;
 using Lithium.Codecs;
+using Lithium.Server.Core.Auth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Lithium.Server.Core.Auth;
+namespace Lithium.Server.Core.Storage;
 
-public abstract class FileStore<T>(
+public class FileStore<T>(
     ILogger<FileStore<T>> logger,
     IOptions<FileSystemStoreOptions> options,
     ICodec<T> codec
