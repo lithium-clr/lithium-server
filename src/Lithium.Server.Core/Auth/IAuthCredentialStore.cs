@@ -4,10 +4,10 @@ using Microsoft.Extensions.Options;
 
 namespace Lithium.Server.Core.Auth;
 
-public interface IAuthCredentialStore
+public interface IAuthCredentialStore : IStore<AuthCredentials>
 {
-    AuthCredentials? Credentials { get; }
-
+    AuthCredentials? Data { get; }
+    
     Task<AuthCredentials?> LoadAsync(CancellationToken cancellationToken = default);
     Task SaveAsync(CancellationToken cancellationToken = default);
     bool IsValid();
@@ -15,27 +15,15 @@ public interface IAuthCredentialStore
 }
 
 public sealed class AuthCredentialStore(
-    ILogger<FileSystemStore<AuthCredentials>> logger,
+    ILogger<FileStore<AuthCredentials>> logger,
     IOptions<FileSystemStoreOptions> options,
     ICodec<AuthCredentials> codec
-) : FileSystemStore<AuthCredentials>(logger, options, codec), IAuthCredentialStore
+) : SingleFileStore<AuthCredentials>(logger, options, codec), IAuthCredentialStore
 {
-    public AuthCredentials? Credentials { get; private set; }
+    protected override string FileName => "credentials";
 
-    public override async Task<AuthCredentials?> LoadAsync(CancellationToken cancellationToken = default)
+    public bool IsValid()
     {
-        return Credentials = await base.LoadAsync(cancellationToken);
-    }
-
-    public Task SaveAsync(CancellationToken cancellationToken = default)
-    {
-        return Credentials is null ? Task.CompletedTask : base.SaveAsync(Credentials, cancellationToken);
-    }
-
-    public bool IsValid() => !string.IsNullOrEmpty(Credentials?.RefreshToken);
-    
-    public void Clear()
-    {
-        Credentials = null;
+        return !string.IsNullOrEmpty(Data?.RefreshToken);
     }
 }

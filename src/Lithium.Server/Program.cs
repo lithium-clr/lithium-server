@@ -101,7 +101,7 @@ builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
 // Use FileAuthCredentialStore by default for persistence
 builder.Services.Configure<FileSystemStoreOptions>(options =>
 {
-    options.Path = Path.Combine(AppContext.BaseDirectory, "credentials.json");
+    options.Path = Path.Combine(AppContext.BaseDirectory);
 });
 builder.Services.AddSingleton<IAuthCredentialStore, AuthCredentialStore>();
 

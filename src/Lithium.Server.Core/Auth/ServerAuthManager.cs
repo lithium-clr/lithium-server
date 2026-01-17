@@ -82,7 +82,7 @@ public sealed class ServerAuthManager(
                 Username = context.OwnerName
             };
 
-            credentialStore.Credentials?.ProfileUuid = ownerProfile.Uuid;
+            credentialStore.Data?.ProfileUuid = ownerProfile.Uuid;
         }
 
         var hasCliTokens = false;
@@ -205,9 +205,9 @@ public sealed class ServerAuthManager(
             {
                 var tokens = result.Tokens!;
 
-                credentialStore.Credentials?.AccessToken = tokens.AccessToken;
-                credentialStore.Credentials?.RefreshToken = tokens.RefreshToken;
-                credentialStore.Credentials?.ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn);
+                credentialStore.Data?.AccessToken = tokens.AccessToken;
+                credentialStore.Data?.RefreshToken = tokens.RefreshToken;
+                credentialStore.Data?.ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn);
                 await credentialStore.SaveAsync();
 
                 return await CreateGameSessionFromOAuthAsync(AuthMode.OauthDevice);
@@ -231,7 +231,7 @@ public sealed class ServerAuthManager(
             return AuthResult.Failed;
         }
 
-        var accessToken = credentialStore.Credentials?.AccessToken;
+        var accessToken = credentialStore.Data?.AccessToken;
 
         if (string.IsNullOrEmpty(accessToken))
         {
@@ -306,7 +306,7 @@ public sealed class ServerAuthManager(
             return profiles[0];
         }
 
-        var storedProfileUuid = credentialStore.Credentials?.ProfileUuid;
+        var storedProfileUuid = credentialStore.Data?.ProfileUuid;
 
         if (storedProfileUuid.HasValue)
         {
@@ -506,7 +506,7 @@ public sealed class ServerAuthManager(
             return false;
         }
 
-        var currentProfile = credentialStore.Credentials?.ProfileUuid;
+        var currentProfile = credentialStore.Data?.ProfileUuid;
 
         if (currentProfile is null)
         {
@@ -548,7 +548,7 @@ public sealed class ServerAuthManager(
             return null;
         }
 
-        var accessToken = credentialStore.Credentials?.AccessToken; // Try to create the game session
+        var accessToken = credentialStore.Data?.AccessToken; // Try to create the game session
 
         // Attempt to create the game session
         var result = await sessionServiceClient.CreateGameSessionAsync(accessToken, profileUuid);
@@ -564,7 +564,7 @@ public sealed class ServerAuthManager(
                 return null;
             }
 
-            accessToken = credentialStore.Credentials?.AccessToken;
+            accessToken = credentialStore.Data?.AccessToken;
             result = await sessionServiceClient.CreateGameSessionAsync(accessToken, profileUuid);
 
             if (result is null)
@@ -575,14 +575,14 @@ public sealed class ServerAuthManager(
         }
 
         // Update the active profile
-        credentialStore.Credentials?.ProfileUuid = profileUuid;
+        credentialStore.Data?.ProfileUuid = profileUuid;
         await credentialStore.SaveAsync(ct);
         return result;
     }
 
     private async Task<bool> RefreshOAuthTokensAsync(bool force = false, CancellationToken ct = default)
     {
-        var tokens = credentialStore.Credentials;
+        var tokens = credentialStore.Data;
         var now = DateTimeOffset.UtcNow;
 
         // If not forced and the token doesn't expire in less than 5 minutes, all is well
@@ -603,9 +603,9 @@ public sealed class ServerAuthManager(
 
         if (newTokens is not null && newTokens.IsSuccess())
         {
-            credentialStore.Credentials?.AccessToken = newTokens.AccessToken;
-            credentialStore.Credentials?.RefreshToken = newTokens.RefreshToken;
-            credentialStore.Credentials?.ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(newTokens.ExpiresIn);
+            credentialStore.Data?.AccessToken = newTokens.AccessToken;
+            credentialStore.Data?.RefreshToken = newTokens.RefreshToken;
+            credentialStore.Data?.ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(newTokens.ExpiresIn);
             await credentialStore.SaveAsync(ct);
 
             return true;
@@ -677,7 +677,7 @@ public sealed class ServerAuthManager(
 
     public GameProfile? GetSelectedProfile()
     {
-        var profileUuid = credentialStore.Credentials?.ProfileUuid;
+        var profileUuid = credentialStore.Data?.ProfileUuid;
         return profileUuid is null ? null : _availableProfiles.GetValueOrDefault(profileUuid.Value);
     }
 }
