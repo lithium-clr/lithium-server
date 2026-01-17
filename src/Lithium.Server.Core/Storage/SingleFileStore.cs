@@ -11,7 +11,7 @@ public abstract class SingleFileStore<TModel>(
 ) : FileStore<TModel>(logger, options, codec) where TModel : class, new()
 {
     protected abstract string FileName { get; }
-    public TModel? Data { get; private set; }
+    public TModel? Data { get; set; } = new();
 
     public async Task<TModel?> LoadAsync(CancellationToken cancellationToken = default)
     {
