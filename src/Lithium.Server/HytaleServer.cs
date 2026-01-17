@@ -6,7 +6,8 @@ namespace Lithium.Server;
 
 public sealed partial class HytaleServer(
     ILogger<HytaleServer> logger,
-    IServerAuthManager serverAuthManager
+    IServerAuthManager serverAuthManager,
+    IOAuthDeviceFlow deviceFlow
 )
 {
     public const int DefaultPort = 5520;

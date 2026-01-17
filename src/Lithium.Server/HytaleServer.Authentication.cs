@@ -27,7 +27,7 @@ public partial class HytaleServer
 
     private async Task RequestAuthenticationAsync()
     {
-        var authResult = await serverAuthManager.StartFlowAsync(new AuthDeviceFlow(), new CancellationTokenSource());
+        var authResult = await serverAuthManager.StartFlowAsync(deviceFlow, new CancellationTokenSource());
 
         switch (authResult)
         {
@@ -57,45 +57,8 @@ public partial class HytaleServer
             case "login":
                 switch (loginType)
                 {
-                    // case "browser":
-                    //     logger.LogInformation("Logging in with browser flow");
-                    //
-                    //     if (serverAuthManager.IsSinglePlayer)
-                    //     {
-                    //         logger.LogInformation("Single player selected");
-                    //     }
-                    //     else if (!string.IsNullOrEmpty(serverAuthManager.SessionToken) &&
-                    //              !string.IsNullOrEmpty(serverAuthManager.IdentityToken))
-                    //     {
-                    //         logger.LogInformation("Already authenticated");
-                    //     }
-                    //     else
-                    //     {
-                    //         logger.LogInformation("Starting..");
-                    //
-                    //         var authResult = await serverAuthManager.StartFlowAsync(new AuthBrowserFlow(), cts);
-                    //
-                    //         switch (authResult)
-                    //         {
-                    //             case AuthResult.Success:
-                    //                 logger.LogInformation("Authentication successful");
-                    //                 break;
-                    //             case AuthResult.PendingProfileSelection:
-                    //                 logger.LogInformation("Profile selection required");
-                    //                 
-                    //                 var profiles = serverAuthManager.PendingProfiles;
-                    //
-                    //                 foreach (var profile in profiles)
-                    //                     logger.LogInformation("{Username} ({Uuid})", profile.Username, profile.Uuid);
-                    //
-                    //                 break;
-                    //             case AuthResult.Failed:
-                    //                 logger.LogInformation("Authentication failed");
-                    //                 break;
-                    //         }
-                    //     }
-                    //
-                    //     break;
+                    case "browser":
+                        throw new NotImplementedException();
                     case "device":
                         await EnsureAuthenticationAsync(_context);
                         break;

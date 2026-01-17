@@ -99,6 +99,7 @@ builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
 builder.Services.AddSingleton<IAuthCredentialStore, DefaultAuthCredentialStore>();
 builder.Services.AddSingleton<IServerAuthManager, ServerAuthManager>();
 builder.Services.AddSingleton<OAuthClient>();
+builder.Services.AddSingleton<IOAuthDeviceFlow, AuthDeviceFlow>();
 builder.Services.Configure<JwtOptions>(options =>
 {
     options.Audience = "";

@@ -1,26 +1,21 @@
 using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Sockets;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Auth.OAuth;
 
 public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logger)
 {
-    public async Task StartFlow(OAuthDeviceFlow flow, CancellationTokenSource cts)
+    public async Task<OAuthFlowResult> StartFlowAsync(IOAuthDeviceFlow flow, CancellationToken cancellationToken)
     {
         try
         {
-            var deviceAuth = await RequestDeviceAuthorizationAsync(cts.Token);
+            var deviceAuth = await RequestDeviceAuthorizationAsync(cancellationToken);
 
             if (deviceAuth is null)
             {
-                flow.OnFailure("Failed to start device authorization");
-                return;
+                return OAuthFlowResult.Failed("Failed to start device authorization");
             }
 
             flow.OnFlowInfo(
@@ -32,17 +27,16 @@ public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logg
             var pollInterval = Math.Max(deviceAuth.Interval, 5);
             var deadline = DateTimeOffset.UtcNow.AddSeconds(deviceAuth.ExpiresIn);
 
-            while (DateTimeOffset.UtcNow < deadline && !cts.IsCancellationRequested)
+            while (DateTimeOffset.UtcNow < deadline && !cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(TimeSpan.FromSeconds(pollInterval), cts.Token);
+                await Task.Delay(TimeSpan.FromSeconds(pollInterval), cancellationToken);
 
-                var token = await PollDeviceTokenAsync(deviceAuth.DeviceCode, cts.Token);
+                var token = await PollDeviceTokenAsync(deviceAuth.DeviceCode, cancellationToken);
                 if (token is null) continue;
 
                 if (token.IsSuccess())
                 {
-                    flow.OnSuccess(token);
-                    return;
+                    return OAuthFlowResult.Success(token);
                 }
 
                 if (token.Error is "slow_down")
@@ -50,19 +44,18 @@ public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logg
 
                 else if (token.Error is not "authorization_pending")
                 {
-                    flow.OnFailure($"Device auth failed: {token.Error}");
-                    return;
+                    return OAuthFlowResult.Failed($"Device auth failed: {token.Error}");
                 }
             }
 
-            flow.OnFailure(cts.IsCancellationRequested
+            return OAuthFlowResult.Failed(cancellationToken.IsCancellationRequested
                 ? "Authentication cancelled"
                 : "Device authorization expired");
         }
         catch (Exception ex)
         {
             logger.LogWarning(ex, "OAuth device flow failed");
-            flow.OnFailure(ex.Message);
+            return OAuthFlowResult.Failed(ex.Message);
         }
     }
 
@@ -220,7 +213,6 @@ public sealed class OAuthClient(HttpClient httpClient, ILogger<OAuthClient> logg
 
             if (response.StatusCode is HttpStatusCode.BadRequest)
             {
-                // Comme le Java : code 400 → parse token response
                 return ParseTokenResponse(body);
             }
 
