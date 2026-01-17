@@ -208,8 +208,10 @@ public sealed class ServerAuthManager(
                 credentialStore.Data?.AccessToken = tokens.AccessToken;
                 credentialStore.Data?.RefreshToken = tokens.RefreshToken;
                 credentialStore.Data?.ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn);
+                
                 await credentialStore.SaveAsync();
-
+                
+                logger.LogInformation("OAuth device flow completed successfully");
                 return await CreateGameSessionFromOAuthAsync(AuthMode.OauthDevice);
             }
 

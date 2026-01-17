@@ -19,9 +19,9 @@ public sealed class FileStoreTests
     public FileStoreTests()
     {
         var loggerMock = new Mock<ILogger<FileStore<TestData>>>();
-        var optionsMock = new Mock<IOptions<FileSystemStoreOptions>>();
+        var optionsMock = new Mock<IOptions<FileStoreOptions>>();
         
-        optionsMock.Setup(o => o.Value).Returns(new FileSystemStoreOptions { Path = Path.Combine(Path.GetTempPath(), "test-store") });
+        optionsMock.Setup(o => o.Value).Returns(new FileStoreOptions { Path = Path.Combine(Path.GetTempPath(), "test-store") });
 
         _codec = new TestCodec();
         _store = new TestFileStore(loggerMock.Object, optionsMock.Object, _codec);
@@ -169,7 +169,7 @@ public sealed class FileStoreTests
 
     private class TestFileStore(
         ILogger<FileStore<TestData>> logger,
-        IOptions<FileSystemStoreOptions> options,
+        IOptions<FileStoreOptions> options,
         ICodec<TestData> codec
     ) : FileStore<TestData>(logger, options, codec);
 }

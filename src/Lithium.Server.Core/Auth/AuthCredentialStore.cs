@@ -17,7 +17,7 @@ public interface IAuthCredentialStore : IStore<AuthCredentials>
 
 public sealed class AuthCredentialStore(
     ILogger<FileStore<AuthCredentials>> logger,
-    IOptions<FileSystemStoreOptions> options,
+    IOptions<FileStoreOptions> options,
     ICodec<AuthCredentials> codec
 ) : SingleFileStore<AuthCredentials>(logger, options, codec), IAuthCredentialStore
 {

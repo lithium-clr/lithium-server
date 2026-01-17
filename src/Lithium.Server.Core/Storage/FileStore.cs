@@ -8,7 +8,7 @@ namespace Lithium.Server.Core.Storage;
 
 public class FileStore<T>(
     ILogger<FileStore<T>> logger,
-    IOptions<FileSystemStoreOptions> options,
+    IOptions<FileStoreOptions> options,
     ICodec<T> codec
 ) : IStore<T> where T : class, new()
 {

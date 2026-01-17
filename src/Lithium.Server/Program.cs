@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Lithium.Codecs;
 using Lithium.Server;
 using Lithium.Server.Core;
 using Lithium.Server.Core.Auth;
@@ -100,7 +101,7 @@ builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
 
 // Register the credential store
 // Use FileAuthCredentialStore by default for persistence
-builder.Services.Configure<FileSystemStoreOptions>(options =>
+builder.Services.Configure<FileStoreOptions>(options =>
 {
     options.Path = Path.Combine(AppContext.BaseDirectory);
 });

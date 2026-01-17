@@ -6,7 +6,7 @@ namespace Lithium.Server.Core.Storage;
 
 public abstract class SingleFileStore<TModel>(
     ILogger<FileStore<TModel>> logger,
-    IOptions<FileSystemStoreOptions> options,
+    IOptions<FileStoreOptions> options,
     ICodec<TModel> codec
 ) : FileStore<TModel>(logger, options, codec) where TModel : class, new()
 {
