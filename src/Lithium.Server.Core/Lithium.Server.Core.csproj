@@ -29,4 +29,8 @@
       <ProjectReference Include="..\Lithium.Core\Lithium.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Protocol\IO\" />
+    </ItemGroup>
+
 </Project>
