@@ -15,8 +15,9 @@
     <Project Path="src/Lucide/LucideBlazor/LucideBlazor.csproj" />
   </Folder>
   <Folder Name="/Tests/">
-    <Project Path="tests/Lithium.Core.ECS.Tests/Lithium.Codecs.Tests.csproj" />
+    <Project Path="tests/Lithium.Codecs.Tests/Lithium.Codecs.Tests.csproj" />
     <Project Path="tests/Lithium.Core.ECS.Tests/Lithium.Core.ECS.Tests.csproj" />
-    <Project Path="tests/Lithium.Core.ECS.Tests/Lithium.Server.Core.Tests.csproj" />
+    <Project Path="tests/Lithium.Server.Core.Tests/Lithium.Server.Core.Tests.csproj" />
+    <Project Path="tests/Lithium.Core.Tests/Lithium.Core.Tests.csproj" />
   </Folder>
 </Solution>

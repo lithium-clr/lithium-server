@@ -1,4 +1,5 @@
 using Lithium.Codecs.Primitives;
+using Lithium.Core.Semver;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lithium.Codecs;
@@ -19,6 +20,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ICodec<string>, NonNullStringCodec>();
         services.AddSingleton<ICodec<DateTimeOffset>, DateTimeOffsetCodec>();
         services.AddSingleton<ICodec<Guid>, GuidCodec>();
+        services.AddSingleton<ICodec<Lithium.Core.Semver.Semver>, SemverCodec>();
+        services.AddSingleton<ICodec<SemverRange>, SemverRangeCodec>();
         
         return services;
     }
