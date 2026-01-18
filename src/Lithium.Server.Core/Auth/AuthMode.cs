@@ -5,7 +5,7 @@ public enum AuthMode
     None,
     Singleplayer,
     ExternalSession,
-    OauthBrowser,
-    OauthDevice,
-    OauthStore
+    OAuthBrowser,
+    OAuthDevice,
+    OAuthStore
 }

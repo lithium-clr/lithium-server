@@ -173,7 +173,7 @@ public sealed class ServerAuthManager(
         {
             logger.LogInformation("Found stored credentials, attempting to restore session...");
 
-            var result = await CreateGameSessionFromOAuthAsync(AuthMode.OauthStore);
+            var result = await CreateGameSessionFromOAuthAsync(AuthMode.OAuthStore);
 
             switch (result)
             {
@@ -212,7 +212,7 @@ public sealed class ServerAuthManager(
                 await credentialStore.SaveAsync();
                 
                 logger.LogInformation("OAuth device flow completed successfully");
-                return await CreateGameSessionFromOAuthAsync(AuthMode.OauthDevice);
+                return await CreateGameSessionFromOAuthAsync(AuthMode.OAuthDevice);
             }
 
             case OAuthResult.Failed:
@@ -500,7 +500,7 @@ public sealed class ServerAuthManager(
     private async Task<bool> RefreshGameSessionViaOAuthAsync(CancellationToken ct = default)
     {
         // Check if the authentication mode supports OAuth
-        var supported = AuthMode is AuthMode.OauthBrowser or AuthMode.OauthDevice or AuthMode.OauthStore;
+        var supported = AuthMode is AuthMode.OAuthBrowser or AuthMode.OAuthDevice or AuthMode.OAuthStore;
 
         if (!supported)
         {
