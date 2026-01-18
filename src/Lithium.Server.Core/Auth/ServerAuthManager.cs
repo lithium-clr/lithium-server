@@ -19,6 +19,7 @@ public interface IServerAuthManager
     ValueTask<AuthResult> StartFlowAsync(IOAuthDeviceFlow flow, CancellationTokenSource cts);
     bool CancelActiveFlow();
     Task Shutdown();
+    void SetServerCertificate(X509Certificate2 cert);
 }
 
 public sealed class ServerAuthManager(
@@ -208,9 +209,9 @@ public sealed class ServerAuthManager(
                 credentialStore.Data?.AccessToken = tokens.AccessToken;
                 credentialStore.Data?.RefreshToken = tokens.RefreshToken;
                 credentialStore.Data?.ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn);
-                
+
                 await credentialStore.SaveAsync();
-                
+
                 logger.LogInformation("OAuth device flow completed successfully");
                 return await CreateGameSessionFromOAuthAsync(AuthMode.OAuthDevice);
             }
@@ -649,6 +650,12 @@ public sealed class ServerAuthManager(
         }
 
         logger.LogInformation("Server shutdown completed");
+    }
+
+    public void SetServerCertificate(X509Certificate2 cert)
+    {
+        _serverCertificate = cert;
+        logger.LogInformation("Server certificate set {cert}", cert.SubjectName.Name);
     }
 
     public void Logout()
