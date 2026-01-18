@@ -172,6 +172,7 @@ reviews:
     drafts: false
     base_branches:
       - 'main'
+      - 'staging'
   tools:
     shellcheck:
       enabled: true
