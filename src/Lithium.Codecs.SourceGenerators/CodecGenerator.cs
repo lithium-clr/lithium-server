@@ -12,11 +12,11 @@ public sealed class CodecGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        // Find all classes marked with the [CodecAttribute] attribute
         var classDeclarations = context.SyntaxProvider
-            .CreateSyntaxProvider(
-                predicate: static (s, _) => IsSyntaxForAttribute(s),
-                transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx))
+            .ForAttributeWithMetadataName(
+                "Lithium.Codecs.CodecAttribute",
+                predicate: static (s, _) => s is ClassDeclarationSyntax,
+                transform: static (ctx, _) => (ClassDeclarationSyntax)ctx.TargetNode)
             .Where(static m => m is not null);
 
         var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
@@ -25,40 +25,16 @@ public sealed class CodecGenerator : IIncrementalGenerator
             static (spc, source) => Execute(source.Left, source.Right, spc));
     }
 
-    private static bool IsSyntaxForAttribute(SyntaxNode s) => s is ClassDeclarationSyntax { AttributeLists.Count: > 0 };
-
-    private static ClassDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
-    {
-        var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-
-        foreach (var attributeListSyntax in classDeclarationSyntax.AttributeLists)
-        {
-            foreach (var attributeSyntax in attributeListSyntax.Attributes)
-            {
-                if (context.SemanticModel.GetSymbolInfo(attributeSyntax).Symbol is not IMethodSymbol attributeSymbol)
-                    continue;
-
-                var attributeContainingTypeSymbol = attributeSymbol.ContainingType;
-                var fullName = attributeContainingTypeSymbol.ToDisplayString();
-
-                if (fullName is "Lithium.Codecs.CodecAttribute")
-                    return classDeclarationSyntax;
-            }
-        }
-
-        return null;
-    }
-
-    private static void Execute(Compilation compilation, ImmutableArray<ClassDeclarationSyntax?> classes,
+    private static void Execute(Compilation compilation, ImmutableArray<ClassDeclarationSyntax> classes,
         SourceProductionContext context)
     {
         if (classes.IsDefaultOrEmpty) return;
 
-        var distinctClasses = classes.Where(c => c is not null).Distinct();
+        var distinctClasses = classes.Distinct();
 
         foreach (var classSyntax in distinctClasses)
         {
-            var semanticModel = compilation.GetSemanticModel(classSyntax!.SyntaxTree);
+            var semanticModel = compilation.GetSemanticModel(classSyntax.SyntaxTree);
             if (semanticModel.GetDeclaredSymbol(classSyntax) is not INamedTypeSymbol classSymbol) continue;
 
             var sourceCode = GenerateCodecForClass(classSymbol);

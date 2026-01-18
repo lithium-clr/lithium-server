@@ -4,6 +4,7 @@
     <Project Path="src/Lithium.Client/Lithium.Client.csproj" />
     <Project Path="src/Lithium.Core.ECS/Lithium.Core.ECS.csproj" />
     <Project Path="src/Lithium.Core/Lithium.Core.csproj" />
+    <Project Path="src/Lithium.Codecs/Lithium.Codecs.csproj" />
     <Project Path="src/Lithium.Server.Core/Lithium.Server.Core.csproj" />
     <Project Path="src/Lithium.Server/Lithium.Server.csproj" />
     <Project Path="src/Lithium.Snowflake/Lithium.Snowflake.csproj" />
@@ -14,6 +15,8 @@
     <Project Path="src/Lucide/LucideBlazor/LucideBlazor.csproj" />
   </Folder>
   <Folder Name="/Tests/">
+    <Project Path="tests/Lithium.Core.ECS.Tests/Lithium.Codecs.Tests.csproj" />
     <Project Path="tests/Lithium.Core.ECS.Tests/Lithium.Core.ECS.Tests.csproj" />
+    <Project Path="tests/Lithium.Core.ECS.Tests/Lithium.Server.Core.Tests.csproj" />
   </Folder>
 </Solution>
