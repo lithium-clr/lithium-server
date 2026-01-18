@@ -4,6 +4,7 @@ using Lithium.Core.Extensions;
 using Lithium.Core.Networking;
 using Lithium.Core.Networking.Packets;
 using Microsoft.Extensions.Logging;
+using System.Buffers;
 
 namespace Lithium.Client.Core.Networking;
 
@@ -64,55 +65,77 @@ public sealed class QuicClient(
 
     private async Task ReceiveLoopAsync(CancellationToken ct)
     {
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(4096);
+
         try
         {
             while (!ct.IsCancellationRequested)
             {
-                var headerBuf = new byte[PacketHeader.SizeOf()];
-                await ReadExactAsync(_stream, headerBuf, ct);
+                var headerSize = PacketHeader.SizeOf();
+                var headerMemory = buffer.AsMemory(0, headerSize);
 
-                var header = PacketSerializer.DeserializeHeader(headerBuf);
+                await ReadExactAsync(_stream, headerMemory, ct);
 
-                var payload = new byte[header.Length];
-                await ReadExactAsync(_stream, payload, ct);
-                
-                packetRouter.Route(
-                    header.TypeId,
-                    payload,
-                    new PacketContext(_connection, _stream));
+                var header = PacketSerializer.DeserializeHeader(headerMemory.Span);
+
+                IMemoryOwner<byte>? largeBufferOwner = null;
+                Memory<byte> payloadMemory;
+
+                if (header.Length > buffer.Length)
+                {
+                    largeBufferOwner = MemoryPool<byte>.Shared.Rent(header.Length);
+                    payloadMemory = largeBufferOwner.Memory.Slice(0, header.Length);
+                }
+                else
+                {
+                    payloadMemory = buffer.AsMemory(0, header.Length);
+                }
+
+                try
+                {
+                    await ReadExactAsync(_stream, payloadMemory, ct);
+                    packetRouter.Route(
+                        header.TypeId,
+                        payloadMemory.ToArray(),
+                        new PacketContext(_connection, _stream));
+                }
+                finally
+                {
+
+                    largeBufferOwner?.Dispose();
+                }
             }
         }
-        catch (QuicException ex)
+        catch (QuicException ex) when (ex.QuicError == QuicError.ConnectionAborted)
         {
-            if (ex.QuicError is QuicError.ConnectionAborted)
-            {
-                logger.LogInformation("Server connection closed");
-                return;
-            }
-            
-            logger.LogError(ex, "");
+            logger.LogInformation("Server connection closed");
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Unexpected error:");
+            logger.LogError(ex, "Unexpected error in receive loop");
+        }
+        finally
+        {
+            // IMPORTANTE: Devolve o buffer
+            ArrayPool<byte>.Shared.Return(buffer);
         }
     }
 
     private static async Task ReadExactAsync(
         QuicStream stream,
-        byte[] buffer,
+        Memory<byte> buffer,
         CancellationToken ct)
     {
-        var offset = 0;
-        while (offset < buffer.Length)
+        var totalRead = 0;
+        while (totalRead < buffer.Length)
         {
             var read = await stream.ReadAsync(
-                buffer.AsMemory(offset), ct);
+                buffer.Slice(totalRead), ct);
 
             if (read == 0)
                 throw new EndOfStreamException();
 
-            offset += read;
+            totalRead += read;
         }
     }
 }

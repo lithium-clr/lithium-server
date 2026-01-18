@@ -1,9 +1,13 @@
 ﻿using System.Reflection;
+using Lithium.Codecs;
 using Lithium.Server;
 using Lithium.Server.Core;
+using Lithium.Server.Core.Auth;
+using Lithium.Server.Core.Auth.OAuth;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Extensions;
+using Lithium.Server.Core.Storage;
 using Lithium.Server.Core.Systems.Commands;
 using Lithium.Server.Dashboard;
 using Serilog;
@@ -45,6 +49,8 @@ SentrySdk.Init(options =>
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .MinimumLevel.Override("System", LogEventLevel.Warning)
     .Enrich.FromLogContext()
     .WriteTo.Console(
         outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
@@ -83,7 +89,47 @@ builder.Logging.AddFilter("System", LogLevel.Warning);
 // SignalR
 builder.Services.AddSignalR();
 
+builder.Services.AddHttpClient();
+
+// Hytale authentication services
+builder.Services.Configure<SessionServiceOptions>(options =>
+{
+    options.Url = AuthConstants.SessionServiceUrl;
+});
+builder.Services.AddSingleton<ISessionServiceProvider, SessionServiceProvider>();
+builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
+
+// Register the credential store
+// Use FileAuthCredentialStore by default for persistence
+builder.Services.Configure<FileStoreOptions>(options =>
+{
+    options.Path = Path.Combine(AppContext.BaseDirectory);
+});
+builder.Services.AddSingleton<IAuthCredentialStore, AuthCredentialStore>();
+
+builder.Services.AddSingleton<IServerAuthManager, ServerAuthManager>();
+builder.Services.AddSingleton<OAuthClient>();
+builder.Services.AddSingleton<IOAuthDeviceFlow, AuthDeviceFlow>();
+builder.Services.Configure<JwtValidatorOptions>(options =>
+{
+    options.Audience = "";
+    options.Issuer = AuthConstants.SessionServiceUrl;
+    options.JwksUri = "https://sessions.hytale.com/.well-known/jwks.json";
+});
+builder.Services.AddSingleton<JwtValidator>();
+
+// Codecs
+builder.Services.AddLithiumCodecs();
+builder.Services.AddJwkCodec();
+builder.Services.AddJwksResponseCodec();
+builder.Services.AddAccessTokenResponseCodec();
+builder.Services.AddAuthCredentialsCodec();
+builder.Services.AddAuthGrantResponseCodec();
+builder.Services.AddGameProfileCodec();
+builder.Services.AddGameSessionResponseCodec();
+
 // Core services
+builder.Services.AddSingleton<HytaleServer>();
 builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
@@ -96,7 +142,8 @@ builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<QuicServer>();
 
 // Lifetime
-builder.Services.AddHostedService<ServerLifetime>();
+builder.Services.AddSingleton<ServerLifetime>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<ServerLifetime>());
 builder.Services.AddHostedService<WorldService>();
 builder.Services.AddHostedService<SignalRLogForwarder>();
 

@@ -11,12 +11,20 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1"/>
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1"/>
+        <PackageReference Include="Microsoft.IdentityModel.Protocols" Version="8.15.0" />
+        <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.15.0" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.15.0" />
+        <PackageReference Include="System.CommandLine" Version="2.0.2" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Lithium.Codecs\Lithium.Codecs.csproj" />
+      <ProjectReference Include="..\Lithium.Codecs.SourceGenerators\Lithium.Codecs.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       <ProjectReference Include="..\Lithium.Core.ECS\Lithium.Core.ECS.csproj" />
       <ProjectReference Include="..\Lithium.Core\Lithium.Core.csproj" />
     </ItemGroup>

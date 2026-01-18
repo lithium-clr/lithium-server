@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Lithium.Codecs.SourceGenerators\Lithium.Codecs.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Lithium.Core\Lithium.Core.csproj"/>
         <ProjectReference Include="..\Lithium.Server.Core\Lithium.Server.Core.csproj"/>
     </ItemGroup>
@@ -35,6 +36,7 @@
         <PackageReference Include="Serilog" Version="4.3.0" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+        <PackageReference Include="System.CommandLine" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>
