@@ -3,24 +3,15 @@ using System.Linq;
 
 namespace Lithium.Core.Semver;
 
-public class SemverRange : ISemverSatisfies
+public sealed class SemverRange(ISemverSatisfies[] comparators, bool and) : ISemverSatisfies
 {
-    public static readonly SemverRange WILDCARD = new SemverRange(Array.Empty<ISemverSatisfies>(), true);
-
-    private readonly ISemverSatisfies[] _comparators;
-    private readonly bool _and;
-
-    public SemverRange(ISemverSatisfies[] comparators, bool and)
-    {
-        _comparators = comparators;
-        _and = and;
-    }
+    public static readonly SemverRange Wildcard = new SemverRange(Array.Empty<ISemverSatisfies>(), true);
 
     public bool Satisfies(Semver semver)
     {
-        if (_and)
+        if (and)
         {
-            foreach (var comp in _comparators)
+            foreach (var comp in comparators)
             {
                 if (!comp.Satisfies(semver)) return false;
             }
@@ -28,7 +19,7 @@ public class SemverRange : ISemverSatisfies
         }
         else
         {
-            foreach (var comp in _comparators)
+            foreach (var comp in comparators)
             {
                 if (comp.Satisfies(semver)) return true;
             }
@@ -38,7 +29,7 @@ public class SemverRange : ISemverSatisfies
 
     public override string ToString()
     {
-        return string.Join(" || ", _comparators.Select(c => c.ToString()));
+        return string.Join(" || ", comparators.Select(c => c.ToString()));
     }
     
     public static SemverRange FromString(string str) => FromString(str, false);
@@ -63,8 +54,8 @@ public class SemverRange : ISemverSatisfies
                     if (range.Length != 2) throw new ArgumentException("Range has an invalid number of arguments!");
                     
                     comparators[i] = new SemverRange(new ISemverSatisfies[] {
-                        new SemverComparator(SemverComparator.ComparisonType.GTE, Semver.FromString(range[0], strict)),
-                        new SemverComparator(SemverComparator.ComparisonType.LTE, Semver.FromString(range[1], strict))
+                        new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, Semver.FromString(range[0], strict)),
+                        new SemverComparator(SemverComparator.ComparisonType.LessThanOrEqual, Semver.FromString(range[1], strict))
                     }, true);
                 }
                 else if (subRange.StartsWith("~"))
@@ -73,15 +64,15 @@ public class SemverRange : ISemverSatisfies
                     if (semver.Minor > 0)
                     {
                         comparators[i] = new SemverRange(new ISemverSatisfies[] {
-                            new SemverComparator(SemverComparator.ComparisonType.GTE, semver),
-                            new SemverComparator(SemverComparator.ComparisonType.LT, new Semver(semver.Major, semver.Minor + 1, 0))
+                            new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, semver),
+                            new SemverComparator(SemverComparator.ComparisonType.LessThan, new Semver(semver.Major, semver.Minor + 1, 0))
                         }, true);
                     }
                     else
                     {
                         comparators[i] = new SemverRange(new ISemverSatisfies[] {
-                             new SemverComparator(SemverComparator.ComparisonType.GTE, semver),
-                             new SemverComparator(SemverComparator.ComparisonType.LT, new Semver(semver.Major + 1, 0, 0))
+                             new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, semver),
+                             new SemverComparator(SemverComparator.ComparisonType.LessThan, new Semver(semver.Major + 1, 0, 0))
                         }, true);
                     }
                 }
@@ -91,22 +82,22 @@ public class SemverRange : ISemverSatisfies
                      if (semver.Major > 0)
                      {
                          comparators[i] = new SemverRange(new ISemverSatisfies[] {
-                             new SemverComparator(SemverComparator.ComparisonType.GTE, semver),
-                             new SemverComparator(SemverComparator.ComparisonType.LT, new Semver(semver.Major + 1, 0, 0))
+                             new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, semver),
+                             new SemverComparator(SemverComparator.ComparisonType.LessThan, new Semver(semver.Major + 1, 0, 0))
                          }, true);
                      }
                      else if (semver.Minor > 0)
                      {
                          comparators[i] = new SemverRange(new ISemverSatisfies[] {
-                             new SemverComparator(SemverComparator.ComparisonType.GTE, semver),
-                             new SemverComparator(SemverComparator.ComparisonType.LT, new Semver(0, semver.Minor + 1, 0))
+                             new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, semver),
+                             new SemverComparator(SemverComparator.ComparisonType.LessThan, new Semver(0, semver.Minor + 1, 0))
                          }, true);
                      }
                      else
                      {
                          comparators[i] = new SemverRange(new ISemverSatisfies[] {
-                             new SemverComparator(SemverComparator.ComparisonType.GTE, semver),
-                             new SemverComparator(SemverComparator.ComparisonType.LT, new Semver(0, 0, semver.Patch + 1))
+                             new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, semver),
+                             new SemverComparator(SemverComparator.ComparisonType.LessThan, new Semver(0, 0, semver.Patch + 1))
                          }, true);
                      }
                 }
@@ -121,13 +112,13 @@ public class SemverRange : ISemverSatisfies
                     
                     if (semver.Patch == 0 && semver.Minor == 0 && semver.Major == 0)
                     {
-                        comparators[i] = new SemverComparator(SemverComparator.ComparisonType.GTE, new Semver(0, 0, 0));
+                        comparators[i] = new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, new Semver(0, 0, 0));
                     }
                     else if (semver.Patch == 0 && semver.Minor == 0)
                     {
                          comparators[i] = new SemverRange(new ISemverSatisfies[] {
-                             new SemverComparator(SemverComparator.ComparisonType.GTE, semver),
-                             new SemverComparator(SemverComparator.ComparisonType.LT, new Semver(semver.Major + 1, 0, 0))
+                             new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, semver),
+                             new SemverComparator(SemverComparator.ComparisonType.LessThan, new Semver(semver.Major + 1, 0, 0))
                          }, true);
                     }
                     else
@@ -137,8 +128,8 @@ public class SemverRange : ISemverSatisfies
                             throw new ArgumentException("Invalid X-Range! " + subRange);
                         }
                          comparators[i] = new SemverRange(new ISemverSatisfies[] {
-                             new SemverComparator(SemverComparator.ComparisonType.GTE, semver),
-                             new SemverComparator(SemverComparator.ComparisonType.LT, new Semver(semver.Major, semver.Minor + 1, 0))
+                             new SemverComparator(SemverComparator.ComparisonType.GreaterThanOrEqual, semver),
+                             new SemverComparator(SemverComparator.ComparisonType.LessThan, new Semver(semver.Major, semver.Minor + 1, 0))
                          }, true);
                     }
                 }
@@ -158,7 +149,7 @@ public class SemverRange : ISemverSatisfies
         }
         else
         {
-            return WILDCARD;
+            return Wildcard;
         }
     }
 }

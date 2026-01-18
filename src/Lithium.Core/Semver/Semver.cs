@@ -5,7 +5,7 @@ using Semver;
 
 namespace Lithium.Core.Semver;
 
-public class Semver : IComparable<Semver>, IEquatable<Semver>
+public sealed record Semver : IComparable<Semver>
 {
     private readonly SemVersion _version;
 
@@ -40,22 +40,6 @@ public class Semver : IComparable<Semver>, IEquatable<Semver>
     {
         if (other is null) return 1;
         return SemVersion.PrecedenceComparer.Compare(_version, other._version);
-    }
-    
-    public bool Equals(Semver? other)
-    {
-        if (other is null) return false;
-        return _version.Equals(other._version);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is Semver other && Equals(other);
-    }
-
-    public override int GetHashCode()
-    {
-        return _version.GetHashCode();
     }
 
     public override string ToString()
@@ -101,7 +85,7 @@ public class Semver : IComparable<Semver>, IEquatable<Semver>
                 ValidatePreRelease(preRelease);
             }
             
-            if (string.IsNullOrEmpty(str) || (str[0] != '.' && str[^1] != '.')) // Mimic Java: str.charAt(0) != '.' && str.charAt(str.length() - 1) != '.'
+            if (string.IsNullOrEmpty(str) || (str[0] != '.' && str[^1] != '.'))
             {
                 var segments = str.Split('.');
                 if (segments.Length < 1) throw new ArgumentException($"String doesn't match <major>.<minor>.<patch> ({str})");
@@ -153,8 +137,6 @@ public class Semver : IComparable<Semver>, IEquatable<Semver>
         }
         catch (FormatException)
         {
-             // Java throws IllegalArgumentException with "Failed to parse digits" or specific message
-             // We'll wrap to generic or keep specific
              throw new ArgumentException($"Failed to parse digits ({str})");
         }
     }
@@ -178,7 +160,6 @@ public class Semver : IComparable<Semver>, IEquatable<Semver>
             {
                 if (part.Length == 0 || !IsAlphaNumericHyphenString(part))
                 {
-                    // Java: Arrays.toString(preRelease)
                     var arrStr = "[" + string.Join(", ", preRelease) + "]";
                     throw new ArgumentException($"Pre-release must only be alphanumeric ({arrStr})");
                 }
@@ -188,7 +169,6 @@ public class Semver : IComparable<Semver>, IEquatable<Semver>
 
     private static bool IsAlphaNumericHyphenString(string str)
     {
-        // Java StringUtil.isAlphaNumericHyphenString
         foreach (char c in str)
         {
             if (!char.IsLetterOrDigit(c) && c != '-') return false;
