@@ -19,8 +19,9 @@ public sealed partial class HytaleServer(
 
         logger.LogInformation("Initializing Hytale Credential Store...");
         await serverAuthManager.InitializeCredentialStore();
-        
-        await EnsureAuthenticationAsync();
+
+        if (serverAuthManager.AuthMode is AuthMode.None)
+            await EnsureAuthenticationAsync();
 
         logger.LogInformation(
             "===============================================================================================");
