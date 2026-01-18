@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="IO\" />
+      <Folder Include="Packets\" />
+    </ItemGroup>
+
 </Project>
