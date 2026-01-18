@@ -1,7 +1,6 @@
 ﻿using System.Net.Quic;
 using Lithium.Core.Extensions;
 using Lithium.Core.Networking;
-using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Networking;
 
@@ -15,6 +14,8 @@ public sealed class PacketHandler(
     {
         try
         {
+            logger.LogInformation("Packet received: {connection}, {stream}", connection.RemoteEndPoint, string.Join(", ", stream.Id, stream.Type));
+            
             var headerBuffer = new byte[PacketHeader.SizeOf()];
             await ReadExactAsync(stream, headerBuffer);
 

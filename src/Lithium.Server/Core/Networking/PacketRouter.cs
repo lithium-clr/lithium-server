@@ -1,6 +1,5 @@
 ﻿using Lithium.Core.Networking;
 using Lithium.Core.Networking.Packets;
-using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Networking;
 
