@@ -1,0 +1,253 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+tone_instructions: ''
+early_access: false
+enable_free_tier: true
+reviews:
+  profile: chill
+  request_changes_workflow: true
+  high_level_summary: true
+  high_level_summary_placeholder: '@coderabbitai summary'
+  auto_title_placeholder: '@coderabbitai'
+  review_status: true
+  commit_status: true
+  poem: false
+  collapse_walkthrough: true
+  sequence_diagrams: false
+  changed_files_summary: true
+  labeling_instructions: []
+  path_filters:
+    - '**/*'
+    - '!**/obj/**'
+    - '!**/bin/**'
+    - '!**/packages/**'
+    - '!**/TestResults/**'
+    - '!**/.git/**'
+    - '!**/.aspire/**'
+    - '!**/wwwroot/**'
+    - '!**/node_modules/**'
+  path_instructions:
+    - path: '**/*.cs'
+      instructions: |
+        - Review code using C# 14 and .NET 10 (LTS) standards.
+        - Validate that code follows standard C# formatting conventions (4 spaces indentation, no tabs).
+        - Ensure proper use of nullable reference types and null-checking patterns.
+        - Leverage C# 14 features where appropriate:
+          - Extension members (extension properties, operators, static extensions) using extension blocks
+          - The `field` keyword for field-backed properties instead of explicit backing fields
+          - Null-conditional assignment (e.g., `obj?.Property = value`)
+          - First-class Span<T> and ReadOnlySpan<T> support with implicit conversions
+          - Partial constructors and partial events
+          - `nameof` with unbound generic types (e.g., `nameof(List<>)`)
+          - Lambda parameter modifiers without explicit types (e.g., `out`, `ref`, `scoped`)
+        - Validate proper async/await usage and avoid async void except for event handlers.
+        - Check for proper IDisposable/IAsyncDisposable implementation and using statements/declarations.
+        - Ensure LINQ expressions are readable and performant; prefer Span<T> for performance-critical code.
+        - For high-performance scenarios (server, packet handling), prioritize:
+          - Stack allocations (stackalloc, Span<T>) over heap allocations
+          - Struct usage over class where appropriate
+          - ArrayPool<T> for temporary buffers
+          - ValueTask<T> for frequently synchronous async methods
+        - Validate that naming follows C# conventions (PascalCase for public members, _camelCase for private fields).
+    - path: 'src/**/*.cs'
+      instructions: |
+        - This is a high-performance game server rewrite focused on minimal allocations and maximum speed.
+        - Performance is a top priority - review for:
+          - Unnecessary allocations (prefer Span<T>, stackalloc, ArrayPool<T>)
+          - Boxing of value types
+          - String concatenation in hot paths (use StringBuilder, interpolated strings, or Span<char>)
+          - LINQ in performance-critical code (prefer for/foreach loops)
+          - Proper struct design (readonly struct where possible)
+        - In the 'Summary by CodeRabbit' section, you must always provide a list of up to 25 changes to the public .NET API that will affect plugin developers or server operators.
+          If there are no changes, you must explicitly state that there are no changes to the public API in this PR.
+          The public API includes public and protected members on public classes, interfaces, and structs.
+          Provide the list by deeply analyzing code flow, including analyzing calls through private methods and dependencies.
+          Changes to be reported on include:
+          - New or removed public/protected members
+          - Changes to method return types, parameter types, or signatures
+          - Changes to method behavior that might affect consumers
+          - Breaking changes to interfaces, base classes, or event signatures
+          - Changes to plugin APIs or extension points
+        - For networking code (QUIC/UDP):
+          - Validate proper buffer management and disposal
+          - Check for potential packet processing bottlenecks
+          - Ensure thread-safety in concurrent scenarios
+        - Prefer ILogger<T> for logging over Console.WriteLine in production code.
+        - Use modern async patterns with CancellationToken support.
+        - Ensure proper exception handling with meaningful exception types.
+    - path: 'src/Lithium.Server.Core/**/*.cs'
+      instructions: |
+        - This is the core server API exposed to plugins and server operators.
+        - Pay extra attention to:
+          - Public API stability and backward compatibility
+          - Clear XML documentation comments for all public members
+          - Proper use of interfaces for extensibility
+          - Plugin lifecycle management (IPluginManager)
+          - Authentication and authorization patterns
+        - The Auth subsystem handles OAuth device flows and JWT validation - ensure security best practices.
+    - path: 'src/Lithium.Core/**/*.cs'
+      instructions: |
+        - This contains shared networking primitives and packet serialization.
+        - Focus on:
+          - Zero-allocation packet serialization using Span<T>
+          - Proper PacketHeader and PacketId validation
+          - Thread-safe packet routing and handler registration
+          - Semver parsing and comparison for protocol versioning
+    - path: 'src/Lithium.Core.ECS/**/*.cs'
+      instructions: |
+        - This is a custom Entity Component System for high-performance entity management.
+        - Review for:
+          - Cache-friendly data layouts (struct-of-arrays patterns)
+          - Minimal allocations in hot paths (queries, component access)
+          - Proper archetype management and entity movement
+          - Tag system using bitsets for fast queries
+          - System execution order and dependencies
+    - path: 'src/Lithium.Codecs/**/*.cs'
+      instructions: |
+        - This provides custom binary serialization codecs for network packets.
+        - Ensure:
+          - Zero-allocation encoding/decoding using Span<T>
+          - Proper endianness handling
+          - Codec registry is thread-safe
+          - Source generators produce efficient code
+    - path: 'src/Lithium.Server/**/*.cs'
+      instructions: |
+        - Main server implementation with QUIC networking.
+        - Review:
+          - QuicServer connection handling and lifecycle
+          - Client manager thread-safety
+          - Command system parser and executor
+          - SignalR hub integration for dashboard
+          - Plugin loading and execution
+    - path: 'src/Lithium.Client/**/*.cs'
+      instructions: |
+        - Test client for server development.
+        - Focus on correct packet handling and heartbeat logic.
+    - path: 'src/Lithium.Server.Dashboard/**/*.cs'
+      instructions: |
+        - Blazor-based web dashboard.
+        - Review Blazor component lifecycle and SignalR real-time communication.
+        - Check for proper async rendering patterns.
+    - path: 'src/Lithium.AppHost/**/*.cs'
+      instructions: |
+        - This is Aspire orchestration code for local development and deployment.
+        - Validate proper resource registration and configuration.
+        - Check for correct service discovery and inter-service communication setup.
+        - Ensure environment variables and secrets are properly managed.
+        - Verify Docker container configurations are correct.
+    - path: 'tests/**/*.cs'
+      instructions: |
+        For test code, focus on:
+        - Correctness of test assertions (using xUnit based on project structure)
+        - Test coverage of edge cases, null scenarios, and boundary conditions
+        - Clear test naming following conventions:
+          - Method_Scenario_ExpectedResult
+          - Given_When_Then
+          - Should_ExpectedBehavior_When_StateUnderTest
+        - Proper use of test fixtures, setup/teardown, and test lifecycle
+        - Async test methods are properly awaited
+        - Performance tests use appropriate benchmarking tools (BenchmarkDotNet)
+        - Be more lenient with code style and minor optimizations in test code
+    - path: '**/*.csproj'
+      instructions: |
+        - Verify target framework is <TargetFramework>net10.0</TargetFramework>
+        - Check that LangVersion is set to latest or 14 (<LangVersion>14</LangVersion>)
+        - Ensure nullable reference types are enabled (<Nullable>enable</Nullable>)
+        - Verify package versions are compatible with .NET 10
+        - Check for security vulnerabilities in dependencies
+        - Validate proper use of Aspire workload references if applicable
+        - For source generator projects (Lithium.Codecs.SourceGenerators), verify proper OutputItemType and ReferenceOutputAssembly settings
+    - path: 'docs/**/*.md'
+      instructions: |
+        - Ensure documentation is clear, concise, and up-to-date
+        - Check for broken links and outdated information
+        - Verify code examples compile and follow best practices
+        - Ensure consistency with actual implementation
+  abort_on_close: true
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    ignore_title_keywords: []
+    labels: []
+    drafts: false
+    base_branches:
+      - 'main'
+      - 'staging'
+  tools:
+    shellcheck:
+      enabled: true
+    ruff:
+      enabled: false
+    markdownlint:
+      enabled: true
+    github-checks:
+      enabled: true
+      timeout_ms: 90000
+    languagetool:
+      enabled: true
+      enabled_only: false
+      level: default
+      enabled_rules: []
+      disabled_rules:
+        - EN_UNPAIRED_BRACKETS
+      enabled_categories: []
+      disabled_categories:
+        - TYPOS
+        - TYPOGRAPHY
+        - CASING
+    biome:
+      enabled: false
+    hadolint:
+      enabled: true
+    swiftlint:
+      enabled: false
+    phpstan:
+      enabled: false
+      level: default
+    golangci-lint:
+      enabled: false
+    yamllint:
+      enabled: true
+    gitleaks:
+      enabled: true
+    checkov:
+      enabled: true
+    detekt:
+      enabled: false
+    eslint:
+      enabled: true
+    rubocop:
+      enabled: false
+    buf:
+      enabled: false
+    regal:
+      enabled: false
+    actionlint:
+      enabled: true
+    pmd:
+      enabled: false
+    cppcheck:
+      enabled: false
+    semgrep:
+      enabled: true
+    circleci:
+      enabled: true
+    ast-grep:
+      packages: []
+      rule_dirs: []
+      util_dirs: []
+      essential_rules: true
+chat:
+  auto_reply: true
+knowledge_base:
+  opt_out: false
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
+  jira:
+    project_keys: []
+  linear:
+    team_keys: []
+  pull_requests:
+    scope: auto
