@@ -19,7 +19,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ICodec<string>, NonNullStringCodec>();
         services.AddSingleton<ICodec<DateTimeOffset>, DateTimeOffsetCodec>();
         services.AddSingleton<ICodec<Guid>, GuidCodec>();
-
         
         return services;
     }
