@@ -136,6 +136,7 @@ builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
 builder.Services.AddSingleton<IPluginRegistry, PluginRegistry>();
 builder.Services.AddSingleton<IPluginManager, PluginManager>();
+builder.Services.AddSingleton<IServerManager, ServerManager>();
 
 builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 
