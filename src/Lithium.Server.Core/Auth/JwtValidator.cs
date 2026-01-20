@@ -47,7 +47,7 @@ public sealed class JwtValidator : IDisposable
         };
     }
 
-    public async Task<JwtClaims?> ValidateAccessTokenAsync(string accessToken, X509Certificate2? clientCert,
+    public async Task<JwtClaims?> ValidateAccessTokenAsync(string accessToken, X509Certificate? clientCert,
         CancellationToken ct = default)
     {
         var validationResult = await ValidateTokenInternalAsync(accessToken, requireAudience: true, ct);

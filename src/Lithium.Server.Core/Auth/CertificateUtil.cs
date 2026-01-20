@@ -5,7 +5,7 @@ namespace Lithium.Server.Core.Auth;
 
 public static class CertificateUtil
 {
-    public static bool ValidateCertificateBinding(string? thumbprintClaim, X509Certificate2? clientCert)
+    public static bool ValidateCertificateBinding(string? thumbprintClaim, X509Certificate? clientCert)
     {
         // If no claim is present, there's nothing to validate.
         if (string.IsNullOrEmpty(thumbprintClaim))
