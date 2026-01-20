@@ -6,7 +6,7 @@ namespace Lithium.Server.Core.Auth;
 public sealed record JwtClaims(
     string Issuer,
     string? Audience,
-    Guid Subject,
+    Guid? Subject,
     string Username,
     string? IpAddress,
     long IssuedAt,
