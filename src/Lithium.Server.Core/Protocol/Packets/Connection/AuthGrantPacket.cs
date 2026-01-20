@@ -1,0 +1,47 @@
+namespace Lithium.Server.Core.Protocol.Packets.Connection;
+
+public readonly struct AuthGrantPacket(
+    string? authorizationGrant,
+    string? serverIdentityToken
+) : IPacket<AuthGrantPacket>
+{
+    public static int Id => 11;
+
+    public string? AuthorizationGrant { get; } = authorizationGrant;
+    public string? ServerIdentityToken { get; } = serverIdentityToken;
+
+    public void Serialize(Stream stream)
+    {
+        byte nullBits = 0;
+
+        if (AuthorizationGrant is not null) nullBits |= 1;
+        if (ServerIdentityToken is not null) nullBits |= 2;
+
+        stream.WriteByte(nullBits);
+
+        using var varBlock = new MemoryStream();
+
+        var authGrantOffset = -1;
+        var serverIdentityOffset = -1;
+
+        if (AuthorizationGrant is not null)
+        {
+            authGrantOffset = (int)varBlock.Position;
+            PacketSerializer.WriteVarString(varBlock, AuthorizationGrant);
+        }
+
+        if (ServerIdentityToken is not null)
+        {
+            serverIdentityOffset = (int)varBlock.Position;
+            PacketSerializer.WriteVarString(varBlock, ServerIdentityToken);
+        }
+
+        // Write offsets (Fixed block)
+        stream.Write(BitConverter.GetBytes(authGrantOffset));
+        stream.Write(BitConverter.GetBytes(serverIdentityOffset));
+
+        // Write variable block
+        varBlock.Position = 0;
+        varBlock.CopyTo(stream);
+    }
+}

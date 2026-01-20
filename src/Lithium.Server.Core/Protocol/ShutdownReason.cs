@@ -27,7 +27,7 @@ public sealed record ShutdownReason
         return "ShutdownReason{exitCode=" + ExitCode + ", message='" + Message + "'}";
     }
 
-    public enum Reasons
+    public enum Reasons : byte
     {
         Shutdown = 0,
         Crash = 1,

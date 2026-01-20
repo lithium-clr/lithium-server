@@ -1,6 +1,6 @@
 namespace Lithium.Server.Core.Protocol.Transport;
 
-public enum TransportType
+public enum TransportType : byte
 {
     Tcp,
     Quic

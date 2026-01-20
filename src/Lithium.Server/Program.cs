@@ -7,6 +7,7 @@ using Lithium.Server.Core.Auth.OAuth;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Extensions;
+using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core.Storage;
 using Lithium.Server.Core.Systems.Commands;
 using Lithium.Server.Dashboard;

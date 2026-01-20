@@ -1,22 +1,21 @@
-using System.Buffers;
-
 namespace Lithium.Server.Core.Protocol;
 
 public interface IPacket
 {
-    static int PacketId { get; }
-    static int ComputedSize { get; }
-    static int NullableBitFieldSize { get; }
-    static int FixedBlockSize { get; }
-    static int VariableFieldCount { get; }
-    static int VariableBlockStart { get; }
-    static int MaxSize { get; }
-    static bool IsCompressed { get; }
+    static virtual bool IsCompressed => false;
     
-    void Serialize(IBufferWriter<byte> writer);
+    void Serialize(Stream stream)
+    {
+        throw new NotImplementedException();
+    }
 }
 
-public interface IPacket<out T> : IPacket where T : IPacket<T>
+public interface IPacket<out T> : IPacket where T : struct, IPacket<T>
 {
-    static abstract T Deserialize(ReadOnlySpan<byte> span);
+    static abstract int Id { get; }
+    
+    static virtual T Deserialize(byte[] buffer)
+    {
+        throw new NotImplementedException();
+    }
 }

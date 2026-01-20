@@ -1,6 +1,6 @@
-﻿namespace Lithium.Core.Networking;
-
-public static class ProtocolVersion
-{
-    public const int Current = 1;
-}
+﻿// namespace Lithium.Core.Networking;
+//
+// public static class ProtocolVersion
+// {
+//     public const int Current = 1;
+// }

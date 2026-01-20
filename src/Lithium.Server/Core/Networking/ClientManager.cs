@@ -1,43 +1,43 @@
-using System.Net.Quic;
-using Lithium.Core.Networking;
-using Microsoft.Extensions.Logging;
+using Lithium.Server.Core.Protocol;
+using Lithium.Server.Core.Protocol.Packets.Connection;
+using Lithium.Server.Core.Protocol.Transport;
 
 namespace Lithium.Server.Core.Networking;
 
 public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager, IAsyncDisposable
 {
     private readonly ILogger<ClientManager> _logger = loggerFactory.CreateLogger<ClientManager>();
-    private readonly Dictionary<QuicConnection, Client> _clients = new();
+    private readonly Dictionary<Channel, Client> _clients = new();
 
     private int _currentServerId = -1;
     private bool _disposed;
 
-    public void CreateClient(QuicConnection connection, int protocolVersion)
+    public Client CreateClient(Channel channel, ConnectPacket connectPacket)
     {
-        Client.Setup(this, loggerFactory);
+        // Client.Setup(this, loggerFactory);
 
         var serverId = GetNextServerId();
-        var client = new Client(connection, protocolVersion, serverId);
+        
+        var client = new Client(channel, serverId, connectPacket.Uuid, connectPacket.Language, connectPacket.Username,
+            connectPacket.ClientType);
 
-        _clients[connection] = client;
+        _clients[channel] = client;
+        _logger.LogInformation("Create client for {Uuid}", client.Uuid);
 
-        _logger.LogInformation("Client {ClientId} connected using protocol version {ProtocolVersion}", serverId,
-            protocolVersion);
+        return client;
     }
 
-    public async ValueTask RemoveClient(QuicConnection connection)
+    public async ValueTask RemoveClient(Channel channel)
     {
-        await connection.DisposeAsync();
+        await channel.CloseAsync();
 
-        if (_clients.Remove(connection, out var client))
-        {
+        if (_clients.Remove(channel, out var client))
             _logger.LogInformation("Client {ClientId} disconnected", client.ServerId);
-        }
     }
 
-    public Client? GetClient(QuicConnection connection)
+    public Client? GetClient(Channel channel)
     {
-        return _clients.GetValueOrDefault(connection);
+        return _clients.GetValueOrDefault(channel);
     }
 
     public Client? GetClient(int serverId)
@@ -51,13 +51,13 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
     }
 
     public async Task SendToClient<T>(Client client, T packet, CancellationToken ct = default)
-        where T : unmanaged, IPacket
+        where T : struct, IPacket<T>
     {
-        await client.SendPacket(packet, ct);
+        await client.SendPacketAsync(packet, ct);
     }
 
     public async Task Broadcast<T>(T packet, Client? except = null, CancellationToken ct = default)
-        where T : unmanaged, IPacket
+        where T : struct, IPacket<T>
     {
         var tasks = new List<Task>();
 
@@ -66,7 +66,7 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
             if (except is not null && client == except)
                 continue;
 
-            tasks.Add(client.SendPacket(packet, ct));
+            tasks.Add(client.SendPacketAsync(packet, ct));
         }
 
         await Task.WhenAll(tasks);
@@ -83,7 +83,7 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
         if (_disposed) return;
 
         foreach (var client in _clients.Values)
-            await client.Connection.DisposeAsync();
+            await client.DisconnectAsync();
 
         _clients.Clear();
         _disposed = true;

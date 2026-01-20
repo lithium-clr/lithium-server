@@ -5,6 +5,10 @@ namespace Lithium.Server.Core.Protocol.Transport;
 
 public interface IChannel
 {
+    QuicConnection Connection { get; }
+    QuicStream Stream { get; }
+    IPEndPoint LocalEndPoint { get; }
+    IPEndPoint RemoteEndPoint { get; }
     bool IsActive { get; }
     
     Task CloseAsync();
@@ -12,22 +16,26 @@ public interface IChannel
 
 public sealed class Channel : IChannel
 {
-    private readonly QuicConnection _connection = null!;
-    private readonly QuicStream _stream = null!;
-
+    public QuicConnection Connection { get; }
+    public QuicStream Stream { get; }
+    public IPEndPoint LocalEndPoint => Connection.LocalEndPoint;
+    public IPEndPoint RemoteEndPoint => Connection.RemoteEndPoint;
     public bool IsActive { get; private set; } = true;
-    
-    public IPEndPoint LocalEndPoint => _connection.LocalEndPoint;
-    public IPEndPoint RemoteEndPoint => _connection.RemoteEndPoint;
 
+    internal Channel(QuicConnection connection, QuicStream stream)
+    {
+        Connection = connection;
+        Stream = stream;
+    }
+    
     public async Task CloseAsync()
     {
         IsActive = false;
         
-        _stream.Close();
-        await _stream.DisposeAsync();
+        Stream.Close();
+        await Stream.DisposeAsync();
         
-        await _connection.CloseAsync(0);
-        await _connection.DisposeAsync();
+        await Connection.CloseAsync(0);
+        await Connection.DisposeAsync();
     }
 }

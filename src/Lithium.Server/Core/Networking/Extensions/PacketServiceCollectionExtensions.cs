@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
-using Lithium.Core.Networking;
-using Microsoft.Extensions.DependencyInjection;
+using Lithium.Server.Core.Protocol;
 
 namespace Lithium.Server.Core.Networking.Extensions;
 
@@ -8,26 +7,30 @@ public static class PacketServiceCollectionExtensions
 {
     public static IServiceCollection AddPacketHandlers(this IServiceCollection services, Assembly assembly)
     {
-        foreach (var type in assembly.GetTypes())
+        var assemblies = new[] { assembly, typeof(ConnectHandler).Assembly }.Distinct();
+
+        foreach (var asm in assemblies)
         {
-            if (type.IsAbstract || type.IsInterface)
-                continue;
-
-            foreach (var handlerInterface in type.GetInterfaces())
+            foreach (var type in asm.GetTypes())
             {
-                if (!handlerInterface.IsGenericType)
+                if (type.IsAbstract || type.IsInterface)
                     continue;
 
-                if (handlerInterface.GetGenericTypeDefinition() != typeof(IPacketHandler<>))
-                    continue;
+                foreach (var handlerInterface in type.GetInterfaces())
+                {
+                    if (!handlerInterface.IsGenericType)
+                        continue;
 
-                services.AddSingleton(type);
+                    if (handlerInterface.GetGenericTypeDefinition() != typeof(IPacketHandler<>))
+                        continue;
+
+                    services.AddSingleton(type);
+                }
             }
         }
 
+        services.AddSingleton<InitialPacketRouter>();
         services.AddSingleton<IPacketHandler, PacketHandler>();
-        services.AddSingleton<PacketRegistry>();
-        services.AddSingleton<IPacketRouter, PacketRouter>();
 
         return services;
     }

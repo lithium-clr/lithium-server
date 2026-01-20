@@ -13,6 +13,8 @@ public interface IServerAuthManager
     string? IdentityToken { get; }
     AuthMode AuthMode { get; }
     GameProfile[] PendingProfiles { get; }
+    GameSessionResponse? GameSession { get; }
+    AuthCredentials? Credentials { get; }
 
     Task InitializeAsync(ServerAuthManager.ServerAuthContext context);
     Task InitializeCredentialStore();
@@ -51,6 +53,7 @@ public sealed class ServerAuthManager(
     public string? SessionToken => _context.SessionToken;
     public string? IdentityToken => _context.IdentityToken;
     public bool IsSinglePlayer => _context.IsSinglePlayer;
+    public AuthCredentials? Credentials => credentialStore.Data;
 
     public sealed class ServerAuthContext
     {
@@ -66,7 +69,7 @@ public sealed class ServerAuthManager(
         _context = context;
 
         InitializeRefreshScheduler();
-
+        
         logger.LogInformation("Initializing ServerAuthManager...");
         logger.LogInformation("Context:");
         logger.LogInformation("- IsSinglePlayer: " + context.IsSinglePlayer);
@@ -243,7 +246,7 @@ public sealed class ServerAuthManager(
         }
 
         var profiles = await sessionServiceClient.GetGameProfilesAsync(accessToken);
-
+        
         if (profiles is null || profiles.Length is 0)
         {
             logger.LogWarning("No game profiles found for this account");
@@ -566,7 +569,7 @@ public sealed class ServerAuthManager(
                 logger.LogWarning("Force refresh failed");
                 return null;
             }
-
+            
             accessToken = credentialStore.Data?.AccessToken;
             result = await sessionServiceClient.CreateGameSessionAsync(accessToken, profileUuid);
 

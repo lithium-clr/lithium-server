@@ -23,10 +23,8 @@ public static class AuthConstants
     public const string EnvServerSessionToken = "HYTALE_SERVER_SESSION_TOKEN";
     private static readonly string? ServerAudienceOverride = Environment.GetEnvironmentVariable("HYTALE_SERVER_AUDIENCE");
 
-    // public static string GetServerAudience()
-    // {
-    //     return ServerAudienceOverride is not null
-    //         ? ServerAudienceOverride
-    //         : ServerAuthManager.getInstance().getServerSessionId().toString();
-    // }
+    public static string GetServerAudience(string serverSessionId)
+    {
+        return ServerAudienceOverride ?? serverSessionId;
+    }
 }

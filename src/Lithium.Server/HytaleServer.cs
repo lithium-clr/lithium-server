@@ -22,7 +22,7 @@ public sealed partial class HytaleServer(
 
         if (serverAuthManager.AuthMode is AuthMode.None)
             await EnsureAuthenticationAsync();
-
+        
         logger.LogInformation(
             "===============================================================================================");
         logger.LogInformation("Hytale Server Booted!");
