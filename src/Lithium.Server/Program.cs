@@ -121,7 +121,7 @@ builder.Services.AddSingleton<JwtValidator>();
 
 // Codecs
 builder.Services.AddLithiumCodecs();
-builder.Services.AddJwkCodec();
+builder.Services.AddJwkKeyCodec();
 builder.Services.AddJwksResponseCodec();
 builder.Services.AddAccessTokenResponseCodec();
 builder.Services.AddAuthCredentialsCodec();
