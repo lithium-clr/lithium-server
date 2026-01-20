@@ -62,15 +62,37 @@ public static class PacketSerializer
 
     public static Guid ReadUuid(byte[] buffer, int offset)
     {
-        // Hytale UUID is two longs (big-endian order in bytes usually, but check)
-        // Actually Java UUID(long most, long least)
-        // We'll just read 16 bytes.
+        if (buffer.Length < offset + 16)
+            throw new ArgumentException("Buffer too small for UUID");
+
         var bytes = new byte[16];
         Array.Copy(buffer, offset, bytes, 0, 16);
-        // C# Guid byte order is weird (mixed), but if we just want to print it:
-        return new Guid(bytes); 
+
+        // Swap endian for 3 first segments
+        var data1 = BitConverter.ToInt32(bytes, 0).SwapEndian();
+        var data2 = BitConverter.ToInt16(bytes, 4).SwapEndian();
+        var data3 = BitConverter.ToInt16(bytes, 6).SwapEndian();
+
+        return new Guid(
+            data1, data2, data3,
+            bytes[8], bytes[9], bytes[10], bytes[11],
+            bytes[12], bytes[13], bytes[14], bytes[15]
+        );
     }
 
+    private static int SwapEndian(this int value)
+    {
+        return ((value & 0xFF) << 24) |
+               ((value & 0xFF00) << 8) |
+               ((value >> 8) & 0xFF00) |
+               ((value >> 24) & 0xFF);
+    }
+
+    private static short SwapEndian(this short value)
+    {
+        return (short)(((value & 0xFF) << 8) | ((value >> 8) & 0xFF));
+    }
+    
     public static void WriteByteArray(Stream stream, byte[]? data)
     {
         if (data is null) return;
