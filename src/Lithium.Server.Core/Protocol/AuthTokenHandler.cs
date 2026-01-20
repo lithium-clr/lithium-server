@@ -13,6 +13,7 @@ public sealed class AuthTokenHandler(
     IServerAuthManager serverAuthManager,
     ISessionServiceClient sessionServiceClient,
     IClientManager clientManager,
+    IServerManager serverManager,
     JwtValidator jwtValidator
 ) : IPacketHandler<AuthTokenPacket>
 {
@@ -158,12 +159,14 @@ public sealed class AuthTokenHandler(
                 }
                 else
                 {
-                    var passwordChallenge = GeneratePasswordChallengeIfNeeded();
-
+                    var passwordChallenge = PasswordChallengeUtility.GenerateChallenge();
+                    serverManager.CurrentPasswordChallenge = passwordChallenge;
+                    
                     logger.LogInformation(
                         "Sending ServerAuthToken to {RemoteEndPoint} (with password challenge: {PasswordChallenge})",
                         client.Channel.RemoteEndPoint, passwordChallenge is not null);
 
+                    // Challenge the server for password
                     var packet = new ServerAuthTokenPacket(serverAccessToken, passwordChallenge);
                     await client.SendPacketAsync(packet);
 
@@ -181,7 +184,9 @@ public sealed class AuthTokenHandler(
             ReferralSource = _referralSource
         };
 
+        // TODO - This kind of state need to be persistent
         _authState = AuthState.Authenticated;
+        
         // this.clearTimeout();
 
         logger.LogInformation("Mutual authentication complete for {Username} ({Uuid}) from {RemoteEndPoint}",
@@ -196,21 +201,5 @@ public sealed class AuthTokenHandler(
         logger.LogInformation("Authenticated");
 
         return Task.CompletedTask;
-    }
-
-    private static byte[]? GeneratePasswordChallengeIfNeeded()
-    {
-        // TODO - This is the hardcoded password of the server
-        var password = "PWD";
-
-        if (!string.IsNullOrEmpty(password))
-        {
-            var challenge = new byte[32];
-            new SecureRandom().NextBytes(challenge);
-
-            return challenge;
-        }
-
-        return null;
     }
 }
