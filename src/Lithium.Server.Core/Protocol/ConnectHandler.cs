@@ -12,19 +12,19 @@ public sealed class ConnectHandler(
     IClientManager clientManager
 ) : IPacketHandler<ConnectPacket>
 {
-    public async Task Handle(Channel channel, ConnectPacket p)
+    public async Task Handle(Channel channel, ConnectPacket packet)
     {
-        var client = clientManager.CreateClient(channel, p);
+        var client = clientManager.CreateClient(channel, packet);
         logger.LogInformation("(ConnectHandler) -> Client connected: {RemoteEndPoint}", channel.RemoteEndPoint);
-        
-        await RequestAuthGrant(client, p);
+
+        await RequestAuthGrant(client, packet);
     }
 
     private async Task RequestAuthGrant(Client client, ConnectPacket packet)
     {
         logger.LogInformation("Requesting authorization grant...: " + packet.Uuid);
-
-        var clientIdentityToken = packet.IdentityToken;
+        
+        var identityToken = packet.IdentityToken;
         var serverSessionToken = serverAuthManager.GameSession?.SessionToken;
 
         if (!string.IsNullOrEmpty(serverSessionToken))
@@ -33,9 +33,11 @@ public sealed class ConnectHandler(
 
             var serverAudience = AuthConstants.GetServerAudience(serverSessionToken);
 
-            var authGrant =
-                await sessionServiceClient.RequestAuthorizationGrantAsync(clientIdentityToken, serverAudience,
-                    serverSessionToken);
+            var authGrant = await sessionServiceClient.RequestAuthorizationGrantAsync(
+                identityToken,
+                serverAudience,
+                serverSessionToken
+            );
 
             logger.LogInformation("Authorization grant obtained: {AuthGrant}", authGrant);
 

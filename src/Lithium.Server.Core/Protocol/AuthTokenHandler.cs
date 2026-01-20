@@ -25,15 +25,15 @@ public sealed class AuthTokenHandler(
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return;
-
+        
         logger.LogInformation("(AuthTokenHandler) -> {AccessToken}, {ServerAuthorizationGrant}", packet.AccessToken,
             packet.ServerAuthorizationGrant);
-
+        
         var accessToken = packet.AccessToken;
 
         if (!string.IsNullOrEmpty(accessToken))
         {
-            var serverAuthorizationGrant = packet.ServerAuthorizationGrant;
+            var serverAuthGrant = packet.ServerAuthorizationGrant;
             var clientCert = serverAuthManager.GetClientCertificate(channel.Connection);
             // var clientCert = channel.Connection.RemoteCertificate;
 
@@ -41,7 +41,7 @@ public sealed class AuthTokenHandler(
                 "Received AuthToken from {RemoteEndPoint}, validating JWT (mLTS cert cert present: {CertPresent}, server auth grant: {ServerAuthGrant})",
                 channel.RemoteEndPoint,
                 clientCert is not null,
-                !string.IsNullOrEmpty(serverAuthorizationGrant)
+                !string.IsNullOrEmpty(serverAuthGrant)
             );
 
             var claims = await jwtValidator.ValidateAccessTokenAsync(accessToken, clientCert);
@@ -55,6 +55,11 @@ public sealed class AuthTokenHandler(
             {
                 var tokenUuid = claims.Subject;
                 var tokenUsername = claims.Username;
+
+                // Testing purpose
+                // tokenUuid = Guid.Parse("dd6a9f05-2f8a-9b4c-8b5f-01561c765cab");
+                
+                logger.LogInformation("dd: " + string.Join(", ", tokenUuid, tokenUsername));
 
                 if (tokenUuid is null || !tokenUuid.Equals(client.Uuid))
                 {
@@ -79,10 +84,10 @@ public sealed class AuthTokenHandler(
                 {
                     // authenticatedUsername = tokenUsername;
 
-                    if (!string.IsNullOrEmpty(serverAuthorizationGrant))
+                    if (!string.IsNullOrEmpty(serverAuthGrant))
                     {
                         _authState = AuthState.ExchangingServerToken;
-                        await ExchangeServerAuthGrant(client, serverAuthorizationGrant);
+                        await ExchangeServerAuthGrant(client, serverAuthGrant);
                     }
                     else
                     {
@@ -141,7 +146,7 @@ public sealed class AuthTokenHandler(
                     serverCertFingerprintStr,
                     serverSessionToken);
 
-                if (_authState is AuthState.ExchangingServerToken)
+                if (_authState is not AuthState.ExchangingServerToken)
                 {
                     logger.LogWarning("State changed during server token exchange, current state: {AuthState}",
                         _authState);

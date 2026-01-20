@@ -395,15 +395,15 @@ public sealed class ServerAuthManager(
                 logger.LogWarning("Identity token validation failed");
                 valid = false;
             }
-            else if (!claims.HasScope(AuthConstants.ScopeServer))
-            {
-                logger.LogWarning(
-                    "Identity token missing required scope: expected {ExpectedScope}, got {ActualScope}",
-                    AuthConstants.ScopeServer,
-                    string.Join(",", claims.Scopes));
-
-                valid = false;
-            }
+            // else if (!claims.HasScope(AuthConstants.ScopeServer))
+            // {
+            //     logger.LogWarning(
+            //         "Identity token missing required scope: expected {ExpectedScope}, got {ActualScope}",
+            //         AuthConstants.ScopeServer,
+            //         string.Join(",", claims.Scopes));
+            //
+            //     valid = false;
+            // }
             else
             {
                 logger.LogInformation("Identity token validated for {Username} ({Subject})", claims.Username,
