@@ -9,7 +9,8 @@ public interface IClient
 
     Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
         where T : struct, IPacket<T>;
-    Task DisconnectAsync();
+
+    Task DisconnectAsync(string reason);
 }
 
 public sealed class Client : IClient
@@ -52,8 +53,11 @@ public sealed class Client : IClient
         Console.WriteLine($"[Sent] {packet.GetType().Name} (ID {packetId}, Payload Length: {payload.Length})");
     }
 
-    public Task DisconnectAsync()
+    public Task DisconnectAsync(string? reason = null)
     {
+        if (!string.IsNullOrEmpty(reason))
+            Console.WriteLine("(DisconnectAsync) -> " + reason);
+        
         return Channel.CloseAsync();
     }
 }
