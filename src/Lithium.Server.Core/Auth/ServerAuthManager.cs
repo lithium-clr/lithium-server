@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Net.Quic;
 using System.Security.Cryptography.X509Certificates;
 using Lithium.Server.Core.Auth.OAuth;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ public interface IServerAuthManager
     GameProfile[] PendingProfiles { get; }
     GameSessionResponse? GameSession { get; }
     AuthCredentials? Credentials { get; }
+    X509Certificate? ServerCertificate { get; }
 
     Task InitializeAsync(ServerAuthManager.ServerAuthContext context);
     Task InitializeCredentialStore();
@@ -22,6 +24,8 @@ public interface IServerAuthManager
     bool CancelActiveFlow();
     Task Shutdown();
     void SetServerCertificate(X509Certificate2 cert);
+    void AddClientCertificate(QuicConnection sender, X509Certificate2 clientCert);
+    X509Certificate2? GetClientCertificate(QuicConnection sender);
 }
 
 public sealed class ServerAuthManager(
@@ -34,13 +38,15 @@ public sealed class ServerAuthManager(
 {
     private const int RefreshBufferSeconds = 300;
 
+    private readonly ConcurrentDictionary<QuicConnection, X509Certificate2> _clientCertificates = new();
+    
     private CancellationTokenSource? _refreshCts;
     private DateTimeOffset? _tokenExpiry = DateTimeOffset.MinValue;
 
     public GameSessionResponse? GameSession { get; private set; }
 
     private readonly ConcurrentDictionary<Guid, GameProfile> _availableProfiles = new();
-    private X509Certificate _serverCertificate;
+    public X509Certificate? ServerCertificate { get; private set; }
 
     private AuthMode _pendingAuthMode;
     private Action? _cancelActiveFlow;
@@ -63,7 +69,7 @@ public sealed class ServerAuthManager(
         public string? SessionToken { get; init; }
         public string? IdentityToken { get; init; }
     }
-
+    
     public async Task InitializeAsync(ServerAuthContext context)
     {
         _context = context;
@@ -192,6 +198,16 @@ public sealed class ServerAuthManager(
                     break;
             }
         }
+    }
+
+    public void AddClientCertificate(QuicConnection sender, X509Certificate2 clientCert)
+    {
+        _clientCertificates[sender] = clientCert;
+    }
+
+    public X509Certificate2? GetClientCertificate(QuicConnection sender)
+    {
+        return _clientCertificates.GetValueOrDefault(sender);
     }
 
     public async ValueTask<AuthResult> StartFlowAsync(IOAuthDeviceFlow flow, CancellationTokenSource cts)
@@ -657,7 +673,7 @@ public sealed class ServerAuthManager(
 
     public void SetServerCertificate(X509Certificate2 cert)
     {
-        _serverCertificate = cert;
+        ServerCertificate = cert;
         logger.LogInformation("Server certificate set {cert}", cert.SubjectName.Name);
     }
 
