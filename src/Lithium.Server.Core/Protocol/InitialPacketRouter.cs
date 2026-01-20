@@ -10,10 +10,8 @@ public sealed class InitialPacketRouter : PacketRouter
         ILogger<InitialPacketRouter> logger
     ) : base(logger)
     {
-        // Register<ClientConnectPacket, ClientConnectHandler>(services);
-        // Register<HeartbeatPacket, PingHandler>(services);
-
         Register<ConnectPacket, ConnectHandler>(services);
         Register<AuthTokenPacket, AuthTokenHandler>(services);
+        Register<PasswordResponsePacket, PasswordResponseHandler>(services);
     }
 }
