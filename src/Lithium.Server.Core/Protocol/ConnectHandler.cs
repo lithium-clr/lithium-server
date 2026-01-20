@@ -22,7 +22,7 @@ public sealed class ConnectHandler(
 
     private async Task RequestAuthGrant(Client client, ConnectPacket packet)
     {
-        logger.LogInformation("Requesting authorization grant...");
+        logger.LogInformation("Requesting authorization grant...: " + packet.Uuid);
 
         var clientIdentityToken = packet.IdentityToken;
         var serverSessionToken = serverAuthManager.GameSession?.SessionToken;
@@ -41,7 +41,7 @@ public sealed class ConnectHandler(
 
             if (string.IsNullOrEmpty(authGrant))
             {
-                // Disconnect("Failed to obtain authorization grant from session service");
+                await client.DisconnectAsync("Failed to obtain authorization grant from session service");
                 logger.LogInformation("Failed to obtain authorization grant from session service");
             }
             else
@@ -60,7 +60,7 @@ public sealed class ConnectHandler(
         else
         {
             logger.LogError("Server session token not available - cannot request auth grant");
-            // Disconnect("Server authentication unavailable - please try again later");
+            await client.DisconnectAsync("Server authentication unavailable - please try again later");
         }
     }
 }
