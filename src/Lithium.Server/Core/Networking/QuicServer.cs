@@ -2,13 +2,13 @@
 using System.Net;
 using System.Net.Quic;
 using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core.Protocol.Packets.Connection;
 using Lithium.Server.Core.Protocol.Transport;
 using Lithium.Server.Dashboard;
 using Microsoft.AspNetCore.SignalR;
-using Org.BouncyCastle.Security;
 using IPacket = Lithium.Server.Core.Protocol.IPacket;
 
 namespace Lithium.Server.Core.Networking;
@@ -43,8 +43,7 @@ public sealed class QuicServer(
         logger.LogInformation("Hytale QUIC Listener starting...");
 
         var cert = CertificateUtility.GetOrCreateSelfSignedCertificate(CertificateFileName, CertificatePassword);
-
-        // serverAuthManager.SetServerCertificate(cert);
+        serverAuthManager.SetServerCertificate(cert);
 
         // Use IPv6Any with DualMode (supported by default on Windows/Linux) to handle both IPv4 and IPv6
         var endpoint = new IPEndPoint(IPAddress.IPv6Any, DefaultPort);
@@ -53,8 +52,17 @@ public sealed class QuicServer(
         {
             ApplicationProtocols = [new SslApplicationProtocol(Protocol)],
             ServerCertificate = cert,
-            ClientCertificateRequired = false,
-            RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+            ClientCertificateRequired = true,
+            RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
+            {
+                logger.LogInformation("(RemoteCertificateValidationCallback) -> Register client certificate: " + sender.GetType());
+                
+                if (certificate is not X509Certificate2 clientCert) 
+                    return false;
+                
+                serverAuthManager.AddClientCertificate((QuicConnection)sender, clientCert);
+                return true;
+            }
         };
 
         var quicServerConnectionOptions = new QuicServerConnectionOptions
@@ -76,7 +84,7 @@ public sealed class QuicServer(
         };
 
         _listener = await QuicListener.ListenAsync(listenerOptions, ct);
-        
+
         logger.LogInformation("Listening on {ListenerLocalEndPoint} with ALPN '{Protocol}'", _listener.LocalEndPoint,
             Protocol);
 
@@ -103,7 +111,7 @@ public sealed class QuicServer(
             while (true)
             {
                 var stream = await connection.AcceptInboundStreamAsync();
-                
+
                 var channel = new Channel(connection, stream);
                 _channels[connection] = channel;
 
@@ -128,7 +136,7 @@ public sealed class QuicServer(
             logger.LogInformation("[{ConnectionRemoteEndPoint}] Connection closed.", connection.RemoteEndPoint);
         }
     }
-    
+
     private async Task HandleStreamAsync(QuicStream stream, EndPoint remoteEndPoint)
     {
         try
@@ -137,7 +145,7 @@ public sealed class QuicServer(
             while (true)
             {
                 var header = new byte[8];
-    
+
                 if (!await ReadExactAsync(stream, header))
                 {
                     // Stream closed by peer (EOF)
@@ -145,17 +153,17 @@ public sealed class QuicServer(
                         stream.Id);
                     break;
                 }
-    
+
                 var payloadLength = BitConverter.ToInt32(header, 0);
                 var packetId = BitConverter.ToInt32(header, 4);
-    
+
                 logger.LogInformation(
                     $"[{remoteEndPoint}] Stream ID {stream.Id}: Received Packet ID: {packetId}, Payload Length: {payloadLength}");
-    
+
                 if (payloadLength > 0)
                 {
                     var payload = new byte[payloadLength];
-    
+
                     if (await ReadExactAsync(stream, payload))
                     {
                         if (packetId is 0) // Connect
@@ -163,16 +171,16 @@ public sealed class QuicServer(
                             try
                             {
                                 var connect = ConnectPacket.Deserialize(payload);
-    
+
                                 logger.LogInformation(
                                     "[{RemoteEndPoint}] Connect Packet: User={Username}, UUID={Uuid}, Type={ClientType}",
                                     remoteEndPoint, connect.Username, connect.Uuid, connect.ClientType);
                                 logger.LogInformation("[{RemoteEndPoint}] Hash={ProtocolHash}", remoteEndPoint,
                                     connect.ProtocolHash);
-    
+
                                 // -- AUTH
                                 await RequestAuthGrant(stream, connect);
-    
+
                                 // var passwordChallenge = GeneratePasswordChallengeIfNeeded(connect.Uuid);
                                 //
                                 // var connectAccept = new ConnectAccept
@@ -187,15 +195,15 @@ public sealed class QuicServer(
                                 logger.LogError("[{RemoteEndPoint}] Error deserializing Connect: {ExMessage}",
                                     remoteEndPoint, ex.Message);
                             }
-    
+
                             logger.LogInformation("[{RemoteEndPoint}] Stream ID {StreamId}: Sending AuthGrant...",
                                 remoteEndPoint, stream.Id);
-    
+
                             // Try to send a fake JWT if no real token is available
                             // Header: {"alg":"HS256","typ":"JWT"} -> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
                             // Payload: {"sub":"1234567890","name":"LithiumServer","iat":1516239022} -> eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkxpdGhpdW1TZXJ2ZXIiLCJpYXQiOjE1MTYyMzkwMjJ9
                             // Signature: fake -> SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-    
+
                             // var grant = new AuthGrant
                             // {
                             //     AuthorizationGrant = "mock_auth_grant",
@@ -209,18 +217,18 @@ public sealed class QuicServer(
                             logger.LogInformation(
                                 "[{RemoteEndPoint}] Stream ID {StreamId}: Received AuthToken. Sending ServerAuthToken...",
                                 remoteEndPoint, stream.Id);
-    
+
                             // var passwordChallenge = GeneratePasswordChallengeIfNeeded()
-    
+
                             // var serverAuthToken = new ServerAuthTokenPacket
                             // {
                             //     ServerAccessToken = serverAuthManager.Credentials.AccessToken,
                             //     PasswordChallenge = null // No server password
                             // };
-    
+
                             var serverAuthToken =
                                 new ServerAuthTokenPacket(serverAuthManager.Credentials?.AccessToken, null);
-    
+
                             await SendPacketAsync<ServerAuthTokenPacket>(stream, serverAuthToken);
                         }
                         else
@@ -256,21 +264,21 @@ public sealed class QuicServer(
     private async Task RequestAuthGrant(QuicStream stream, ConnectPacket packet)
     {
         logger.LogInformation("Requesting authorization grant...");
-    
+
         var clientIdentityToken = packet.IdentityToken;
         var serverSessionToken = serverAuthManager.GameSession?.SessionToken;
-    
+
         if (!string.IsNullOrEmpty(serverSessionToken))
         {
             logger.LogInformation("Server session token available - requesting auth grant..");
-    
+
             var serverAudience = AuthConstants.GetServerAudience(serverSessionToken);
             var authGrant =
                 await sessionServiceClient.RequestAuthorizationGrantAsync(clientIdentityToken, serverAudience,
                     serverSessionToken);
-    
+
             logger.LogInformation("Authorization grant obtained: {AuthGrant}", authGrant);
-    
+
             if (string.IsNullOrEmpty(authGrant))
             {
                 // Disconnect("Failed to obtain authorization grant from session service");
@@ -279,7 +287,7 @@ public sealed class QuicServer(
             else
             {
                 var serverIdentityToken = serverAuthManager.GameSession?.IdentityToken;
-    
+
                 if (!string.IsNullOrEmpty(serverIdentityToken))
                 {
                     // var authGrantPacket = new AuthGrantPacket
@@ -287,9 +295,9 @@ public sealed class QuicServer(
                     //     AuthorizationGrant = authGrant,
                     //     ServerIdentityToken = serverIdentityToken
                     // };
-    
+
                     var authGrantPacket = new AuthGrantPacket(authGrant, serverIdentityToken);
-    
+
                     logger.LogInformation("Sending authorization grant to client...");
                     await SendPacketAsync<AuthGrantPacket>(stream, authGrantPacket);
                 }
@@ -300,29 +308,6 @@ public sealed class QuicServer(
             logger.LogError("Server session token not available - cannot request auth grant");
             // Disconnect("Server authentication unavailable - please try again later");
         }
-    }
-
-    private static byte[]? GeneratePasswordChallengeIfNeeded(Guid playerUuid)
-    {
-        // TODO - This is the hardcoded password of the server
-        var password = "PWD";
-
-        if (!string.IsNullOrEmpty(password))
-        {
-            // if (Constants.SINGLEPLAYER) {
-            //     UUID ownerUuid = SingleplayerModule.getUuid();
-            //     if (ownerUuid != null && ownerUuid.equals(playerUuid)) {
-            //         return null;
-            //     }
-            // }
-
-            var challenge = new byte[32];
-            new SecureRandom().NextBytes(challenge);
-
-            return challenge;
-        }
-
-        return null;
     }
 
     private static async Task SendPacketAsync<T>(QuicStream stream, IPacket packet)
