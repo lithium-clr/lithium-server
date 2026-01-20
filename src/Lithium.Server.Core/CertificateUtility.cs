@@ -2,7 +2,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Lithium.Server.Core.Networking;
+namespace Lithium.Server.Core;
 
 public static class CertificateUtility
 {
@@ -59,5 +59,35 @@ public static class CertificateUtility
 
         // FIX: Add Exportable flag here as well
         return new X509Certificate2(pfxBytes, certificatePassword, X509KeyStorageFlags.Exportable);
+    }
+    
+    public static string? ComputeCertificateFingerprint(X509Certificate certificate)
+    {
+        try
+        {
+            var certBytes = certificate.GetRawCertData();
+            var hash = SHA256.HashData(certBytes);
+
+            return Base64UrlEncode(hash);
+        }
+        catch (CryptographicException ex)
+        {
+            Console.WriteLine("SHA-256 algorithm not available");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Failed to encode certificate");
+            return null;
+        }
+    }
+
+    private static string Base64UrlEncode(byte[] data)
+    {
+        return Convert.ToBase64String(data)
+            // .TrimEnd('=')
+            .Replace('+', '-')
+            .Replace('/', '_')
+            .Replace("=", "");
     }
 }
