@@ -1,11 +1,11 @@
-using Lithium.Server.Core.Protocol.Attributes;
 using System.Security.Cryptography;
 using Lithium.Server.Core.Auth;
+using Lithium.Server.Core.Protocol.Attributes;
 using Lithium.Server.Core.Protocol.Packets.Connection;
+using Lithium.Server.Core.Protocol.Routers;
 using Lithium.Server.Core.Protocol.Transport;
-using Microsoft.Extensions.Logging;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Protocol.Handlers;
 
 [RegisterPacketHandler(typeof(PasswordRouter))]
 public sealed class PasswordResponseHandler(
@@ -96,7 +96,7 @@ public sealed class PasswordResponseHandler(
         }
     }
 
-    private void ProceedToSetup(Client client)
+    private void ProceedToSetup(IClient client)
     {
         logger.LogInformation("Connection complete for {Username} ({Uuid}), transitioning to setup", client.Username,
             client.Uuid);

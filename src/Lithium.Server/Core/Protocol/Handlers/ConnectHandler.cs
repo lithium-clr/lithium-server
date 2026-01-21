@@ -1,10 +1,10 @@
-﻿using Lithium.Server.Core.Protocol.Attributes;
-using Lithium.Server.Core.Auth;
+﻿using Lithium.Server.Core.Auth;
+using Lithium.Server.Core.Protocol.Attributes;
 using Lithium.Server.Core.Protocol.Packets.Connection;
+using Lithium.Server.Core.Protocol.Routers;
 using Lithium.Server.Core.Protocol.Transport;
-using Microsoft.Extensions.Logging;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Protocol.Handlers;
 
 [RegisterPacketHandler(typeof(HandshakeRouter))]
 public sealed class ConnectHandler(
@@ -18,13 +18,13 @@ public sealed class ConnectHandler(
 {
     public async Task Handle(Channel channel, ConnectPacket packet)
     {
-        var client = clientManager.CreateClient(channel, packet);
+        var client = clientManager.CreateClient(channel, packet.ClientType, packet.Uuid, packet.Username, packet.Language);
         logger.LogInformation("(ConnectHandler) -> Client connected: {RemoteEndPoint}", channel.RemoteEndPoint);
 
         await RequestAuthGrant(client, packet);
     }
 
-    private async Task RequestAuthGrant(Client client, ConnectPacket packet)
+    private async Task RequestAuthGrant(IClient client, ConnectPacket packet)
     {
         logger.LogInformation("Requesting authorization grant...: " + packet.Uuid);
         

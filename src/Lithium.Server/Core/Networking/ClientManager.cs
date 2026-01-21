@@ -7,19 +7,17 @@ namespace Lithium.Server.Core.Networking;
 public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager, IAsyncDisposable
 {
     private readonly ILogger<ClientManager> _logger = loggerFactory.CreateLogger<ClientManager>();
-    private readonly Dictionary<Channel, Client> _clients = new();
+    private readonly Dictionary<Channel, IClient> _clients = new();
 
     private int _currentServerId = -1;
     private bool _disposed;
 
-    public Client CreateClient(Channel channel, ConnectPacket connectPacket)
+    public IClient CreateClient(Channel channel, ClientType clientType, Guid uuid, string username, string? language)
     {
         // Client.Setup(this, loggerFactory);
 
         var serverId = GetNextServerId();
-        
-        var client = new Client(channel, serverId, connectPacket.Uuid, connectPacket.Language, connectPacket.Username,
-            connectPacket.ClientType);
+        var client = new Client(channel, serverId, uuid, language, username, clientType);
 
         _clients[channel] = client;
         _logger.LogInformation("Create client for {Uuid}", client.Uuid);
@@ -35,28 +33,28 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
             _logger.LogInformation("Client {ClientId} disconnected", client.ServerId);
     }
 
-    public Client? GetClient(Channel channel)
+    public IClient? GetClient(Channel channel)
     {
         return _clients.GetValueOrDefault(channel);
     }
 
-    public Client? GetClient(int serverId)
+    public IClient? GetClient(int serverId)
     {
         return _clients.Values.FirstOrDefault(x => x.ServerId == serverId);
     }
 
-    public IEnumerable<Client> GetAllClients()
+    public IEnumerable<IClient> GetAllClients()
     {
         return _clients.Values.ToList();
     }
 
-    public async Task SendToClient<T>(Client client, T packet, CancellationToken ct = default)
+    public async Task SendToClient<T>(IClient client, T packet, CancellationToken ct = default)
         where T : struct, IPacket<T>
     {
         await client.SendPacketAsync(packet, ct);
     }
 
-    public async Task Broadcast<T>(T packet, Client? except = null, CancellationToken ct = default)
+    public async Task Broadcast<T>(T packet, IClient? except = null, CancellationToken ct = default)
         where T : struct, IPacket<T>
     {
         var tasks = new List<Task>();

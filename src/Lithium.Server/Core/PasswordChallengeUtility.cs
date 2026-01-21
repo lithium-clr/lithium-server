@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Org.BouncyCastle.Security;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core;
 
 public static class PasswordChallengeUtility
 {

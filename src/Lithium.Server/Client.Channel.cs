@@ -1,6 +1,7 @@
+using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core.Protocol.Transport;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server;
 
 public partial class Client
 {

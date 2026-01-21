@@ -1,10 +1,10 @@
-using Lithium.Server.Core.Protocol.Attributes;
 using Lithium.Server.Core.Auth;
+using Lithium.Server.Core.Protocol.Attributes;
 using Lithium.Server.Core.Protocol.Packets.Connection;
+using Lithium.Server.Core.Protocol.Routers;
 using Lithium.Server.Core.Protocol.Transport;
-using Microsoft.Extensions.Logging;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Protocol.Handlers;
 
 [RegisterPacketHandler(typeof(AuthenticationRouter))]
 public sealed class AuthTokenHandler(
@@ -109,7 +109,7 @@ public sealed class AuthTokenHandler(
         }
     }
 
-    private async Task ExchangeServerAuthGrant(Client client, string serverAuthGrant)
+    private async Task ExchangeServerAuthGrant(IClient client, string serverAuthGrant)
     {
         ArgumentException.ThrowIfNullOrEmpty(serverAuthGrant);
 
@@ -177,7 +177,7 @@ public sealed class AuthTokenHandler(
         }
     }
 
-    private async Task CompleteAuthentication(Client client, byte[]? passwordChallenge)
+    private async Task CompleteAuthentication(IClient client, byte[]? passwordChallenge)
     {
         _auth = new PlayerAuthentication(client.Uuid, client.Username)
         {
@@ -196,7 +196,7 @@ public sealed class AuthTokenHandler(
         await OnAuthenticated(client, passwordChallenge);
     }
 
-    private Task OnAuthenticated(Client client, byte[]? passwordChallenge)
+    private Task OnAuthenticated(IClient client, byte[]? passwordChallenge)
     {
         // TODO - Switch to PasswordPacketHandler
         logger.LogInformation("Authenticated");
