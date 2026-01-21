@@ -6,5 +6,6 @@ public readonly struct PasswordAcceptedPacket : IPacket<PasswordAcceptedPacket>
 
     public void Serialize(Stream stream)
     {
+        // Nothing to serialize, but we need to override this method to avoid to trigger a NotImplementedException
     }
 }
