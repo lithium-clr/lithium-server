@@ -1,20 +1,11 @@
-using Microsoft.Extensions.Logging;
+using Lithium.Server.Core;
 using Microsoft.Extensions.Options;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server;
 
 public sealed class ServerManagerOptions
 {
     // public ITransport Transport { get; set; } = null!;
-}
-
-public interface IServerManager
-{
-    // ITransport Transport { get; }
-    // IReadOnlyList<Channel> Listeners { get; }
-
-    string Password { get; }
-    byte[]? CurrentPasswordChallenge { get; set; }
 }
 
 public sealed class ServerManager(
