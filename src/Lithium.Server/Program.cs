@@ -1,13 +1,16 @@
 ﻿using System.Reflection;
 using Lithium.Codecs;
+using Lithium.Codecs.Primitives;
 using Lithium.Server;
 using Lithium.Server.Core;
 using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Auth.OAuth;
+using Lithium.Server.Core.Codecs;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Extensions;
 using Lithium.Server.Core.Protocol;
+using Lithium.Server.Core.Semver;
 using Lithium.Server.Core.Storage;
 using Lithium.Server.Core.Systems.Commands;
 using Lithium.Server.Dashboard;
@@ -20,14 +23,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add CORS services
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.WithOrigins("https://localhost:7244") // Correct port for the web app
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("https://localhost:7244") // Correct port for the web app
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
 });
 
 builder.Logging.ClearProviders();
@@ -93,19 +95,13 @@ builder.Services.AddSignalR();
 builder.Services.AddHttpClient();
 
 // Hytale authentication services
-builder.Services.Configure<SessionServiceOptions>(options =>
-{
-    options.Url = AuthConstants.SessionServiceUrl;
-});
+builder.Services.Configure<SessionServiceOptions>(options => { options.Url = AuthConstants.SessionServiceUrl; });
 builder.Services.AddSingleton<ISessionServiceProvider, SessionServiceProvider>();
 builder.Services.AddSingleton<ISessionServiceClient, SessionServiceClient>();
 
 // Register the credential store
 // Use FileAuthCredentialStore by default for persistence
-builder.Services.Configure<FileStoreOptions>(options =>
-{
-    options.Path = Path.Combine(AppContext.BaseDirectory);
-});
+builder.Services.Configure<FileStoreOptions>(options => { options.Path = Path.Combine(AppContext.BaseDirectory); });
 builder.Services.AddSingleton<IAuthCredentialStore, AuthCredentialStore>();
 
 builder.Services.AddSingleton<IServerAuthManager, ServerAuthManager>();
@@ -120,7 +116,10 @@ builder.Services.Configure<JwtValidatorOptions>(options =>
 builder.Services.AddSingleton<JwtValidator>();
 
 // Codecs
-builder.Services.AddLithiumCodecs();
+builder.Services.AddLithiumCodecs()
+    .AddSingleton<ICodec<Lithium.Server.Core.Semver.Semver>, SemverCodec>()
+    .AddSingleton<ICodec<SemverRange>, SemverRangeCodec>();
+
 builder.Services.AddJwkKeyCodec();
 builder.Services.AddJwksResponseCodec();
 builder.Services.AddAccessTokenResponseCodec();
@@ -131,7 +130,7 @@ builder.Services.AddGameSessionResponseCodec();
 
 // Core services
 builder.Services.AddSingleton<HytaleServer>();
-builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
+builder.Services.AddSingleton<IServerConfigurationProvider, ServerConfigurationProvider>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
 builder.Services.AddSingleton<IPluginRegistry, PluginRegistry>();

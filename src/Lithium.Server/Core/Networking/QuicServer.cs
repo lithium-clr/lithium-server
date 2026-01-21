@@ -94,7 +94,7 @@ public sealed class QuicServer(
             try
             {
                 var connection = await _listener.AcceptConnectionAsync(ct);
-                logger.LogInformation("[{}] Connection accepted.", connection.RemoteEndPoint);
+                logger.LogInformation("[{RemoteEndPoint}] Connection accepted.", connection.RemoteEndPoint);
                 _ = HandleConnectionAsync(connection);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)

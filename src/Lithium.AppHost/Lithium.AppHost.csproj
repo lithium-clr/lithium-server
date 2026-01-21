@@ -8,10 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lithium.Client\Lithium.Client.csproj" />
     <ProjectReference Include="..\Lithium.Server\Lithium.Server.csproj" />
     <ProjectReference Include="..\Lithium.Server.Dashboard\Lithium.Server.Dashboard.csproj" />
-    <ProjectReference Include="..\Lithium.Core\Lithium.Core.csproj" IsAspireProjectResource="false" />
     <ProjectReference Include="..\Lithium.Core.ECS\Lithium.Core.ECS.csproj" IsAspireProjectResource="false" />
     <ProjectReference Include="..\Lithium.Server.Core\Lithium.Server.Core.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
