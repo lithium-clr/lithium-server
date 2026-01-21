@@ -1,31 +1,35 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public struct ConnectPacket : IPacket<ConnectPacket>
+public readonly struct ConnectPacket(
+    string protocolHash,
+    ClientType clientType,
+    string? language,
+    string? identityToken,
+    Guid uuid,
+    string username,
+    byte[]? referralData,
+    HostAddress? referralSource
+) : IPacket<ConnectPacket>
 {
     public static int Id => 0;
 
-    public string ProtocolHash { get; set; } = "";
-    public ClientType ClientType { get; set; }
-    public string? Language { get; set; }
-    public string? IdentityToken { get; set; }
-    public Guid Uuid { get; set; }
-    public string Username { get; set; } = "";
-    public byte[]? ReferralData { get; set; }
-    public HostAddress? ReferralSource { get; set; }
-
-    public ConnectPacket()
-    {
-    }
+    public readonly string ProtocolHash = protocolHash;
+    public readonly ClientType ClientType = clientType;
+    public readonly string? Language = language;
+    public readonly string? IdentityToken = identityToken;
+    public readonly Guid Uuid = uuid;
+    public readonly string Username = username;
+    public readonly byte[]? ReferralData = referralData;
+    public readonly HostAddress? ReferralSource = referralSource;
 
     public static ConnectPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
         var reader = new PacketReader(buffer);
-        var obj = new ConnectPacket();
         var nullBits = reader.ReadByte();
 
-        obj.ProtocolHash = reader.ReadFixedString(64);
-        obj.ClientType = (ClientType)reader.ReadByte();
-        obj.Uuid = reader.ReadUuid();
+        var protocolHash = reader.ReadFixedString(64);
+        var clientType = (ClientType)reader.ReadByte();
+        var uuid = reader.ReadUuid();
 
         var languageOffset = reader.ReadInt32();
         var identityOffset = reader.ReadInt32();
@@ -35,33 +39,47 @@ public struct ConnectPacket : IPacket<ConnectPacket>
 
         var varBlock = buffer[reader.Offset..];
 
-        if ((nullBits & 1) != 0 && languageOffset != -1)
-        {
-            obj.Language = PacketSerializer.ReadVarString(varBlock[languageOffset..], out _);
-        }
+        string? language = null;
 
-        if ((nullBits & 2) != 0 && identityOffset != -1)
-        {
-            obj.IdentityToken = PacketSerializer.ReadVarString(varBlock[identityOffset..], out _);
-        }
+        if ((nullBits & 1) is not 0 && languageOffset is not -1)
+            language = PacketSerializer.ReadVarString(varBlock[languageOffset..], out _);
 
-        if (usernameOffset != -1)
-        {
-            obj.Username = PacketSerializer.ReadVarString(varBlock[usernameOffset..], out _);
-        }
+        string? identityToken = null;
 
-        if ((nullBits & 4) != 0 && referralDataOffset != -1)
+        if ((nullBits & 2) is not 0 && identityOffset is not -1)
+            identityToken = PacketSerializer.ReadVarString(varBlock[identityOffset..], out _);
+
+        var username = ""; // Must be initialized for readonly struct
+
+        if (usernameOffset is not -1)
+            username = PacketSerializer.ReadVarString(varBlock[usernameOffset..], out _);
+
+        byte[]? referralData = null;
+
+        if ((nullBits & 4) is not 0 && referralDataOffset is not -1)
         {
             var data = varBlock[referralDataOffset..];
             var len = PacketSerializer.ReadVarInt(data, out var varIntLen);
-            obj.ReferralData = data.Slice(varIntLen, len).ToArray();
+            referralData = data.Slice(varIntLen, len).ToArray();
         }
 
-        if ((nullBits & 8) != 0 && referralSourceOffset != -1)
+        HostAddress? referralSource = null;
+
+        if ((nullBits & 8) is not 0 && referralSourceOffset is not -1)
         {
-            obj.ReferralSource = HostAddress.Deserialize(varBlock[referralSourceOffset..], out _);
+            int bytesRead; // HostAddress.Deserialize now takes a span and returns bytesRead
+            referralSource = HostAddress.Deserialize(varBlock[referralSourceOffset..], out bytesRead);
         }
 
-        return obj;
+        return new ConnectPacket(
+            protocolHash,
+            clientType,
+            language,
+            identityToken,
+            uuid,
+            username,
+            referralData,
+            referralSource
+        );
     }
 }
