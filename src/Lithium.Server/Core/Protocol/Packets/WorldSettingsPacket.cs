@@ -2,13 +2,13 @@ namespace Lithium.Server.Core.Protocol.Packets;
 
 public readonly struct WorldSettingsPacket(
     int worldHeight,
-    AssetPacket[]? requiredAssets
+    Asset[]? requiredAssets
 ) : IPacket<WorldSettingsPacket>
 {
     public static int Id => 20;
 
     public readonly int WorldHeight = worldHeight;
-    public readonly AssetPacket[]? RequiredAssets = requiredAssets;
+    public readonly Asset[]? RequiredAssets = requiredAssets;
 
     public static WorldSettingsPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
@@ -16,7 +16,7 @@ public readonly struct WorldSettingsPacket(
         var nullBits = reader.ReadByte();
         var worldHeight = reader.ReadInt32();
 
-        AssetPacket[]? requiredAssets = null;
+        Asset[]? requiredAssets = null;
 
         if ((nullBits & 1) is not 0)
         {
@@ -25,7 +25,7 @@ public readonly struct WorldSettingsPacket(
             if (count > 4096000)
                 throw new InvalidDataException($"RequiredAssets exceeds max length 4096000. Got {count}");
 
-            requiredAssets = new AssetPacket[count];
+            requiredAssets = new Asset[count];
 
             // We need to keep track of the offset relative to the original buffer
             // reader.Offset points to where we are currently.
@@ -36,7 +36,7 @@ public readonly struct WorldSettingsPacket(
 
             for (var i = 0; i < count; i++)
             {
-                requiredAssets[i] = AssetPacket.Deserialize(buffer[currentOffset..], out var bytesRead);
+                requiredAssets[i] = Asset.Deserialize(buffer[currentOffset..], out var bytesRead);
                 currentOffset += bytesRead;
             }
         }
