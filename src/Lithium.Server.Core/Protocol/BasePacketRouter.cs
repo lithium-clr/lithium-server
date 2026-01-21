@@ -9,13 +9,17 @@ public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
 
     public abstract void Initialize(IServiceProvider sp);
 
+    protected virtual bool ShouldAcceptPacket(Channel channel, int packetId, byte[] payload) => true;
+    
     public void Register<T>(IPacketHandler<T> handler) where T : struct, IPacket<T>
     {
         var packetId = T.Id;
+
         if (_routes.ContainsKey(packetId))
         {
             logger.LogWarning("Packet {Packet} (ID {Id}) is already registered to {Router}.", typeof(T).Name, packetId,
                 GetType().Name);
+
             return;
         }
 
@@ -38,9 +42,10 @@ public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
 
     public async Task Route(Channel channel, int packetId, byte[] payload)
     {
+        if (!ShouldAcceptPacket(channel, packetId, payload))
+            return;
+
         if (_routes.TryGetValue(packetId, out var action))
-        {
             await action(channel, packetId, payload);
-        }
     }
 }

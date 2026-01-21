@@ -7,7 +7,7 @@ public interface IPacketHandler
     Task HandleAsync(Channel channel);
 }
 
-public interface IPacketHandler<T> where T : struct, IPacket
+public interface IPacketHandler<in T> where T : struct, IPacket
 {
     Task Handle(Channel channel, T packet);
 }

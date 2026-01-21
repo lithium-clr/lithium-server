@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Lithium.Server.Core.Protocol.Transport;
+﻿using Lithium.Server.Core.Protocol.Transport;
 
 namespace Lithium.Server.Core.Protocol;
 

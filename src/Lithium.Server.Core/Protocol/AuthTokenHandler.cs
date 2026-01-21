@@ -1,11 +1,8 @@
 using Lithium.Server.Core.Protocol.Attributes;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Protocol.Packets.Connection;
 using Lithium.Server.Core.Protocol.Transport;
 using Microsoft.Extensions.Logging;
-using Org.BouncyCastle.Security;
 
 namespace Lithium.Server.Core.Protocol;
 

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Protocol;
 
-public class PacketRouterService(
+public sealed class PacketRouterService(
     ILogger<PacketRouterService> logger,
     IPacketRouter defaultRouter
 )
