@@ -26,7 +26,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Lithium.SourceGenerators\Lithium.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Lithium.Core\Lithium.Core.csproj"/>
         <ProjectReference Include="..\Lithium.Server.Core\Lithium.Server.Core.csproj"/>
     </ItemGroup>
 
