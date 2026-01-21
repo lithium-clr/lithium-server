@@ -1,3 +1,5 @@
+using Lithium.Server.Core.Protocol.Transport;
+
 namespace Lithium.Server.Core.Protocol;
 
 public partial class Client
@@ -12,7 +14,7 @@ public partial class Client
         var payload = ms.ToArray();
 
         using var stream = new MemoryStream();
-        PacketSerializer.WriteHeader(stream, packetId, payload.Length);
+        PacketWriter.WriteHeader(stream, packetId, payload.Length);
         stream.Write(payload);
 
         var data = stream.ToArray();

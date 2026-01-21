@@ -1,3 +1,4 @@
+using System.Buffers.Binary;
 using System.Text;
 
 namespace Lithium.Server.Core.Protocol;
@@ -6,113 +7,108 @@ public static class PacketSerializer
 {
     public static void WriteVarInt(Stream stream, int value)
     {
-        while ((value & -128) != 0)
+        var v = (uint)value;
+
+        while (v >= 0x80)
         {
-            stream.WriteByte((byte)(value & 127 | 128));
-            value >>= 7;
+            stream.WriteByte((byte)(v | 0x80));
+            v >>= 7;
         }
-        
-        stream.WriteByte((byte)value);
+
+        stream.WriteByte((byte)v);
     }
 
-    public static int ReadVarInt(byte[] buffer, int offset, out int bytesRead)
+    public static int ReadVarInt(ReadOnlySpan<byte> buffer, out int bytesRead)
     {
-        var value = 0;
+        uint result = 0;
         var shift = 0;
-        
         bytesRead = 0;
-        
+
         while (true)
         {
-            var b = buffer[offset + bytesRead];
-            value |= (b & 127) << shift;
-            bytesRead++;
-            if ((b & 128) is 0) return value;
+            if (bytesRead >= buffer.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(buffer), "Unexpected end of buffer while reading VarInt.");
+            }
+
+            var b = buffer[bytesRead++];
+            result |= (uint)(b & 0x7F) << shift;
+
+            if ((b & 0x80) is 0)
+                return (int)result;
+
             shift += 7;
-            if (shift > 35) throw new Exception("VarInt too long");
+
+            if (shift >= 35)
+                throw new FormatException("VarInt is too big (exceeds 5 bytes).");
         }
     }
 
-    public static void WriteVarString(Stream stream, string value)
+    public static void WriteVarString(Stream stream, string? value)
     {
-        if (string.IsNullOrEmpty(value)) return;
-        
+        if (string.IsNullOrEmpty(value))
+        {
+            WriteVarInt(stream, 0);
+            return;
+        }
+
         var bytes = Encoding.UTF8.GetBytes(value);
-        
         WriteVarInt(stream, bytes.Length);
         stream.Write(bytes);
     }
 
-    public static string ReadVarString(byte[] buffer, int offset, out int bytesRead)
+    public static string ReadVarString(ReadOnlySpan<byte> buffer, out int totalBytesRead)
     {
-        var length = ReadVarInt(buffer, offset, out var varIntLen);
-        bytesRead = varIntLen + length;
-        
-        return Encoding.UTF8.GetString(buffer, offset + varIntLen, length);
-    }
+        var length = ReadVarInt(buffer, out var varIntLen);
 
-    public static string ReadFixedString(byte[] buffer, int offset, int length)
-    {
-        // Fixed strings in Hytale seem to be null-terminated or just fixed length ASCII
-        var s = Encoding.ASCII.GetString(buffer, offset, length);
-        var nullIndex = s.IndexOf('\0');
-        
-        return nullIndex != -1 ? s[..nullIndex] : s;
-    }
-
-    public static Guid ReadUuid(byte[] buffer, int offset)
-    {
-        if (buffer.Length < offset + 16)
-            throw new ArgumentException("Buffer too small for UUID");
-
-        var bytes = new byte[16];
-        Array.Copy(buffer, offset, bytes, 0, 16);
-
-        // Swap endian for 3 first segments
-        var data1 = BitConverter.ToInt32(bytes, 0).SwapEndian();
-        var data2 = BitConverter.ToInt16(bytes, 4).SwapEndian();
-        var data3 = BitConverter.ToInt16(bytes, 6).SwapEndian();
-
-        return new Guid(
-            data1, data2, data3,
-            bytes[8], bytes[9], bytes[10], bytes[11],
-            bytes[12], bytes[13], bytes[14], bytes[15]
-        );
-    }
-
-    private static int SwapEndian(this int value)
-    {
-        return ((value & 0xFF) << 24) |
-               ((value & 0xFF00) << 8) |
-               ((value >> 8) & 0xFF00) |
-               ((value >> 24) & 0xFF);
-    }
-
-    private static short SwapEndian(this short value)
-    {
-        return (short)(((value & 0xFF) << 8) | ((value >> 8) & 0xFF));
-    }
-    
-    public static void WriteByteArray(Stream stream, byte[]? data)
-    {
-        if (data is null) return;
-        
-        WriteVarInt(stream, data.Length);
-        stream.Write(data);
-    }
-
-    public static void WriteHeader(Stream stream, int packetId, int payloadLength)
-    {
-        var lengthBytes = BitConverter.GetBytes(payloadLength);
-        var idBytes = BitConverter.GetBytes(packetId);
-            
-        if (!BitConverter.IsLittleEndian)
+        if (length is 0)
         {
-            Array.Reverse(lengthBytes);
-            Array.Reverse(idBytes);
+            totalBytesRead = varIntLen;
+            return string.Empty;
         }
 
-        stream.Write(lengthBytes);
-        stream.Write(idBytes);
+        if (buffer.Length < varIntLen + length)
+            throw new ArgumentOutOfRangeException(nameof(buffer),
+                "Buffer is too small for the declared string length.");
+
+        totalBytesRead = varIntLen + length;
+        return Encoding.UTF8.GetString(buffer.Slice(varIntLen, length));
+    }
+
+    public static string ReadFixedString(ReadOnlySpan<byte> buffer, int length)
+    {
+        if (buffer.Length < length)
+            throw new ArgumentOutOfRangeException(nameof(buffer), "Buffer is too small for fixed string.");
+
+        var content = buffer[..length];
+        var nullIndex = content.IndexOf((byte)0);
+
+        return Encoding.ASCII.GetString(nullIndex is not -1 ? content[..nullIndex] : content);
+    }
+
+    public static Guid ReadUuid(ReadOnlySpan<byte> buffer)
+    {
+        if (buffer.Length < 16)
+            throw new ArgumentOutOfRangeException(nameof(buffer), "Buffer is too small for UUID.");
+
+        var a = BinaryPrimitives.ReadInt32BigEndian(buffer);
+        var b = BinaryPrimitives.ReadInt16BigEndian(buffer[4..]);
+        var c = BinaryPrimitives.ReadInt16BigEndian(buffer[6..]);
+
+        return new Guid(a, b, c,
+            buffer[8], buffer[9], buffer[10], buffer[11],
+            buffer[12], buffer[13], buffer[14], buffer[15]);
+    }
+
+    public static void WriteByteArray(Stream stream, byte[]? data)
+    {
+        if (data is null)
+        {
+            WriteVarInt(stream, 0);
+            return;
+        }
+
+        WriteVarInt(stream, data.Length);
+        stream.Write(data);
     }
 }

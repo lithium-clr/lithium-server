@@ -11,12 +11,11 @@ public sealed class PacketRouterService(
 )
 {
     private readonly ConcurrentDictionary<Channel, IPacketRouter> _activeRouters = new();
-    private readonly ILogger<PacketRouterService> _logger = logger;
 
     public void SetRouter(Channel channel, IPacketRouter router)
     {
         _activeRouters[channel] = router;
-        // _logger.LogDebug("Switched router for channel to {RouterType}", router.GetType().Name);
+        logger.LogDebug("Switched router for channel to {RouterType}", router.GetType().Name);
     }
 
     private IPacketRouter GetRouter(Channel channel)

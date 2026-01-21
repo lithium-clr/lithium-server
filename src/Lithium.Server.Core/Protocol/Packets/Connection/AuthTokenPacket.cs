@@ -4,66 +4,28 @@ public struct AuthTokenPacket : IPacket<AuthTokenPacket>
 {
     public static int Id => 12;
 
-    public string? AccessToken { get; set; }
-    public string? ServerAuthorizationGrant { get; set; }
+    public string? AccessToken { get; private set; }
+    public string? ServerAuthorizationGrant { get; private set; }
 
-    public void Serialize(Stream stream)
+    public static AuthTokenPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
-        byte nullBits = 0;
-
-        if (AccessToken is not null) nullBits |= 1;
-        if (ServerAuthorizationGrant != null) nullBits |= 2;
-
-        stream.WriteByte(nullBits);
-
-        using var varBlock = new MemoryStream();
-
-        var accessTokenOffset = -1;
-        var serverAuthorizationGrantOffset = -1;
-
-        if (AccessToken != null)
-        {
-            accessTokenOffset = (int)varBlock.Position;
-            PacketSerializer.WriteVarString(varBlock, AccessToken);
-        }
-
-        if (ServerAuthorizationGrant != null)
-        {
-            serverAuthorizationGrantOffset = (int)varBlock.Position;
-            PacketSerializer.WriteVarString(varBlock, ServerAuthorizationGrant);
-        }
-
-        stream.Write(BitConverter.GetBytes(accessTokenOffset));
-        stream.Write(BitConverter.GetBytes(serverAuthorizationGrantOffset));
-
-        varBlock.Position = 0;
-        varBlock.CopyTo(stream);
-    }
-
-    public static AuthTokenPacket Deserialize(byte[] buffer)
-    {
+        var reader = new PacketReader(buffer);
         var obj = new AuthTokenPacket();
-        var nullBits = buffer[0];
+        var nullBits = reader.ReadByte();
 
-        // Fixed block starts after null bits (1 byte)
-        // Variable block starts after null bits (1) + 2 offsets of 4 bytes (8) = 9
-        const int varBlockStart = 9;
+        var accessTokenOffset = reader.ReadInt32();
+        var serverAuthOffset = reader.ReadInt32();
 
-        if ((nullBits & 1) is not 0)
+        var varBlock = buffer[reader.Offset..];
+
+        if ((nullBits & 1) != 0 && accessTokenOffset != -1)
         {
-            var accessTokenOffset = BitConverter.ToInt32(buffer, 1);
-
-            if (accessTokenOffset is not -1)
-                obj.AccessToken = PacketSerializer.ReadVarString(buffer, varBlockStart + accessTokenOffset, out _);
+            obj.AccessToken = PacketSerializer.ReadVarString(varBlock[accessTokenOffset..], out _);
         }
 
-        if ((nullBits & 2) != 0)
+        if ((nullBits & 2) != 0 && serverAuthOffset != -1)
         {
-            var serverAuthorizationGrantOffset = BitConverter.ToInt32(buffer, 5);
-
-            if (serverAuthorizationGrantOffset is not -1)
-                obj.ServerAuthorizationGrant =
-                    PacketSerializer.ReadVarString(buffer, varBlockStart + serverAuthorizationGrantOffset, out _);
+            obj.ServerAuthorizationGrant = PacketSerializer.ReadVarString(varBlock[serverAuthOffset..], out _);
         }
 
         return obj;

@@ -14,7 +14,7 @@ public interface IPacket<out T> : IPacket where T : struct, IPacket<T>
 {
     static abstract int Id { get; }
     
-    static virtual T Deserialize(byte[] buffer)
+    static virtual T Deserialize(ReadOnlySpan<byte> buffer)
     {
         throw new NotImplementedException();
     }

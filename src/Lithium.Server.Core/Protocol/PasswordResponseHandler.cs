@@ -61,6 +61,7 @@ public sealed class PasswordResponseHandler(
 
                             var passwordRejectedPacket =
                                 new PasswordRejectedPacket(passwordChallenge, _attemptsRemaining);
+                            
                             await client.SendPacketAsync(passwordRejectedPacket);
                         }
                     }

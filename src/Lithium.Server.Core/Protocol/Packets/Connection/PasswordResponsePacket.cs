@@ -6,29 +6,18 @@ public struct PasswordResponsePacket : IPacket<PasswordResponsePacket>
 
     public byte[]? Hash { get; private set; }
     
-    public static PasswordResponsePacket Deserialize(byte[] buffer)
+    public static PasswordResponsePacket Deserialize(ReadOnlySpan<byte> buffer)
     {
+        var reader = new PacketReader(buffer);
         var obj = new PasswordResponsePacket();
-        var offset = 0;
-        var nullBits = buffer[offset];
+        var nullBits = reader.ReadByte();
+
+        if ((nullBits & 1) is 0) return obj;
         
-        offset++;
-
-        if ((nullBits & 1) is not 0)
-        {
-            var length = PacketSerializer.ReadVarInt(buffer, offset, out var varIntBytes);
-                
-            if (length > 64)
-                throw new Exception("Hash exceeds max length 64");
-
-            offset += varIntBytes;
-                
-            obj.Hash = new byte[length];
-            Array.Copy(buffer, offset, obj.Hash, 0, length);
-            
-            // offset += length; // Not strictly needed as we return obj here and don't read more
-        }
-
+        var length = reader.ReadVarInt();
+        if (length > 64) throw new Exception("Hash exceeds max length 64");
+        
+        obj.Hash = reader.ReadBytes(length).ToArray();
         return obj;
     }
 }
