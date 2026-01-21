@@ -24,15 +24,15 @@ public sealed class AuthTokenHandler(
     private HostAddress _referralSource;
 
     private ServerManager ServerManager => (ServerManager)serverManager;
-    
+
     public async Task Handle(Channel channel, AuthTokenPacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return;
-        
+
         logger.LogInformation("(AuthTokenHandler) -> {AccessToken}, {ServerAuthorizationGrant}", packet.AccessToken,
             packet.ServerAuthorizationGrant);
-        
+
         var accessToken = packet.AccessToken;
 
         if (!string.IsNullOrEmpty(accessToken))
@@ -59,11 +59,6 @@ public sealed class AuthTokenHandler(
             {
                 var tokenUuid = claims.Subject;
                 var tokenUsername = claims.Username;
-
-                // Testing purpose
-                // tokenUuid = Guid.Parse("dd6a9f05-2f8a-9b4c-8b5f-01561c765cab");
-                
-                logger.LogInformation("dd: " + string.Join(", ", tokenUuid, tokenUsername));
 
                 if (tokenUuid is null || !tokenUuid.Equals(client.Uuid))
                 {
@@ -162,12 +157,15 @@ public sealed class AuthTokenHandler(
                 }
                 else
                 {
-                    var passwordChallenge = PasswordChallengeUtility.GenerateChallenge();
+                    var hasPassword = !string.IsNullOrEmpty(ServerManager.Configuration.Password);
+                    var passwordChallenge = hasPassword ? PasswordChallengeUtility.GenerateChallenge() : null;
+
                     ServerManager.CurrentPasswordChallenge = passwordChallenge;
-                    
+
                     logger.LogInformation(
-                        "Sending ServerAuthToken to {RemoteEndPoint} (with password challenge: {PasswordChallenge})",
-                        client.Channel.RemoteEndPoint, passwordChallenge is not null);
+                        "Sending ServerAuthToken to {RemoteEndPoint} (with password: {Password}, challenge: {PasswordChallenge})",
+                        client.Channel.RemoteEndPoint, !string.IsNullOrEmpty(ServerManager.Configuration.Password),
+                        passwordChallenge is not null);
 
                     // Challenge the server for password
                     var packet = new ServerAuthTokenPacket(serverAccessToken, passwordChallenge);
@@ -189,7 +187,7 @@ public sealed class AuthTokenHandler(
 
         // TODO - This kind of state need to be persistent
         _authState = AuthState.Authenticated;
-        
+
         // this.clearTimeout();
 
         logger.LogInformation("Mutual authentication complete for {Username} ({Uuid}) from {RemoteEndPoint}",
@@ -202,9 +200,8 @@ public sealed class AuthTokenHandler(
     {
         // TODO - Switch to PasswordPacketHandler
         logger.LogInformation("Authenticated");
-        
-        routerService.SetRouter(client.Channel, passwordRouter);
 
+        routerService.SetRouter(client.Channel, passwordRouter);
         return Task.CompletedTask;
     }
 }

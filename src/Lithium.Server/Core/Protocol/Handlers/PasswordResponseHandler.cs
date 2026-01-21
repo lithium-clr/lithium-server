@@ -59,11 +59,13 @@ public sealed class PasswordResponseHandler(
                         }
                         else
                         {
-                            passwordChallenge = PasswordChallengeUtility.GenerateChallenge();
+                            var hasPassword = !string.IsNullOrEmpty(ServerManager.Configuration.Password);
+
+                            passwordChallenge = hasPassword ? PasswordChallengeUtility.GenerateChallenge() : null;
 
                             var passwordRejectedPacket =
                                 new PasswordRejectedPacket(passwordChallenge, _attemptsRemaining);
-                            
+
                             await client.SendPacketAsync(passwordRejectedPacket);
                         }
                     }
@@ -102,6 +104,5 @@ public sealed class PasswordResponseHandler(
     {
         logger.LogInformation("Connection complete for {Username} ({Uuid}), transitioning to setup", client.Username,
             client.Uuid);
-        
     }
 }
