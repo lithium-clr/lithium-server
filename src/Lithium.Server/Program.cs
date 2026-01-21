@@ -154,6 +154,9 @@ builder.Services.AddConsoleCommands();
 
 var app = builder.Build();
 
+// Manually initialize routers to avoid circular dependency
+RouterInitializer.InitializeRouters(app.Services);
+
 // Use CORS
 app.UseCors();
 
