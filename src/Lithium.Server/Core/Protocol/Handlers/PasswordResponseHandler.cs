@@ -18,12 +18,14 @@ public sealed class PasswordResponseHandler(
 {
     private int _attemptsRemaining = 3;
 
+    private ServerManager ServerManager => (ServerManager)serverManager;
+
     public async Task Handle(Channel channel, PasswordResponsePacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return;
 
-        var passwordChallenge = serverManager.CurrentPasswordChallenge;
+        var passwordChallenge = ServerManager.CurrentPasswordChallenge;
 
         if (passwordChallenge is not null && passwordChallenge.Length is not 0)
         {

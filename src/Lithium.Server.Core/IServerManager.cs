@@ -6,6 +6,4 @@ public interface IServerManager
     // IReadOnlyList<Channel> Listeners { get; }
 
     public ServerConfiguration Configuration { get; }
-    
-    byte[]? CurrentPasswordChallenge { get; set; }
 }

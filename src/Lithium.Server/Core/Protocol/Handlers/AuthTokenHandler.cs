@@ -23,6 +23,8 @@ public sealed class AuthTokenHandler(
     private byte[] _referralData;
     private HostAddress _referralSource;
 
+    private ServerManager ServerManager => (ServerManager)serverManager;
+    
     public async Task Handle(Channel channel, AuthTokenPacket packet)
     {
         var client = clientManager.GetClient(channel);
@@ -161,7 +163,7 @@ public sealed class AuthTokenHandler(
                 else
                 {
                     var passwordChallenge = PasswordChallengeUtility.GenerateChallenge();
-                    serverManager.CurrentPasswordChallenge = passwordChallenge;
+                    ServerManager.CurrentPasswordChallenge = passwordChallenge;
                     
                     logger.LogInformation(
                         "Sending ServerAuthToken to {RemoteEndPoint} (with password challenge: {PasswordChallenge})",
