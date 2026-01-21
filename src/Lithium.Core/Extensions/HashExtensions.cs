@@ -64,7 +64,7 @@ public static class HashExtensions
         // return hash / 4.294967295E9;
         
         long masked = h & 0xFFFFFFFFL;
-        return masked / 4294967295.0;
+        return masked / 4294967296.0;
     }
     
     /// <summary>
@@ -74,6 +74,6 @@ public static class HashExtensions
     {
         long h = Hash(Hash(l1, l2));
         long masked = h & 0xFFFFFFFFL;
-        return masked / 4294967295.0;
+        return masked / 4294967296.0;
     }
 }
