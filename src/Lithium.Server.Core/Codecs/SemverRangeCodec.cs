@@ -1,15 +1,18 @@
 using System.Buffers;
-using Lithium.Core.Semver;
+using Lithium.Codecs;
+using Lithium.Server.Core.Semver;
 
-namespace Lithium.Codecs.Primitives;
+namespace Lithium.Server.Core.Codecs;
 
 public sealed class SemverRangeCodec(ICodec<string> stringCodec) : ICodec<SemverRange>
 {
     public SemverRange Decode(ref SequenceReader<byte> reader)
     {
         var str = stringCodec.Decode(ref reader);
-        if (str is null) throw new InvalidDataException("Decoded string for SemverRange cannot be null.");
-        return SemverRange.FromString(str);
+
+        return str is null
+            ? throw new InvalidDataException("Decoded string for SemverRange cannot be null.")
+            : SemverRange.FromString(str);
     }
 
     public void Encode(SemverRange value, IBufferWriter<byte> writer)
