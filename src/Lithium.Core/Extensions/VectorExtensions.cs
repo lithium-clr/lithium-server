@@ -13,37 +13,19 @@ public static class VectorExtensions
     /// <returns>The rotated vector.</returns>
     public static Vector3 RotateY(this Vector3 vector, float angleDegrees, bool clockwise = true)
     {
-        float radians = float.DegreesToRadians(angleDegrees);
-        if (clockwise)
-        {
-            
-        }
-        else 
+        var radians = float.DegreesToRadians(angleDegrees);
+        if (!clockwise)
         {
             radians = -radians;
         }
 
-        // Apply rotation matrix for Y axis (rotating X and Z)
-
-        
         var cos = MathF.Cos(radians);
         var sin = MathF.Sin(radians);
 
-        // Note: The Java code seems to treat "clockwise" as the positive rotation in its formula
-        
-        float x1, z1;
-        if (clockwise)
-        {
-            x1 = vector.X * cos - vector.Z * sin;
-            z1 = vector.X * sin + vector.Z * cos;
-        }
-        else
-        {
-            x1 = vector.X * cos + vector.Z * sin;
-            z1 = -vector.X * sin + vector.Z * cos;
-        }
+        var x = vector.X * cos - vector.Z * sin;
+        var z = vector.X * sin + vector.Z * cos;
 
-        return new Vector3(x1, vector.Y, z1);
+        return new Vector3(x, vector.Y, z);
     }
 
     /// <summary>
