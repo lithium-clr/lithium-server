@@ -1,3 +1,4 @@
+using Lithium.Server.Core.Protocol.Attributes;
 using System.Security.Cryptography;
 using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Protocol.Packets.Connection;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Protocol;
 
+[RegisterPacketHandler(typeof(PasswordRouter))]
 public sealed class PasswordResponseHandler(
     ILogger<PasswordResponseHandler> logger,
     IServerAuthManager serverAuthManager,

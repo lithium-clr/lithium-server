@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Lithium.Codecs.SourceGenerators;
+namespace Lithium.SourceGenerators;
 
 [Generator]
 public sealed class CodecGenerator : IIncrementalGenerator
@@ -64,11 +64,12 @@ public sealed class CodecGenerator : IIncrementalGenerator
         sb.AppendLine();
         sb.AppendLine($"namespace {namespaceName};");
         sb.AppendLine();
-        sb.AppendLine($"public sealed partial class {className}Codec(ICodecRegistry registry) : ICodec<{fullTypeName}>");
+        sb.AppendLine(
+            $"public sealed partial class {className}Codec(ICodecRegistry registry) : ICodec<{fullTypeName}>");
         sb.AppendLine("{");
         sb.AppendLine($"    public void Encode({fullTypeName} value, IBufferWriter<byte> writer)");
         sb.AppendLine("    {");
-     
+
         foreach (var prop in properties)
         {
             var propType = prop.Type.ToDisplayString();
@@ -80,7 +81,7 @@ public sealed class CodecGenerator : IIncrementalGenerator
         sb.AppendLine($"    public {fullTypeName} Decode(ref SequenceReader<byte> reader)");
         sb.AppendLine("    {");
         sb.AppendLine($"        var instance = new {fullTypeName}();");
-        
+
         foreach (var prop in properties)
         {
             var propType = prop.Type.ToDisplayString();

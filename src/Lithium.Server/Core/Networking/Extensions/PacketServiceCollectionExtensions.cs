@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Lithium.Server.Core.Protocol;
 
 namespace Lithium.Server.Core.Networking.Extensions;
@@ -29,7 +29,12 @@ public static class PacketServiceCollectionExtensions
             }
         }
 
-        services.AddSingleton<InitialPacketRouter>();
+        services.AddSingleton<HandshakeRouter>();
+        services.AddSingleton<AuthenticationRouter>();
+        services.AddSingleton<PasswordRouter>();
+        
+        services.AddSingleton<IPacketRouter>(sp => sp.GetRequiredService<HandshakeRouter>());
+        services.AddSingleton<PacketRouterService>();
         services.AddSingleton<IPacketHandler, PacketHandler>();
 
         return services;

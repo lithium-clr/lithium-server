@@ -24,7 +24,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Lithium.Codecs\Lithium.Codecs.csproj"/>
-        <ProjectReference Include="..\..\src\Lithium.Codecs.SourceGenerators\Lithium.Codecs.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\..\src\Lithium.SourceGenerators\Lithium.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     </ItemGroup>
 
 </Project>

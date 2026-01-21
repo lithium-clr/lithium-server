@@ -1,3 +1,4 @@
+using Lithium.Server.Core.Protocol.Attributes;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Lithium.Server.Core.Auth;
@@ -8,13 +9,16 @@ using Org.BouncyCastle.Security;
 
 namespace Lithium.Server.Core.Protocol;
 
+[RegisterPacketHandler(typeof(AuthenticationRouter))]
 public sealed class AuthTokenHandler(
     ILogger<AuthTokenHandler> logger,
     IServerAuthManager serverAuthManager,
     ISessionServiceClient sessionServiceClient,
     IClientManager clientManager,
     IServerManager serverManager,
-    JwtValidator jwtValidator
+    JwtValidator jwtValidator,
+    PacketRouterService routerService,
+    PasswordRouter passwordRouter
 ) : IPacketHandler<AuthTokenPacket>
 {
     private AuthState _authState;
@@ -192,13 +196,15 @@ public sealed class AuthTokenHandler(
         logger.LogInformation("Mutual authentication complete for {Username} ({Uuid}) from {RemoteEndPoint}",
             client.Username, client.Uuid, client.Channel.RemoteEndPoint);
 
-        await OnAuthenticated(passwordChallenge);
+        await OnAuthenticated(client, passwordChallenge);
     }
 
-    private Task OnAuthenticated(byte[]? passwordChallenge)
+    private Task OnAuthenticated(Client client, byte[]? passwordChallenge)
     {
         // TODO - Switch to PasswordPacketHandler
         logger.LogInformation("Authenticated");
+        
+        routerService.SetRouter(client.Channel, passwordRouter);
 
         return Task.CompletedTask;
     }

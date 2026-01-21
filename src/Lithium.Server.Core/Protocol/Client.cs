@@ -6,6 +6,11 @@ namespace Lithium.Server.Core.Protocol;
 public interface IClient
 {
     Channel Channel { get; }
+    int ServerId { get; }
+    Guid Uuid { get; }
+    string? Language { get; }
+    string Username { get; }
+    ClientType Type { get; }
 
     Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
         where T : struct, IPacket<T>;
@@ -13,7 +18,7 @@ public interface IClient
     Task DisconnectAsync(string reason);
 }
 
-public sealed class Client : IClient
+public sealed partial class Client : IClient
 {
     public Channel Channel { get; }
     public int ServerId { get; }
@@ -30,34 +35,5 @@ public sealed class Client : IClient
         Language = language;
         Username = username;
         Type = type;
-    }
-
-    public async Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
-        where T : struct, IPacket<T>
-    {
-        using var ms = new MemoryStream();
-        packet.Serialize(ms);
-
-        var packetId = T.Id;
-        var payload = ms.ToArray();
-
-        using var stream = new MemoryStream();
-        PacketSerializer.WriteHeader(stream, packetId, payload.Length);
-        stream.Write(payload);
-
-        var data = stream.ToArray();
-
-        await Channel.Stream.WriteAsync(data, ct);
-        await Channel.Stream.FlushAsync(ct);
-
-        Console.WriteLine($"[Sent] {packet.GetType().Name} (ID {packetId}, Payload Length: {payload.Length})");
-    }
-
-    public Task DisconnectAsync(string? reason = null)
-    {
-        if (!string.IsNullOrEmpty(reason))
-            Console.WriteLine("(DisconnectAsync) -> " + reason);
-        
-        return Channel.CloseAsync();
     }
 }

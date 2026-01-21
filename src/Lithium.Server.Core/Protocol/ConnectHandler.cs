@@ -1,15 +1,19 @@
-﻿using Lithium.Server.Core.Auth;
+﻿using Lithium.Server.Core.Protocol.Attributes;
+using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Protocol.Packets.Connection;
 using Lithium.Server.Core.Protocol.Transport;
 using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Protocol;
 
+[RegisterPacketHandler(typeof(HandshakeRouter))]
 public sealed class ConnectHandler(
     ILogger<ConnectHandler> logger,
     IServerAuthManager serverAuthManager,
     ISessionServiceClient sessionServiceClient,
-    IClientManager clientManager
+    IClientManager clientManager,
+    PacketRouterService routerService,
+    AuthenticationRouter authenticationRouter
 ) : IPacketHandler<ConnectPacket>
 {
     public async Task Handle(Channel channel, ConnectPacket packet)
@@ -56,6 +60,9 @@ public sealed class ConnectHandler(
 
                     logger.LogInformation("Sending authorization grant to client...");
                     await client.SendPacketAsync(authGrantPacket);
+                    
+                    // Switch to AuthenticationRouter to handle AuthTokenPacket
+                    routerService.SetRouter(client.Channel, authenticationRouter);
                 }
             }
         }
