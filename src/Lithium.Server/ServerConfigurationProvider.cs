@@ -25,7 +25,10 @@ public sealed class ServerConfigurationProvider(
         try
         {
             var json = await File.ReadAllTextAsync(_path);
-
+            
+            logger.LogInformation("Loaded config from {Path}", _path);
+            logger.LogInformation("Configuration: {Json}", json);
+            
             return Configuration = JsonSerializer.Deserialize<ServerConfiguration>(json)
                    ?? ServerConfiguration.Default;
         }
