@@ -5,6 +5,7 @@ public interface IServerManager
     // ITransport Transport { get; }
     // IReadOnlyList<Channel> Listeners { get; }
 
-    string Password { get; }
+    public ServerConfiguration Configuration { get; }
+    
     byte[]? CurrentPasswordChallenge { get; set; }
 }

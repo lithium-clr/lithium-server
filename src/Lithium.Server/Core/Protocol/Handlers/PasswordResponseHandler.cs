@@ -31,7 +31,7 @@ public sealed class PasswordResponseHandler(
 
             if (clientHash is not null && clientHash.Length is not 0)
             {
-                var password = serverManager.Password;
+                var password = serverManager.Configuration.Password;
 
                 if (!string.IsNullOrEmpty(password))
                 {

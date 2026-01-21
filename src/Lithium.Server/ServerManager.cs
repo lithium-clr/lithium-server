@@ -10,7 +10,8 @@ public sealed class ServerManagerOptions
 
 public sealed class ServerManager(
     ILogger<IServerManager> logger,
-    IOptions<ServerManagerOptions> options
+    IOptions<ServerManagerOptions> options,
+    IServerConfigurationProvider configurationProvider
 ) : IServerManager, IDisposable
 {
     // private readonly List<Channel> _listeners = [];
@@ -18,8 +19,7 @@ public sealed class ServerManager(
     // public ITransport Transport => options.Value.Transport;
     // public IReadOnlyList<Channel> Listeners => _listeners;
 
-    // TODO - This is a fake password for now
-    public string? Password { get; private set; } = "PWD";
+    public ServerConfiguration Configuration => configurationProvider.Configuration;
     public byte[]? CurrentPasswordChallenge { get; set; }
 
     // public async Task UnbindAllListenersAsync()
