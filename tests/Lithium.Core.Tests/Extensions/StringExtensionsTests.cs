@@ -48,4 +48,19 @@ public class StringExtensionsTests
         
         "abc".FuzzyDistance("abc").Should().BeGreaterThan("abc".FuzzyDistance("axbycz"));
     }
+
+    [Fact]
+    public void IsAlphaNumericHyphen_ShouldReturnTrueForValidStrings()
+    {
+        "abc-123".IsAlphaNumericHyphen().Should().BeTrue();
+        "Hello-World".IsAlphaNumericHyphen().Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsAlphaNumericHyphen_ShouldReturnFalseForInvalidStrings()
+    {
+        "abc_123".IsAlphaNumericHyphen().Should().BeFalse();
+        "hello world".IsAlphaNumericHyphen().Should().BeFalse();
+        "".IsAlphaNumericHyphen().Should().BeFalse();
+    }
 }
