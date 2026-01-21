@@ -1,26 +1,12 @@
 ﻿using System.Text.Json;
 using Lithium.Server.Core;
-using Microsoft.Extensions.Hosting;
+
 namespace Lithium.Server;
 
-public interface IServerConfigurationProvider
-{
-    ServerConfiguration Configuration { get; }
-
-    Task<ServerConfiguration> LoadAsync();
-}
-
-public sealed record ServerConfiguration
-{
-    public IReadOnlyList<string> Plugins { get; init; } = [];
-
-    public static ServerConfiguration Default => new();
-}
-
-public sealed class JsonServerConfigurationProvider(
-    ILogger<JsonServerConfigurationProvider> logger,
-    IHostEnvironment env)
-    : IServerConfigurationProvider
+public sealed class ServerConfigurationProvider(
+    ILogger<ServerConfigurationProvider> logger,
+    IHostEnvironment env
+) : IServerConfigurationProvider
 {
     private readonly string _path = Path.Combine(env.ContentRootPath, "config.json");
 
@@ -56,7 +42,8 @@ public sealed class JsonServerConfigurationProvider(
 
         var json = JsonSerializer.Serialize(
             config,
-            new JsonSerializerOptions { WriteIndented = true });
+            new JsonSerializerOptions { WriteIndented = true }
+        );
 
         await File.WriteAllTextAsync(_path, json);
         return config;

@@ -130,7 +130,7 @@ builder.Services.AddGameSessionResponseCodec();
 
 // Core services
 builder.Services.AddSingleton<HytaleServer>();
-builder.Services.AddSingleton<IServerConfigurationProvider, JsonServerConfigurationProvider>();
+builder.Services.AddSingleton<Lithium.Server.Core.IServerConfigurationProvider, ServerConfigurationProvider>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
 builder.Services.AddSingleton<IPluginRegistry, PluginRegistry>();
