@@ -4,7 +4,7 @@ using Lithium.Codecs;
 namespace Lithium.Server.Core.Auth;
 
 [Codec]
-public sealed class Jwk
+public sealed class JwkKey
 {
     [JsonPropertyName("kty")] public string Kty { get; set; } = null!;
     [JsonPropertyName("alg")] public string Alg { get; set; } = null!;

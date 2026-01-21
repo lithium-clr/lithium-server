@@ -1,227 +1,257 @@
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using NSec.Cryptography;
+using PublicKey = NSec.Cryptography.PublicKey;
 
 namespace Lithium.Server.Core.Auth;
 
 public sealed class JwtValidator : IDisposable
 {
+    private const long ClockSkewSeconds = 300;
+
     private readonly ILogger<JwtValidator> _logger;
-    private readonly string _expectedIssuer;
-    private readonly string? _expectedAudience;
-    private readonly IConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
-    private readonly JsonWebTokenHandler _tokenHandler = new();
-    private static readonly TimeSpan ClockSkew = TimeSpan.FromMinutes(5);
+    private readonly ISessionServiceClient _sessionServiceClient;
+
+    private readonly string _accessIssuer;
+    private readonly string _identityIssuer;
+    private readonly string _sessionIssuer;
+
+    private readonly string? _audience;
+
+    private JsonWebKeySet? _cachedJwks;
+    private long _jwksExpiry;
+    private readonly long _jwksCacheDurationMs = (long)TimeSpan.FromHours(1).TotalMilliseconds;
+    private readonly SemaphoreSlim _jwksLock = new(1, 1);
+    private Task<JsonWebKeySet?>? _pendingFetch;
 
     public JwtValidator(
         IOptions<JwtValidatorOptions> options,
-        ILogger<JwtValidator> logger
-    )
+        ILogger<JwtValidator> logger,
+        ISessionServiceClient sessionServiceClient)
     {
         _logger = logger;
-        _expectedIssuer = options.Value.Issuer;
-        _expectedAudience = options.Value.Audience;
+        _sessionServiceClient = sessionServiceClient;
 
-        var httpClient = new HttpClient();
-        
-        var documentRetriever = new HttpDocumentRetriever(httpClient)
-        {
-            RequireHttps = true
-        };
-
-        _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-            options.Value.JwksUri,
-            new OpenIdConnectConfigurationRetriever(),
-            documentRetriever)
-        {
-            // The library handles caching and refresh automatically.
-            // AutomaticRefreshInterval is the minimum time between refreshes.
-            AutomaticRefreshInterval = TimeSpan.FromMinutes(30),
-            
-            // RefreshInterval is the time after which a refresh is considered overdue.
-            RefreshInterval = TimeSpan.FromHours(1)
-        };
+        _accessIssuer   = "https://sessions.hytale.com";
+        _identityIssuer = "https://sessions.hytale.com";
+        _sessionIssuer  = "https://sessions.hytale.com";
+        _audience       = options.Value.Audience;
     }
 
-    public async Task<JwtClaims?> ValidateAccessTokenAsync(string accessToken, X509Certificate2? clientCert,
+    // =========================================================
+    // Public API — identique Java
+    // =========================================================
+
+    public Task<JwtClaims?> ValidateAccessTokenAsync(
+        string token,
+        X509Certificate? clientCert,
         CancellationToken ct = default)
-    {
-        var validationResult = await ValidateTokenInternalAsync(accessToken, requireAudience: true, ct);
-        if (!validationResult.IsValid) return null;
+        => ValidateTokenAsync(token, _accessIssuer, true, clientCert, ct);
 
-        var claims = validationResult.Claims;
-
-        Dictionary<string, object>? cnfClaim = null;
-        var cnfPair = claims.FirstOrDefault(c => c.Key is "cnf");
-
-        if (cnfPair is { Key: not null, Value: Dictionary<string, object> dict })
-            cnfClaim = dict;
-
-        var certFingerprint =
-            cnfClaim is not null && cnfClaim.TryGetValue("x5t#S256", out var fp) ? fp as string : null;
-
-        if (!CertificateUtil.ValidateCertificateBinding(certFingerprint, clientCert))
-        {
-            _logger.LogWarning("Certificate binding validation failed for subject {Subject}", claims["sub"]);
-            return null;
-        }
-
-        try
-        {
-            var jwtClaims = new JwtClaims(
-                (string)claims[JwtRegisteredClaimNames.Iss],
-                claims.TryGetValue(JwtRegisteredClaimNames.Aud, out var aud) ? (string)aud : null,
-                Guid.Parse((string)claims[JwtRegisteredClaimNames.Sub]),
-                (string)claims["username"],
-                claims.TryGetValue("ip", out var ip) ? (string)ip : null,
-                (long)claims[JwtRegisteredClaimNames.Iat],
-                (long)claims[JwtRegisteredClaimNames.Exp],
-                claims.TryGetValue(JwtRegisteredClaimNames.Nbf, out var nbf) ? (long?)nbf : null,
-                certFingerprint
-            );
-
-            _logger.LogInformation("JWT validated successfully for user {Username} (UUID: {Subject})",
-                jwtClaims.Username, jwtClaims.Subject);
-            return jwtClaims;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to construct JwtClaims from token for subject {Subject}", claims["sub"]);
-            return null;
-        }
-    }
-
-    public async Task<IdentityTokenClaims?> ValidateIdentityTokenAsync(string identityToken,
+    public Task<JwtClaims?> ValidateIdentityTokenAsync(
+        string token,
         CancellationToken ct = default)
-    {
-        var validationResult = await ValidateTokenInternalAsync(identityToken, requireAudience: false, ct);
-        if (!validationResult.IsValid) return null;
+        => ValidateTokenAsync(token, _identityIssuer, false, null, ct);
 
-        var claims = validationResult.Claims;
-
-        try
-        {
-            var identityClaims = new IdentityTokenClaims(
-                (string)claims[JwtRegisteredClaimNames.Iss],
-                Guid.Parse((string)claims[JwtRegisteredClaimNames.Sub]),
-                (string)claims["username"],
-                (long)claims[JwtRegisteredClaimNames.Iat],
-                (long)claims[JwtRegisteredClaimNames.Exp],
-                claims.TryGetValue(JwtRegisteredClaimNames.Nbf, out var nbf) ? (long?)nbf : null,
-                (claims.TryGetValue("scope", out var scope) ? (string)scope : string.Empty).Split(' ',
-                    StringSplitOptions.RemoveEmptyEntries)
-            );
-
-            _logger.LogInformation("Identity token validated successfully for user {Username} (UUID: {Subject})",
-                identityClaims.Username, identityClaims.Subject);
-            return identityClaims;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to construct IdentityTokenClaims from token for subject {Subject}",
-                claims["sub"]);
-            return null;
-        }
-    }
-
-    public async Task<SessionTokenClaims?> ValidateSessionTokenAsync(string sessionToken,
+    public Task<JwtClaims?> ValidateSessionTokenAsync(
+        string token,
         CancellationToken ct = default)
-    {
-        var validationResult = await ValidateTokenInternalAsync(sessionToken, requireAudience: false, ct);
-        if (!validationResult.IsValid) return null;
+        => ValidateTokenAsync(token, _sessionIssuer, false, null, ct);
 
-        var claims = validationResult.Claims;
+    // =========================================================
+    // Core validation logic (facteur commun Java)
+    // =========================================================
 
-        try
-        {
-            var sessionClaims = new SessionTokenClaims(
-                (string)claims[JwtRegisteredClaimNames.Iss],
-                (string)claims[JwtRegisteredClaimNames.Sub],
-                (long)claims[JwtRegisteredClaimNames.Iat],
-                (long)claims[JwtRegisteredClaimNames.Exp],
-                claims.TryGetValue(JwtRegisteredClaimNames.Nbf, out var nbf) ? (long?)nbf : null
-            );
-
-            _logger.LogInformation("Session token validated successfully for subject {Subject}", sessionClaims.Subject);
-            return sessionClaims;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to construct SessionTokenClaims from token for subject {Subject}",
-                claims["sub"]);
-            return null;
-        }
-    }
-
-    private async Task<TokenValidationResult> ValidateTokenInternalAsync(string token, bool requireAudience,
+    private async Task<JwtClaims?> ValidateTokenAsync(
+        string token,
+        string expectedIssuer,
+        bool requireCertBinding,
+        X509Certificate? clientCert,
         CancellationToken ct)
     {
-        if (string.IsNullOrEmpty(token))
-        {
-            _logger.LogWarning("Token is null or empty");
-            return new TokenValidationResult { IsValid = false, Exception = new ArgumentNullException(nameof(token)) };
-        }
+        if (string.IsNullOrWhiteSpace(token))
+            return null;
 
         try
         {
-            var jwks = await _configurationManager.GetConfigurationAsync(ct);
+            var jwt = new JsonWebToken(token);
 
-            var validationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = _expectedIssuer,
+            if (jwt.Alg != "EdDSA")
+                return null;
 
-                ValidateAudience = requireAudience,
-                ValidAudience = _expectedAudience,
+            if (!await VerifySignatureWithRetryAsync(jwt, ct))
+                return null;
 
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKeys = jwks.SigningKeys,
+            var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var claims = ExtractClaims(jwt);
 
-                ValidateLifetime = true,
-                ClockSkew = ClockSkew,
+            if (claims.Issuer != expectedIssuer)
+                return null;
 
-                // EdDSA is the only supported algorithm.
-                ValidAlgorithms = ["EdDSA"],
-            };
+            if (!string.IsNullOrEmpty(_audience) &&
+                claims.Audience != _audience)
+                return null;
 
-            var result = await _tokenHandler.ValidateTokenAsync(token, validationParameters);
+            if (claims.ExpiresAt is long exp && now >= exp + ClockSkewSeconds)
+                return null;
 
-            if (!result.IsValid)
-            {
-                _logger.LogWarning(result.Exception, "Token validation failed: {Reason}", result.Exception.Message);
+            if (claims.NotBefore is long nbf && now < nbf - ClockSkewSeconds)
+                return null;
 
-                // Check if the failure might be due to a rotated key, and if so, request a refresh.
-                // The IsSignatureInvalid property gives a strong hint.
-                if (result.Exception is SecurityTokenInvalidSignatureException)
-                {
-                    _logger.LogInformation("Signature validation failed, requesting JWKS refresh and retrying.");
-                    _configurationManager.RequestRefresh();
+            if (claims.IssuedAt is long iat && iat > now + ClockSkewSeconds)
+                return null;
 
-                    // Retry with the refreshed configuration
-                    var refreshedJwks = await _configurationManager.GetConfigurationAsync(ct);
-                    validationParameters.IssuerSigningKeys = refreshedJwks.SigningKeys;
-                    result = await _tokenHandler.ValidateTokenAsync(token, validationParameters);
+            if (requireCertBinding &&
+                !CertificateUtil.ValidateCertificateBinding(
+                    claims.CertificateFingerprint,
+                    clientCert))
+                return null;
 
-                    if (!result.IsValid)
-                        _logger.LogWarning(result.Exception, "Token validation failed even after retry: {Reason}",
-                            result.Exception.Message);
-                }
-            }
-
-            return result;
+            return claims;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unexpected error occurred during token validation.");
-            return new TokenValidationResult { IsValid = false, Exception = ex };
+            _logger.LogWarning(ex, "JWT validation error");
+            return null;
         }
     }
 
-    public void Dispose()
+    // =========================================================
+    // Ed25519 signature verification (Nimbus-compatible)
+    // =========================================================
+
+    private async Task<bool> VerifySignatureWithRetryAsync(
+        JsonWebToken jwt,
+        CancellationToken ct)
     {
+        var jwks = await GetJwksAsync(false, ct);
+        if (jwks != null && VerifySignature(jwt, jwks))
+            return true;
+
+        jwks = await GetJwksAsync(true, ct);
+        return jwks != null && VerifySignature(jwt, jwks);
     }
+
+    private bool VerifySignature(JsonWebToken jwt, JsonWebKeySet jwks)
+    {
+        try
+        {
+            var jwk = jwks.Keys.FirstOrDefault(k =>
+                k.Kty == "OKP" &&
+                k.Crv == "Ed25519" &&
+                (jwt.Kid == null || k.Kid == jwt.Kid));
+
+            if (jwk == null)
+                return false;
+
+            var publicKeyBytes = Base64UrlEncoder.DecodeBytes(jwk.X);
+            var publicKey = PublicKey.Import(
+                SignatureAlgorithm.Ed25519,
+                publicKeyBytes,
+                KeyBlobFormat.RawPublicKey);
+
+            var signingInput = Encoding.ASCII.GetBytes(
+                $"{jwt.EncodedHeader}.{jwt.EncodedPayload}");
+
+            var signature = Base64UrlEncoder.DecodeBytes(jwt.EncodedSignature);
+
+            return SignatureAlgorithm.Ed25519.Verify(
+                publicKey,
+                signingInput,
+                signature);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    // =========================================================
+    // JWKS
+    // =========================================================
+
+    private async Task<JsonWebKeySet?> GetJwksAsync(bool force, CancellationToken ct)
+    {
+        var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+        if (!force && _cachedJwks != null && now < _jwksExpiry)
+            return _cachedJwks;
+
+        await _jwksLock.WaitAsync(ct);
+        try
+        {
+            if (!force && _cachedJwks != null && now < _jwksExpiry)
+                return _cachedJwks;
+
+            _pendingFetch ??= FetchJwksAsync();
+        }
+        finally
+        {
+            _jwksLock.Release();
+        }
+
+        return await _pendingFetch;
+    }
+
+    private async Task<JsonWebKeySet?> FetchJwksAsync()
+    {
+        var response = await _sessionServiceClient.GetJwksAsync();
+        if (response?.Keys == null)
+            return _cachedJwks;
+
+        var keys = response.Keys
+            .Where(k => k.Kty == "OKP" && k.Crv == "Ed25519")
+            .Select(k => new JsonWebKey
+            {
+                Kty = "OKP",
+                Crv = k.Crv,
+                X   = k.X,
+                Kid = k.Kid,
+                Alg = "EdDSA"
+            })
+            .ToList();
+
+        if (keys.Count == 0)
+            return _cachedJwks;
+
+        var json = JsonSerializer.Serialize(new { keys });
+        _cachedJwks = new JsonWebKeySet(json);
+        _jwksExpiry = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + _jwksCacheDurationMs;
+
+        return _cachedJwks;
+    }
+
+    // =========================================================
+    // Claims extraction (identique Java)
+    // =========================================================
+
+    private static JwtClaims ExtractClaims(JsonWebToken jwt)
+    {
+        string? certFp = null;
+
+        if (jwt.TryGetPayloadValue("cnf", out JsonElement cnf) &&
+            cnf.TryGetProperty("x5t#S256", out var fp))
+        {
+            certFp = fp.GetString();
+        }
+
+        return new JwtClaims(
+            jwt.Issuer,
+            jwt.Audiences.FirstOrDefault(),
+            Guid.Parse(jwt.Subject),
+            jwt.GetClaim("username")?.Value ?? "",
+            jwt.TryGetClaim("ip", out var ip) ? ip.Value : null,
+            jwt.TryGetPayloadValue<long>("iat", out var iat) ? iat : 0,
+            jwt.TryGetPayloadValue<long>("exp", out var exp) ? exp : 0,
+            jwt.TryGetPayloadValue<long>("nbf", out var nbf) ? nbf : null,
+            certFp
+        );
+    }
+
+    public void Dispose() => _jwksLock.Dispose();
 }

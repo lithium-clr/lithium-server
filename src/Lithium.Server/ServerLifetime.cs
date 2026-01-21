@@ -1,5 +1,4 @@
-﻿using System.CommandLine;
-using Lithium.Server.Core;
+﻿using Lithium.Server.Core;
 using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
@@ -66,8 +65,8 @@ public sealed partial class ServerLifetime(
         logger.LogInformation("Initializing hytale server...");
         await hytaleServer.InitializeAsync(context);
 
-        // logger.LogInformation("Initializing server...");
-        // await server.StartAsync(stoppingToken);
+        logger.LogInformation("Initializing server...");
+        await server.StartAsync(stoppingToken);
         
         logger.LogInformation("Server started.");
     }

@@ -1,71 +1,92 @@
-﻿using System.Net.Quic;
-using Lithium.Core.Extensions;
-using Lithium.Core.Networking;
-using Microsoft.Extensions.Logging;
+using Lithium.Server.Core.Protocol;
+using Lithium.Server.Core.Protocol.Transport;
 
 namespace Lithium.Server.Core.Networking;
 
 public sealed class PacketHandler(
     ILogger<PacketHandler> logger,
-    PacketRegistry packetRegistry,
-    IPacketRouter packetRouter
+    IClientManager clientManager,
+    PacketRouterService packetRouter
 ) : IPacketHandler
 {
-    public async Task HandleAsync(QuicConnection connection, QuicStream stream)
+    public async Task HandleAsync(Channel channel)
     {
-        try
+        logger.LogInformation(
+            "(PacketHandler) -> HandleAsync | Remote={Remote} Local={Local} StreamId={StreamId} CanRead={CanRead} CanWrite={CanWrite}",
+            channel.RemoteEndPoint,
+            channel.LocalEndPoint,
+            channel.Stream.Id,
+            channel.Stream.CanRead,
+            channel.Stream.CanWrite);
+
+        var stream = channel.Stream;
+        var remoteEndPoint = channel.RemoteEndPoint;
+
+       try
         {
-            var headerBuffer = new byte[PacketHeader.SizeOf()];
-            await ReadExactAsync(stream, headerBuffer);
-
-            var header = PacketSerializer.DeserializeHeader(headerBuffer);
-
-            var payloadBuffer = new byte[header.Length];
-            await ReadExactAsync(stream, payloadBuffer);
-
-            var packetType = packetRegistry.GetPacketType(header.TypeId);
-            if (packetType is null) return;
-
-            var context = new PacketContext(connection, stream);
-            packetRouter.Route(header.TypeId, payloadBuffer, context);
-        }
-        catch (QuicException ex)
-        {
-            if (ex.QuicError is QuicError.ConnectionTimeout)
+            // Loop to keep reading packets from the same stream
+            while (true)
             {
-                logger.LogInformation("Client connection timed out");
-                return;
-            }
+                var header = new byte[8];
 
-            logger.LogError("QUIC: {0}", ex.Message);
-        }
-        // catch (OperationCanceledException)
-        // {
-        //     logger.LogError("QUIC connection closed");
-        // }
-        catch (EndOfStreamException)
-        {
-            logger.LogError("QUIC stream closed by peer");
+                if (!await ReadExactAsync(stream, header))
+                {
+                    // Stream closed by peer (EOF)
+                    logger.LogInformation("[{RemoteEndPoint}] Stream ID {StreamId} closed by peer.", remoteEndPoint,
+                        stream.Id);
+                    break;
+                }
+                
+                var payloadLength = BitConverter.ToInt32(header, 0);
+                var packetId = BitConverter.ToInt32(header, 4);
+                
+                logger.LogInformation(
+                    $"[{remoteEndPoint}] Stream ID {stream.Id}: Received Packet ID: {packetId}, Payload Length: {payloadLength}");
+                
+                if (payloadLength > 0)
+                {
+                    var payload = new byte[payloadLength];
+                
+                    if (await ReadExactAsync(stream, payload))
+                    {
+                        await packetRouter.Route(channel, packetId, payload);
+                    }
+                    else
+                    {
+                        logger.LogWarning("[{RemoteEndPoint}] Stream ID {StreamId}: Failed to read full payload.",
+                            remoteEndPoint, stream.Id);
+                        
+                        break; // Break loop on read error
+                    }
+                }
+            }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "PacketHandler failed");
+            logger.LogError("[{RemoteEndPoint}] Stream ID {StreamId} Error: {ExMessage}", remoteEndPoint, stream.Id,
+                ex.Message);
+        }
+        finally
+        {
+            // Now we can safely dispose the stream as the loop has ended (EOF or Error)
+            await stream.DisposeAsync();
+            packetRouter.RemoveChannel(channel);
+            logger.LogInformation("[{RemoteEndPoint}] Stream ID {StreamId} disposed.", remoteEndPoint, stream.Id);
         }
     }
-
-    private static async Task ReadExactAsync(QuicStream stream, byte[] buffer)
+    
+    private static async Task<bool> ReadExactAsync(Stream stream, byte[] buffer)
     {
-        var offset = 0;
+        var totalRead = 0;
 
-        while (offset < buffer.Length)
+        while (totalRead < buffer.Length)
         {
-            var read = await stream.ReadAsync(
-                buffer.AsMemory(offset));
+            var read = await stream.ReadAsync(buffer.AsMemory(totalRead, buffer.Length - totalRead));
+            if (read is 0) return false;
 
-            if (read is 0)
-                throw new EndOfStreamException();
-
-            offset += read;
+            totalRead += read;
         }
+
+        return true;
     }
 }

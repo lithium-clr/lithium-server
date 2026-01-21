@@ -7,6 +7,7 @@ using Lithium.Server.Core.Auth.OAuth;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Extensions;
+using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core.Storage;
 using Lithium.Server.Core.Systems.Commands;
 using Lithium.Server.Dashboard;
@@ -120,7 +121,7 @@ builder.Services.AddSingleton<JwtValidator>();
 
 // Codecs
 builder.Services.AddLithiumCodecs();
-builder.Services.AddJwkCodec();
+builder.Services.AddJwkKeyCodec();
 builder.Services.AddJwksResponseCodec();
 builder.Services.AddAccessTokenResponseCodec();
 builder.Services.AddAuthCredentialsCodec();
@@ -135,6 +136,7 @@ builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
 builder.Services.AddSingleton<IPluginRegistry, PluginRegistry>();
 builder.Services.AddSingleton<IPluginManager, PluginManager>();
+builder.Services.AddSingleton<IServerManager, ServerManager>();
 
 builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 
@@ -151,6 +153,9 @@ builder.Services.AddHostedService<SignalRLogForwarder>();
 builder.Services.AddConsoleCommands();
 
 var app = builder.Build();
+
+// Manually initialize routers to avoid circular dependency
+RouterInitializer.InitializeRouters(app.Services);
 
 // Use CORS
 app.UseCors();

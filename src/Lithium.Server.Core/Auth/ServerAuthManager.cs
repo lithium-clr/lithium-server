@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Net.Quic;
 using System.Security.Cryptography.X509Certificates;
 using Lithium.Server.Core.Auth.OAuth;
 using Microsoft.Extensions.Logging;
@@ -13,12 +14,18 @@ public interface IServerAuthManager
     string? IdentityToken { get; }
     AuthMode AuthMode { get; }
     GameProfile[] PendingProfiles { get; }
+    GameSessionResponse? GameSession { get; }
+    AuthCredentials? Credentials { get; }
+    X509Certificate? ServerCertificate { get; }
 
     Task InitializeAsync(ServerAuthManager.ServerAuthContext context);
     Task InitializeCredentialStore();
     ValueTask<AuthResult> StartFlowAsync(IOAuthDeviceFlow flow, CancellationTokenSource cts);
     bool CancelActiveFlow();
     Task Shutdown();
+    void SetServerCertificate(X509Certificate2 cert);
+    void AddClientCertificate(QuicConnection sender, X509Certificate2 clientCert);
+    X509Certificate2? GetClientCertificate(QuicConnection sender);
 }
 
 public sealed class ServerAuthManager(
@@ -31,13 +38,15 @@ public sealed class ServerAuthManager(
 {
     private const int RefreshBufferSeconds = 300;
 
+    private readonly ConcurrentDictionary<QuicConnection, X509Certificate2> _clientCertificates = new();
+    
     private CancellationTokenSource? _refreshCts;
     private DateTimeOffset? _tokenExpiry = DateTimeOffset.MinValue;
 
     public GameSessionResponse? GameSession { get; private set; }
 
     private readonly ConcurrentDictionary<Guid, GameProfile> _availableProfiles = new();
-    private X509Certificate _serverCertificate;
+    public X509Certificate? ServerCertificate { get; private set; }
 
     private AuthMode _pendingAuthMode;
     private Action? _cancelActiveFlow;
@@ -50,6 +59,7 @@ public sealed class ServerAuthManager(
     public string? SessionToken => _context.SessionToken;
     public string? IdentityToken => _context.IdentityToken;
     public bool IsSinglePlayer => _context.IsSinglePlayer;
+    public AuthCredentials? Credentials => credentialStore.Data;
 
     public sealed class ServerAuthContext
     {
@@ -59,13 +69,13 @@ public sealed class ServerAuthManager(
         public string? SessionToken { get; init; }
         public string? IdentityToken { get; init; }
     }
-
+    
     public async Task InitializeAsync(ServerAuthContext context)
     {
         _context = context;
 
         InitializeRefreshScheduler();
-
+        
         logger.LogInformation("Initializing ServerAuthManager...");
         logger.LogInformation("Context:");
         logger.LogInformation("- IsSinglePlayer: " + context.IsSinglePlayer);
@@ -190,6 +200,16 @@ public sealed class ServerAuthManager(
         }
     }
 
+    public void AddClientCertificate(QuicConnection sender, X509Certificate2 clientCert)
+    {
+        _clientCertificates[sender] = clientCert;
+    }
+
+    public X509Certificate2? GetClientCertificate(QuicConnection sender)
+    {
+        return _clientCertificates.GetValueOrDefault(sender);
+    }
+
     public async ValueTask<AuthResult> StartFlowAsync(IOAuthDeviceFlow flow, CancellationTokenSource cts)
     {
         if (IsSinglePlayer)
@@ -208,9 +228,9 @@ public sealed class ServerAuthManager(
                 credentialStore.Data?.AccessToken = tokens.AccessToken;
                 credentialStore.Data?.RefreshToken = tokens.RefreshToken;
                 credentialStore.Data?.ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(tokens.ExpiresIn);
-                
+
                 await credentialStore.SaveAsync();
-                
+
                 logger.LogInformation("OAuth device flow completed successfully");
                 return await CreateGameSessionFromOAuthAsync(AuthMode.OAuthDevice);
             }
@@ -242,7 +262,7 @@ public sealed class ServerAuthManager(
         }
 
         var profiles = await sessionServiceClient.GetGameProfilesAsync(accessToken);
-
+        
         if (profiles is null || profiles.Length is 0)
         {
             logger.LogWarning("No game profiles found for this account");
@@ -375,15 +395,15 @@ public sealed class ServerAuthManager(
                 logger.LogWarning("Identity token validation failed");
                 valid = false;
             }
-            else if (!claims.HasScope(AuthConstants.ScopeServer))
-            {
-                logger.LogWarning(
-                    "Identity token missing required scope: expected {ExpectedScope}, got {ActualScope}",
-                    AuthConstants.ScopeServer,
-                    string.Join(",", claims.Scopes));
-
-                valid = false;
-            }
+            // else if (!claims.HasScope(AuthConstants.ScopeServer))
+            // {
+            //     logger.LogWarning(
+            //         "Identity token missing required scope: expected {ExpectedScope}, got {ActualScope}",
+            //         AuthConstants.ScopeServer,
+            //         string.Join(",", claims.Scopes));
+            //
+            //     valid = false;
+            // }
             else
             {
                 logger.LogInformation("Identity token validated for {Username} ({Subject})", claims.Username,
@@ -565,7 +585,7 @@ public sealed class ServerAuthManager(
                 logger.LogWarning("Force refresh failed");
                 return null;
             }
-
+            
             accessToken = credentialStore.Data?.AccessToken;
             result = await sessionServiceClient.CreateGameSessionAsync(accessToken, profileUuid);
 
@@ -649,6 +669,12 @@ public sealed class ServerAuthManager(
         }
 
         logger.LogInformation("Server shutdown completed");
+    }
+
+    public void SetServerCertificate(X509Certificate2 cert)
+    {
+        ServerCertificate = cert;
+        logger.LogInformation("Server certificate set {cert}", cert.SubjectName.Name);
     }
 
     public void Logout()

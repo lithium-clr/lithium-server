@@ -11,6 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="NSec.Cryptography" Version="25.4.0" />
         <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1"/>
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1"/>
@@ -24,7 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Lithium.Codecs\Lithium.Codecs.csproj" />
-      <ProjectReference Include="..\Lithium.Codecs.SourceGenerators\Lithium.Codecs.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+      <ProjectReference Include="..\Lithium.SourceGenerators\Lithium.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       <ProjectReference Include="..\Lithium.Core.ECS\Lithium.Core.ECS.csproj" />
       <ProjectReference Include="..\Lithium.Core\Lithium.Core.csproj" />
     </ItemGroup>
