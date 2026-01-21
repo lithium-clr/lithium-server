@@ -1,7 +1,6 @@
-using System.Globalization;
 using System.Text;
 
-namespace Lithium.Core.Extensions;
+namespace Lithium.Server.Core.Extensions;
 
 public static class StringExtensions
 {

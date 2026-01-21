@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Lithium.Core.Extensions;
+namespace Lithium.Server.Core.Extensions;
 
 public static class VectorExtensions
 {
