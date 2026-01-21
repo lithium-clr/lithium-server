@@ -1,13 +1,8 @@
-using System;
 using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Protocol;
 
-public sealed partial class PasswordRouter : BasePacketRouter
+public sealed partial class PasswordRouter(ILogger<PasswordRouter> logger) : BasePacketRouter(logger)
 {
-    public PasswordRouter(ILogger<PasswordRouter> logger) : base(logger)
-    {
-    }
-
     public override partial void Initialize(IServiceProvider sp);
 }

@@ -1,13 +1,8 @@
-using System;
 using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Protocol;
 
-public sealed partial class HandshakeRouter : BasePacketRouter
+public sealed partial class HandshakeRouter(ILogger<HandshakeRouter> logger) : BasePacketRouter(logger)
 {
-    public HandshakeRouter(ILogger<HandshakeRouter> logger) : base(logger)
-    {
-    }
-
     public override partial void Initialize(IServiceProvider sp);
 }
