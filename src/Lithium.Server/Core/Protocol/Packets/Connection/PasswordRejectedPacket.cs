@@ -3,13 +3,13 @@ using System.Buffers.Binary;
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
 public readonly struct PasswordRejectedPacket(
-    byte[] passwordChallenge,
+    byte[]? passwordChallenge,
     int attemptsRemaining
 ) : IPacket<PasswordRejectedPacket>
 {
     public static int Id => 17;
 
-    public readonly byte[] PasswordChallenge = passwordChallenge;
+    public readonly byte[]? PasswordChallenge = passwordChallenge;
     public readonly int AttemptsRemaining = attemptsRemaining;
 
     public void Serialize(Stream stream)
