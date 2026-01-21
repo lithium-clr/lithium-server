@@ -11,6 +11,8 @@ public interface IClient
     string? Language { get; }
     string Username { get; }
     ClientType Type { get; }
+    float ViewRadiusChunks { get; set; }
+    bool IsActive { get; }
 
     Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
         where T : struct, IPacket<T>;

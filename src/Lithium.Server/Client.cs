@@ -11,6 +11,8 @@ public sealed partial class Client : IClient
     public string? Language { get; }
     public string Username { get; }
     public ClientType Type { get; }
+    public float ViewRadiusChunks { get; set; } = 6f;
+    public bool IsActive => Channel.IsActive;
 
     internal Client(Channel channel, int serverId, Guid uuid, string? language, string username, ClientType type)
     {
