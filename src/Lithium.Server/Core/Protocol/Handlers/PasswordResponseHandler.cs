@@ -13,7 +13,9 @@ public sealed class PasswordResponseHandler(
     IServerAuthManager serverAuthManager,
     ISessionServiceClient sessionServiceClient,
     IClientManager clientManager,
-    IServerManager serverManager
+    IServerManager serverManager,
+    SetupPacketRouter setupRouter,
+    PacketRouterService routerService
 ) : IPacketHandler<PasswordResponsePacket>
 {
     private int _attemptsRemaining = 3;
@@ -96,6 +98,7 @@ public sealed class PasswordResponseHandler(
         {
             logger.LogError("Received unexpected PasswordResponse from {RemoteEndPoint} - no password required",
                 client.Channel.RemoteEndPoint);
+
             await client.DisconnectAsync("Protocol error: unexpected PasswordResponse");
         }
     }
@@ -104,5 +107,7 @@ public sealed class PasswordResponseHandler(
     {
         logger.LogInformation("Connection complete for {Username} ({Uuid}), transitioning to setup", client.Username,
             client.Uuid);
+
+        routerService.SetRouter(client.Channel, setupRouter);
     }
 }
