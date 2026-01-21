@@ -26,7 +26,7 @@ public sealed class ServerConfigurationProvider(
         {
             var json = await File.ReadAllTextAsync(_path);
 
-            return JsonSerializer.Deserialize<ServerConfiguration>(json)
+            return Configuration = JsonSerializer.Deserialize<ServerConfiguration>(json)
                    ?? ServerConfiguration.Default;
         }
         catch (Exception ex)
