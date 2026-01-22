@@ -2,7 +2,7 @@ using System.Buffers.Binary;
 
 namespace Lithium.Server.Core.Protocol.Packets;
 
-public readonly struct ViewRadiusPacket(int value) : IPacket<ViewRadiusPacket>
+public sealed class ViewRadiusPacket(int value) : IPacket<ViewRadiusPacket>
 {
     public static int Id => 32;
 

@@ -2,51 +2,30 @@ using System.Buffers.Binary;
 
 namespace Lithium.Server.Core.Protocol.Packets;
 
-public readonly struct PlayerSkin(
-    string? bodyCharacteristic,
-    string? underwear,
-    string? face,
-    string? eyes,
-    string? ears,
-    string? mouth,
-    string? facialHair,
-    string? haircut,
-    string? eyebrows,
-    string? pants,
-    string? overpants,
-    string? undertop,
-    string? overtop,
-    string? shoes,
-    string? headAccessory,
-    string? faceAccessory,
-    string? earAccessory,
-    string? skinFeature,
-    string? gloves,
-    string? cape
-)
+public sealed class PlayerSkin
 {
     private const int VariableBlockStart = 83;
 
-    public readonly string? BodyCharacteristic = bodyCharacteristic;
-    public readonly string? Underwear = underwear;
-    public readonly string? Face = face;
-    public readonly string? Eyes = eyes;
-    public readonly string? Ears = ears;
-    public readonly string? Mouth = mouth;
-    public readonly string? FacialHair = facialHair;
-    public readonly string? Haircut = haircut;
-    public readonly string? Eyebrows = eyebrows;
-    public readonly string? Pants = pants;
-    public readonly string? OverPants = overpants;
-    public readonly string? UnderTop = undertop;
-    public readonly string? Overtop = overtop;
-    public readonly string? Shoes = shoes;
-    public readonly string? HeadAccessory = headAccessory;
-    public readonly string? FaceAccessory = faceAccessory;
-    public readonly string? EarAccessory = earAccessory;
-    public readonly string? SkinFeature = skinFeature;
-    public readonly string? Gloves = gloves;
-    public readonly string? Cape = cape;
+    public string? BodyCharacteristic { get; set; }
+    public string? Underwear { get; set; }
+    public string? Face { get; set; }
+    public string? Eyes { get; set; }
+    public string? Ears { get; set; }
+    public string? Mouth { get; set; }
+    public string? FacialHair { get; set; }
+    public string? Haircut { get; set; }
+    public string? Eyebrows { get; set; }
+    public string? Pants { get; set; }
+    public string? OverPants { get; set; }
+    public string? UnderTop { get; set; }
+    public string? Overtop { get; set; }
+    public string? Shoes { get; set; }
+    public string? HeadAccessory { get; set; }
+    public string? FaceAccessory { get; set; }
+    public string? EarAccessory { get; set; }
+    public string? SkinFeature { get; set; }
+    public string? Gloves { get; set; }
+    public string? Cape { get; set; }
 
     public static PlayerSkin Deserialize(ReadOnlySpan<byte> buffer, out int bytesRead)
     {
@@ -113,11 +92,29 @@ public readonly struct PlayerSkin(
 
         bytesRead = maxEnd;
 
-        return new PlayerSkin(
-            bodyCharacteristic, underwear, face, eyes, ears, mouth, facialHair, haircut,
-            eyebrows, pants, overPants, underTop, overtop, shoes, headAccessory, faceAccessory,
-            earAccessory, skinFeature, gloves, cape
-        );
+        return new PlayerSkin
+        {
+            BodyCharacteristic = bodyCharacteristic,
+            Underwear = underwear,
+            Face = face,
+            Eyes = eyes,
+            Ears = ears,
+            Mouth = mouth,
+            FacialHair = facialHair,
+            Haircut = haircut,
+            Eyebrows = eyebrows,
+            Pants = pants,
+            OverPants = overPants,
+            UnderTop = underTop,
+            Overtop = overtop,
+            Shoes = shoes,
+            HeadAccessory = headAccessory,
+            FaceAccessory = faceAccessory,
+            EarAccessory = earAccessory,
+            SkinFeature = skinFeature,
+            Gloves = gloves,
+            Cape = cape
+        };
     }
 
     private static string ReadString(ReadOnlySpan<byte> varBlock, int offset)

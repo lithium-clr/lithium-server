@@ -1,6 +1,6 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public readonly struct AuthGrantPacket(
+public sealed class AuthGrantPacket(
     string? authorizationGrant,
     string? serverIdentityToken
 ) : IPacket<AuthGrantPacket>

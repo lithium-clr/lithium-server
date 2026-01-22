@@ -2,7 +2,7 @@ using System.Buffers.Binary;
 
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public readonly struct PasswordRejectedPacket(
+public sealed class PasswordRejectedPacket(
     byte[]? passwordChallenge,
     int attemptsRemaining
 ) : IPacket<PasswordRejectedPacket>

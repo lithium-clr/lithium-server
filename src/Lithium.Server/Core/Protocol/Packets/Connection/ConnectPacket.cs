@@ -1,6 +1,6 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public readonly struct ConnectPacket(
+public sealed class ConnectPacket(
     string protocolHash,
     ClientType clientType,
     string? language,

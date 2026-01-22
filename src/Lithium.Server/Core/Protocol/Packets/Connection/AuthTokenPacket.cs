@@ -1,6 +1,6 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public readonly struct AuthTokenPacket(string? accessToken, string? serverAuthorizationGrant) : IPacket<AuthTokenPacket>
+public sealed class AuthTokenPacket(string? accessToken, string? serverAuthorizationGrant) : IPacket<AuthTokenPacket>
 {
     public static int Id => 12;
 

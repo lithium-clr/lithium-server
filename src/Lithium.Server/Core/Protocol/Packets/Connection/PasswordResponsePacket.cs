@@ -1,6 +1,6 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public readonly struct PasswordResponsePacket(byte[]? hash) : IPacket<PasswordResponsePacket>
+public sealed class PasswordResponsePacket(byte[]? hash) : IPacket<PasswordResponsePacket>
 {
     public static int Id => 15;
 

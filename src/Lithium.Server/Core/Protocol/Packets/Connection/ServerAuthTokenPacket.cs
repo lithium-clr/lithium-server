@@ -1,6 +1,6 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public readonly struct ServerAuthTokenPacket(
+public sealed class ServerAuthTokenPacket(
     string? serverAccessToken,
     byte[]? passwordChallenge
 ) : IPacket<ServerAuthTokenPacket>

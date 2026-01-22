@@ -1,10 +1,10 @@
 namespace Lithium.Server.Core.Protocol.Packets;
 
-public readonly struct PlayerOptionsPacket(PlayerSkin? skin) : IPacket<PlayerOptionsPacket>
+public sealed class PlayerOptionsPacket : IPacket<PlayerOptionsPacket>
 {
     public static int Id => 33;
 
-    public readonly PlayerSkin? Skin = skin;
+    public PlayerSkin? Skin { get; init; }
 
     public static PlayerOptionsPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
@@ -12,17 +12,17 @@ public readonly struct PlayerOptionsPacket(PlayerSkin? skin) : IPacket<PlayerOpt
         var nullBits = reader.ReadByte();
 
         PlayerSkin? skin = null;
-        
+
         if ((nullBits & 1) is not 0)
             skin = PlayerSkin.Deserialize(buffer[reader.Offset..], out _);
 
-        return new PlayerOptionsPacket(skin);
+        return new PlayerOptionsPacket { Skin = skin };
     }
 
     public void Serialize(Stream stream)
     {
         byte nullBits = 0;
-        
+
         if (Skin is not null)
             nullBits |= 1;
 

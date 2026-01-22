@@ -1,15 +1,12 @@
 namespace Lithium.Server.Core.Protocol.Packets;
 
-public readonly struct WorldSettingsPacket(
-    int worldHeight,
-    Asset[]? requiredAssets
-) : IPacket<WorldSettingsPacket>
+public sealed class WorldSettingsPacket : IPacket<WorldSettingsPacket>
 {
     public static int Id => 20;
 
-    public readonly int WorldHeight = worldHeight;
-    public readonly Asset[]? RequiredAssets = requiredAssets;
-
+    public int WorldHeight { get; init; } = 320;
+    public Asset[]? RequiredAssets { get; init; }
+    
     public static WorldSettingsPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
         var reader = new PacketReader(buffer);
@@ -41,7 +38,11 @@ public readonly struct WorldSettingsPacket(
             }
         }
 
-        return new WorldSettingsPacket(worldHeight, requiredAssets);
+        return new WorldSettingsPacket
+        {
+            WorldHeight = worldHeight,
+            RequiredAssets = requiredAssets
+        };
     }
 
     public void Serialize(Stream stream)
