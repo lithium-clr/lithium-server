@@ -91,7 +91,7 @@ public sealed class CommonAssetRegistry
     public bool HasCommonAsset(string name)
         => _byName.ContainsKey(name);
 
-    public bool HasCommonAsset(AssetPack pack, string name)
+    public bool HasCommonAsset(AssetStore.AssetPack pack, string name)
     {
         var packAssets = _byName.TryGetValue(name, out var list);
         if (!packAssets) return false;

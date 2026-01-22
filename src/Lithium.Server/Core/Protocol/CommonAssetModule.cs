@@ -38,7 +38,7 @@ public sealed class CommonAssetModule
         );
     }
 
-    public async Task LoadCommonAssets(AssetPack pack, long bootTime)
+    public async Task LoadCommonAssets(AssetStore.AssetPack pack, long bootTime)
     {
         var assetPath = pack.Root;
         _logger.LogInformation("Loading common assets from: {assetPath}", assetPath);
@@ -92,7 +92,7 @@ public sealed class CommonAssetModule
         }
     }
 
-    public async Task ReadCommonAssetsIndexCacheAsync(AssetPack pack)
+    public async Task ReadCommonAssetsIndexCacheAsync(AssetStore.AssetPack pack)
     {
         var assetPath = pack.Root;
         var commonPath = Path.Combine(assetPath, "Common");
@@ -205,7 +205,7 @@ public sealed class CommonAssetModule
             sw.Elapsed, loadedAssetCount);
     }
 
-    public async Task WalkFileTreeAsync(AssetPack pack)
+    public async Task WalkFileTreeAsync(AssetStore.AssetPack pack)
     {
         var assetPath = pack.Root;
 
@@ -268,16 +268,17 @@ public sealed class CommonAssetModule
         // AssetsInvalidate();
 
         sw.Stop();
+        
         _logger.LogInformation(
             "Took {SwElapsed} to walk file tree and load {TasksCount} assets.", sw.Elapsed, tasks.Count);
     }
 
-    private bool ReadCommonAssetsIndexHashes(AssetPack pack)
+    private bool ReadCommonAssetsIndexHashes(AssetStore.AssetPack pack)
     {
         var assetPath = pack.Root;
         var commonPath = Path.Combine(assetPath, "Common");
+        
         var assetHashFile = Path.Combine(assetPath, "CommonAssetsIndex.hashes");
-
         if (!File.Exists(assetHashFile)) return false;
 
         var loadHashesStart = new Stopwatch();
@@ -325,6 +326,7 @@ public sealed class CommonAssetModule
                         else
                         {
                             var name = split[1];
+                            
                             AddCommonAsset(pack.Name,
                                 new FileCommonAsset(Path.Combine(commonPath, name), name, hash, null), false);
 

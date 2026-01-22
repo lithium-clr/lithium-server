@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Lithium.Codecs;
-using Lithium.Codecs.Primitives;
 using Lithium.Server;
 using Lithium.Server.Core;
 using Lithium.Server.Core.Auth;
@@ -76,7 +75,7 @@ Log.Logger = new LoggerConfiguration()
         {
             return log.Level switch
             {
-                SentryLogLevel.Warning or SentryLogLevel.Error or SentryLogLevel.Fatal => log,
+                SentryLogLevel.Error or SentryLogLevel.Fatal => log,
                 _ => null
             };
         });
@@ -139,6 +138,8 @@ builder.Services.AddSingleton<IServerManager, ServerManager>();
 builder.Services.AddSingleton<PlayerCommonAssets>();
 builder.Services.AddSingleton<CommonAssetModule>();
 builder.Services.AddSingleton<CommonAssetRegistry>();
+builder.Services.AddSingleton<AssetModule>();
+builder.Services.AddSingleton<AssetManager>();
 
 builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 

@@ -5,49 +5,48 @@ using Lithium.SourceGenerators.Attributes;
 
 namespace Lithium.Server.Core.Protocol;
 
-public abstract partial class CommonAsset : INetworkSerializable<Asset>
+public abstract partial class CommonAsset(string name, string hash, byte[]? bytes) : INetworkSerializable<Asset>
 {
     public const int HashLength = 64;
     public static readonly Regex HashPattern = MyRegex();
 
-    protected readonly WeakReference<Task<byte[]?>> Blob;
-    protected WeakReference<Asset>? CachedPacket;
+    private readonly Lock _blobLock = new();
+    private Task<BlobData>? _blobTask = Task.FromResult(new BlobData(bytes));
+    private WeakReference<Asset>? _cachedPacket;
 
-    [ToStringInclude] public string Name { get; }
-    [ToStringInclude] public string Hash { get; }
+    [ToStringInclude] public string Name { get; } = name.Replace('\\', '/');
+    [ToStringInclude] public string Hash { get; } = hash.ToLowerInvariant();
 
     protected CommonAsset(string name, byte[]? bytes)
         : this(name, bytes is null ? string.Empty : ComputeHash(bytes), bytes)
     {
     }
 
-    protected CommonAsset(string name, string hash, byte[]? bytes)
+    public Task<BlobData> GetBlobAsync()
     {
-        Name = name.Replace('\\', '/');
-        Hash = hash.ToLowerInvariant();
-        Blob = new WeakReference<Task<byte[]?>>(Task.FromResult(bytes));
+        lock (_blobLock)
+        {
+            switch (_blobTask)
+            {
+                case { IsCompleted: false }:
+                case { IsCompletedSuccessfully: true, Result.HasData: true }:
+                    return _blobTask;
+                default:
+                    _blobTask = ReadBlobAsync();
+                    return _blobTask;
+            }
+        }
     }
 
-    public Task<byte[]?> GetBlob()
-    {
-        if (Blob.TryGetTarget(out var task))
-            return task;
-
-        task = GetBlob0();
-        Blob.SetTarget(task);
-
-        return task;
-    }
-
-    protected abstract Task<byte[]> GetBlob0();
+    protected abstract Task<BlobData> ReadBlobAsync();
 
     public Asset ToPacket()
     {
-        if (CachedPacket?.TryGetTarget(out var packet) is true)
+        if (_cachedPacket?.TryGetTarget(out var packet) is true)
             return packet;
 
         packet = new Asset { Name = Name, Hash = Hash };
-        CachedPacket = new WeakReference<Asset>(packet);
+        _cachedPacket = new WeakReference<Asset>(packet);
 
         return packet;
     }
@@ -58,7 +57,7 @@ public abstract partial class CommonAsset : INetworkSerializable<Asset>
     public override int GetHashCode()
         => HashCode.Combine(Name, Hash);
 
-    public static string ComputeHash(byte[] bytes)
+    private static string ComputeHash(byte[] bytes)
         => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
 
     [GeneratedRegex("^[A-Fa-f0-9]{64}$", RegexOptions.Compiled)]

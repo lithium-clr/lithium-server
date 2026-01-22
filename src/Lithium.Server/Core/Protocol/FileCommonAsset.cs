@@ -16,8 +16,9 @@ public sealed class FileCommonAsset : CommonAsset
         File = file;
     }
 
-    protected override Task<byte[]> GetBlob0()
+    protected override async Task<BlobData> ReadBlobAsync()
     {
-        return System.IO.File.ReadAllBytesAsync(File);
+        var data = await System.IO.File.ReadAllBytesAsync(File);
+        return new BlobData(data);
     }
 }
