@@ -31,11 +31,18 @@ public sealed partial class SetupPacketRouter(
         logger.LogInformation("Setting world height to {worldHeight}", worldSettings.WorldHeight);
         await client.SendPacketAsync(worldSettings);
 
-        // var config = serverManager.Configuration;
-        //
-        // logger.LogInformation("Sending server info...");
-        // var serverInfo = new ServerInfoPacket(config.ServerName, config.Motd, config.MaxPlayers);
-        // await client.SendPacketAsync(serverInfo);
+        var config = serverManager.Configuration;
+        
+        logger.LogInformation("Sending server info...");
+        
+        var serverInfo = new ServerInfoPacket
+        {
+            ServerName = config.ServerName,
+            Motd = config.Motd,
+            MaxPlayers = config.MaxPlayers
+        };
+        
+        await client.SendPacketAsync(serverInfo);
         
         logger.LogInformation("SetupPacketRouter initialized.");
     }
