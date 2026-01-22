@@ -11,8 +11,8 @@ public interface IClientManager
     IEnumerable<IClient> GetAllClients();
 
     Task SendToClient<T>(IClient client, T packet, CancellationToken ct = default)
-        where T : struct, IPacket<T>;
+        where T : IPacket<T>;
 
     Task Broadcast<T>(T packet, IClient? except = null, CancellationToken ct = default)
-        where T : struct, IPacket<T>;
+        where T : IPacket<T>;
 }

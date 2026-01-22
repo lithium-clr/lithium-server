@@ -9,14 +9,14 @@ public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
 
     public abstract void Initialize(IServiceProvider sp);
 
-    protected virtual Task OnInitialize(Channel channel)
+    public virtual Task OnInitialize(Channel channel)
     {
         return Task.CompletedTask;
     }
 
     protected virtual bool ShouldAcceptPacket(Channel channel, int packetId, byte[] payload) => true;
     
-    public void Register<T>(IPacketHandler<T> handler) where T : struct, IPacket<T>
+    public void Register<T>(IPacketHandler<T> handler) where T : IPacket<T>
     {
         var packetId = T.Id;
 
@@ -51,9 +51,6 @@ public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
             return;
 
         if (_routes.TryGetValue(packetId, out var action))
-        {
-            await OnInitialize(channel);
             await action(channel, packetId, payload);
-        }
     }
 }

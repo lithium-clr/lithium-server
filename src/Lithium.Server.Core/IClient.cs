@@ -15,7 +15,7 @@ public interface IClient
     bool IsActive { get; }
 
     Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
-        where T : struct, IPacket<T>;
+        where T : IPacket<T>;
 
     Task DisconnectAsync(string? reason = null);
 }

@@ -49,13 +49,13 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
     }
 
     public async Task SendToClient<T>(IClient client, T packet, CancellationToken ct = default)
-        where T : struct, IPacket<T>
+        where T : IPacket<T>
     {
         await client.SendPacketAsync(packet, ct);
     }
 
     public async Task Broadcast<T>(T packet, IClient? except = null, CancellationToken ct = default)
-        where T : struct, IPacket<T>
+        where T : IPacket<T>
     {
         var tasks = new List<Task>();
 

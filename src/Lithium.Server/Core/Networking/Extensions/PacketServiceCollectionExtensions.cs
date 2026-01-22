@@ -35,9 +35,10 @@ public static class PacketServiceCollectionExtensions
 
         services.AddSingleton<HandshakeRouter>();
         services.AddSingleton<AuthenticationRouter>();
-        services.AddSingleton<Protocol.Routers.PasswordRouter>();
+        services.AddSingleton<PasswordRouter>();
+        services.AddSingleton<SetupPacketRouter>();
         
-        services.AddSingleton<IPacketRouter>(sp => sp.GetRequiredService<HandshakeRouter>());
+        // services.AddSingleton<IPacketRouter>(sp => sp.GetRequiredService<HandshakeRouter>());
         services.AddSingleton<PacketRouterService>();
         services.AddSingleton<IPacketHandler, PacketHandler>();
 

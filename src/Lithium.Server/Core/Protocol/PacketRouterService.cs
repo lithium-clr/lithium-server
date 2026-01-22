@@ -1,12 +1,12 @@
 using System.Collections.Concurrent;
-using Lithium.Server.Core.Protocol;
+using Lithium.Server.Core.Protocol.Routers;
 using Lithium.Server.Core.Protocol.Transport;
 
-namespace Lithium.Server.Core;
+namespace Lithium.Server.Core.Protocol;
 
 public sealed class PacketRouterService(
     ILogger<PacketRouterService> logger,
-    IPacketRouter defaultRouter
+    HandshakeRouter defaultRouter
 )
 {
     private readonly ConcurrentDictionary<Channel, IPacketRouter> _activeRouters = new();
@@ -14,6 +14,8 @@ public sealed class PacketRouterService(
     public void SetRouter(Channel channel, IPacketRouter router)
     {
         _activeRouters[channel] = router;
+        
+        router.OnInitialize(channel);
         logger.LogDebug("Switched router for channel to {RouterType}", router.GetType().Name);
     }
 

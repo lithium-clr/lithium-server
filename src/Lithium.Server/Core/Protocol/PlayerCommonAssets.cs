@@ -1,6 +1,6 @@
 using Lithium.Server.Core.Protocol.Packets;
 
-namespace Lithium.Server.Core.Protocol.Routers;
+namespace Lithium.Server.Core.Protocol;
 
 public sealed class PlayerCommonAssets
 {

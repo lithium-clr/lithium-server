@@ -6,7 +6,7 @@ namespace Lithium.Server;
 public partial class Client
 {
     public async Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
-        where T : struct, IPacket<T>
+        where T : IPacket<T>
     {
         using var ms = new MemoryStream();
         packet.Serialize(ms);
