@@ -3,6 +3,7 @@ namespace Lithium.Server.Core.Protocol.Packets;
 public sealed class WorldSettingsPacket : IPacket<WorldSettingsPacket>
 {
     public static int Id => 20;
+    public static bool IsCompressed => true;
 
     public int WorldHeight { get; init; } = 320;
     public Asset[]? RequiredAssets { get; init; }
