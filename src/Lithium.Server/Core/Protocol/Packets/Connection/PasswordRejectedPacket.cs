@@ -2,15 +2,12 @@ using System.Buffers.Binary;
 
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public sealed class PasswordRejectedPacket(
-    byte[]? passwordChallenge,
-    int attemptsRemaining
-) : IPacket<PasswordRejectedPacket>
+public sealed class PasswordRejectedPacket : IPacket<PasswordRejectedPacket>
 {
     public static int Id => 17;
 
-    public readonly byte[]? PasswordChallenge = passwordChallenge;
-    public readonly int AttemptsRemaining = attemptsRemaining;
+    public byte[]? PasswordChallenge { get; init; }
+    public int AttemptsRemaining { get; init; }
 
     public void Serialize(Stream stream)
     {

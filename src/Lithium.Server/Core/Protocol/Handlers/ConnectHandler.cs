@@ -56,7 +56,11 @@ public sealed class ConnectHandler(
 
                 if (!string.IsNullOrEmpty(serverIdentityToken))
                 {
-                    var authGrantPacket = new AuthGrantPacket(authGrant, serverIdentityToken);
+                    var authGrantPacket = new AuthGrantPacket
+                    {
+                        AuthorizationGrant = authGrant,
+                        ServerIdentityToken = serverIdentityToken
+                    };
 
                     logger.LogInformation("Sending authorization grant to client...");
                     await client.SendPacketAsync(authGrantPacket);

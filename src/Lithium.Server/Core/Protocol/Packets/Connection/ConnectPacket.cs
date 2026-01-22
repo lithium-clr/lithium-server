@@ -1,26 +1,17 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public sealed class ConnectPacket(
-    string protocolHash,
-    ClientType clientType,
-    string? language,
-    string? identityToken,
-    Guid uuid,
-    string username,
-    byte[]? referralData,
-    HostAddress? referralSource
-) : IPacket<ConnectPacket>
+public sealed class ConnectPacket : IPacket<ConnectPacket>
 {
     public static int Id => 0;
 
-    public readonly string ProtocolHash = protocolHash;
-    public readonly ClientType ClientType = clientType;
-    public readonly string? Language = language;
-    public readonly string? IdentityToken = identityToken;
-    public readonly Guid Uuid = uuid;
-    public readonly string Username = username;
-    public readonly byte[]? ReferralData = referralData;
-    public readonly HostAddress? ReferralSource = referralSource;
+    public string ProtocolHash { get; init; } = null!;
+    public ClientType ClientType { get; init; }
+    public string? Language { get; init; }
+    public string? IdentityToken { get; init; }
+    public Guid Uuid { get; init; }
+    public string Username { get; init; } = null!;
+    public byte[]? ReferralData { get; init; }
+    public HostAddress? ReferralSource { get; init; }
 
     public static ConnectPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
@@ -49,7 +40,7 @@ public sealed class ConnectPacket(
         if ((nullBits & 2) is not 0 && identityOffset is not -1)
             identityToken = PacketSerializer.ReadVarString(varBlock[identityOffset..], out _);
 
-        var username = ""; // Must be initialized for readonly struct
+        var username = "";
 
         if (usernameOffset is not -1)
             username = PacketSerializer.ReadVarString(varBlock[usernameOffset..], out _);
@@ -71,15 +62,16 @@ public sealed class ConnectPacket(
             referralSource = HostAddress.Deserialize(varBlock[referralSourceOffset..], out bytesRead);
         }
 
-        return new ConnectPacket(
-            protocolHash,
-            clientType,
-            language,
-            identityToken,
-            uuid,
-            username,
-            referralData,
-            referralSource
-        );
+        return new ConnectPacket
+        {
+            ProtocolHash = protocolHash,
+            ClientType = clientType,
+            Language = language,
+            IdentityToken = identityToken,
+            Uuid = uuid,
+            Username = username,
+            ReferralData = referralData,
+            ReferralSource = referralSource
+        };
     }
 }

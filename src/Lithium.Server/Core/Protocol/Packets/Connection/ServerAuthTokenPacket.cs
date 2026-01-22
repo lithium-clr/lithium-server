@@ -1,14 +1,11 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public sealed class ServerAuthTokenPacket(
-    string? serverAccessToken,
-    byte[]? passwordChallenge
-) : IPacket<ServerAuthTokenPacket>
+public sealed class ServerAuthTokenPacket : IPacket<ServerAuthTokenPacket>
 {
     public static int Id => 13;
 
-    public readonly string? ServerAccessToken = serverAccessToken;
-    public readonly byte[]? PasswordChallenge = passwordChallenge;
+    public string? ServerAccessToken { get; init; }
+    public byte[]? PasswordChallenge { get; init; }
 
     public void Serialize(Stream stream)
     {

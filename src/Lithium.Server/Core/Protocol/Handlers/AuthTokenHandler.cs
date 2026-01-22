@@ -168,9 +168,13 @@ public sealed class AuthTokenHandler(
                         passwordChallenge is not null);
 
                     // Challenge the server for password
-                    var packet = new ServerAuthTokenPacket(serverAccessToken, passwordChallenge);
+                    var packet = new ServerAuthTokenPacket
+                    {
+                        ServerAccessToken = serverAccessToken,
+                        PasswordChallenge = passwordChallenge
+                    };
+                    
                     await client.SendPacketAsync(packet);
-
                     await CompleteAuthentication(client, passwordChallenge);
                 }
             }

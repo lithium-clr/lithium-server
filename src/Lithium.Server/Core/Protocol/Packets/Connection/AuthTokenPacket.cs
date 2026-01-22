@@ -1,11 +1,11 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public sealed class AuthTokenPacket(string? accessToken, string? serverAuthorizationGrant) : IPacket<AuthTokenPacket>
+public sealed class AuthTokenPacket : IPacket<AuthTokenPacket>
 {
     public static int Id => 12;
 
-    public readonly string? AccessToken = accessToken;
-    public readonly string? ServerAuthorizationGrant = serverAuthorizationGrant;
+    public string? AccessToken { get; init; }
+    public string? ServerAuthorizationGrant { get; init; }
 
     public static AuthTokenPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
@@ -18,17 +18,19 @@ public sealed class AuthTokenPacket(string? accessToken, string? serverAuthoriza
         var varBlock = buffer[reader.Offset..];
         
         string? accessToken = null;
-        if ((nullBits & 1) != 0 && accessTokenOffset != -1)
-        {
+        
+        if ((nullBits & 1) is not 0 && accessTokenOffset is not -1)
             accessToken = PacketSerializer.ReadVarString(varBlock[accessTokenOffset..], out _);
-        }
 
         string? serverAuthorizationGrant = null;
-        if ((nullBits & 2) != 0 && serverAuthOffset != -1)
-        {
+        
+        if ((nullBits & 2) is not 0 && serverAuthOffset is not -1)
             serverAuthorizationGrant = PacketSerializer.ReadVarString(varBlock[serverAuthOffset..], out _);
-        }
 
-        return new AuthTokenPacket(accessToken, serverAuthorizationGrant);
+        return new AuthTokenPacket
+        {
+            AccessToken = accessToken,
+            ServerAuthorizationGrant = serverAuthorizationGrant
+        };
     }
 }

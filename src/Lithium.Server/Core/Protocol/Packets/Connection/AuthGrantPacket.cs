@@ -1,14 +1,11 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public sealed class AuthGrantPacket(
-    string? authorizationGrant,
-    string? serverIdentityToken
-) : IPacket<AuthGrantPacket>
+public sealed class AuthGrantPacket : IPacket<AuthGrantPacket>
 {
     public static int Id => 11;
 
-    public string? AuthorizationGrant { get; } = authorizationGrant;
-    public string? ServerIdentityToken { get; } = serverIdentityToken;
+    public string? AuthorizationGrant { get; init; }
+    public string? ServerIdentityToken { get; init; }
 
     public void Serialize(Stream stream)
     {

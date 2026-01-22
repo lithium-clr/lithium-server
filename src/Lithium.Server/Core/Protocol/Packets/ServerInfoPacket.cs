@@ -2,18 +2,14 @@ using System.Buffers.Binary;
 
 namespace Lithium.Server.Core.Protocol.Packets;
 
-public readonly struct ServerInfoPacket(
-    string? serverName,
-    string? motd,
-    int maxPlayers
-) : IPacket<ServerInfoPacket>
+public sealed class ServerInfoPacket : IPacket<ServerInfoPacket>
 {
     public static int Id => 223;
     private const int VariableBlockStart = 13;
 
-    public readonly string? ServerName = serverName;
-    public readonly string? Motd = motd;
-    public readonly int MaxPlayers = maxPlayers;
+    public string? ServerName { get; init; }
+    public string? Motd { get; init; }
+    public int MaxPlayers { get; init; }
 
     public static ServerInfoPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
@@ -36,13 +32,18 @@ public readonly struct ServerInfoPacket(
         if ((nullBits & 2) is not 0)
             motd = PacketSerializer.ReadVarString(varBlock[motdOffset..], out _);
 
-        return new ServerInfoPacket(serverName, motd, maxPlayers);
+        return new ServerInfoPacket
+        {
+            ServerName = serverName,
+            Motd = motd,
+            MaxPlayers = maxPlayers
+        };
     }
 
     public void Serialize(Stream stream)
     {
         byte nullBits = 0;
-        
+
         if (ServerName is not null) nullBits |= 1;
         if (Motd is not null) nullBits |= 2;
 

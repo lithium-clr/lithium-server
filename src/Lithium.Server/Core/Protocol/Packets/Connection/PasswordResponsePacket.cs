@@ -1,10 +1,10 @@
 namespace Lithium.Server.Core.Protocol.Packets.Connection;
 
-public sealed class PasswordResponsePacket(byte[]? hash) : IPacket<PasswordResponsePacket>
+public sealed class PasswordResponsePacket : IPacket<PasswordResponsePacket>
 {
     public static int Id => 15;
 
-    public readonly byte[]? Hash = hash;
+    public byte[]? Hash { get; init; }
 
     public static PasswordResponsePacket Deserialize(ReadOnlySpan<byte> buffer)
     {
@@ -20,6 +20,9 @@ public sealed class PasswordResponsePacket(byte[]? hash) : IPacket<PasswordRespo
             hash = reader.ReadBytes(length).ToArray();
         }
 
-        return new PasswordResponsePacket(hash);
+        return new PasswordResponsePacket
+        {
+            Hash = hash
+        };
     }
 }

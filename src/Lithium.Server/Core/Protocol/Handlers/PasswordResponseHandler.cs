@@ -62,11 +62,13 @@ public sealed class PasswordResponseHandler(
                         else
                         {
                             var hasPassword = !string.IsNullOrEmpty(ServerManager.Configuration.Password);
-
                             passwordChallenge = hasPassword ? PasswordChallengeUtility.GenerateChallenge() : null;
 
-                            var passwordRejectedPacket =
-                                new PasswordRejectedPacket(passwordChallenge, _attemptsRemaining);
+                            var passwordRejectedPacket = new PasswordRejectedPacket
+                            {
+                                PasswordChallenge = passwordChallenge,
+                                AttemptsRemaining = _attemptsRemaining
+                            };
 
                             await client.SendPacketAsync(passwordRejectedPacket);
                         }
