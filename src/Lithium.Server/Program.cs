@@ -136,6 +136,9 @@ builder.Services.AddSingleton<IClientManager, ClientManager>();
 builder.Services.AddSingleton<IPluginRegistry, PluginRegistry>();
 builder.Services.AddSingleton<IPluginManager, PluginManager>();
 builder.Services.AddSingleton<IServerManager, ServerManager>();
+builder.Services.AddSingleton<PlayerCommonAssets>();
+builder.Services.AddSingleton<CommonAssetModule>();
+builder.Services.AddSingleton<CommonAssetRegistry>();
 
 builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 
