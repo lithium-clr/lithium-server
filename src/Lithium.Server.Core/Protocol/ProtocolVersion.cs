@@ -1,6 +1,7 @@
+using Lithium.SourceGenerators.Attributes;
+
 namespace Lithium.Server.Core.Protocol;
 
-public sealed record ProtocolVersion(string Hash)
-{
-    public override string ToString() => $"ProtocolVersion(Hash=\"{Hash}\")";
-}
+public sealed partial record ProtocolVersion(
+    [property: ToStringInclude] string Hash
+);
