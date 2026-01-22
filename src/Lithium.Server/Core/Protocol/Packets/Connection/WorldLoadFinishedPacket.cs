@@ -1,0 +1,15 @@
+namespace Lithium.Server.Core.Protocol.Packets.Connection;
+
+public sealed class WorldLoadFinishedPacket : IPacket<WorldLoadFinishedPacket>
+{
+    public static int Id => 22;
+
+    public void Serialize(Stream stream)
+    {
+    }
+    
+    public static WorldLoadFinishedPacket Deserialize(ReadOnlySpan<byte> buffer)
+    {
+        return new WorldLoadFinishedPacket();
+    }
+}
