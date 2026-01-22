@@ -1,4 +1,7 @@
 {
   "Password": "PWD",
+  "ServerName": "Lithium Server",
+  "Motd": "A Lithium Server",
+  "MaxPlayers": 32,
   "Plugins": []
 }
