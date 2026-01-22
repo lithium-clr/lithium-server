@@ -6,7 +6,9 @@ namespace Lithium.Server.Core.Protocol.Routers;
 public sealed partial class SetupPacketRouter(
     ILogger<SetupPacketRouter> logger,
     IClientManager clientManager,
-    IServerManager serverManager
+    IServerManager serverManager,
+    CommonAssetModule commonAssetModule,
+    PlayerCommonAssets assets
 ) : BasePacketRouter(logger)
 {
     public override partial void Initialize(IServiceProvider sp);
@@ -17,16 +19,17 @@ public sealed partial class SetupPacketRouter(
         
         var client = clientManager.GetClient(channel);
         if (client is null) return;
-
+        
+        // Asset[] requiredAssets = [];
+        
+        var requiredAssets = commonAssetModule.Assets;
+        assets.Initialize(requiredAssets);
+        
         var worldSettings = new WorldSettingsPacket
         {
             WorldHeight = 320,
-            RequiredAssets = null
+            RequiredAssets = requiredAssets
         };
-
-        // var requiredAssets
-        // var assets = new PlayerCommonAssets(requiredAssets);
-        // worldSettings.RequiredAssets = requiredAssets;
 
         logger.LogInformation("Setting world height to {worldHeight}", worldSettings.WorldHeight);
         await client.SendPacketAsync(worldSettings);
