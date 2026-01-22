@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Lithium.SourceGenerators;
 
 [Generator]
-public class RouterGenerator : ISourceGenerator
+public sealed class RouterGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext context)
     {
