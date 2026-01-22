@@ -1,29 +1,42 @@
 using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core.Protocol.Transport;
+using ZstdSharp;
 
 namespace Lithium.Server;
 
 public partial class Client
 {
+    // Default compression level for Zstd
+    private const int CompressionLevel = 3;
+
+    private static readonly Compressor Compressor = new(CompressionLevel);
+    
     public async Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
         where T : IPacket<T>
     {
-        using var ms = new MemoryStream();
-        packet.Serialize(ms);
+        await using var payloadStream = new MemoryStream();
+        packet.Serialize(payloadStream);
 
         var packetId = T.Id;
-        var payload = ms.ToArray();
+        var payload = payloadStream.ToArray();
 
-        using var stream = new MemoryStream();
-        PacketWriter.WriteHeader(stream, packetId, payload.Length);
-        stream.Write(payload);
+        var finalPayload = payload;
+
+        if (T.IsCompressed && payload.Length > 0)
+        {
+            var span = Compressor.Wrap(payload);
+            finalPayload = span.ToArray();
+        }
+
+        await using var stream = new MemoryStream();
+
+        PacketWriter.WriteHeader(stream, packetId, finalPayload.Length);
+        await stream.WriteAsync(finalPayload, ct);
 
         var data = stream.ToArray();
 
         await Channel.Stream.WriteAsync(data, ct);
         await Channel.Stream.FlushAsync(ct);
-
-        Console.WriteLine($"[Sent] {packet.GetType().Name} (ID {packetId}, Payload Length: {payload.Length})");
     }
     
     public Task DisconnectAsync(string? reason = null)
