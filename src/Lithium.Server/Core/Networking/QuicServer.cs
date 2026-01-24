@@ -25,7 +25,8 @@ public sealed class QuicServer(
     private const int DefaultPort = 5520;
 
     // private const int HeartbeatInterval = 15;
-    private const string Protocol = "hytale/1";
+    private const string ProtocolV1 = "hytale/1";
+    private const string ProtocolV2 = "hytale/2";
     private const string CertificateFileName = "lithium_server_cert_v2.pfx";
     private const string CertificatePassword = "password";
 
@@ -48,18 +49,25 @@ public sealed class QuicServer(
         // Use IPv6Any with DualMode (supported by default on Windows/Linux) to handle both IPv4 and IPv6
         var endpoint = new IPEndPoint(IPAddress.IPv6Any, DefaultPort);
 
+        List<SslApplicationProtocol> protocols =
+        [
+            new(ProtocolV2),
+            new(ProtocolV1)
+        ];
+
         var serverAuthenticationOptions = new SslServerAuthenticationOptions
         {
-            ApplicationProtocols = [new SslApplicationProtocol(Protocol)],
+            ApplicationProtocols = protocols,
             ServerCertificate = cert,
             ClientCertificateRequired = true,
             RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
             {
-                logger.LogInformation("(RemoteCertificateValidationCallback) -> Register client certificate: " + sender.GetType());
-                
-                if (certificate is not X509Certificate2 clientCert) 
+                logger.LogInformation("(RemoteCertificateValidationCallback) -> Register client certificate: " +
+                                      sender.GetType());
+
+                if (certificate is not X509Certificate2 clientCert)
                     return false;
-                
+
                 serverAuthManager.AddClientCertificate((QuicConnection)sender, clientCert);
                 return true;
             }
@@ -76,7 +84,7 @@ public sealed class QuicServer(
         var listenerOptions = new QuicListenerOptions
         {
             ListenEndPoint = endpoint,
-            ApplicationProtocols = [new SslApplicationProtocol(Protocol)],
+            ApplicationProtocols = protocols,
             ConnectionOptionsCallback = (connection, sslInfo, cancellationToken) =>
             {
                 return ValueTask.FromResult(quicServerConnectionOptions);
@@ -85,8 +93,7 @@ public sealed class QuicServer(
 
         _listener = await QuicListener.ListenAsync(listenerOptions, ct);
 
-        logger.LogInformation("Listening on {ListenerLocalEndPoint} with ALPN '{Protocol}'", _listener.LocalEndPoint,
-            Protocol);
+        logger.LogInformation("Listening on {ListenerLocalEndPoint} with ALPN '{Protocol}'", _listener.LocalEndPoint, protocols.First());
 
         // Start accepting connections
         while (!ct.IsCancellationRequested)
