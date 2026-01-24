@@ -137,60 +137,6 @@ public sealed class QuicServer(
         }
     }
 
-    // private static async Task KeepOpenAsync(CancellationToken ct)
-    // {
-    //     while (!ct.IsCancellationRequested)
-    //     {
-    //         await Task.Delay(1000, ct);
-    //     }
-    // }
-
-    // private async Task HeartbeatLoopAsync(CancellationToken ct)
-    // {
-    //     try
-    //     {
-    //         while (!ct.IsCancellationRequested)
-    //         {
-    //             await Task.Delay(TimeSpan.FromSeconds(HeartbeatInterval), ct);
-    //
-    //             var ticks = DateTime.UtcNow.Ticks;
-    //             var packet = new HeartbeatPacket(ticks);
-    //             var packetId = PacketRegistry.GetPacketId<HeartbeatPacket>();
-    //             var header = new PacketHeader(packetId, packet.GetSize());
-    //             var data = PacketSerializer.SerializePacket(packet, header.TypeId);
-    //
-    //             foreach (var kv in _connections)
-    //             {
-    //                 var stream = kv.Value;
-    //
-    //                 try
-    //                 {
-    //                     await stream.WriteAsync(data, ct);
-    //                     await stream.FlushAsync(ct);
-    //                 }
-    //                 catch (Exception ex) when (ex is not OperationCanceledException)
-    //                 {
-    //                     logger.LogWarning(ex, "Failed to send heartbeat");
-    //                     break;
-    //                 }
-    //             }
-    //
-    //             await hub.Clients.All.Heartbeat(ticks);
-    //             logger.LogInformation("Heartbeat sent to all clients");
-    //         }
-    //     }
-    //     catch (OperationCanceledException)
-    //     {
-    //         logger.LogInformation("Heartbeat loop was cancelled");
-    //         throw;
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         logger.LogError(ex, "Error in heartbeat loop");
-    //         throw;
-    //     }
-    // }
-
     public async ValueTask DisposeAsync()
     {
         foreach (var (connection, channel) in _channels)
