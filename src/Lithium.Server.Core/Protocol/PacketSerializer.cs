@@ -100,6 +100,20 @@ public static class PacketSerializer
             buffer[12], buffer[13], buffer[14], buffer[15]);
     }
 
+    public static void WriteUuid(Stream stream, Guid value)
+    {
+        Span<byte> buffer = stackalloc byte[16];
+    
+        var bytes = value.ToByteArray();
+    
+        BinaryPrimitives.WriteInt32BigEndian(buffer, BitConverter.ToInt32(bytes, 0));
+        BinaryPrimitives.WriteInt16BigEndian(buffer[4..], BitConverter.ToInt16(bytes, 4));
+        BinaryPrimitives.WriteInt16BigEndian(buffer[6..], BitConverter.ToInt16(bytes, 6));
+    
+        bytes.AsSpan(8, 8).CopyTo(buffer[8..]);
+        stream.Write(buffer);
+    }
+
     public static void WriteByteArray(Stream stream, byte[]? data)
     {
         if (data is null)

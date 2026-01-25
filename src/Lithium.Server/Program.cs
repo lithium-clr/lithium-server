@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Lithium.Codecs;
 using Lithium.Server;
+using Lithium.Server.AssetStore;
 using Lithium.Server.Core;
 using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Auth.OAuth;
@@ -54,8 +55,9 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .MinimumLevel.Override("System", LogEventLevel.Warning)
     .Enrich.FromLogContext()
+    .Enrich.With<ShortSourceContextEnricher>()
     .WriteTo.Console(
-        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} | {SourceContext:l}] {Message:lj}{NewLine}{Exception}")
     .WriteTo.Sink(new SignalRSink())
     .WriteTo.Sentry(s =>
     {
@@ -136,10 +138,11 @@ builder.Services.AddSingleton<IPluginRegistry, PluginRegistry>();
 builder.Services.AddSingleton<IPluginManager, PluginManager>();
 builder.Services.AddSingleton<IServerManager, ServerManager>();
 builder.Services.AddSingleton<PlayerCommonAssets>();
-builder.Services.AddSingleton<CommonAssetModule>();
+// builder.Services.AddSingleton<CommonAssetModule>();
 builder.Services.AddSingleton<CommonAssetRegistry>();
-builder.Services.AddSingleton<AssetModule>();
+// builder.Services.AddSingleton<AssetModule>();
 builder.Services.AddSingleton<AssetManager>();
+builder.Services.AddSingleton<AssetLoader>();
 
 builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 

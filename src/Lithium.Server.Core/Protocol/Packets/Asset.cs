@@ -10,6 +10,17 @@ public sealed class Asset
     public string Hash { get; init; } = null!;
     public string Name { get; init; } = null!;
 
+    public void Serialize(Stream stream)
+    {
+        Span<byte> hashBytes = stackalloc byte[FixedBlockSize];
+
+        if (!string.IsNullOrEmpty(Hash))
+            Encoding.ASCII.GetBytes(Hash, hashBytes);
+
+        stream.Write(hashBytes);
+        PacketSerializer.WriteVarString(stream, Name);
+    }
+    
     public static Asset Deserialize(ReadOnlySpan<byte> buffer, out int bytesRead)
     {
         var reader = new PacketReader(buffer);
@@ -27,16 +38,5 @@ public sealed class Asset
             Hash = hash,
             Name = name
         };
-    }
-
-    public void Serialize(Stream stream)
-    {
-        Span<byte> hashBytes = stackalloc byte[FixedBlockSize];
-
-        if (!string.IsNullOrEmpty(Hash))
-            Encoding.ASCII.GetBytes(Hash, hashBytes);
-
-        stream.Write(hashBytes);
-        PacketSerializer.WriteVarString(stream, Name);
     }
 }

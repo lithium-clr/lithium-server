@@ -1,168 +1,110 @@
-using System.Diagnostics;
-using System.Text.Json;
 using Lithium.Server.AssetStore;
-using Lithium.Server.Common;
+using Lithium.Server.Core.Protocol.Packets;
 
 namespace Lithium.Server.Core.Protocol;
 
 public sealed class AssetManager(
     ILogger<AssetManager> logger,
-    CommonAssetRegistry assetRegistry
+    CommonAssetRegistry assetRegistry,
+    IServerConfigurationProvider configurationProvider,
+    AssetLoader assetLoader
 )
 {
-    private IReadOnlyList<CommonAsset> _commonAssets = [];
     private bool _isInitialized;
 
-    private const string AssetsPath = @"C:\Users\bubbl\Desktop\assets";
-
-    public async Task Initialize()
+    private readonly List<Asset> _assets = [];
+    
+    public IReadOnlyList<Asset> Assets => _assets;
+    
+    public async Task InitializeAsync()
     {
         if (_isInitialized)
-            throw new InvalidOperationException("AssetManager already initialized");
+            throw new Exception("AssetManager already initialized.");
 
         logger.LogInformation("Initializing AssetManager...");
+        await LoadCommonPackAsync();
+        
+        // TODO - Load mods packs
+        
+        _isInitialized = true;
+    }
 
-        // var manifestPath = Path.Combine(AssetsPath, "manifest.json");
-        // var commonManifest = await GetManifest(manifestPath);
-        //
-        // if (commonManifest is null)
-        // {
-        //     logger.LogInformation("Common manifest is null");
-        //     return;
-        // }
-        //
-        // logger.LogInformation("Common Manifest: {Manifest}",
-        //     string.Join(", ", commonManifest.Group, commonManifest.Name));
-        //
-        // logger.LogInformation("Loading CommonAssetsIndex.hashes...");
+    private async Task LoadCommonPackAsync()
+    {
+        var assetsPath = configurationProvider.Configuration.AssetsPath;
+        
+        if (string.IsNullOrEmpty(assetsPath))
+        {
+            logger.LogWarning("AssetsPath is not configured. Defaulting to 'assets'.");
+            assetsPath = "assets";
+        }
+        else if (!Path.IsPathFullyQualified(assetsPath))
+        {
+            // Make relative path absolute to current dir if needed, or leave it for AssetManager to handle.
+            // AssetManager uses Path.Combine only if it assumes it's absolute? 
+            // My AssetManager.LoadPackManifest uses it as is.
+            // If it's relative, it will be relative to CWD.
+        }
+        
+        logger.LogInformation("Initializing AssetManager with path: {path}", assetsPath);
 
-        // var commonAssetPack = new AssetPack(commonManifest, AssetsPath, commonManifest.Name);
-        // _commonAssets = await LoadCommonPackAssets(commonAssetPack);
-
-        var commonAssetPack = await LoadPack(AssetsPath);
+        var commonAssetPack = await LoadPackAsync(assetsPath);
 
         if (commonAssetPack is null)
         {
-            logger.LogInformation("Common asset pack is null");
+            logger.LogError("Failed to load common asset pack manifest from {path}", assetsPath);
             return;
         }
 
-        _commonAssets = await LoadCommonPackAssets(commonAssetPack);
+        // Ensure the pack name matches expectation if needed, or just log it.
+        logger.LogInformation("Loaded Common Pack Manifest: {name}", commonAssetPack.Name);
 
-        logger.LogInformation("{Count} assets loaded from CommonAssetsIndex.hashes", _commonAssets.Count);
+        var loadResult = await LoadAssetsAsync(commonAssetPack, assetRegistry);
 
-        _isInitialized = true;
-        logger.LogInformation("AssetManager initialized.");
-    }
-
-    public async Task<AssetPack?> LoadPack(string packPath)
-    {
-        var commonManifest = await LoadPackManifest(packPath);
-
-        if (commonManifest is null)
+        if (loadResult.HasError)
         {
-            logger.LogInformation("Common manifest is null");
-            return null;
+            logger.LogError("Error loading assets: {error}", loadResult.Error);
+            return;
         }
+        
+        logger.LogInformation("Loaded {count} assets ({duplicates} duplicates, {missing} missing) in {elapsed}ms",
+            loadResult.LoadedCount, loadResult.DuplicateCount, loadResult.MissingFiles, loadResult.ElapsedMs);
 
-        return new AssetPack(commonManifest, AssetsPath, commonManifest.Name);
-    }
-
-    private static async Task<PluginManifest?> LoadPackManifest(string packPath)
-    {
-        var manifestPath = Path.Combine(packPath, "manifest.json");
-        if (!File.Exists(manifestPath)) return null;
-
-        var json = await File.ReadAllTextAsync(manifestPath);
-        return JsonSerializer.Deserialize<PluginManifest>(json);
-    }
-
-    private async Task<IReadOnlyList<CommonAsset>> LoadCommonPackAssets(AssetStore.AssetPack assetPack)
-    {
-        var loadHashesStart = new Stopwatch();
-        loadHashesStart.Start();
-
-        var loadedAssetCount = 0;
-        var commonAssets = new List<CommonAsset>();
-
-        try
+        foreach (var packAsset in assetRegistry.Assets)
         {
-            var commonDirPath = Path.Combine(assetPack.Root, "Common");
-            var commonAssetsIndexPath = Path.Combine(assetPack.Root, "CommonAssetsIndex.hashes");
-            var files = await File.ReadAllLinesAsync(commonAssetsIndexPath);
-
-            for (var i = 0; i < files.Length; i++)
+            var asset = new Asset
             {
-                var line = files[i];
-                if (string.IsNullOrEmpty(line)) break;
-
-                if (line.StartsWith("VERSION="))
-                {
-                    var version = int.Parse(line["VERSION=".Length..]);
-
-                    logger.LogInformation("Version set to {version} from CommonAssetsIndex.hashes:L{i} '{line}'",
-                        version, i, line);
-
-                    if (version > 0)
-                        throw new Exception("Unsupported CommonAssetsIndex.hashes version");
-                }
-                else
-                {
-                    var split = line.Split(' ', 2);
-
-                    if (split.Length is not 2)
-                    {
-                        logger.LogWarning("Corrupt line in CommonAssetsIndex.hashes:L{i} '{line}'", i, line);
-                    }
-                    else
-                    {
-                        var hash = split[0];
-
-                        if (hash.Length is not 64 && !CommonAsset.HashPattern.IsMatch(hash))
-                        {
-                            logger.LogWarning("Corrupt line in CommonAssetsIndex.hashes:L{i} '{line}'", i, line);
-                        }
-                        else
-                        {
-                            var name = split[1];
-
-                            var assetPath = Path.Combine(commonDirPath, name)
-                                .Replace("\\", "/")
-                                .Trim();
-
-                            if (!File.Exists(assetPath))
-                            {
-                                logger.LogWarning("Missing asset entry '{path}'", assetPath);
-                                return [];
-                            }
-
-                            var asset = new FileCommonAsset(assetPath, name, hash, null);
-                            commonAssets.Add(asset);
-
-                            assetRegistry.AddCommonAsset("", asset);
-
-                            // AddCommonAsset(pack.Name,
-                            //     new FileCommonAsset(Path.Combine(commonPath, name), name, hash, null), false);
-
-                            // logger.LogInformation("Loaded asset info from CommonAssetsIndex.hashes:L{i} '{name}'",
-                            //     i, assetPath);
-
-                            loadedAssetCount++;
-                        }
-                    }
-                }
-            }
+                Name = packAsset.Asset.Name,
+                Hash = packAsset.Asset.Hash
+            };
+            
+            _assets.Add(asset);
         }
-        catch (Exception ex)
+    }
+
+    public async Task<AssetLoadResult> LoadAssetsAsync(AssetPack assetPack, CommonAssetRegistry registry)
+    {
+        return await assetLoader.LoadAssetsAsync(assetPack, registry);
+    }
+    
+    public async Task<AssetPack?> LoadPackAsync(string packPath)
+    {
+        return await assetLoader.LoadPackAsync(packPath);
+    }
+
+    public IEnumerable<CommonAsset> GetCommonAssets(IReadOnlyList<Asset> assets)
+    {
+        foreach (var asset in assets)
         {
-            logger.LogWarning(ex, "Failed to load hashes from CommonAssetsIndex.hashes");
+            var commonAsset = assetRegistry.GetByHash(asset.Hash);
+            
+            if (commonAsset is null)
+            {
+                logger.LogWarning("Asset not found in registry: {Hash}", asset.Hash);
+                continue;
+            }
+            
+            yield return commonAsset;
         }
-
-        loadHashesStart.Stop();
-
-        logger.LogInformation("Took {elapsed}ms to load {count} assets from CommonAssetsIndex.hashes file.",
-            loadHashesStart.ElapsedMilliseconds, loadedAssetCount);
-
-        return commonAssets;
     }
 }

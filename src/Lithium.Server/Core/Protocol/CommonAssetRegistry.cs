@@ -1,160 +1,236 @@
-using System.Collections.Concurrent;
-using Lithium.Server.AssetStore;
-
 namespace Lithium.Server.Core.Protocol;
 
 public sealed class CommonAssetRegistry
 {
-    private readonly ConcurrentDictionary<string, List<PackAsset>> _byName = new();
-    private readonly ConcurrentDictionary<string, List<PackAsset>> _byHash = new();
+    private readonly List<PackAsset> _assets = [];
+    private readonly Lock _assetsLock = new();
+
+    private readonly Dictionary<string, int> _nameIndex = new();  // Name -> Index in _assets
+    private readonly Dictionary<string, List<int>> _hashIndex = new();  // Hash -> Indices in _assets
+    private readonly Dictionary<string, List<int>> _packIndex = new();  // Pack -> Indices in _assets
+
     private int _duplicateAssetCount;
 
     public int DuplicateAssetCount => _duplicateAssetCount;
-    public IReadOnlyCollection<List<PackAsset>> Assets => _byName.Values.ToList();
+    
+    public IReadOnlyList<PackAsset> Assets
+    {
+        get
+        {
+            lock (_assetsLock)
+            {
+                return _assets.ToList();
+            }
+        }
+    }
 
     public AddCommonAssetResult AddCommonAsset(string pack, CommonAsset asset)
     {
-        var result = new AddCommonAssetResult
+        lock (_assetsLock)
         {
-            NewPackAsset = new PackAsset(pack, asset)
-        };
+            var newPackAsset = new PackAsset(pack, asset);
+            PackAsset? previousNameAsset = null;
+            int? duplicateId = null;
 
-        var list = _byName.GetOrAdd(asset.Name, _ => []);
-
-        lock (list)
-        {
-            var existingIndex = list.FindIndex(x => x.Pack == pack);
-
-            if (existingIndex >= 0)
+            // Vérifier si un asset avec ce nom existe déjà
+            if (_nameIndex.TryGetValue(asset.Name, out var existingIndex))
             {
-                result.PreviousNameAsset = list[existingIndex];
-                RemoveFromHash(result.PreviousNameAsset);
-
-                list[existingIndex] = result.NewPackAsset;
+                previousNameAsset = _assets[existingIndex];
+                
+                // Remplacer l'asset existant
+                _assets[existingIndex] = newPackAsset;
+                
+                // Mettre à jour les index
+                UpdateHashIndex(previousNameAsset.Asset.Hash, existingIndex, remove: true);
+                UpdatePackIndex(previousNameAsset.Pack, existingIndex, remove: true);
+                
+                duplicateId = Interlocked.Increment(ref _duplicateAssetCount);
             }
             else
             {
-                if (list.Count > 0)
-                {
-                    result.PreviousNameAsset = list[^1];
-                    RemoveFromHash(result.PreviousNameAsset);
-                }
-
-                list.Add(result.NewPackAsset);
+                // Nouvel asset
+                var newIndex = _assets.Count;
+                _assets.Add(newPackAsset);
+                _nameIndex[asset.Name] = newIndex;
             }
 
-            AddToHash(result.NewPackAsset);
+            // Mettre à jour les index pour le nouvel asset
+            var currentIndex = _nameIndex[asset.Name];
+            UpdateHashIndex(newPackAsset.Asset.Hash, currentIndex, remove: false);
+            UpdatePackIndex(newPackAsset.Pack, currentIndex, remove: false);
 
-            result.ActiveAsset = list[^1];
+            return new AddCommonAssetResult(newPackAsset, previousNameAsset, newPackAsset, duplicateId);
         }
-
-        if (result.PreviousNameAsset is not null)
-            result.DuplicateAssetId = Interlocked.Increment(ref _duplicateAssetCount);
-
-        return result;
     }
 
     public (bool changed, PackAsset asset)? RemoveCommonAssetByName(string pack, string name)
     {
         name = name.Replace('\\', '/');
 
-        if (!_byName.TryGetValue(name, out var list))
-            return null;
-
-        lock (list)
+        lock (_assetsLock)
         {
-            if (list.Count == 0)
+            if (!_nameIndex.TryGetValue(name, out var index))
                 return null;
 
-            var previous = list[^1];
+            var asset = _assets[index];
+            
+            if (asset.Pack != pack)
+                return null; // Ce pack ne possède pas cet asset
 
-            list.RemoveAll(x => x.Pack == pack);
+            // Supprimer des index
+            _nameIndex.Remove(name);
+            UpdateHashIndex(asset.Asset.Hash, index, remove: true);
+            UpdatePackIndex(asset.Pack, index, remove: true);
 
-            if (list.Count == 0)
-            {
-                _byName.TryRemove(name, out _);
-                RemoveFromHash(previous);
+            // Marquer comme supprimé (on ne réorganise pas la liste pour garder les indices)
+            _assets[index] = default!;
 
-                return (false, previous);
-            }
-
-            var current = list[^1];
-            if (current.Equals(previous)) return null;
-
-            RemoveFromHash(previous);
-            AddToHash(current);
-
-            return (true, current);
+            return (true, asset);
         }
     }
 
     public bool HasCommonAsset(string name)
-        => _byName.ContainsKey(name);
-
-    public bool HasCommonAsset(AssetStore.AssetPack pack, string name)
     {
-        var packAssets = _byName.TryGetValue(name, out var list);
-        if (!packAssets) return false;
-        
-        foreach (var packAsset in list ?? [])
+        name = name.Replace('\\', '/');
+        lock (_assetsLock)
         {
-            if (packAsset.Pack == pack.Name)
-                return true;
+            return _nameIndex.ContainsKey(name);
         }
+    }
 
-        return false;
+    public bool HasCommonAsset(string pack, string name)
+    {
+        name = name.Replace('\\', '/');
+        
+        lock (_assetsLock)
+        {
+            if (!_nameIndex.TryGetValue(name, out var index))
+                return false;
+
+            return _assets[index].Pack == pack;
+        }
     }
 
     public CommonAsset? GetByName(string name)
     {
         name = name.Replace('\\', '/');
-
-        return _byName.TryGetValue(name, out var list) && list.Count > 0
-            ? list[^1].Asset
-            : null;
+        
+        lock (_assetsLock)
+        {
+            if (_nameIndex.TryGetValue(name, out var index))
+                return _assets[index].Asset;
+            
+            return null;
+        }
     }
 
     public CommonAsset? GetByHash(string hash)
     {
-        return _byHash.TryGetValue(hash.ToLowerInvariant(), out var list) && list.Count > 0
-            ? list[0].Asset
-            : null;
+        hash = hash.ToLowerInvariant();
+        
+        lock (_assetsLock)
+        {
+            if (_hashIndex.TryGetValue(hash, out var indices) && indices.Count > 0)
+                return _assets[indices[0]].Asset;
+            
+            return null;
+        }
     }
 
     public List<CommonAsset> GetCommonAssetsStartingWith(string pack, string prefix)
     {
-        return _byName.Values
-            .SelectMany(l => l)
-            .Where(x => x.Pack == pack && x.Asset.Name.StartsWith(prefix))
-            .Select(x => x.Asset)
-            .ToList();
-    }
-
-    private void AddToHash(PackAsset asset)
-    {
-        var list = _byHash.GetOrAdd(asset.Asset.Hash, _ => []);
-
-        lock (list)
-            list.Add(asset);
-    }
-
-    private void RemoveFromHash(PackAsset asset)
-    {
-        if (!_byHash.TryGetValue(asset.Asset.Hash, out var list))
-            return;
-
-        lock (list)
+        lock (_assetsLock)
         {
-            list.Remove(asset);
+            if (!_packIndex.TryGetValue(pack, out var packIndices))
+                return [];
 
-            if (list.Count is 0)
-                _byHash.TryRemove(asset.Asset.Hash, out _);
+            return packIndices
+                .Select(i => _assets[i])
+                .Where(pa => pa.Asset.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                .Select(pa => pa.Asset)
+                .ToList();
         }
     }
-    
+
+    public List<CommonAsset> GetAssetsByPack(string pack)
+    {
+        lock (_assetsLock)
+        {
+            if (!_packIndex.TryGetValue(pack, out var indices))
+                return [];
+
+            return indices.Select(i => _assets[i].Asset).ToList();
+        }
+    }
+
+    private void UpdateHashIndex(string hash, int index, bool remove)
+    {
+        if (remove)
+        {
+            if (_hashIndex.TryGetValue(hash, out var indices))
+            {
+                indices.Remove(index);
+                if (indices.Count == 0)
+                    _hashIndex.Remove(hash);
+            }
+        }
+        else
+        {
+            if (!_hashIndex.TryGetValue(hash, out var indices))
+            {
+                indices = [];
+                _hashIndex[hash] = indices;
+            }
+            indices.Add(index);
+        }
+    }
+
+    private void UpdatePackIndex(string pack, int index, bool remove)
+    {
+        if (remove)
+        {
+            if (_packIndex.TryGetValue(pack, out var indices))
+            {
+                indices.Remove(index);
+                if (indices.Count == 0)
+                    _packIndex.Remove(pack);
+            }
+        }
+        else
+        {
+            if (!_packIndex.TryGetValue(pack, out var indices))
+            {
+                indices = [];
+                _packIndex[pack] = indices;
+            }
+            indices.Add(index);
+        }
+    }
+
     public void ClearAllAssets()
     {
-        _byName.Clear();
-        _byHash.Clear();
+        lock (_assetsLock)
+        {
+            _assets.Clear();
+            _nameIndex.Clear();
+            _hashIndex.Clear();
+            _packIndex.Clear();
+            _duplicateAssetCount = 0;
+        }
+    }
+
+    public RegistryStats GetStats()
+    {
+        lock (_assetsLock)
+        {
+            return new RegistryStats
+            {
+                TotalAssets = _assets.Count,
+                DuplicateCount = _duplicateAssetCount,
+                UniqueNames = _nameIndex.Count,
+                UniqueHashes = _hashIndex.Count,
+                PackCount = _packIndex.Count
+            };
+        }
     }
 }

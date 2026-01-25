@@ -6,7 +6,33 @@ public sealed class WorldSettingsPacket : IPacket<WorldSettingsPacket>
     public static bool IsCompressed => true;
 
     public int WorldHeight { get; init; } = 320;
-    public Asset[]? RequiredAssets { get; init; }
+    public Asset[]? RequiredAssets { get; init; } = [];
+    
+    public void Serialize(Stream stream)
+    {
+        byte nullBits = 0;
+
+        if (RequiredAssets is not null)
+            nullBits |= 1;
+
+        stream.WriteByte(nullBits);
+
+        Span<byte> heightBuffer = stackalloc byte[4];
+        System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(heightBuffer, WorldHeight);
+        stream.Write(heightBuffer);
+
+        if (RequiredAssets is null) return;
+
+        if (RequiredAssets.Length > 4096000)
+            throw new InvalidDataException($"RequiredAssets exceeds max length 4096000. Got {RequiredAssets.Length}");
+
+        PacketSerializer.WriteVarInt(stream, RequiredAssets.Length);
+
+        foreach (var asset in RequiredAssets)
+            asset.Serialize(stream);
+        
+        Console.WriteLine("World: " + stream.Length);
+    }
     
     public static WorldSettingsPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
@@ -44,29 +70,5 @@ public sealed class WorldSettingsPacket : IPacket<WorldSettingsPacket>
             WorldHeight = worldHeight,
             RequiredAssets = requiredAssets
         };
-    }
-
-    public void Serialize(Stream stream)
-    {
-        byte nullBits = 0;
-
-        if (RequiredAssets is not null)
-            nullBits |= 1;
-
-        stream.WriteByte(nullBits);
-
-        Span<byte> heightBuffer = stackalloc byte[4];
-        System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(heightBuffer, WorldHeight);
-        stream.Write(heightBuffer);
-
-        if (RequiredAssets is null) return;
-
-        if (RequiredAssets.Length > 4096000)
-            throw new InvalidDataException($"RequiredAssets exceeds max length 4096000. Got {RequiredAssets.Length}");
-
-        PacketSerializer.WriteVarInt(stream, RequiredAssets.Length);
-
-        foreach (var asset in RequiredAssets)
-            asset.Serialize(stream);
     }
 }

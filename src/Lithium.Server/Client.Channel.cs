@@ -39,6 +39,14 @@ public partial class Client
         await Channel.Stream.FlushAsync(ct);
     }
     
+    public async Task SendPacketsAsync(IPacket[] packets, CancellationToken ct = default)
+    {
+        foreach (var packet in packets)
+        {
+            await SendPacketAsync(packet, ct);
+        }
+    }
+
     public Task DisconnectAsync(string? reason = null)
     {
         if (!string.IsNullOrEmpty(reason))

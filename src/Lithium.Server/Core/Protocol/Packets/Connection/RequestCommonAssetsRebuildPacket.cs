@@ -7,9 +7,10 @@ public sealed class RequestCommonAssetsRebuildPacket : IPacket<RequestCommonAsse
     public void Serialize(Stream stream)
     {
     }
-
+    
     public static RequestCommonAssetsRebuildPacket Deserialize(ReadOnlySpan<byte> buffer)
     {
         return new RequestCommonAssetsRebuildPacket();
     }
+
 }

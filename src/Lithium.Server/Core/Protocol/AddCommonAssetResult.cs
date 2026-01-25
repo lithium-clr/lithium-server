@@ -2,11 +2,9 @@ using Lithium.SourceGenerators.Attributes;
 
 namespace Lithium.Server.Core.Protocol;
 
-public sealed class AddCommonAssetResult
-{
-    [ToStringInclude] public PackAsset NewPackAsset { get; set; } = null!;
-    [ToStringInclude] public PackAsset PreviousNameAsset { get; set; } = null!;
-    [ToStringInclude] public PackAsset ActiveAsset { get; set; } = null!;
-    [ToStringInclude] public PackAsset[] PreviousHashAssets { get; set; } = [];
-    [ToStringInclude] public int DuplicateAssetId { get; set; }
-}
+public sealed record AddCommonAssetResult(
+    [property: ToStringInclude] PackAsset NewPackAsset,
+    [property: ToStringInclude] PackAsset? PreviousNameAsset,
+    [property: ToStringInclude] PackAsset ActiveAsset,
+    [property: ToStringInclude] int? DuplicateAssetId
+);

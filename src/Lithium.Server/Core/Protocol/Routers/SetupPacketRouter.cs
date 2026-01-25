@@ -7,7 +7,8 @@ public sealed partial class SetupPacketRouter(
     ILogger<SetupPacketRouter> logger,
     IClientManager clientManager,
     IServerManager serverManager,
-    CommonAssetModule commonAssetModule,
+    // CommonAssetModule commonAssetModule,
+    AssetManager assetManager,
     PlayerCommonAssets assets
 ) : BasePacketRouter(logger)
 {
@@ -21,14 +22,19 @@ public sealed partial class SetupPacketRouter(
         if (client is null) return;
         
         // Asset[] requiredAssets = [];
+        // var requiredAssets = commonAssetModule.Assets;
         
-        var requiredAssets = commonAssetModule.Assets;
+        var requiredAssets = assetManager.Assets;
+        logger.LogInformation("Initializing assets: " + requiredAssets.Count);
+        
+        // TODO - Block here
         assets.Initialize(requiredAssets);
+        logger.LogInformation("Assets initialized.");
         
         var worldSettings = new WorldSettingsPacket
         {
             WorldHeight = 320,
-            RequiredAssets = requiredAssets
+            RequiredAssets = requiredAssets.ToArray()
         };
 
         logger.LogInformation("Setting world height to {worldHeight}", worldSettings.WorldHeight);

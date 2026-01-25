@@ -2,23 +2,16 @@ using Lithium.SourceGenerators.Attributes;
 
 namespace Lithium.Server.Core.Protocol;
 
-public sealed class FileCommonAsset : CommonAsset
+public sealed partial class FileCommonAsset(string filePath, string name, string hash) : CommonAsset(name, hash)
 {
-    [ToStringInclude] public string File { get; }
-
-    public FileCommonAsset(string file, string name, byte[]? bytes) : base(name, bytes)
-    {
-        File = file;
-    }
-
-    public FileCommonAsset(string file, string name, string hash, byte[]? bytes) : base(name, hash, bytes)
-    {
-        File = file;
-    }
-
+    [ToStringInclude] public string FilePath { get; } = filePath;
+    
     protected override async Task<BlobData> ReadBlobAsync()
     {
-        var data = await System.IO.File.ReadAllBytesAsync(File);
+        if (!File.Exists(FilePath))
+            return BlobData.Empty;
+
+        var data = await File.ReadAllBytesAsync(FilePath);
         return new BlobData(data);
     }
 }

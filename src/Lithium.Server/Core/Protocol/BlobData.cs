@@ -1,7 +1,9 @@
 namespace Lithium.Server.Core.Protocol;
 
-public readonly record struct BlobData(byte[]? Data)
+public readonly record struct BlobData(ReadOnlyMemory<byte> Data)
 {
-    public bool HasData => Data is not null;
-    public int Length => Data?.Length ?? 0;
+    public static BlobData Empty { get; } = new(ReadOnlyMemory<byte>.Empty);
+
+    public bool HasData => !Data.IsEmpty;
+    public int Length => Data.Length;
 }

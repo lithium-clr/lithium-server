@@ -16,7 +16,7 @@ public sealed class RequestAssetsPacket : IPacket<RequestAssetsPacket>
 
         Asset[]? assets = null;
 
-        Console.WriteLine("(RequestAssetsPacket) -> nullBits");
+        Console.WriteLine("(RequestAssetsPacket) -> nullBits: " + nullBits);
         
         if ((nullBits & 1) is not 0)
         {

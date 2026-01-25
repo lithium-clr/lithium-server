@@ -1,10 +1,12 @@
 using Lithium.Server.Core.Protocol.Transport;
 using Microsoft.Extensions.Logging;
+using ZstdSharp;
 
 namespace Lithium.Server.Core.Protocol;
 
 public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
 {
+    private static readonly Decompressor Decompressor = new();
     private readonly Dictionary<int, Func<Channel, int, byte[], Task>> _routes = new();
 
     public abstract void Initialize(IServiceProvider sp);
@@ -32,7 +34,15 @@ public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
         {
             try
             {
-                var packet = T.Deserialize(payload);
+                var finalPayload = payload;
+
+                if (T.IsCompressed && payload.Length > 0)
+                {
+                    var span = Decompressor.Unwrap(payload);
+                    finalPayload = span.ToArray();
+                }
+                
+                var packet = T.Deserialize(finalPayload);
                 await handler.Handle(channel, packet);
             }
             catch (Exception ex)

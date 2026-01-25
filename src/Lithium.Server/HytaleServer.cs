@@ -1,13 +1,15 @@
 using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Auth.OAuth;
 using Lithium.Server.Core.Protocol;
+using Lithium.Server.Core;
 
 namespace Lithium.Server;
 
 public sealed partial class HytaleServer(
     ILogger<HytaleServer> logger,
+    IServerConfigurationProvider configurationProvider,
     IServerAuthManager serverAuthManager,
-    AssetModule assetModule,
+    // AssetModule assetModule,
     AssetManager assetManager,
     IOAuthDeviceFlow deviceFlow
 )
@@ -16,11 +18,7 @@ public sealed partial class HytaleServer(
 
     public async Task InitializeAsync(ServerAuthManager.ServerAuthContext context)
     {
-        // logger.LogInformation("Initializing Hytale Assets...");
-        // await assetModule.Initialize();
-        
-        logger.LogInformation("Initializing Hytale Assets...");
-        await assetManager.Initialize();
+        await assetManager.InitializeAsync();
         
         logger.LogInformation("Initializing Hytale Authentication...");
         await serverAuthManager.InitializeAsync(context);
