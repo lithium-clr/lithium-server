@@ -7,15 +7,15 @@ public sealed class PlayerCommonAssets
     private readonly Dictionary<string, string> _assetsMissing = new();
     private readonly Dictionary<string, string> _assetsSent = [];
 
-    public void Initialize(Asset[] requiredAssets)
+    public void Initialize(IReadOnlyList<Asset> requiredAssets)
     {
         foreach (var requiredAsset in requiredAssets)
-            _assetsMissing.Add(requiredAsset.Hash, requiredAsset.Name);
+            _assetsMissing[requiredAsset.Hash] = requiredAsset.Name;
     }
 
-    public void Sent(Asset[]? assets)
+    public void Sent(IReadOnlyList<Asset>? assets)
     {
-        var set = new List<string>();
+        var set = new HashSet<string>();
 
         if (assets is not null)
         {
@@ -32,12 +32,15 @@ public sealed class PlayerCommonAssets
             keysToRemove.Add(hash);
             set.Remove(hash);
         }
+        
+        foreach (var key in keysToRemove)
+            _assetsMissing.Remove(key);
 
         if (set.Count is not 0)
-            throw new Exception("Still had hashes: " + set);
+            throw new Exception("Still had hashes: " + string.Join(", ", set));
 
         foreach (var kvp in _assetsMissing)
-            _assetsSent.Add(kvp.Key, kvp.Value);
+            _assetsSent[kvp.Key] = kvp.Value;
 
         _assetsMissing.Clear();
     }
