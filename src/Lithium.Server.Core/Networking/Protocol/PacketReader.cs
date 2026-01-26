@@ -121,7 +121,7 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
 
     public Guid ReadGuid()
     {
-        return new Guid(ReadFixedSpan(GuidLength));
+        return new Guid(ReadFixedSpan(GuidLength), true);
     }
 
     public int[] ReadOffsets()
