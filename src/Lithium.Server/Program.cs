@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Lithium.Codecs;
 using Lithium.Server;
 using Lithium.Server.AssetStore;
@@ -9,7 +9,6 @@ using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Authentication.OAuth;
 using Lithium.Server.Core.Networking.Extensions;
-
 using Lithium.Server.Core.Semver;
 using Lithium.Server.Core.Storage;
 using Lithium.Server.Core.Systems.Commands;
@@ -88,7 +87,6 @@ builder.Services.AddSerilog();
 
 builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
 builder.Logging.AddFilter("System", LogLevel.Warning);
-//
 
 // SignalR
 builder.Services.AddSignalR();
@@ -135,9 +133,7 @@ builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
 builder.Services.AddSingleton<IServerManager, ServerManager>();
 builder.Services.AddSingleton<PlayerCommonAssets>();
-// builder.Services.AddSingleton<CommonAssetModule>();
 builder.Services.AddSingleton<CommonAssetRegistry>();
-// builder.Services.AddSingleton<AssetModule>();
 builder.Services.AddSingleton<AssetManager>();
 builder.Services.AddSingleton<AssetLoader>();
 

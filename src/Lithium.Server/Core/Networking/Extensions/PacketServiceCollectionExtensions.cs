@@ -1,11 +1,6 @@
 using System.Reflection;
 using Lithium.Server.Core.Networking.Protocol;
-using Lithium.Server.Core.Networking.Protocol.Handlers;
-
-using AuthenticationRouter = Lithium.Server.Core.Networking.Protocol.Routers.AuthenticationRouter;
-using HandshakeRouter = Lithium.Server.Core.Networking.Protocol.Routers.HandshakeRouter;
-using PasswordRouter = Lithium.Server.Core.Networking.Protocol.Routers.PasswordRouter;
-using SetupPacketRouter = Lithium.Server.Core.Networking.Protocol.Routers.SetupPacketRouter;
+using Lithium.Server.Core.Networking.Protocol.Routers;
 
 namespace Lithium.Server.Core.Networking.Extensions;
 
@@ -13,23 +8,24 @@ public static class PacketServiceCollectionExtensions
 {
     public static IServiceCollection AddPacketHandlers(this IServiceCollection services, Assembly assembly)
     {
-        var assemblies = new[] { assembly, typeof(ConnectHandler).Assembly }.Distinct();
+        var assemblies = new[] { assembly, typeof(IPacketRegistry).Assembly, typeof(BasePacketRouter).Assembly }.Distinct();
 
         foreach (var asm in assemblies)
         {
-            foreach (var type in asm.GetTypes())
+            foreach (var type in asm.GetTypes().Where(t => !t.IsAbstract && !t.IsInterface))
             {
-                if (type.IsAbstract || type.IsInterface)
-                    continue;
-
-                foreach (var handlerInterface in type.GetInterfaces())
+                // Register Packet Handlers
+                var handlerInterface = type.GetInterfaces()
+                    .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IPacketHandler<>));
+                
+                if (handlerInterface != null)
                 {
-                    if (!handlerInterface.IsGenericType)
-                        continue;
+                    services.AddSingleton(type);
+                }
 
-                    if (handlerInterface.GetGenericTypeDefinition() != typeof(IPacketHandler<>))
-                        continue;
-
+                // Register Packet Routers
+                if (typeof(BasePacketRouter).IsAssignableFrom(type))
+                {
                     services.AddSingleton(type);
                 }
             }
@@ -44,12 +40,6 @@ public static class PacketServiceCollectionExtensions
         services.AddSingleton<IPacketRegistry>(registry);
         services.AddSingleton<PacketEncoder>();
         services.AddSingleton<PacketDecoder>();
-        services.AddSingleton<HandshakeRouter>();
-        services.AddSingleton<AuthenticationRouter>();
-        services.AddSingleton<PasswordRouter>();
-        services.AddSingleton<SetupPacketRouter>();
-        
-        // services.AddSingleton<IPacketRouter>(sp => sp.GetRequiredService<HandshakeRouter>());
         services.AddSingleton<PacketRouterService>();
         services.AddSingleton<IPacketHandler, PacketHandler>();
 
