@@ -1,28 +1,23 @@
-using System.Buffers.Binary;
+using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public sealed class HostAddress(string host, short port)
+public sealed record HostAddress(string Host, short Port) : PacketObject<HostAddress>
 {
-    public string Host { get; } = host;
-    public short Port { get; } = port;
+    [PacketProperty(FixedIndex = 1)] public string Host { get; } = Host;
+    [PacketProperty(FixedIndex = 0)] public short Port { get; } = Port;
 
-    public static HostAddress Deserialize(ReadOnlySpan<byte> buffer, out int bytesRead)
+    public override void Serialize(PacketWriter writer)
     {
-        var reader = new PacketReader(buffer);
-        var port = reader.ReadInt16();
-        var host = reader.ReadVarString();
-
-        bytesRead = reader.Offset;
-        return new HostAddress(host, port);
+        writer.WriteVarInt16(Port);
+        writer.WriteVarString(Host);
     }
 
-    public void Serialize(Stream stream)
+    public override HostAddress Deserialize(PacketReader reader, int offset)
     {
-        Span<byte> portBuffer = stackalloc byte[2];
-        BinaryPrimitives.WriteInt16LittleEndian(portBuffer, Port);
-        stream.Write(portBuffer);
-        
-        PacketSerializer.WriteVarString(stream, Host);
+        var port = reader.ReadVarInt16At(offset);
+        var host = reader.ReadVarStringAt(offset + sizeof(short));
+
+        return new HostAddress(host, port);
     }
 }
