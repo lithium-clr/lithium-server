@@ -133,8 +133,6 @@ builder.Services.AddGameSessionResponseCodec();
 builder.Services.AddSingleton<IServerConfigurationProvider, ServerConfigurationProvider>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();
-builder.Services.AddSingleton<IPluginRegistry, PluginRegistry>();
-builder.Services.AddSingleton<IPluginManager, PluginManager>();
 builder.Services.AddSingleton<IServerManager, ServerManager>();
 builder.Services.AddSingleton<PlayerCommonAssets>();
 // builder.Services.AddSingleton<CommonAssetModule>();

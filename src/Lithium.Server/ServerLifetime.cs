@@ -11,7 +11,6 @@ public sealed partial class ServerLifetime(
     ILoggerFactory loggerFactory,
     ILogger<ServerLifetime> logger,
     ILoggerService loggerService,
-    IPluginManager pluginManager,
     IServerAuthManager serverAuthManager,
     IServerConfigurationProvider configurationProvider,
     IPacketHandler packetHandler,
@@ -22,7 +21,6 @@ public sealed partial class ServerLifetime(
     private const string CertificateFileName = "lithium_cert.pfx";
 
     private readonly LoggerService _loggerService = (LoggerService)loggerService;
-    private readonly PluginManager _pluginManager = (PluginManager)pluginManager;
 
     private QuicServer _quicServer = null!;
 
