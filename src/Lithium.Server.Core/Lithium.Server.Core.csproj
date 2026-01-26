@@ -31,4 +31,8 @@
       <ProjectReference Include="..\Lithium.Core.ECS\Lithium.Core.ECS.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Networking\" />
+    </ItemGroup>
+
 </Project>
