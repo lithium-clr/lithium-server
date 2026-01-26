@@ -15,7 +15,7 @@ public sealed class RequestAssetsHandler(
     PlayerCommonAssets assets
 ) : IPacketHandler<RequestAssetsPacket>
 {
-    public async Task Handle(Channel channel, RequestAssetsPacket packet)
+    public async Task Handle(NetworkConnection channel, RequestAssetsPacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return;

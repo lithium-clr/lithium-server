@@ -4,10 +4,10 @@ namespace Lithium.Server.Core.Protocol;
 
 public interface IPacketHandler
 {
-    Task HandleAsync(Channel channel);
+    Task HandleAsync(NetworkConnection channel);
 }
 
 public interface IPacketHandler<in T> where T : IPacket
 {
-    Task Handle(Channel channel, T packet);
+    Task Handle(NetworkConnection channel, T packet);
 }

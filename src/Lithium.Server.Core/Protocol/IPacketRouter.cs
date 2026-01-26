@@ -4,6 +4,6 @@ namespace Lithium.Server.Core.Protocol;
 
 public interface IPacketRouter
 {
-    Task OnInitialize(Channel channel);
-    Task Route(Channel channel, int packetId, byte[] payload);
+    Task OnInitialize(NetworkConnection channel);
+    Task Route(NetworkConnection channel, int packetId, byte[] payload);
 }

@@ -5,7 +5,7 @@ namespace Lithium.Server.Core;
 
 public interface IClient
 {
-    Channel Channel { get; }
+    NetworkConnection Channel { get; }
     int ServerId { get; }
     Guid Uuid { get; }
     string? Language { get; }

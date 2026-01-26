@@ -17,7 +17,7 @@ public sealed class ConnectHandler(
     AuthenticationRouter authenticationRouter
 ) : IPacketHandler<ConnectPacket>
 {
-    public async Task Handle(Channel channel, ConnectPacket packet)
+    public async Task Handle(NetworkConnection channel, ConnectPacket packet)
     {
         var client = clientManager.CreateClient(channel, packet.ClientType, packet.Uuid, packet.Username, packet.Language);
         logger.LogInformation("(ConnectHandler) -> Client connected: {RemoteEndPoint}", channel.RemoteEndPoint);

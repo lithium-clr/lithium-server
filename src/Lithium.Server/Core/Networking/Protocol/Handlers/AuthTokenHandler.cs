@@ -26,7 +26,7 @@ public sealed class AuthTokenHandler(
 
     private ServerManager ServerManager => (ServerManager)serverManager;
 
-    public async Task Handle(Channel channel, AuthTokenPacket packet)
+    public async Task Handle(NetworkConnection channel, AuthTokenPacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return;

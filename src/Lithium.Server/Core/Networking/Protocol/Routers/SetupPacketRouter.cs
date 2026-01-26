@@ -15,7 +15,7 @@ public sealed partial class SetupPacketRouter(
 {
     public override partial void Initialize(IServiceProvider sp);
 
-    public override async Task OnInitialize(Channel channel)
+    public override async Task OnInitialize(NetworkConnection channel)
     {
         logger.LogInformation("Initializing SetupPacketRouter...");
         
@@ -57,7 +57,7 @@ public sealed partial class SetupPacketRouter(
         logger.LogInformation("SetupPacketRouter initialized.");
     }
 
-    protected override bool ShouldAcceptPacket(Channel channel, int packetId, byte[] payload)
+    protected override bool ShouldAcceptPacket(NetworkConnection channel, int packetId, byte[] payload)
     {
         return packetId is 1 or 23 or 32 or 33;
     }

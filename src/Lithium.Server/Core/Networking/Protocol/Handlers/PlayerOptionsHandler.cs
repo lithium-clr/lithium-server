@@ -18,7 +18,7 @@ public sealed class PlayerOptionsHandler(
     PacketRouterService routerService
 ) : IPacketHandler<PlayerOptionsPacket>
 {
-    public  Task Handle(Channel channel, PlayerOptionsPacket packet)
+    public  Task Handle(NetworkConnection channel, PlayerOptionsPacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return Task.CompletedTask;

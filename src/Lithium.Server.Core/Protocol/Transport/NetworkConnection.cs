@@ -3,7 +3,7 @@ using System.Net.Quic;
 
 namespace Lithium.Server.Core.Protocol.Transport;
 
-public interface IChannel
+public interface INetworkConnection
 {
     QuicConnection Connection { get; }
     QuicStream Stream { get; }
@@ -14,7 +14,7 @@ public interface IChannel
     Task CloseAsync();
 }
 
-public sealed class Channel : IChannel
+public sealed class NetworkConnection : INetworkConnection
 {
     public QuicConnection Connection { get; }
     public QuicStream Stream { get; }
@@ -22,7 +22,7 @@ public sealed class Channel : IChannel
     public IPEndPoint RemoteEndPoint => Connection.RemoteEndPoint;
     public bool IsActive { get; private set; } = true;
 
-    internal Channel(QuicConnection connection, QuicStream stream)
+    internal NetworkConnection(QuicConnection connection, QuicStream stream)
     {
         Connection = connection;
         Stream = stream;

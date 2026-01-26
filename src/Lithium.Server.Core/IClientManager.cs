@@ -5,8 +5,8 @@ namespace Lithium.Server.Core;
 
 public interface IClientManager
 {
-    IClient CreateClient(Channel channel, ClientType clientType, Guid uuid, string username, string? language);
-    IClient? GetClient(Channel channel);
+    IClient CreateClient(NetworkConnection channel, ClientType clientType, Guid uuid, string username, string? language);
+    IClient? GetClient(NetworkConnection channel);
     IClient? GetClient(int serverId);
     IEnumerable<IClient> GetAllClients();
 

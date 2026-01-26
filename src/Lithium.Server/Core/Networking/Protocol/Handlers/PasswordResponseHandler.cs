@@ -23,7 +23,7 @@ public sealed class PasswordResponseHandler(
 
     private ServerManager ServerManager => (ServerManager)serverManager;
 
-    public async Task Handle(Channel channel, PasswordResponsePacket packet)
+    public async Task Handle(NetworkConnection channel, PasswordResponsePacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return;

@@ -28,7 +28,7 @@ public sealed class QuicServer(
     private const string CertificatePassword = "password";
 
     private QuicListener _listener = null!;
-    private readonly Dictionary<QuicConnection, Channel> _channels = new();
+    private readonly Dictionary<QuicConnection, NetworkConnection> _channels = new();
 
     public async Task StartAsync(CancellationToken ct)
     {
@@ -116,7 +116,7 @@ public sealed class QuicServer(
             {
                 var stream = await connection.AcceptInboundStreamAsync();
 
-                var channel = new Channel(connection, stream);
+                var channel = new NetworkConnection(connection, stream);
                 _channels[connection] = channel;
 
                 logger.LogInformation("[{ConnectionRemoteEndPoint}] Stream accepted: ID {StreamId}",

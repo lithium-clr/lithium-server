@@ -10,9 +10,9 @@ public sealed class PacketRouterService(
     HandshakeRouter defaultRouter
 )
 {
-    private readonly ConcurrentDictionary<Channel, IPacketRouter> _activeRouters = new();
+    private readonly ConcurrentDictionary<NetworkConnection, IPacketRouter> _activeRouters = new();
 
-    public void SetRouter(Channel channel, IPacketRouter router)
+    public void SetRouter(NetworkConnection channel, IPacketRouter router)
     {
         _activeRouters[channel] = router;
         
@@ -20,18 +20,18 @@ public sealed class PacketRouterService(
         logger.LogDebug("Switched router for channel to {RouterType}", router.GetType().Name);
     }
 
-    private IPacketRouter GetRouter(Channel channel)
+    private IPacketRouter GetRouter(NetworkConnection channel)
     {
         return _activeRouters.GetValueOrDefault(channel, defaultRouter);
     }
 
-    public async Task Route(Channel channel, int packetId, byte[] payload)
+    public async Task Route(NetworkConnection channel, int packetId, byte[] payload)
     {
         var router = GetRouter(channel);
         await router.Route(channel, packetId, payload);
     }
 
-    public void RemoveChannel(Channel channel)
+    public void RemoveChannel(NetworkConnection channel)
     {
         _activeRouters.TryRemove(channel, out _);
     }

@@ -6,7 +6,7 @@ public sealed class QuicTransport : ITransport
 {
     public TransportType Type => TransportType.Quic;
     
-    public Task<Channel?> BindAsync(IPEndPoint endPoint)
+    public Task<NetworkConnection?> BindAsync(IPEndPoint endPoint)
     {
         throw new NotImplementedException();
     }

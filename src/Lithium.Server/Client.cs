@@ -5,7 +5,7 @@ namespace Lithium.Server;
 
 public sealed partial class Client : IClient
 {
-    public Channel Channel { get; }
+    public NetworkConnection Channel { get; }
     public int ServerId { get; }
     public Guid Uuid { get; }
     public string? Language { get; }
@@ -14,7 +14,7 @@ public sealed partial class Client : IClient
     public float ViewRadiusChunks { get; set; } = 6f;
     public bool IsActive => Channel.IsActive;
 
-    internal Client(Channel channel, int serverId, Guid uuid, string? language, string username, ClientType type)
+    internal Client(NetworkConnection channel, int serverId, Guid uuid, string? language, string username, ClientType type)
     {
         Channel = channel;
         ServerId = serverId;

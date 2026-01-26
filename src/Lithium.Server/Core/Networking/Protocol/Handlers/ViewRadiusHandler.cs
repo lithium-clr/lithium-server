@@ -14,7 +14,7 @@ public sealed class ViewRadiusHandler(
 {
     private float _clientViewRadiusChunks = 6f;
     
-    public  Task Handle(Channel channel, ViewRadiusPacket packet)
+    public  Task Handle(NetworkConnection channel, ViewRadiusPacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return Task.CompletedTask;

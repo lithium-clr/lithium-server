@@ -6,6 +6,6 @@ public interface ITransport
 {
     TransportType Type { get; }
 
-    Task<Channel?> BindAsync(IPEndPoint endPoint);
+    Task<NetworkConnection?> BindAsync(IPEndPoint endPoint);
     void Shutdown();
 }

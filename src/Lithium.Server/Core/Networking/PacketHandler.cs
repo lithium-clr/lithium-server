@@ -9,7 +9,7 @@ public sealed class PacketHandler(
     PacketRouterService packetRouter
 ) : IPacketHandler
 {
-    public async Task HandleAsync(Channel channel)
+    public async Task HandleAsync(NetworkConnection channel)
     {
         logger.LogInformation(
             "(PacketHandler) -> HandleAsync | Remote={Remote} Local={Local} StreamId={StreamId} CanRead={CanRead} CanWrite={CanWrite}",
