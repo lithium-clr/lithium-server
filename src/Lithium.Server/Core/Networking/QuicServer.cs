@@ -3,8 +3,8 @@ using System.Net.Quic;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Lithium.Server.Core.Networking.Authentication;
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Transport;
+using Lithium.Server.Core.Networking.Protocol;
+
 using Lithium.Server.Dashboard;
 using Microsoft.AspNetCore.SignalR;
 

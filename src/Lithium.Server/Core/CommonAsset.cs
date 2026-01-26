@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
+using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Protocol;
-using Lithium.Server.Core.Protocol.Packets;
+using Lithium.Server.Core.Networking.Protocol.Packets;
 using Lithium.SourceGenerators.Attributes;
 
 namespace Lithium.Server.Core;

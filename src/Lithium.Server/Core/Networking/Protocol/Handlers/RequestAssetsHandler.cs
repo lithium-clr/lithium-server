@@ -1,9 +1,7 @@
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 using Lithium.Server.Core.Networking.Protocol.Routers;
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Attributes;
-using Lithium.Server.Core.Protocol.Packets;
-using Lithium.Server.Core.Protocol.Transport;
+
 
 namespace Lithium.Server.Core.Networking.Protocol.Handlers;
 
@@ -15,7 +13,7 @@ public sealed class RequestAssetsHandler(
     PlayerCommonAssets assets
 ) : IPacketHandler<RequestAssetsPacket>
 {
-    public async Task Handle(NetworkConnection channel, RequestAssetsPacket packet)
+    public async Task Handle(INetworkConnection channel, RequestAssetsPacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return;

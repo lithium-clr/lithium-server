@@ -1,6 +1,6 @@
 using System.Buffers.Binary;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Networking.Protocol;
 
 public sealed class HostAddress(string host, short port)
 {

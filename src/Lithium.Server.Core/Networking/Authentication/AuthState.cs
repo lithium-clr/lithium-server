@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Networking.Authentication;
 
 public enum AuthState
 {

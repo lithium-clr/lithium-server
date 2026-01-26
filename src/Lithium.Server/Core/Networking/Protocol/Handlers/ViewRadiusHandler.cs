@@ -1,8 +1,7 @@
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 using Lithium.Server.Core.Networking.Protocol.Routers;
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Attributes;
-using Lithium.Server.Core.Protocol.Transport;
+
 
 namespace Lithium.Server.Core.Networking.Protocol.Handlers;
 
@@ -14,7 +13,7 @@ public sealed class ViewRadiusHandler(
 {
     private float _clientViewRadiusChunks = 6f;
     
-    public  Task Handle(NetworkConnection channel, ViewRadiusPacket packet)
+    public  Task Handle(INetworkConnection channel, ViewRadiusPacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return Task.CompletedTask;

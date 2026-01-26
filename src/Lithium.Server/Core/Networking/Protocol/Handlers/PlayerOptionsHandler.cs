@@ -1,9 +1,8 @@
 using Lithium.Server.Core.Networking.Authentication;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 using Lithium.Server.Core.Networking.Protocol.Routers;
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Attributes;
-using Lithium.Server.Core.Protocol.Transport;
+
 
 namespace Lithium.Server.Core.Networking.Protocol.Handlers;
 
@@ -18,7 +17,7 @@ public sealed class PlayerOptionsHandler(
     PacketRouterService routerService
 ) : IPacketHandler<PlayerOptionsPacket>
 {
-    public  Task Handle(NetworkConnection channel, PlayerOptionsPacket packet)
+    public  Task Handle(INetworkConnection channel, PlayerOptionsPacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return Task.CompletedTask;

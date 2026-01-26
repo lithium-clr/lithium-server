@@ -1,10 +1,9 @@
 using System.Security.Cryptography;
 using Lithium.Server.Core.Networking.Authentication;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 using Lithium.Server.Core.Networking.Protocol.Routers;
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Attributes;
-using Lithium.Server.Core.Protocol.Transport;
+
 
 namespace Lithium.Server.Core.Networking.Protocol.Handlers;
 
@@ -23,7 +22,7 @@ public sealed class PasswordResponseHandler(
 
     private ServerManager ServerManager => (ServerManager)serverManager;
 
-    public async Task Handle(NetworkConnection channel, PasswordResponsePacket packet)
+    public async Task Handle(INetworkConnection channel, PasswordResponsePacket packet)
     {
         var client = clientManager.GetClient(channel);
         if (client is null) return;

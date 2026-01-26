@@ -1,4 +1,5 @@
-using Lithium.Server.Core.Protocol.Packets;
+using Lithium.Server.Core.Networking;
+using Lithium.Server.Core.Networking.Protocol.Packets;
 
 namespace Lithium.Server.Core;
 

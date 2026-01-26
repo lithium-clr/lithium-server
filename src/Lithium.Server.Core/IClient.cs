@@ -1,11 +1,10 @@
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Transport;
-
+using Lithium.Server.Core.Networking;
+using Lithium.Server.Core.Networking.Protocol;
 namespace Lithium.Server.Core;
 
 public interface IClient
 {
-    NetworkConnection Channel { get; }
+    INetworkConnection Channel { get; }
     int ServerId { get; }
     Guid Uuid { get; }
     string? Language { get; }

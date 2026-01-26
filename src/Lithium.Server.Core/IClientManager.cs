@@ -1,12 +1,12 @@
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Transport;
+using Lithium.Server.Core.Networking;
+using Lithium.Server.Core.Networking.Protocol;
 
 namespace Lithium.Server.Core;
 
 public interface IClientManager
 {
-    IClient CreateClient(NetworkConnection channel, ClientType clientType, Guid uuid, string username, string? language);
-    IClient? GetClient(NetworkConnection channel);
+    IClient CreateClient(INetworkConnection channel, ClientType clientType, Guid uuid, string username, string? language);
+    IClient? GetClient(INetworkConnection channel);
     IClient? GetClient(int serverId);
     IEnumerable<IClient> GetAllClients();
 

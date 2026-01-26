@@ -1,17 +1,17 @@
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Transport;
+using Lithium.Server.Core.Networking.Protocol;
+
 
 namespace Lithium.Server.Core.Networking;
 
 public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager, IAsyncDisposable
 {
     private readonly ILogger<ClientManager> _logger = loggerFactory.CreateLogger<ClientManager>();
-    private readonly Dictionary<NetworkConnection, IClient> _clients = new();
+    private readonly Dictionary<INetworkConnection, IClient> _clients = new();
 
     private int _currentServerId = -1;
     private bool _disposed;
 
-    public IClient CreateClient(NetworkConnection channel, ClientType clientType, Guid uuid, string username, string? language)
+    public IClient CreateClient(INetworkConnection channel, ClientType clientType, Guid uuid, string username, string? language)
     {
         // Client.Setup(this, loggerFactory);
 
@@ -24,7 +24,7 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
         return client;
     }
 
-    public async ValueTask RemoveClient(NetworkConnection channel)
+    public async ValueTask RemoveClient(INetworkConnection channel)
     {
         await channel.CloseAsync();
 
@@ -32,7 +32,7 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
             _logger.LogInformation("Client {ClientId} disconnected", client.ServerId);
     }
 
-    public IClient? GetClient(NetworkConnection channel)
+    public IClient? GetClient(INetworkConnection channel)
     {
         return _clients.GetValueOrDefault(channel);
     }

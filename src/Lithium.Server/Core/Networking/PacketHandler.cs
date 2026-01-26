@@ -1,5 +1,5 @@
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Transport;
+using Lithium.Server.Core.Networking.Protocol;
+
 
 namespace Lithium.Server.Core.Networking;
 
@@ -9,7 +9,7 @@ public sealed class PacketHandler(
     PacketRouterService packetRouter
 ) : IPacketHandler
 {
-    public async Task HandleAsync(NetworkConnection channel)
+    public async Task HandleAsync(INetworkConnection channel)
     {
         logger.LogInformation(
             "(PacketHandler) -> HandleAsync | Remote={Remote} Local={Local} StreamId={StreamId} CanRead={CanRead} CanWrite={CanWrite}",

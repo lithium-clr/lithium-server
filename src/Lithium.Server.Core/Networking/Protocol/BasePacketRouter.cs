@@ -1,22 +1,21 @@
-using Lithium.Server.Core.Protocol.Transport;
 using Microsoft.Extensions.Logging;
 using ZstdSharp;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Networking.Protocol;
 
 public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
 {
     private static readonly Decompressor Decompressor = new();
-    private readonly Dictionary<int, Func<NetworkConnection, int, byte[], Task>> _routes = new();
+    private readonly Dictionary<int, Func<INetworkConnection, int, byte[], Task>> _routes = new();
 
     public abstract void Initialize(IServiceProvider sp);
 
-    public virtual Task OnInitialize(NetworkConnection channel)
+    public virtual Task OnInitialize(INetworkConnection channel)
     {
         return Task.CompletedTask;
     }
 
-    protected virtual bool ShouldAcceptPacket(NetworkConnection channel, int packetId, byte[] payload) => true;
+    protected virtual bool ShouldAcceptPacket(INetworkConnection channel, int packetId, byte[] payload) => true;
     
     public void Register<T>(IPacketHandler<T> handler) where T : IPacket<T>
     {
@@ -55,7 +54,7 @@ public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
         logger.LogDebug("Registered {Packet} (ID {Id}) to {Router}.", typeof(T).Name, packetId, GetType().Name);
     }
 
-    public async Task Route(NetworkConnection channel, int packetId, byte[] payload)
+    public async Task Route(INetworkConnection channel, int packetId, byte[] payload)
     {
         if (!ShouldAcceptPacket(channel, packetId, payload))
             return;

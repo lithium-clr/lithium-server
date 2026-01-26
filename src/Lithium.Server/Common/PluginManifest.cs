@@ -1,5 +1,4 @@
 using Lithium.Codecs;
-using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core.Semver;
 
 namespace Lithium.Server.Common;

@@ -1,6 +1,7 @@
 using System.Reflection;
+using Lithium.Server.Core.Networking.Protocol;
 using Lithium.Server.Core.Networking.Protocol.Handlers;
-using Lithium.Server.Core.Protocol;
+
 using AuthenticationRouter = Lithium.Server.Core.Networking.Protocol.Routers.AuthenticationRouter;
 using HandshakeRouter = Lithium.Server.Core.Networking.Protocol.Routers.HandshakeRouter;
 using PasswordRouter = Lithium.Server.Core.Networking.Protocol.Routers.PasswordRouter;

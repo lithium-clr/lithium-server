@@ -1,6 +1,4 @@
 using Lithium.Server.Core.Networking.Protocol.Packets;
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Transport;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
@@ -15,7 +13,7 @@ public sealed partial class SetupPacketRouter(
 {
     public override partial void Initialize(IServiceProvider sp);
 
-    public override async Task OnInitialize(NetworkConnection channel)
+    public override async Task OnInitialize(INetworkConnection channel)
     {
         logger.LogInformation("Initializing SetupPacketRouter...");
         
@@ -57,7 +55,7 @@ public sealed partial class SetupPacketRouter(
         logger.LogInformation("SetupPacketRouter initialized.");
     }
 
-    protected override bool ShouldAcceptPacket(NetworkConnection channel, int packetId, byte[] payload)
+    protected override bool ShouldAcceptPacket(INetworkConnection channel, int packetId, byte[] payload)
     {
         return packetId is 1 or 23 or 32 or 33;
     }

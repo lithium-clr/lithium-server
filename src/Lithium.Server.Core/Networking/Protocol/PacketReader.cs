@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Networking.Protocol;
 
 public ref struct PacketReader(ReadOnlySpan<byte> data)
 {

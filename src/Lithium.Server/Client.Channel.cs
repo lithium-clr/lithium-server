@@ -1,5 +1,4 @@
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Transport;
+using Lithium.Server.Core.Networking.Protocol;
 using ZstdSharp;
 
 namespace Lithium.Server;

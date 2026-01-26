@@ -1,11 +1,11 @@
 using Lithium.Server.Core;
-using Lithium.Server.Core.Protocol.Transport;
+using Lithium.Server.Core.Networking;
 
 namespace Lithium.Server;
 
 public sealed partial class Client : IClient
 {
-    public NetworkConnection Channel { get; }
+    public INetworkConnection Channel { get; }
     public int ServerId { get; }
     public Guid Uuid { get; }
     public string? Language { get; }
@@ -14,7 +14,7 @@ public sealed partial class Client : IClient
     public float ViewRadiusChunks { get; set; } = 6f;
     public bool IsActive => Channel.IsActive;
 
-    internal Client(NetworkConnection channel, int serverId, Guid uuid, string? language, string username, ClientType type)
+    internal Client(INetworkConnection channel, int serverId, Guid uuid, string? language, string username, ClientType type)
     {
         Channel = channel;
         ServerId = serverId;

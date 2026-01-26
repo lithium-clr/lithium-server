@@ -1,6 +1,7 @@
 using System.Text;
+using Lithium.Server.Core.Networking.Protocol;
 
-namespace Lithium.Server.Core.Protocol.Packets;
+namespace Lithium.Server.Core.Networking;
 
 public sealed class Asset
 {

@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Networking.Protocol;
 
 public sealed class PlayerAuthentication(Guid uuid, string username)
 {

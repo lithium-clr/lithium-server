@@ -1,9 +1,8 @@
 ﻿using Lithium.Server.Core.Networking.Authentication;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 using Lithium.Server.Core.Networking.Protocol.Routers;
-using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Attributes;
-using Lithium.Server.Core.Protocol.Transport;
+
 
 namespace Lithium.Server.Core.Networking.Protocol.Handlers;
 
@@ -17,7 +16,7 @@ public sealed class ConnectHandler(
     AuthenticationRouter authenticationRouter
 ) : IPacketHandler<ConnectPacket>
 {
-    public async Task Handle(NetworkConnection channel, ConnectPacket packet)
+    public async Task Handle(INetworkConnection channel, ConnectPacket packet)
     {
         var client = clientManager.CreateClient(channel, packet.ClientType, packet.Uuid, packet.Username, packet.Language);
         logger.LogInformation("(ConnectHandler) -> Client connected: {RemoteEndPoint}", channel.RemoteEndPoint);

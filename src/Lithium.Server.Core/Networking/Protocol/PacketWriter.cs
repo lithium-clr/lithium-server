@@ -1,6 +1,6 @@
 using System.Buffers.Binary;
 
-namespace Lithium.Server.Core.Protocol.Transport;
+namespace Lithium.Server.Core.Networking.Protocol;
 
 public static class PacketWriter
 {

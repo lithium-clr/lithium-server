@@ -9,7 +9,7 @@ using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Authentication.OAuth;
 using Lithium.Server.Core.Networking.Extensions;
-using Lithium.Server.Core.Protocol;
+
 using Lithium.Server.Core.Semver;
 using Lithium.Server.Core.Storage;
 using Lithium.Server.Core.Systems.Commands;

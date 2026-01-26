@@ -1,7 +1,7 @@
 using System.Buffers.Binary;
 using System.Text;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Core.Networking.Protocol;
 
 public static class PacketSerializer
 {
