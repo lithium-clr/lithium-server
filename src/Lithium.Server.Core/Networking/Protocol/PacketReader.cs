@@ -185,7 +185,15 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
 
     public int ReadVarInt32()
     {
-        return BinaryPrimitives.ReadInt32LittleEndian(ReadVarPrimitive(sizeof(int)));
+        var (value, nextPos) = ReadVarIntAt(VariableBlock, _varPosition);
+        _varPosition = nextPos;
+        return value;
+    }
+
+    public int ReadVarInt32At(int offset)
+    {
+        var (value, _) = ReadVarIntAt(VariableBlock, offset);
+        return value;
     }
 
     public ulong ReadVarUInt64()
@@ -233,7 +241,7 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
 
     public object ReadVarEnum(Type enumType, int offset)
     {
-        var value = ReadVarUInt8At(offset);
+        var value = offset is -1 ? ReadVarUInt8() : ReadVarUInt8At(offset);
         return Enum.ToObject(enumType, value);
     }
 
@@ -265,11 +273,6 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
     public uint ReadVarUInt32At(int offset)
     {
         return BinaryPrimitives.ReadUInt32LittleEndian(ReadVarPrimitiveAt(offset, sizeof(uint)));
-    }
-
-    public int ReadVarInt32At(int offset)
-    {
-        return BinaryPrimitives.ReadInt32LittleEndian(ReadVarPrimitiveAt(offset, sizeof(int)));
     }
 
     public ulong ReadVarUInt64At(int offset)
@@ -332,84 +335,84 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
 
     public byte? ReadOptUInt8(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarUInt8At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarUInt8() : ReadVarUInt8At(offset)) : null;
     }
 
     public sbyte? ReadOptInt8(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarInt8At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarInt8() : ReadVarInt8At(offset)) : null;
     }
 
     public bool? ReadOptBoolean(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarBooleanAt(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarBoolean() : ReadVarBooleanAt(offset)) : null;
     }
 
     public ushort? ReadOptUInt16(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarUInt16At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarUInt16() : ReadVarUInt16At(offset)) : null;
     }
 
     public short? ReadOptInt16(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarInt16At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarInt16() : ReadVarInt16At(offset)) : null;
     }
 
     public uint? ReadOptUInt32(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarUInt32At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarUInt32() : ReadVarUInt32At(offset)) : null;
     }
 
     public int? ReadOptInt32(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarInt32At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarInt32() : ReadVarInt32At(offset)) : null;
     }
 
     public ulong? ReadOptUInt64(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarUInt64At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarUInt64() : ReadVarUInt64At(offset)) : null;
     }
 
     public long? ReadOptInt64(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarInt64At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarInt64() : ReadVarInt64At(offset)) : null;
     }
 
     public float? ReadOptFloat32(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarFloat32At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarFloat32() : ReadVarFloat32At(offset)) : null;
     }
 
     public double? ReadOptFloat64(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarFloat64At(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarFloat64() : ReadVarFloat64At(offset)) : null;
     }
 
     public Guid? ReadOptGuid(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarGuidAt(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarGuid() : ReadVarGuidAt(offset)) : null;
     }
 
     public string? ReadOptString(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarStringAt(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarString() : ReadVarStringAt(offset)) : null;
     }
 
     public byte[]? ReadOptBytes(BitSet bits, int bitIndex, int offset)
     {
-        return bits.IsSet(bitIndex) ? ReadVarBytesAt(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarBytes() : ReadVarBytesAt(offset)) : null;
     }
 
     public TObject? ReadOptObject<TObject>(BitSet bits, int bitIndex, int offset)
         where TObject : PacketObject, new()
     {
-        return bits.IsSet(bitIndex) ? ReadObjectAt<TObject>(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? (TObject)ReadObject(typeof(TObject), -1) : ReadObjectAt<TObject>(offset)) : null;
     }
 
     public TEnum? ReadOptEnum<TEnum>(BitSet bits, int bitIndex, int offset)
         where TEnum : struct, Enum
     {
-        return bits.IsSet(bitIndex) ? ReadVarEnumAt<TEnum>(offset) : null;
+        return bits.IsSet(bitIndex) ? (offset is -1 ? ReadVarEnum<TEnum>() : ReadVarEnumAt<TEnum>(offset)) : null;
     }
 
     public void SeekVar(int offset)

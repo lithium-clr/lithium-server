@@ -133,6 +133,7 @@ internal static class GenericPacketHelpers
                 p.Attribute.BitIndex is not -1 || 
                 p.PropertyType == typeof(string) || 
                 p.PropertyType == typeof(byte[]) || 
+                p.PropertyType.IsArray ||
                 p.IsPacketObject);
     }
 
@@ -188,6 +189,12 @@ internal static class GenericPacketHelpers
 
         if (value is null) return -1; // WriteOpt... methods handle null by returning -1
 
+        if (propertyType.IsArray && propertyType != typeof(byte[]))
+        {
+            var elementType = propertyType.GetElementType()!;
+            return WriteArray(writer, (Array)value, elementType, typeof(PacketObject).IsAssignableFrom(elementType));
+        }
+
         if (propertyType == typeof(string)) return writer.WriteVarString((string)value);
         else if (propertyType == typeof(byte[])) return writer.WriteVarBytes((byte[])value);
         else if (isPacketObject) return writer.WriteVarObject((PacketObject)value);
@@ -214,6 +221,12 @@ internal static class GenericPacketHelpers
         if (propInfo.Attribute.BitIndex is not -1)
         {
             if (!bits.IsSet(propInfo.Attribute.BitIndex)) return null;
+        }
+
+        if (propInfo.PropertyType.IsArray && propInfo.PropertyType != typeof(byte[]))
+        {
+            var elementType = propInfo.PropertyType.GetElementType()!;
+            return ReadArray(reader, elementType, typeof(PacketObject).IsAssignableFrom(elementType), offset);
         }
 
         if (offset is -1)
@@ -256,6 +269,52 @@ internal static class GenericPacketHelpers
         else if (propInfo.PropertyType.IsEnum) return reader.ReadVarEnum(propInfo.PropertyType, offset);
         else ThrowUnsupportedVariableFieldType(propInfo.PropertyType, propertyName);
         return null!; // Should not be reached
+    }
+
+    internal static int WriteArray(PacketWriter writer, Array array, Type elementType, bool isPacketObject)
+    {
+        var offset = writer.GetCurrentOffset();
+        writer.WriteVarInt(array.Length);
+        
+        foreach (var item in array)
+        {
+            if (isPacketObject)
+            {
+                ((PacketObject)item).Serialize(writer);
+            }
+            else
+            {
+                // Primitives
+                WriteFixedField(writer, item, elementType, -1, "ArrayElement");
+            }
+        }
+        
+        return offset;
+    }
+
+    internal static object ReadArray(PacketReader reader, Type elementType, bool isPacketObject, int offset)
+    {
+        if (offset is not -1) reader.SeekVar(offset);
+        
+        var length = reader.ReadVarInt32();
+        var array = Array.CreateInstance(elementType, length);
+        
+        for (int i = 0; i < length; i++)
+        {
+            if (isPacketObject)
+            {
+                var obj = (PacketObject)Activator.CreateInstance(elementType)!;
+                obj.Deserialize(reader, -1);
+                array.SetValue(obj, i);
+            }
+            else
+            {
+                var value = ReadFixedField(reader, elementType, -1, "ArrayElement");
+                array.SetValue(value, i);
+            }
+        }
+        
+        return array;
     }
 
     [DoesNotReturn]
