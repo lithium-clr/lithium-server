@@ -64,7 +64,7 @@ public sealed partial class ServerLifetime(
         var certificatePassword = configurationProvider.Configuration.CertificatePassword;
         ArgumentException.ThrowIfNullOrEmpty(certificatePassword);
         
-        var cert = CertificateUtility.GetOrCreateSelfSignedCertificate(CertificateFileName, certificatePassword);
+        var cert = X509Certificate2Factory.GetOrCreateSelfSignedCertificate(CertificateFileName, certificatePassword);
         serverAuthManager.SetServerCertificate(cert);
         
         _quicServer = new QuicServer(loggerFactory, cert);

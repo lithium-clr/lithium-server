@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Lithium.Server.Core;
 
-public static class CertificateUtility
+public static class X509Certificate2Factory
 {
     public static X509Certificate2 GetOrCreateSelfSignedCertificate(string certificateFileName,
         string? certificatePassword = null)

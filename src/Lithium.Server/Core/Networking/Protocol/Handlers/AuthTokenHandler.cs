@@ -138,7 +138,7 @@ public sealed class AuthTokenHandler(
             {
                 logger.LogInformation("Using session token (first 20 chars): {SessionToken}", serverSessionToken);
 
-                var serverCertFingerprintStr = CertificateUtility.ComputeCertificateFingerprint(serverCertFingerprint);
+                var serverCertFingerprintStr = X509Certificate2Factory.ComputeCertificateFingerprint(serverCertFingerprint);
 
                 var serverAccessToken = await sessionServiceClient.ExchangeAuthGrantForTokenAsync(serverAuthGrant,
                     serverCertFingerprintStr,
