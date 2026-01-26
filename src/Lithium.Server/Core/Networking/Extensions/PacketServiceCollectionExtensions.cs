@@ -35,7 +35,13 @@ public static class PacketServiceCollectionExtensions
             }
         }
 
-        services.AddSingleton<IPacketRegistry, PacketRegistry>();
+        var registry = new PacketRegistry();
+        foreach (var asm in assemblies)
+        {
+            registry.RegisterAllFromAssembly(asm);
+        }
+
+        services.AddSingleton<IPacketRegistry>(registry);
         services.AddSingleton<PacketEncoder>();
         services.AddSingleton<PacketDecoder>();
         services.AddSingleton<HandshakeRouter>();

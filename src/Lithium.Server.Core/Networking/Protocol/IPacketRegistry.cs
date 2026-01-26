@@ -6,6 +6,8 @@ namespace Lithium.Server.Core.Networking.Protocol;
 public interface IPacketRegistry
 {
     void Register(PacketInfo packetInfo);
+    void Register(Type type);
+    void RegisterAllFromAssembly(Assembly assembly);
     bool TryGetPacketInfoById(int packetId, [NotNullWhen(true)] out PacketInfo? packetInfo);
     bool TryGetPacketInfoByType(Type packetType, [NotNullWhen(true)] out PacketInfo? packetInfo);
     bool TryGetPacketInstanceById(int packetId, [NotNullWhen(true)] out Packet? packet);
@@ -20,6 +22,26 @@ public sealed class PacketRegistry : IPacketRegistry
     {
         _packetInfos[packetInfo.PacketId] = packetInfo;
         _packetInfosByType[packetInfo.PacketType] = packetInfo;
+    }
+
+    public void Register(Type type)
+    {
+        var packetInfo = GenericPacketHelpers.CreatePacketInfo(type);
+        if (packetInfo is not null)
+        {
+            Register(packetInfo);
+        }
+    }
+
+    public void RegisterAllFromAssembly(Assembly assembly)
+    {
+        var packetTypes = assembly.GetTypes()
+            .Where(t => !t.IsAbstract && typeof(Packet).IsAssignableFrom(t));
+
+        foreach (var type in packetTypes)
+        {
+            Register(type);
+        }
     }
 
     public bool TryGetPacketInfoById(int packetId, [NotNullWhen(true)] out PacketInfo? packetInfo)

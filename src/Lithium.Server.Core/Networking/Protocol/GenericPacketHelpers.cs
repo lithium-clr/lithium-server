@@ -169,6 +169,36 @@ internal static class GenericPacketHelpers
         return null!; // Should not be reached
     }
 
+    internal static PacketInfo? CreatePacketInfo(Type type)
+    {
+        var attribute = type.GetCustomAttribute<PacketAttribute>();
+        if (attribute is null) return null;
+
+        var properties = type.GetProperties();
+        var maxBitIndex = -1;
+        var maxOffsetIndex = -1;
+
+        foreach (var prop in properties)
+        {
+            var propAttr = prop.GetCustomAttribute<PacketPropertyAttribute>();
+            if (propAttr is null) continue;
+
+            if (propAttr.BitIndex is not -1 && propAttr.BitIndex > maxBitIndex) maxBitIndex = propAttr.BitIndex;
+            if (propAttr.OffsetIndex is not -1 && propAttr.OffsetIndex > maxOffsetIndex) maxOffsetIndex = propAttr.OffsetIndex;
+        }
+
+        return new PacketInfo(
+            attribute.Id,
+            type.Name,
+            type,
+            attribute.IsCompressed,
+            maxBitIndex is -1 ? 0 : (maxBitIndex / 8) + 1,
+            maxOffsetIndex is -1 ? 0 : maxOffsetIndex + 1,
+            attribute.VariableBlockStart,
+            attribute.MaxSize
+        );
+    }
+
     [DoesNotReturn]
     private static void ThrowValueCannotBeNullForFixedField(Type type, string propertyName)
     {

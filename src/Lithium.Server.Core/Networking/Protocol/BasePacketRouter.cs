@@ -20,15 +20,15 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
     public void Register<T>(IPacketHandler<T> handler) where T : Packet, new()
     {
         var type = typeof(T);
-        var attribute = type.GetCustomAttribute<PacketAttribute>();
+        var packetInfo = GenericPacketHelpers.CreatePacketInfo(type);
 
-        if (attribute is null)
+        if (packetInfo is null)
         {
             logger.LogError("Packet {Packet} is missing PacketAttribute.", type.Name);
             return;
         }
 
-        var packetId = attribute.Id;
+        var packetId = packetInfo.PacketId;
 
         if (_routes.ContainsKey(packetId))
         {
@@ -38,30 +38,6 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
             return;
         }
 
-        var properties = type.GetProperties();
-        var maxBitIndex = -1;
-        var maxOffsetIndex = -1;
-
-        foreach (var prop in properties)
-        {
-            var propAttr = prop.GetCustomAttribute<PacketPropertyAttribute>();
-            if (propAttr is null) continue;
-
-            if (propAttr.BitIndex > maxBitIndex) maxBitIndex = propAttr.BitIndex;
-            if (propAttr.OffsetIndex > maxOffsetIndex) maxOffsetIndex = propAttr.OffsetIndex;
-        }
-
-        var packetInfo = new PacketInfo(
-            packetId,
-            type.Name,
-            type,
-            attribute.IsCompressed,
-            maxBitIndex is -1 ? 0 : (maxBitIndex / 8) + 1,
-            maxOffsetIndex is -1 ? 0 : maxOffsetIndex + 1,
-            attribute.VariableBlockStart,
-            attribute.MaxSize
-        );
-        
         registry.Register(packetInfo);
 
         _routes[packetId] = (packetInfo, async (channel, packet) =>
