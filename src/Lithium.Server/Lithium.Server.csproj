@@ -42,7 +42,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Core\Protocol\Packets\Setup\" />
       <Folder Include="Core\Systems\" />
     </ItemGroup>
 

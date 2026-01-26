@@ -1,6 +1,6 @@
 ﻿using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Protocol.Attributes;
-using Lithium.Server.Core.Protocol.Packets.Connection;
+using Lithium.Server.Core.Protocol.Packets;
 using Lithium.Server.Core.Protocol.Routers;
 using Lithium.Server.Core.Protocol.Transport;
 

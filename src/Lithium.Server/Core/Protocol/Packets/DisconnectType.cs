@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Protocol.Packets.Connection;
+namespace Lithium.Server.Core.Protocol.Packets;
 
 public enum DisconnectType : byte
 {

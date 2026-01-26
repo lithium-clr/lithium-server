@@ -5,7 +5,6 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Protocol;
-using Lithium.Server.Core.Protocol.Packets.Connection;
 using Lithium.Server.Core.Protocol.Transport;
 using Lithium.Server.Dashboard;
 using Microsoft.AspNetCore.SignalR;
