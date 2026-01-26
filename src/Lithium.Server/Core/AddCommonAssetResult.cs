@@ -1,5 +1,3 @@
-using Lithium.SourceGenerators.Attributes;
-
 namespace Lithium.Server.Core;
 
 public sealed record AddCommonAssetResult(

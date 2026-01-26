@@ -1,5 +1,4 @@
 using Lithium.Server.Core.Networking.Protocol;
-using Lithium.SourceGenerators.Attributes;
 
 namespace Lithium.Server.Core;
 
