@@ -30,7 +30,7 @@ public sealed class RouterGenerator : ISourceGenerator
 
         var routerClasses = new List<INamedTypeSymbol>();
         
-        var baseRouterSymbol = compilation.GetTypeByMetadataName("Lithium.Server.Core.Networking.Protocol.BasePacketRouter");
+        var baseRouterSymbol = compilation.GetTypeByMetadataName("Lithium.Server.Core.Networking.Protocol.Routers.BasePacketRouter");
         if (baseRouterSymbol is null) return;
 
         // Collect all classes that are concrete implementations of BasePacketRouter

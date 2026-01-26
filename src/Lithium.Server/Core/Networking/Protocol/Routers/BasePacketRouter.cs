@@ -1,8 +1,6 @@
-using System.Reflection;
-using Microsoft.Extensions.Logging;
-using Lithium.Server.Core.Protocol.Attributes;
+using Lithium.Server.Core.Networking.Protocol.Packets;
 
-namespace Lithium.Server.Core.Networking.Protocol;
+namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
 public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry) : IPacketRouter
 {
@@ -15,7 +13,10 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
         return Task.CompletedTask;
     }
 
-    protected virtual bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet) => true;
+    protected virtual bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet)
+    {
+        return packet is not DisconnectPacket;
+    }
     
     public void Register<T>(IPacketHandler<T> handler) where T : Packet, new()
     {
