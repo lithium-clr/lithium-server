@@ -3,14 +3,11 @@ using Lithium.Server.Core.Networking.Protocol;
 
 namespace Lithium.Server.Core.Networking;
 
-public sealed class Asset
+public sealed record Asset(string Hash, string Name)
 {
     private const int FixedBlockSize = 64;
     private const int MaxNameLength = 512;
-
-    public string Hash { get; init; } = null!;
-    public string Name { get; init; } = null!;
-
+    
     public void Serialize(Stream stream)
     {
         Span<byte> hashBytes = stackalloc byte[FixedBlockSize];
