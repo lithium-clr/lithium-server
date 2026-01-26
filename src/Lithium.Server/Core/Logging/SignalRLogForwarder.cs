@@ -2,7 +2,7 @@ using Lithium.Server.Dashboard;
 using Microsoft.AspNetCore.SignalR;
 using Serilog.Events;
 
-namespace Lithium.Server;
+namespace Lithium.Server.Core.Logging;
 
 public sealed class SignalRLogForwarder(
     IHubContext<ServerConsoleHub, IServerConsoleHub> hubContext
