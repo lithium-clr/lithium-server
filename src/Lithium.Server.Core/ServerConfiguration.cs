@@ -10,6 +10,7 @@ public sealed record ServerConfiguration
     public int WorldHeight { get; set; } = 320;
     public string AssetsPath { get; set; } = "assets";
     public IReadOnlyList<string> Plugins { get; init; } = [];
+    public string CertificatePassword { get; init; } = null!;
 
     public static ServerConfiguration Default => new();
 }

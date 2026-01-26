@@ -19,8 +19,8 @@ public sealed partial class ServerLifetime(
     IOAuthDeviceFlow deviceFlow
 ) : BackgroundService
 {
-    private const string CertificateFileName = "lithium_server_cert_v2.pfx";
-    private const string CertificatePassword = "password";
+    private const string CertificateFileName = "lithium_cert.pfx";
+    // private const string CertificatePassword = "password";
 
     private readonly LoggerService _loggerService = (LoggerService)loggerService;
     private readonly PluginManager _pluginManager = (PluginManager)pluginManager;
@@ -64,7 +64,10 @@ public sealed partial class ServerLifetime(
 
     private Task ListenAsync(CancellationToken ct)
     {
-        var cert = CertificateUtility.GetOrCreateSelfSignedCertificate(CertificateFileName, CertificatePassword);
+        var certificatePassword = configurationProvider.Configuration.CertificatePassword;
+        ArgumentException.ThrowIfNullOrEmpty(certificatePassword);
+        
+        var cert = CertificateUtility.GetOrCreateSelfSignedCertificate(CertificateFileName, certificatePassword);
         serverAuthManager.SetServerCertificate(cert);
         
         _quicServer = new QuicServer(loggerFactory, cert);
