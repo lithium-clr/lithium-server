@@ -152,7 +152,6 @@ builder.Services.AddSingleton<QuicServer>();
 // Lifetime
 builder.Services.AddSingleton<ServerLifetime>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<ServerLifetime>());
-builder.Services.AddHostedService<WorldService>();
 builder.Services.AddHostedService<SignalRLogForwarder>();
 
 // Console command service
