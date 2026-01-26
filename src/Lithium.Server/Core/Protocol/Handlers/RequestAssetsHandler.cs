@@ -14,29 +14,6 @@ public sealed class RequestAssetsHandler(
     PlayerCommonAssets assets
 ) : IPacketHandler<RequestAssetsPacket>
 {
-    public static byte[][] Split(byte[] data, int chunkSize)
-    {
-        var count = (data.Length + chunkSize - 1) / chunkSize;
-        var result = new byte[count][];
-
-        for (var i = 0; i < count; i++)
-        {
-            var offset = i * chunkSize;
-            var size = Math.Min(chunkSize, data.Length - offset);
-
-            result[i] = new byte[size];
-            Buffer.BlockCopy(data, offset, result[i], 0, size);
-        }
-
-        return result;
-    }
-
-    public static IEnumerable<ReadOnlyMemory<byte>> Split(ReadOnlyMemory<byte> data, int chunkSize)
-    {
-        for (var offset = 0; offset < data.Length; offset += chunkSize)
-            yield return data.Slice(offset, Math.Min(chunkSize, data.Length - offset));
-    }
-
     public async Task Handle(Channel channel, RequestAssetsPacket packet)
     {
         var client = clientManager.GetClient(channel);
@@ -61,7 +38,7 @@ public sealed class RequestAssetsHandler(
                 PercentCompleteSubitem = 0
             });
 
-            // await client.SendPacketAsync(new WorldLoadFinishedPacket());
+            await client.SendPacketAsync(new WorldLoadFinishedPacket());
         }
     }
 
@@ -87,7 +64,7 @@ public sealed class RequestAssetsHandler(
             {
                 packets[1 + partIndex * 2] = new WorldLoadProgressPacket
                 {
-                    Status = "Loading asset " + asset.Name,
+                    Status = "Loading asset: " + asset.Name,
                     PercentComplete = percent,
                     PercentCompleteSubitem = 100 * partIndex / parts.Count
                 };
@@ -102,8 +79,12 @@ public sealed class RequestAssetsHandler(
         }
 
         if (toSend.Count is not 0 && forceRebuild)
-        {
             await client.SendPacketAsync(new RequestCommonAssetsRebuildPacket());
-        }
+    }
+    
+    private static IEnumerable<ReadOnlyMemory<byte>> Split(ReadOnlyMemory<byte> data, int chunkSize)
+    {
+        for (var offset = 0; offset < data.Length; offset += chunkSize)
+            yield return data.Slice(offset, Math.Min(chunkSize, data.Length - offset));
     }
 }
