@@ -3,10 +3,8 @@ using Lithium.SourceGenerators.Attributes;
 
 namespace Lithium.Server.Core;
 
-public sealed partial class FileCommonAsset(string filePath, string name, string hash) : CommonAsset(name, hash)
+public sealed record FileCommonAsset(string FilePath, string Name, string Hash) : CommonAsset(Name, Hash)
 {
-    [ToStringInclude] public string FilePath { get; } = filePath;
-    
     protected override async Task<BlobData> ReadBlobAsync()
     {
         if (!File.Exists(FilePath))
