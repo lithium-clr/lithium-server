@@ -1,14 +1,15 @@
 ﻿using System.Net;
 using System.Net.Quic;
 using System.Net.Security;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security.Cryptography.X509Certificates;
-using Lithium.Server.Core.Networking.Authentication;
-using Lithium.Server.Core.Networking.Protocol;
-using Lithium.Server.Dashboard;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Lithium.Server.Core.Networking;
 
+[SupportedOSPlatform(nameof(OSPlatform.Windows))]
+[SupportedOSPlatform(nameof(OSPlatform.Linux))]
+[SupportedOSPlatform(nameof(OSPlatform.OSX))]
 public sealed class QuicServer(
     ILoggerFactory loggerFactory,
     X509Certificate2 certificate
@@ -34,11 +35,6 @@ public sealed class QuicServer(
             return;
         }
 
-        _logger.LogInformation("Hytale QUIC Listener starting...");
-
-        // var cert = CertificateUtility.GetOrCreateSelfSignedCertificate(CertificateFileName, CertificatePassword);
-        // serverAuthManager.SetServerCertificate(cert);
-
         // Use IPv6Any with DualMode (supported by default on Windows/Linux) to handle both IPv4 and IPv6
         var endpoint = new IPEndPoint(IPAddress.IPv6Any, DefaultPort);
 
@@ -62,7 +58,6 @@ public sealed class QuicServer(
                     return false;
 
                 RemoteCertificateValidation?.Invoke((QuicConnection)sender, clientCert);
-                // serverAuthManager.AddClientCertificate((QuicConnection)sender, clientCert);
                 return true;
             }
         };
@@ -121,7 +116,6 @@ public sealed class QuicServer(
                     connection.RemoteEndPoint, stream.Id);
 
                 HandleConnection?.Invoke(channel);
-                // await packetHandler.HandleAsync(channel);
             }
         }
         catch (QuicException ex) when (ex.QuicError == QuicError.ConnectionAborted)

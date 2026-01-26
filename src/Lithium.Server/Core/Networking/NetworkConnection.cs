@@ -1,8 +1,13 @@
 using System.Net;
 using System.Net.Quic;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Lithium.Server.Core.Networking;
 
+[SupportedOSPlatform(nameof(OSPlatform.Windows))]
+[SupportedOSPlatform(nameof(OSPlatform.Linux))]
+[SupportedOSPlatform(nameof(OSPlatform.OSX))]
 public sealed class NetworkConnection : INetworkConnection
 {
     public QuicConnection Connection { get; }
