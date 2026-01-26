@@ -1,7 +1,7 @@
 using Lithium.Codecs;
 using Lithium.SourceGenerators.Attributes;
 
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Common;
 
 [Codec]
 public sealed partial class AuthorInfo

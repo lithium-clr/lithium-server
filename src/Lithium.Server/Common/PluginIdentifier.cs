@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Protocol;
+namespace Lithium.Server.Common;
 
 public sealed record PluginIdentifier(string Group, string Name)
 {
