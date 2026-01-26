@@ -6,7 +6,8 @@ namespace Lithium.Server.Core.Networking;
 public sealed class PacketHandler(
     ILogger<PacketHandler> logger,
     IClientManager clientManager,
-    PacketRouterService packetRouter
+    PacketRouterService packetRouter,
+    PacketDecoder decoder
 ) : IPacketHandler
 {
     public async Task HandleAsync(INetworkConnection channel)
@@ -22,43 +23,34 @@ public sealed class PacketHandler(
         var stream = channel.Stream;
         var remoteEndPoint = channel.RemoteEndPoint;
 
-       try
+        try
         {
             // Loop to keep reading packets from the same stream
             while (true)
             {
-                var header = new byte[8];
+                var result = await decoder.DecodePacketAsync(stream, CancellationToken.None);
 
-                if (!await ReadExactAsync(stream, header))
+                if (result.Failure)
                 {
-                    // Stream closed by peer (EOF)
-                    logger.LogInformation("[{RemoteEndPoint}] Stream ID {StreamId} closed by peer.", remoteEndPoint,
-                        stream.Id);
-                    break;
-                }
-                
-                var payloadLength = BitConverter.ToInt32(header, 0);
-                var packetId = BitConverter.ToInt32(header, 4);
-                
-                logger.LogInformation(
-                    $"[{remoteEndPoint}] Stream ID {stream.Id}: Received Packet ID: {packetId}, Payload Length: {payloadLength}");
-                
-                if (payloadLength > 0)
-                {
-                    var payload = new byte[payloadLength];
-                
-                    if (await ReadExactAsync(stream, payload))
+                    if (result.Exception is EndOfStreamException)
                     {
-                        await packetRouter.Route(channel, packetId, payload);
+                        logger.LogInformation("[{RemoteEndPoint}] Stream ID {StreamId} closed by peer.", remoteEndPoint,
+                            stream.Id);
                     }
                     else
                     {
-                        logger.LogWarning("[{RemoteEndPoint}] Stream ID {StreamId}: Failed to read full payload.",
+                        logger.LogError(result.Exception,
+                            "[{RemoteEndPoint}] Error decoding packet on Stream ID {StreamId}",
                             remoteEndPoint, stream.Id);
-                        
-                        break; // Break loop on read error
                     }
+
+                    break;
                 }
+
+                logger.LogInformation(
+                    $"[{remoteEndPoint}] Stream ID {stream.Id}: Received Packet {result.PacketName} (ID: {result.PacketId})");
+
+                await packetRouter.Route(channel, result.PacketId, result.Packet);
             }
         }
         catch (Exception ex)
@@ -73,20 +65,5 @@ public sealed class PacketHandler(
             packetRouter.RemoveChannel(channel);
             logger.LogInformation("[{RemoteEndPoint}] Stream ID {StreamId} disposed.", remoteEndPoint, stream.Id);
         }
-    }
-    
-    private static async Task<bool> ReadExactAsync(Stream stream, byte[] buffer)
-    {
-        var totalRead = 0;
-
-        while (totalRead < buffer.Length)
-        {
-            var read = await stream.ReadAsync(buffer.AsMemory(totalRead, buffer.Length - totalRead));
-            if (read is 0) return false;
-
-            totalRead += read;
-        }
-
-        return true;
     }
 }

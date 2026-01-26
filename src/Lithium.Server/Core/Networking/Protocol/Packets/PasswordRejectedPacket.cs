@@ -1,20 +1,13 @@
-using System.Buffers.Binary;
-
+using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-public sealed class PasswordRejectedPacket : IPacket<PasswordRejectedPacket>
+[Packet(Id = 17, VariableBlockStart = 5, MaxSize = 1024)]
+public sealed class PasswordRejectedPacket : Packet
 {
-    public static int Id => 17;
+    [PacketProperty(FixedIndex = 0)]
+    public int AttemptsRemaining { get; set; }
 
-    public byte[]? PasswordChallenge { get; init; }
-    public int AttemptsRemaining { get; init; }
-
-    public void Serialize(Stream stream)
-    {
-        PacketSerializer.WriteByteArray(stream, PasswordChallenge);
-        Span<byte> intBuffer = stackalloc byte[4];
-        BinaryPrimitives.WriteInt32LittleEndian(intBuffer, AttemptsRemaining);
-        stream.Write(intBuffer);
-    }
+    [PacketProperty(BitIndex = 0, OffsetIndex = 0)]
+    public byte[]? PasswordChallenge { get; set; }
 }

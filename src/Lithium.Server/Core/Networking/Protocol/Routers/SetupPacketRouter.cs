@@ -7,9 +7,10 @@ public sealed partial class SetupPacketRouter(
     IClientManager clientManager,
     IServerManager serverManager,
     // CommonAssetModule commonAssetModule,
+    IPacketRegistry packetRegistry,
     AssetManager assetManager,
     PlayerCommonAssets assets
-) : BasePacketRouter(logger)
+) : BasePacketRouter(logger, packetRegistry)
 {
     public override partial void Initialize(IServiceProvider sp);
 
@@ -55,7 +56,7 @@ public sealed partial class SetupPacketRouter(
         logger.LogInformation("SetupPacketRouter initialized.");
     }
 
-    protected override bool ShouldAcceptPacket(INetworkConnection channel, int packetId, byte[] payload)
+    protected override bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet)
     {
         return packetId is 1 or 23 or 32 or 33;
     }

@@ -5,7 +5,7 @@ public interface IPacketHandler
     Task HandleAsync(INetworkConnection channel);
 }
 
-public interface IPacketHandler<in T> where T : IPacket
+public interface IPacketHandler<in T> where T : Packet
 {
     Task Handle(INetworkConnection channel, T packet);
 }

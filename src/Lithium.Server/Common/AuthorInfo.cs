@@ -1,5 +1,4 @@
 using Lithium.Codecs;
-using Lithium.SourceGenerators.Attributes;
 
 namespace Lithium.Server.Common;
 

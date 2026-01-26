@@ -51,7 +51,7 @@ public sealed class RequestAssetsHandler(
             var asset = toSend[i];
             var allBytes = await asset.GetBlobAsync();
             var parts = Split(allBytes.Data, 2_621_440).ToList();
-            var packets = new IPacket[2 + parts.Count * 2];
+            var packets = new Packet[2 + parts.Count * 2];
 
             packets[0] = new AssetInitializePacket
             {

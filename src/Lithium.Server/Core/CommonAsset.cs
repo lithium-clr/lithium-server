@@ -12,7 +12,7 @@ public abstract record CommonAsset(string Name, string Hash)
     public string Name { get; } = Name.Replace('\\', '/');
     public string Hash { get; } = Hash.ToLowerInvariant();
 
-    protected CommonAsset(string name, byte[] data) 
+    protected CommonAsset(string name, byte[] data)
         : this(name, ComputeHash(data))
     {
         _blobTask = Task.FromResult(new BlobData(data));
@@ -32,14 +32,7 @@ public abstract record CommonAsset(string Name, string Hash)
 
     protected abstract Task<BlobData> ReadBlobAsync();
 
-    public Asset ToPacket()
-    {
-        return new Asset
-        {
-            Name = Name,
-            Hash = Hash
-        };
-    }
+    public Asset ToPacket() => new(Hash, Name);
 
     private static string ComputeHash(ReadOnlySpan<byte> bytes)
         => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();

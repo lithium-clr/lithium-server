@@ -35,6 +35,9 @@ public static class PacketServiceCollectionExtensions
             }
         }
 
+        services.AddSingleton<IPacketRegistry, PacketRegistry>();
+        services.AddSingleton<PacketEncoder>();
+        services.AddSingleton<PacketDecoder>();
         services.AddSingleton<HandshakeRouter>();
         services.AddSingleton<AuthenticationRouter>();
         services.AddSingleton<PasswordRouter>();

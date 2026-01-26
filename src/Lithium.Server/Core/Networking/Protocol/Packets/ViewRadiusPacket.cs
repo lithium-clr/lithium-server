@@ -1,26 +1,17 @@
-using System.Buffers.Binary;
-
+using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-public sealed class ViewRadiusPacket(int value) : IPacket<ViewRadiusPacket>
+[Packet(Id = 32, MaxSize = 12)]
+public sealed class ViewRadiusPacket : Packet
 {
-    public static int Id => 32;
+    [PacketProperty(FixedIndex = 0)]
+    public int Value { get; set; }
 
-    public readonly int Value = value;
+    public ViewRadiusPacket() { }
 
-    public static ViewRadiusPacket Deserialize(ReadOnlySpan<byte> buffer)
+    public ViewRadiusPacket(int value)
     {
-        var reader = new PacketReader(buffer);
-        var value = reader.ReadInt32();
-
-        return new ViewRadiusPacket(value);
-    }
-
-    public void Serialize(Stream stream)
-    {
-        Span<byte> buffer = stackalloc byte[4];
-        BinaryPrimitives.WriteInt32LittleEndian(buffer, Value);
-        stream.Write(buffer);
+        Value = value;
     }
 }

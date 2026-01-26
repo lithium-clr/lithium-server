@@ -1,61 +1,37 @@
 using Lithium.Server.Core.Networking.Protocol;
-using ZstdSharp;
 
 namespace Lithium.Server;
 
 public partial class Client
 {
-    // Default compression level for Zstd
-    private const int CompressionLevel = 3;
-
-    private static readonly Compressor Compressor = new(CompressionLevel);
-    
     // Generic version optimized for when T is known at compile time
     public Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
-        where T : IPacket<T>
+        where T : Packet
     {
         return SendPacketInternalAsync(packet, ct);
     }
 
     // Non-generic version for IPacket interfaces
-    public Task SendPacketAsync(IPacket packet, CancellationToken ct = default)
+    public Task SendPacketAsync(Packet packet, CancellationToken ct = default)
     {
         return SendPacketInternalAsync(packet, ct);
     }
     
-    private async Task SendPacketInternalAsync(IPacket packet, CancellationToken ct)
+    private async Task SendPacketInternalAsync(Packet packet, CancellationToken ct)
     {
-        await using var payloadStream = new MemoryStream();
-        packet.Serialize(payloadStream);
-
-        var packetId = packet.Id;
-        var payload = payloadStream.ToArray();
-
-        var finalPayload = payload;
-
-        if (packet.IsCompressed && payload.Length > 0)
-        {
-            var span = Compressor.Wrap(payload);
-            finalPayload = span.ToArray();
-        }
-
         await using var stream = new MemoryStream();
-
-        PacketWriter.WriteHeader(stream, packetId, finalPayload.Length);
-        await stream.WriteAsync(finalPayload, ct);
-
+        await _encoder.EncodePacketAsync(stream, packet, ct);
+        
         var data = stream.ToArray();
 
         await Channel.Stream.WriteAsync(data, ct);
         await Channel.Stream.FlushAsync(ct);
     }
     
-    public async Task SendPacketsAsync(IPacket[] packets, CancellationToken ct = default)
+    public async Task SendPacketsAsync(Packet[] packets, CancellationToken ct = default)
     {
         foreach (var packet in packets)
-        {
             await SendPacketAsync(packet, ct);
-        }
     }
 
     public Task DisconnectAsync(string? reason = null)

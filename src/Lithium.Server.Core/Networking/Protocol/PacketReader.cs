@@ -1,92 +1,519 @@
+using System.Buffers.Binary;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using System.Text;
+
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public ref struct PacketReader(ReadOnlySpan<byte> data)
+public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetInfo)
 {
-    private readonly ReadOnlySpan<byte> _data = data;
+    private const byte NullByte = 0;
+    private const byte GuidLength = 16;
+    private const int MaxVarIntIterations = 5;
+    private const byte Mask1111111 = 0b1111111;
+    private const byte Mask10000000 = 0b10000000;
+    private const byte ChunkBitSize = 7;
 
-    public int Offset { get; private set; } = 0;
-    public readonly int Remaining => _data.Length - Offset;
+    private int _position;
+    private int _varPosition;
 
-    public int ReadVarInt()
+    public ReadOnlySpan<byte> VariableBlock =>
+        buffer.Span[packetInfo.VariableBlockStart..];
+
+    public BitSet ReadBits()
     {
-        var result = PacketSerializer.ReadVarInt(_data[Offset..], out var bytesRead);
-        Offset += bytesRead;
-        
-        return result;
+        return new BitSet(ReadFixedSpan(packetInfo.NullableBitFieldSize));
     }
 
-    public string ReadVarString()
+    public byte ReadUInt8()
     {
-        var result = PacketSerializer.ReadVarString(_data[Offset..], out var bytesRead);
-        Offset += bytesRead;
-        
-        return result;
+        return ReadFixedSpan(sizeof(byte))[0];
     }
 
-    public string ReadFixedString(int length)
+    public sbyte ReadInt8()
     {
-        var result = PacketSerializer.ReadFixedString(_data[Offset..], length);
-        Offset += length;
-        
-        return result;
+        return (sbyte)ReadFixedSpan(sizeof(sbyte))[0];
     }
 
-    public Guid ReadUuid()
+    public bool ReadBoolean()
     {
-        var result = PacketSerializer.ReadUuid(_data[Offset..]);
-        Offset += 16;
-        
-        return result;
-    }
-
-    public byte ReadByte()
-    {
-        return Offset >= _data.Length
-            ? throw new ArgumentOutOfRangeException(nameof(_data), "End of buffer reached.")
-            : _data[Offset++];
-    }
-
-    public short ReadInt16()
-    {
-        if (Offset + 2 > _data.Length)
-            throw new ArgumentOutOfRangeException(nameof(_data), "End of buffer reached.");
-
-        var result = BitConverter.ToInt16(_data.Slice(Offset, 2));
-        Offset += 2;
-        
-        return result;
+        return ReadFixedSpan(sizeof(bool))[0] is not 0;
     }
 
     public ushort ReadUInt16()
     {
-        if (Offset + 2 > _data.Length)
-            throw new ArgumentOutOfRangeException(nameof(_data), "End of buffer reached.");
+        return BinaryPrimitives.ReadUInt16LittleEndian(ReadFixedSpan(sizeof(ushort)));
+    }
 
-        var result = BitConverter.ToUInt16(_data.Slice(Offset, 2));
-        Offset += 2;
-        
-        return result;
+    public short ReadInt16()
+    {
+        return BinaryPrimitives.ReadInt16LittleEndian(ReadFixedSpan(sizeof(short)));
+    }
+
+    public uint ReadUInt32()
+    {
+        return BinaryPrimitives.ReadUInt32LittleEndian(ReadFixedSpan(sizeof(uint)));
     }
 
     public int ReadInt32()
     {
-        if (Offset + 4 > _data.Length)
-            throw new ArgumentOutOfRangeException(nameof(_data), "End of buffer reached.");
-
-        var result = BitConverter.ToInt32(_data.Slice(Offset, 4));
-        Offset += 4;
-        
-        return result;
+        return BinaryPrimitives.ReadInt32LittleEndian(ReadFixedSpan(sizeof(int)));
     }
 
-    public ReadOnlySpan<byte> ReadBytes(int length)
+    public ulong ReadUInt64()
     {
-        if (Offset + length > _data.Length)
-            throw new ArgumentOutOfRangeException(nameof(_data), "End of buffer reached.");
+        return BinaryPrimitives.ReadUInt64LittleEndian(ReadFixedSpan(sizeof(ulong)));
+    }
 
-        var result = _data.Slice(Offset, length);
-        Offset += length;
-        
-        return result;
+    public long ReadInt64()
+    {
+        return BinaryPrimitives.ReadInt64LittleEndian(ReadFixedSpan(sizeof(long)));
+    }
+
+    public float ReadFloat32()
+    {
+        return BinaryPrimitives.ReadSingleLittleEndian(ReadFixedSpan(sizeof(float)));
+    }
+
+    public double ReadFloat64()
+    {
+        return BinaryPrimitives.ReadDoubleLittleEndian(ReadFixedSpan(sizeof(double)));
+    }
+
+    public ReadOnlySpan<byte> ReadFixedSpan(int length)
+    {
+        if (_position + length > buffer.Length)
+            ThrowEndOfBuffer();
+
+        var span = buffer.Span.Slice(_position, length);
+
+        _position += length;
+
+        return span;
+    }
+
+    public string ReadFixedString(int length)
+    {
+        var span = ReadFixedSpan(length);
+
+        var actualLength = span.IndexOf(NullByte);
+
+        if (actualLength is -1)
+            actualLength = length;
+
+        return Encoding.UTF8.GetString(span[..actualLength]);
+    }
+
+    public Guid ReadGuid()
+    {
+        return new Guid(ReadFixedSpan(GuidLength));
+    }
+
+    public int[] ReadOffsets()
+    {
+        var offsets = new int[packetInfo.VariableFieldCount];
+
+        for (var i = 0; i < offsets.Length; i++)
+            offsets[i] = ReadInt32();
+
+        return offsets;
+    }
+
+    public TEnum ReadEnum<TEnum>()
+        where TEnum : struct, Enum
+    {
+        var value = ReadUInt8();
+
+        return Unsafe.As<byte, TEnum>(ref value);
+    }
+    
+    public object ReadEnum(Type enumType)
+    {
+        var value = ReadUInt8();
+        return Enum.ToObject(enumType, value);
+    }
+
+    public byte ReadVarUInt8()
+    {
+        return ReadVarPrimitive(sizeof(byte))[0];
+    }
+
+    public sbyte ReadVarInt8()
+    {
+        return (sbyte)ReadVarPrimitive(sizeof(sbyte))[0];
+    }
+
+    public bool ReadVarBoolean()
+    {
+        return ReadVarPrimitive(sizeof(bool))[0] is not 0;
+    }
+
+    public ushort ReadVarUInt16()
+    {
+        return BinaryPrimitives.ReadUInt16LittleEndian(ReadVarPrimitive(sizeof(ushort)));
+    }
+
+    public short ReadVarInt16()
+    {
+        return BinaryPrimitives.ReadInt16LittleEndian(ReadVarPrimitive(sizeof(short)));
+    }
+
+    public uint ReadVarUInt32()
+    {
+        return BinaryPrimitives.ReadUInt32LittleEndian(ReadVarPrimitive(sizeof(uint)));
+    }
+
+    public int ReadVarInt32()
+    {
+        return BinaryPrimitives.ReadInt32LittleEndian(ReadVarPrimitive(sizeof(int)));
+    }
+
+    public ulong ReadVarUInt64()
+    {
+        return BinaryPrimitives.ReadUInt64LittleEndian(ReadVarPrimitive(sizeof(ulong)));
+    }
+
+    public long ReadVarInt64()
+    {
+        return BinaryPrimitives.ReadInt64LittleEndian(ReadVarPrimitive(sizeof(long)));
+    }
+
+    public float ReadVarFloat32()
+    {
+        return BinaryPrimitives.ReadSingleLittleEndian(ReadVarPrimitive(sizeof(float)));
+    }
+
+    public double ReadVarFloat64()
+    {
+        return BinaryPrimitives.ReadDoubleLittleEndian(ReadVarPrimitive(sizeof(double)));
+    }
+
+    public Guid ReadVarGuid()
+    {
+        return new Guid(ReadVarPrimitive(GuidLength));
+    }
+
+    public string ReadVarString()
+    {
+        return Encoding.UTF8.GetString(ReadVarField());
+    }
+
+    public byte[] ReadVarBytes()
+    {
+        return ReadVarField().ToArray();
+    }
+
+    public TEnum ReadVarEnum<TEnum>()
+        where TEnum : struct, Enum
+    {
+        var value = ReadVarUInt8();
+
+        return Unsafe.As<byte, TEnum>(ref value);
+    }
+
+    public object ReadVarEnum(Type enumType, int offset)
+    {
+        var value = ReadVarUInt8At(offset);
+        return Enum.ToObject(enumType, value);
+    }
+
+    public byte ReadVarUInt8At(int offset)
+    {
+        return ReadVarPrimitiveAt(offset, sizeof(byte))[0];
+    }
+
+    public sbyte ReadVarInt8At(int offset)
+    {
+        return (sbyte)ReadVarPrimitiveAt(offset, sizeof(sbyte))[0];
+    }
+
+    public bool ReadVarBooleanAt(int offset)
+    {
+        return ReadVarPrimitiveAt(offset, sizeof(bool))[0] is not 0;
+    }
+
+    public ushort ReadVarUInt16At(int offset)
+    {
+        return BinaryPrimitives.ReadUInt16LittleEndian(ReadVarPrimitiveAt(offset, sizeof(ushort)));
+    }
+
+    public short ReadVarInt16At(int offset)
+    {
+        return BinaryPrimitives.ReadInt16LittleEndian(ReadVarPrimitiveAt(offset, sizeof(short)));
+    }
+
+    public uint ReadVarUInt32At(int offset)
+    {
+        return BinaryPrimitives.ReadUInt32LittleEndian(ReadVarPrimitiveAt(offset, sizeof(uint)));
+    }
+
+    public int ReadVarInt32At(int offset)
+    {
+        return BinaryPrimitives.ReadInt32LittleEndian(ReadVarPrimitiveAt(offset, sizeof(int)));
+    }
+
+    public ulong ReadVarUInt64At(int offset)
+    {
+        return BinaryPrimitives.ReadUInt64LittleEndian(ReadVarPrimitiveAt(offset, sizeof(ulong)));
+    }
+
+    public long ReadVarInt64At(int offset)
+    {
+        return BinaryPrimitives.ReadInt64LittleEndian(ReadVarPrimitiveAt(offset, sizeof(long)));
+    }
+
+    public float ReadVarFloat32At(int offset)
+    {
+        return BinaryPrimitives.ReadSingleLittleEndian(ReadVarPrimitiveAt(offset, sizeof(float)));
+    }
+
+    public double ReadVarFloat64At(int offset)
+    {
+        return BinaryPrimitives.ReadDoubleLittleEndian(ReadVarPrimitiveAt(offset, sizeof(double)));
+    }
+
+    public Guid ReadVarGuidAt(int offset)
+    {
+        return new Guid(ReadVarPrimitiveAt(offset, GuidLength));
+    }
+
+    public string ReadVarStringAt(int offset)
+    {
+        return Encoding.UTF8.GetString(ReadVarFieldAt(offset));
+    }
+
+    public byte[] ReadVarBytesAt(int offset)
+    {
+        return ReadVarFieldAt(offset).ToArray();
+    }
+
+    public TObject ReadObjectAt<TObject>(int offset)
+        where TObject : PacketObject, new()
+    {
+        var obj = new TObject();
+        obj.Deserialize(this, offset);
+        return obj;
+    }
+
+    public TEnum ReadVarEnumAt<TEnum>(int offset)
+        where TEnum : struct, Enum
+    {
+        var value = ReadVarUInt8At(offset);
+
+        return Unsafe.As<byte, TEnum>(ref value);
+    }
+
+    public byte? ReadOptUInt8(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarUInt8At(offset) : null;
+    }
+
+    public sbyte? ReadOptInt8(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarInt8At(offset) : null;
+    }
+
+    public bool? ReadOptBoolean(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarBooleanAt(offset) : null;
+    }
+
+    public ushort? ReadOptUInt16(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarUInt16At(offset) : null;
+    }
+
+    public short? ReadOptInt16(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarInt16At(offset) : null;
+    }
+
+    public uint? ReadOptUInt32(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarUInt32At(offset) : null;
+    }
+
+    public int? ReadOptInt32(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarInt32At(offset) : null;
+    }
+
+    public ulong? ReadOptUInt64(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarUInt64At(offset) : null;
+    }
+
+    public long? ReadOptInt64(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarInt64At(offset) : null;
+    }
+
+    public float? ReadOptFloat32(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarFloat32At(offset) : null;
+    }
+
+    public double? ReadOptFloat64(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarFloat64At(offset) : null;
+    }
+
+    public Guid? ReadOptGuid(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarGuidAt(offset) : null;
+    }
+
+    public string? ReadOptString(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarStringAt(offset) : null;
+    }
+
+    public byte[]? ReadOptBytes(BitSet bits, int bitIndex, int offset)
+    {
+        return bits.IsSet(bitIndex) ? ReadVarBytesAt(offset) : null;
+    }
+
+    public TObject? ReadOptObject<TObject>(BitSet bits, int bitIndex, int offset)
+        where TObject : PacketObject, new()
+    {
+        return bits.IsSet(bitIndex) ? ReadObjectAt<TObject>(offset) : null;
+    }
+
+    public TEnum? ReadOptEnum<TEnum>(BitSet bits, int bitIndex, int offset)
+        where TEnum : struct, Enum
+    {
+        return bits.IsSet(bitIndex) ? ReadVarEnumAt<TEnum>(offset) : null;
+    }
+
+    public void SeekVar(int offset)
+    {
+        if (offset < 0)
+            ThrowNegativeOffset(offset);
+
+        _varPosition = offset;
+    }
+
+    private ReadOnlySpan<byte> ReadVarPrimitive(int length)
+    {
+        if (_varPosition < 0)
+            ThrowNegativeOffset(_varPosition);
+
+        var variableBlock = VariableBlock;
+
+        if (_varPosition + length > variableBlock.Length)
+            ThrowEndOfBuffer();
+
+        var span = variableBlock.Slice(_varPosition, length);
+
+        _varPosition += length;
+
+        return span;
+    }
+
+    private ReadOnlySpan<byte> ReadVarField()
+    {
+        if (_varPosition < 0)
+            ThrowNegativeOffset(_varPosition);
+
+        var varBlock = VariableBlock;
+
+        if (_varPosition >= varBlock.Length)
+            ThrowOutOfBounds(_varPosition, varBlock.Length);
+
+        var (length, dataPos) = ReadVarIntAt(varBlock, _varPosition);
+
+        var end = dataPos + length;
+
+        if (end > varBlock.Length)
+            ThrowEndOfBuffer();
+
+        var span = varBlock.Slice(dataPos, length);
+
+        _varPosition = end;
+
+        return span;
+    }
+
+    private ReadOnlySpan<byte> ReadVarPrimitiveAt(int offset, int size)
+    {
+        if (offset < 0)
+            ThrowNegativeOffset(offset);
+
+        var varBlock = VariableBlock;
+        var end = offset + size;
+
+        if (end > varBlock.Length)
+            ThrowEndOfBuffer();
+
+        return varBlock.Slice(offset, size);
+    }
+
+    private ReadOnlySpan<byte> ReadVarFieldAt(int offset)
+    {
+        if (offset < 0)
+            ThrowNegativeOffset(offset);
+
+        var varBlock = VariableBlock;
+
+        if (offset >= varBlock.Length)
+            ThrowOutOfBounds(offset, varBlock.Length);
+
+        var (length, dataPos) = ReadVarIntAt(varBlock, offset);
+
+        var end = dataPos + length;
+
+        if (end > varBlock.Length)
+            ThrowEndOfBuffer();
+
+        return varBlock.Slice(dataPos, length);
+    }
+
+    private static (int length, int dataPos) ReadVarIntAt(ReadOnlySpan<byte> buffer, int position)
+    {
+        var value = 0;
+        var shift = 0;
+
+        for (var i = 0; i < MaxVarIntIterations; i++)
+        {
+            if (position >= buffer.Length)
+                ThrowEndOfBuffer();
+
+            var b = buffer[position++];
+
+            value |= (b & Mask1111111) << shift;
+
+            if ((b & Mask10000000) is 0)
+                return (value, position);
+
+            shift += ChunkBitSize;
+        }
+
+        ThrowVarIntOverflow();
+        return default;
+    }
+
+    [DoesNotReturn]
+    private static void ThrowEndOfBuffer()
+    {
+        throw new EndOfStreamException("The end of the buffer was reached.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowNegativeOffset(int offset)
+    {
+        throw new ArgumentOutOfRangeException(nameof(offset), $"The offset {offset} cannot be negative.");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowOutOfBounds(int offset, int available)
+    {
+        throw new ArgumentOutOfRangeException(nameof(offset),
+            $"The offset {offset} is out of bounds for the buffer of length {available}");
+    }
+
+    [DoesNotReturn]
+    private static void ThrowVarIntOverflow()
+    {
+        throw new OverflowException("The value is too large to fit in a signed 32-bit integer.");
     }
 }

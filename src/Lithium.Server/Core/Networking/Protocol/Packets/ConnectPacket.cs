@@ -1,77 +1,49 @@
-
+using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-public sealed class ConnectPacket : IPacket<ConnectPacket>
+[Packet(Id = 0, IsCompressed = false, VariableBlockStart = 66, MaxSize = 38013)]
+public sealed class ConnectPacket : Packet
 {
-    public static int Id => 0;
-    private const int VariableBlockStart = 66;
+    // Fixed fields (total 45 bytes after the 1 byte nullBits, so 46 physical bytes)
+    // Java: protocolCrc (int)
+    [PacketProperty(FixedIndex = 0)]
+    public int ProtocolCrc { get; set; }
 
-    public int ProtocolCrc { get; init; }
-    public int ProtocolBuildNumber { get; init; }
-    public string ClientVersion  { get; init; } = null!;
-    public ClientType ClientType { get; init; }
-    public Guid Uuid { get; init; }
-    public string Username  { get; init; } = null!;
-    public string? IdentityToken { get; init; }
-    public string Language { get; init; } = null!;
-    public byte[]? ReferralData  { get; init; }
-    public HostAddress? ReferralSource  { get; init; }
+    // Java: protocolBuildNumber (int)
+    [PacketProperty(FixedIndex = 4)]
+    public int ProtocolBuildNumber { get; set; }
 
-    public static ConnectPacket Deserialize(ReadOnlySpan<byte> buffer)
-    {
-        var reader = new PacketReader(buffer);
-        var nullBits = reader.ReadByte();
-        
-        var protocolCrc = reader.ReadInt32();
-        var protocolBuildNumber = reader.ReadInt32();
-        var clientVersion = reader.ReadFixedString(20);
-        var clientType = (ClientType)reader.ReadByte();
-        var uuid = reader.ReadUuid();
-        
-        var usernameOffset = reader.ReadInt32();
-        var identityTokenOffset = reader.ReadInt32();
-        var languageOffset = reader.ReadInt32();
-        var referralDataOffset = reader.ReadInt32();
-        var referralSourceOffset = reader.ReadInt32();
-        
-        var varBlock = buffer[VariableBlockStart..];
-        
-        var username = PacketSerializer.ReadVarString(varBlock[usernameOffset..], out _);
-        
-        string? identityToken = null;
-        
-        if ((nullBits & 1) is not 0)
-            identityToken = PacketSerializer.ReadVarString(varBlock[identityTokenOffset..], out _);
-        
-        var language = PacketSerializer.ReadVarString(varBlock[languageOffset..], out _);
-        
-        byte[]? referralData = null;
-        
-        if ((nullBits & 2) is not 0)
-        {
-            var data = varBlock[referralDataOffset..];
-            var len = PacketSerializer.ReadVarInt(data, out var varIntLen);
-            referralData = data.Slice(varIntLen, len).ToArray();
-        }
-        
-        HostAddress? referralSource = null;
-        
-        if ((nullBits & 4) is not 0)
-            referralSource = HostAddress.Deserialize(varBlock[referralSourceOffset..], out _);
+    // Java: clientVersion (fixed ASCII string, 20 bytes)
+    [PacketProperty(FixedIndex = 8, FixedSize = 20)]
+    public string ClientVersion { get; set; } = ""; 
 
-        return new ConnectPacket
-        {
-            ProtocolCrc = protocolCrc,
-            ProtocolBuildNumber = protocolBuildNumber,
-            ClientVersion = clientVersion,
-            ClientType = clientType,
-            Uuid = uuid,
-            Username = username,
-            IdentityToken = identityToken,
-            Language = language,
-            ReferralData = referralData,
-            ReferralSource = referralSource
-        };
-    }
+    // Java: clientType (byte enum)
+    [PacketProperty(FixedIndex = 28)]
+    public ClientType ClientType { get; set; }
+
+    // Java: uuid (UUID)
+    [PacketProperty(FixedIndex = 29)]
+    public Guid Uuid { get; set; }
+
+    // Variable fields (Offset indices)
+    // Java: username (string, not nullable), OffsetIndex 0
+    [PacketProperty(OffsetIndex = 0)]
+    public string Username { get; set; } = "";
+
+    // Java: identityToken (string, nullable, bit 0), OffsetIndex 1
+    [PacketProperty(BitIndex = 0, OffsetIndex = 1)]
+    public string? IdentityToken { get; set; }
+
+    // Java: language (string, not nullable), OffsetIndex 2
+    [PacketProperty(OffsetIndex = 2)]
+    public string Language { get; set; } = "";
+
+    // Java: referralData (byte[], nullable, bit 1), OffsetIndex 3
+    [PacketProperty(BitIndex = 1, OffsetIndex = 3)]
+    public byte[]? ReferralData { get; set; }
+
+    // Java: referralSource (HostAddress, nullable, bit 2), OffsetIndex 4
+    [PacketProperty(BitIndex = 2, OffsetIndex = 4)]
+    public HostAddress? ReferralSource { get; set; }
 }

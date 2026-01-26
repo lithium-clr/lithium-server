@@ -2,22 +2,16 @@ using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public sealed record HostAddress(string Host, short Port) : PacketObject<HostAddress>
+public sealed record HostAddress : PacketObject
 {
-    [PacketProperty(FixedIndex = 1)] public string Host { get; } = Host;
-    [PacketProperty(FixedIndex = 0)] public short Port { get; } = Port;
+    [PacketProperty(FixedIndex = 0)] public short Port { get; set; }
+    [PacketProperty(OffsetIndex = 0)] public string Host { get; set; } = string.Empty;
 
-    public override void Serialize(PacketWriter writer)
+    public HostAddress() { }
+
+    public HostAddress(string host, short port)
     {
-        writer.WriteVarInt16(Port);
-        writer.WriteVarString(Host);
-    }
-
-    public override HostAddress Deserialize(PacketReader reader, int offset)
-    {
-        var port = reader.ReadVarInt16At(offset);
-        var host = reader.ReadVarStringAt(offset + sizeof(short));
-
-        return new HostAddress(host, port);
+        Host = host;
+        Port = port;
     }
 }

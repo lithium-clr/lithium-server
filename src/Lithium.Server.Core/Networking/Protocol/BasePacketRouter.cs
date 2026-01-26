@@ -1,12 +1,12 @@
+using System.Reflection;
 using Microsoft.Extensions.Logging;
-using ZstdSharp;
+using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
+public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry) : IPacketRouter
 {
-    private static readonly Decompressor Decompressor = new();
-    private readonly Dictionary<int, Func<INetworkConnection, int, byte[], Task>> _routes = new();
+    private readonly Dictionary<int, (PacketInfo Metadata, Func<INetworkConnection, Packet, Task> Route)> _routes = new();
 
     public abstract void Initialize(IServiceProvider sp);
 
@@ -15,51 +15,77 @@ public abstract class BasePacketRouter(ILogger logger) : IPacketRouter
         return Task.CompletedTask;
     }
 
-    protected virtual bool ShouldAcceptPacket(INetworkConnection channel, int packetId, byte[] payload) => true;
+    protected virtual bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet) => true;
     
-    public void Register<T>(IPacketHandler<T> handler) where T : IPacket<T>
+    public void Register<T>(IPacketHandler<T> handler) where T : Packet, new()
     {
-        var packetId = T.Id;
+        var type = typeof(T);
+        var attribute = type.GetCustomAttribute<PacketAttribute>();
+
+        if (attribute is null)
+        {
+            logger.LogError("Packet {Packet} is missing PacketAttribute.", type.Name);
+            return;
+        }
+
+        var packetId = attribute.Id;
 
         if (_routes.ContainsKey(packetId))
         {
-            logger.LogWarning("Packet {Packet} (ID {Id}) is already registered to {Router}.", typeof(T).Name, packetId,
+            logger.LogWarning("Packet {Packet} (ID {Id}) is already registered to {Router}.", type.Name, packetId,
                 GetType().Name);
 
             return;
         }
 
-        _routes[packetId] = async (channel, pid, payload) =>
+        var properties = type.GetProperties();
+        var maxBitIndex = -1;
+        var maxOffsetIndex = -1;
+
+        foreach (var prop in properties)
+        {
+            var propAttr = prop.GetCustomAttribute<PacketPropertyAttribute>();
+            if (propAttr is null) continue;
+
+            if (propAttr.BitIndex > maxBitIndex) maxBitIndex = propAttr.BitIndex;
+            if (propAttr.OffsetIndex > maxOffsetIndex) maxOffsetIndex = propAttr.OffsetIndex;
+        }
+
+        var packetInfo = new PacketInfo(
+            packetId,
+            type.Name,
+            type,
+            attribute.IsCompressed,
+            maxBitIndex is -1 ? 0 : (maxBitIndex / 8) + 1,
+            maxOffsetIndex is -1 ? 0 : maxOffsetIndex + 1,
+            attribute.VariableBlockStart,
+            attribute.MaxSize
+        );
+        
+        registry.Register(packetInfo);
+
+        _routes[packetId] = (packetInfo, async (channel, packet) =>
         {
             try
             {
-                var finalPayload = payload;
-
-                if (T.IsCompressed && payload.Length > 0)
-                {
-                    var span = Decompressor.Unwrap(payload);
-                    finalPayload = span.ToArray();
-                }
-                
-                var packet = T.Deserialize(finalPayload);
-                await handler.Handle(channel, packet);
+                await handler.Handle(channel, (T)packet);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error handling packet {Packet} (ID {Id}) in {Router}.", typeof(T).Name, pid,
+                logger.LogError(ex, "Error handling packet {Packet} (ID {Id}) in {Router}.", type.Name, packetId,
                     GetType().Name);
             }
-        };
+        });
 
-        logger.LogDebug("Registered {Packet} (ID {Id}) to {Router}.", typeof(T).Name, packetId, GetType().Name);
+        logger.LogDebug("Registered {Packet} (ID {Id}) to {Router}.", type.Name, packetId, GetType().Name);
     }
 
-    public async Task Route(INetworkConnection channel, int packetId, byte[] payload)
+    public async Task Route(INetworkConnection channel, int packetId, Packet packet)
     {
-        if (!ShouldAcceptPacket(channel, packetId, payload))
+        if (!ShouldAcceptPacket(channel, packetId, packet))
             return;
 
-        if (_routes.TryGetValue(packetId, out var action))
-            await action(channel, packetId, payload);
+        if (_routes.TryGetValue(packetId, out var routeInfo))
+            await routeInfo.Route(channel, packet);
     }
 }

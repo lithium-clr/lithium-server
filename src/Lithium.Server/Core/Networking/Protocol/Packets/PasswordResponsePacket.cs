@@ -1,30 +1,10 @@
-
+using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-public sealed class PasswordResponsePacket : IPacket<PasswordResponsePacket>
+[Packet(Id = 15, VariableBlockStart = 5, MaxSize = 1024)]
+public sealed class PasswordResponsePacket : Packet
 {
-    public static int Id => 15;
-
-    public byte[]? Hash { get; init; }
-
-    public static PasswordResponsePacket Deserialize(ReadOnlySpan<byte> buffer)
-    {
-        var reader = new PacketReader(buffer);
-        var nullBits = reader.ReadByte();
-
-        byte[]? hash = null;
-        
-        if ((nullBits & 1) is not 0)
-        {
-            var length = reader.ReadVarInt();
-            if (length > 64) throw new Exception("Hash exceeds max length 64");
-            hash = reader.ReadBytes(length).ToArray();
-        }
-
-        return new PasswordResponsePacket
-        {
-            Hash = hash
-        };
-    }
+    [PacketProperty(BitIndex = 0, OffsetIndex = 0)]
+    public byte[]? Hash { get; set; }
 }

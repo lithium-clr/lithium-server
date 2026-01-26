@@ -26,10 +26,10 @@ public sealed class PacketRouterService(
         return _activeRouters.GetValueOrDefault(channel, defaultRouter);
     }
 
-    public async Task Route(INetworkConnection channel, int packetId, byte[] payload)
+    public async Task Route(INetworkConnection channel, int packetId, Packet packet)
     {
         var router = GetRouter(channel);
-        await router.Route(channel, packetId, payload);
+        await router.Route(channel, packetId, packet);
     }
 
     public void RemoveChannel(INetworkConnection channel)

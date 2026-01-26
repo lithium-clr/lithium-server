@@ -1,9 +1,8 @@
 using Lithium.Server.Core.Networking.Protocol;
 
-
 namespace Lithium.Server.Core.Networking;
 
-public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager, IAsyncDisposable
+public sealed class ClientManager(ILoggerFactory loggerFactory, PacketEncoder encoder) : IClientManager, IAsyncDisposable
 {
     private readonly ILogger<ClientManager> _logger = loggerFactory.CreateLogger<ClientManager>();
     private readonly Dictionary<INetworkConnection, IClient> _clients = new();
@@ -16,7 +15,7 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
         // Client.Setup(this, loggerFactory);
 
         var serverId = GetNextServerId();
-        var client = new Client(channel, serverId, uuid, language, username, clientType);
+        var client = new Client(channel, serverId, uuid, language, username, clientType, encoder);
 
         _clients[channel] = client;
         _logger.LogInformation("Create client for {Uuid}", client.Uuid);
@@ -48,13 +47,13 @@ public sealed class ClientManager(ILoggerFactory loggerFactory) : IClientManager
     }
 
     public async Task SendToClient<T>(IClient client, T packet, CancellationToken ct = default)
-        where T : IPacket<T>
+        where T : Packet
     {
         await client.SendPacketAsync(packet, ct);
     }
 
     public async Task Broadcast<T>(T packet, IClient? except = null, CancellationToken ct = default)
-        where T : IPacket<T>
+        where T : Packet
     {
         var tasks = new List<Task>();
 

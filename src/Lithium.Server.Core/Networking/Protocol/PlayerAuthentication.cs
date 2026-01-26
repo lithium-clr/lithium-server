@@ -7,5 +7,5 @@ public sealed class PlayerAuthentication(Guid uuid, string username)
     public Guid Uuid { get; } = uuid;
     public string Username { get; set; } = username;
     public byte[] ReferralData { get; set; } = [];
-    public HostAddress? ReferralSource { get; set; }
+    public HostAddress ReferralSource { get; set; } = null!;
 }

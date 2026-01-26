@@ -1,35 +1,13 @@
-using System.Buffers.Binary;
-
+using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-public sealed class AssetInitializePacket : IPacket<AssetInitializePacket>
+[Packet(Id = 24, VariableBlockStart = 8, MaxSize = 1024)]
+public sealed class AssetInitializePacket : Packet
 {
-    public static int Id => 24;
+    [PacketProperty(FixedIndex = 0)]
+    public int Size { get; set; }
 
-    public Asset Asset { get; init; } = null!;
-    public int Size { get; init; }
-
-    public static AssetInitializePacket Deserialize(ReadOnlySpan<byte> buffer)
-    {
-        var reader = new PacketReader(buffer);
-        var size = reader.ReadInt32();
-
-        var asset = Asset.Deserialize(buffer[reader.Offset..], out _);
-
-        return new AssetInitializePacket
-        {
-            Asset = asset,
-            Size = size
-        };
-    }
-
-    public void Serialize(Stream stream)
-    {
-        Span<byte> sizeBuffer = stackalloc byte[4];
-        BinaryPrimitives.WriteInt32LittleEndian(sizeBuffer, Size);
-        stream.Write(sizeBuffer);
-
-        Asset.Serialize(stream);
-    }
+    [PacketProperty(OffsetIndex = 0)]
+    public Asset Asset { get; set; } = null!;
 }
