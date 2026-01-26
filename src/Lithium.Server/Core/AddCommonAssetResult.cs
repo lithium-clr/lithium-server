@@ -3,8 +3,8 @@ using Lithium.SourceGenerators.Attributes;
 namespace Lithium.Server.Core;
 
 public sealed record AddCommonAssetResult(
-    [property: ToStringInclude] PackAsset NewPackAsset,
-    [property: ToStringInclude] PackAsset? PreviousNameAsset,
-    [property: ToStringInclude] PackAsset ActiveAsset,
-    [property: ToStringInclude] int? DuplicateAssetId
+    PackAsset NewPackAsset,
+    PackAsset? PreviousNameAsset,
+    PackAsset ActiveAsset,
+    int? DuplicateAssetId
 );

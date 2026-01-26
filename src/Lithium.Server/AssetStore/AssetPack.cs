@@ -10,7 +10,7 @@ namespace Lithium.Server.AssetStore;
 /// <param name="Root">The root directory path where assets are located.</param>
 /// <param name="Manifest">The plugin manifest associated with this pack.</param>
 public sealed partial record AssetPack(
-    [property: ToStringInclude] string Name,
-    [property: ToStringInclude] string Root,
+    string Name,
+    string Root,
     PluginManifest Manifest
 );
