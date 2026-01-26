@@ -14,6 +14,8 @@ public sealed class ServerConfigurationProvider(
 
     public async Task<ServerConfiguration> LoadAsync()
     {
+        logger.LogInformation("Loading configuration...");
+        
         if (!File.Exists(_path))
         {
             logger.LogWarning(
@@ -26,8 +28,7 @@ public sealed class ServerConfigurationProvider(
         {
             var json = await File.ReadAllTextAsync(_path);
             
-            logger.LogInformation("Loaded config from {Path}", _path);
-            logger.LogInformation("Configuration: {Json}", json);
+            logger.LogInformation("Configuration loaded from: {Path}", _path);
             
             return Configuration = JsonSerializer.Deserialize<ServerConfiguration>(json)
                    ?? ServerConfiguration.Default;

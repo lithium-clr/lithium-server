@@ -19,6 +19,8 @@ public sealed class AssetManager(
     
     public async Task InitializeAsync()
     {
+        logger.LogInformation("Initializing...");
+        
         if (_isInitialized)
             throw new Exception("AssetManager already initialized.");
 
@@ -28,6 +30,7 @@ public sealed class AssetManager(
         // TODO - Load mods packs
         
         _isInitialized = true;
+        logger.LogInformation("Initialized.");
     }
 
     private async Task LoadCommonPackAsync()

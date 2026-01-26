@@ -3,8 +3,42 @@ using Lithium.Server.Core.Systems.Commands;
 
 namespace Lithium.Server;
 
-public partial class HytaleServer
+public partial class ServerLifetime
 {
+    private ServerAuthManager.ServerAuthContext SetupAuthenticationContext()
+    {
+        bool isSinglePlayer;
+        Guid? ownerUuid = null;
+        string? ownerName;
+        string? sessionToken;
+        string? identityToken;
+
+        if (_commands.GetValue(IsSinglePlayerOption) is var singlePlayer)
+            isSinglePlayer = singlePlayer;
+
+        if (_commands.GetValue(OwnerUuidOption) is var ownerUuidString &&
+            Guid.TryParse(ownerUuidString, out var parsedUuid))
+            ownerUuid = parsedUuid;
+
+        if (_commands.GetValue(OwnerNameOption) is var ownerNameString)
+            ownerName = ownerNameString;
+
+        if (_commands.GetValue(SessionTokenOption) is var sessionTokenString)
+            sessionToken = sessionTokenString;
+
+        if (_commands.GetValue(IdentityTokenOption) is var identityTokenString)
+            identityToken = identityTokenString;
+
+        return new ServerAuthManager.ServerAuthContext
+        {
+            IsSinglePlayer = isSinglePlayer,
+            OwnerUuid = ownerUuid,
+            OwnerName = ownerName,
+            SessionToken = sessionToken,
+            IdentityToken = identityToken
+        };
+    }
+    
     private async Task EnsureAuthenticationAsync()
     {
         logger.LogInformation("Ensuring authentication...");
@@ -23,7 +57,7 @@ public partial class HytaleServer
             await RequestAuthenticationAsync();
         }
     }
-
+    
     private async Task RequestAuthenticationAsync()
     {
         var authResult = await serverAuthManager.StartFlowAsync(deviceFlow, new CancellationTokenSource());
@@ -47,7 +81,7 @@ public partial class HytaleServer
                 break;
         }
     }
-
+    
     [ConsoleCommand("auth")]
     public async Task AuthCommand(string command, string loginType)
     {

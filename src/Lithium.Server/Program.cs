@@ -130,7 +130,6 @@ builder.Services.AddGameProfileCodec();
 builder.Services.AddGameSessionResponseCodec();
 
 // Core services
-builder.Services.AddSingleton<HytaleServer>();
 builder.Services.AddSingleton<IServerConfigurationProvider, ServerConfigurationProvider>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IClientManager, ClientManager>();

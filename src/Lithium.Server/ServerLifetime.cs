@@ -1,8 +1,8 @@
-﻿using System.Net.Quic;
-using Lithium.Server.Core;
+﻿using Lithium.Server.Core;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Authentication;
+using Lithium.Server.Core.Networking.Authentication.OAuth;
 using Lithium.Server.Core.Networking.Protocol;
 
 namespace Lithium.Server;
@@ -15,7 +15,8 @@ public sealed partial class ServerLifetime(
     IServerAuthManager serverAuthManager,
     IServerConfigurationProvider configurationProvider,
     IPacketHandler packetHandler,
-    HytaleServer hytaleServer
+    AssetManager assetManager,
+    IOAuthDeviceFlow deviceFlow
 ) : BackgroundService
 {
     private const string CertificateFileName = "lithium_server_cert_v2.pfx";
@@ -28,52 +29,32 @@ public sealed partial class ServerLifetime(
 
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
-        logger.LogInformation("Parsing command line arguments...");
         RegisterCommandLines();
 
         logger.LogInformation("Initializing logger...");
         _loggerService.Init();
-
-        logger.LogInformation("Loading configuration...");
+        
         await configurationProvider.LoadAsync();
+        await assetManager.InitializeAsync();
+        
+        var context = SetupAuthenticationContext();
+        await serverAuthManager.InitializeAsync(context);
+        await serverAuthManager.InitializeCredentialStore();
+        
+        if (serverAuthManager.AuthMode is AuthMode.None)
+            await EnsureAuthenticationAsync();
+        
+        logger.LogInformation(
+            "===============================================================================================");
+        logger.LogInformation("Lithium Server Booted!");
+        logger.LogInformation(
+            "===============================================================================================");
 
-        // _pluginManager.LoadPlugins();
-
-        // logger.LogInformation("Option: " + _commands.GetValue(OwnerUuidOption));
-
-        bool isSinglePlayer;
-        Guid? ownerUuid = null;
-        string? ownerName;
-        string? sessionToken;
-        string? identityToken;
-
-        if (_commands.GetValue(IsSinglePlayerOption) is var singlePlayer)
-            isSinglePlayer = singlePlayer;
-
-        if (_commands.GetValue(OwnerUuidOption) is var ownerUuidString &&
-            Guid.TryParse(ownerUuidString, out var parsedUuid))
-            ownerUuid = parsedUuid;
-
-        if (_commands.GetValue(OwnerNameOption) is var ownerNameString)
-            ownerName = ownerNameString;
-
-        if (_commands.GetValue(SessionTokenOption) is var sessionTokenString)
-            sessionToken = sessionTokenString;
-
-        if (_commands.GetValue(IdentityTokenOption) is var identityTokenString)
-            identityToken = identityTokenString;
-
-        var context = new ServerAuthManager.ServerAuthContext
+        if (serverAuthManager is { IsSinglePlayer: false, AuthMode: AuthMode.None })
         {
-            IsSinglePlayer = isSinglePlayer,
-            OwnerUuid = ownerUuid,
-            OwnerName = ownerName,
-            SessionToken = sessionToken,
-            IdentityToken = identityToken
-        };
-
-        logger.LogInformation("Initializing hytale server...");
-        await hytaleServer.InitializeAsync(context);
+            logger.LogWarning("No server tokens configured. Use /auth login to authenticate.");
+            return;
+        }
 
         logger.LogInformation("Initializing server...");
         await ListenAsync(ct);

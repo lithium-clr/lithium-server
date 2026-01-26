@@ -38,7 +38,7 @@ public sealed class ServerAuthManager(
     private const int RefreshBufferSeconds = 300;
 
     private readonly ConcurrentDictionary<QuicConnection, X509Certificate2> _clientCertificates = new();
-    
+
     private CancellationTokenSource? _refreshCts;
     private DateTimeOffset? _tokenExpiry = DateTimeOffset.MinValue;
 
@@ -68,13 +68,14 @@ public sealed class ServerAuthManager(
         public string? SessionToken { get; init; }
         public string? IdentityToken { get; init; }
     }
-    
+
     public async Task InitializeAsync(ServerAuthContext context)
     {
+        logger.LogInformation("Initializing...");
         _context = context;
 
         InitializeRefreshScheduler();
-        
+
         logger.LogInformation("Initializing ServerAuthManager...");
         logger.LogInformation("Context:");
         logger.LogInformation("- IsSinglePlayer: " + context.IsSinglePlayer);
@@ -171,7 +172,7 @@ public sealed class ServerAuthManager(
 
         logger.LogInformation("Server session ID: " + ServerSessionId);
         logger.LogDebug(
-            $"ServerAuthManager initialized - session token: {(sessionTokenValue is not null ? "present" : "missing")}, identity token: {(identityTokenValue is not null ? "present" : "missing")}, auth mode: {AuthMode}");
+            $"Initialized - session token: {(sessionTokenValue is not null ? "present" : "missing")}, identity token: {(identityTokenValue is not null ? "present" : "missing")}, auth mode: {AuthMode}");
     }
 
     public async Task InitializeCredentialStore()
@@ -261,7 +262,7 @@ public sealed class ServerAuthManager(
         }
 
         var profiles = await sessionServiceClient.GetGameProfilesAsync(accessToken);
-        
+
         if (profiles is null || profiles.Length is 0)
         {
             logger.LogWarning("No game profiles found for this account");
@@ -584,7 +585,7 @@ public sealed class ServerAuthManager(
                 logger.LogWarning("Force refresh failed");
                 return null;
             }
-            
+
             accessToken = credentialStore.Data?.AccessToken;
             result = await sessionServiceClient.CreateGameSessionAsync(accessToken, profileUuid);
 
