@@ -14,7 +14,16 @@ public sealed class PacketEncoder(IPacketRegistry registry)
         CancellationToken cancellationToken
     ) where TPacket : Packet
     {
-        var packetType = typeof(TPacket);
+        return await EncodePacketAsync(stream, (Packet)packet, cancellationToken);
+    }
+
+    public async Task<PacketInfo> EncodePacketAsync(
+        Stream stream,
+        Packet packet,
+        CancellationToken cancellationToken
+    )
+    {
+        var packetType = packet.GetType();
 
         if (!registry.TryGetPacketInfoByType(packetType, out var metadata))
             ThrowInvalidPacketType(packetType);
