@@ -146,9 +146,6 @@ builder.Services.AddSingleton<AssetLoader>();
 
 builder.Services.AddPacketHandlers(Assembly.GetExecutingAssembly());
 
-// Networking
-builder.Services.AddSingleton<QuicServer>();
-
 // Lifetime
 builder.Services.AddSingleton<ServerLifetime>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<ServerLifetime>());

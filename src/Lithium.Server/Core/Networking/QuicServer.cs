@@ -4,44 +4,40 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Protocol;
-
 using Lithium.Server.Dashboard;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Lithium.Server.Core.Networking;
 
 public sealed class QuicServer(
-    ILogger<QuicServer> logger,
-    IHubContext<ServerHub, IServerHub> hub,
-    IHubContext<ServerConsoleHub, IServerConsoleHub> hubConsole,
-    IPacketHandler packetHandler,
-    IServerAuthManager serverAuthManager,
-    ISessionServiceClient sessionServiceClient
+    ILoggerFactory loggerFactory,
+    X509Certificate2 certificate
 ) : IAsyncDisposable
 {
     private const int DefaultPort = 5520;
-
-    // private const int HeartbeatInterval = 15;
     private const string ProtocolV1 = "hytale/1";
     private const string ProtocolV2 = "hytale/2";
-    private const string CertificateFileName = "lithium_server_cert_v2.pfx";
-    private const string CertificatePassword = "password";
+    
+    private readonly ILogger _logger = loggerFactory.CreateLogger<QuicServer>();
 
     private QuicListener _listener = null!;
     private readonly Dictionary<QuicConnection, NetworkConnection> _channels = new();
 
-    public async Task StartAsync(CancellationToken ct)
+    public event Action<QuicConnection, X509Certificate2>? RemoteCertificateValidation;
+    public event Action<NetworkConnection>? HandleConnection;
+    
+    public async Task ListenAsync(CancellationToken ct)
     {
         if (!QuicListener.IsSupported)
         {
-            logger.LogInformation("QUIC is not supported on this platform.");
+            _logger.LogInformation("QUIC is not supported on this platform.");
             return;
         }
 
-        logger.LogInformation("Hytale QUIC Listener starting...");
+        _logger.LogInformation("Hytale QUIC Listener starting...");
 
-        var cert = CertificateUtility.GetOrCreateSelfSignedCertificate(CertificateFileName, CertificatePassword);
-        serverAuthManager.SetServerCertificate(cert);
+        // var cert = CertificateUtility.GetOrCreateSelfSignedCertificate(CertificateFileName, CertificatePassword);
+        // serverAuthManager.SetServerCertificate(cert);
 
         // Use IPv6Any with DualMode (supported by default on Windows/Linux) to handle both IPv4 and IPv6
         var endpoint = new IPEndPoint(IPAddress.IPv6Any, DefaultPort);
@@ -55,17 +51,18 @@ public sealed class QuicServer(
         var serverAuthenticationOptions = new SslServerAuthenticationOptions
         {
             ApplicationProtocols = protocols,
-            ServerCertificate = cert,
+            ServerCertificate = certificate,
             ClientCertificateRequired = true,
             RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
             {
-                logger.LogInformation("(RemoteCertificateValidationCallback) -> Register client certificate: " +
+                _logger.LogInformation("(RemoteCertificateValidationCallback) -> Register client certificate: " +
                                       sender.GetType());
 
                 if (certificate is not X509Certificate2 clientCert)
                     return false;
 
-                serverAuthManager.AddClientCertificate((QuicConnection)sender, clientCert);
+                RemoteCertificateValidation?.Invoke((QuicConnection)sender, clientCert);
+                // serverAuthManager.AddClientCertificate((QuicConnection)sender, clientCert);
                 return true;
             }
         };
@@ -90,7 +87,8 @@ public sealed class QuicServer(
 
         _listener = await QuicListener.ListenAsync(listenerOptions, ct);
 
-        logger.LogInformation("Listening on {ListenerLocalEndPoint} with ALPN '{Protocol}'", _listener.LocalEndPoint, protocols.First());
+        _logger.LogInformation("Listening on {ListenerLocalEndPoint} with ALPN '{Protocol}'", _listener.LocalEndPoint,
+            protocols.First());
 
         // Start accepting connections
         while (!ct.IsCancellationRequested)
@@ -98,12 +96,12 @@ public sealed class QuicServer(
             try
             {
                 var connection = await _listener.AcceptConnectionAsync(ct);
-                logger.LogInformation("[{RemoteEndPoint}] Connection accepted.", connection.RemoteEndPoint);
+                _logger.LogInformation("[{RemoteEndPoint}] Connection accepted.", connection.RemoteEndPoint);
                 _ = HandleConnectionAsync(connection);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                logger.LogError("Error accepting connection: {ExMessage}", ex.Message);
+                _logger.LogError("Error accepting connection: {ExMessage}", ex.Message);
             }
         }
     }
@@ -119,25 +117,25 @@ public sealed class QuicServer(
                 var channel = new NetworkConnection(connection, stream);
                 _channels[connection] = channel;
 
-                logger.LogInformation("[{ConnectionRemoteEndPoint}] Stream accepted: ID {StreamId}",
+                _logger.LogInformation("[{ConnectionRemoteEndPoint}] Stream accepted: ID {StreamId}",
                     connection.RemoteEndPoint, stream.Id);
 
-                await packetHandler.HandleAsync(channel);
-                // _ = HandleStreamAsync(stream, connection.RemoteEndPoint);
+                HandleConnection?.Invoke(channel);
+                // await packetHandler.HandleAsync(channel);
             }
         }
         catch (QuicException ex) when (ex.QuicError == QuicError.ConnectionAborted)
         {
-            logger.LogInformation("[{ConnectionRemoteEndPoint}] Connection aborted.", connection.RemoteEndPoint);
+            _logger.LogInformation("[{ConnectionRemoteEndPoint}] Connection aborted.", connection.RemoteEndPoint);
         }
         catch (Exception ex)
         {
-            logger.LogError("[{ConnectionRemoteEndPoint}] Error: {ExMessage}", connection.RemoteEndPoint, ex.Message);
+            _logger.LogError("[{ConnectionRemoteEndPoint}] Error: {ExMessage}", connection.RemoteEndPoint, ex.Message);
         }
         finally
         {
             await connection.DisposeAsync();
-            logger.LogInformation("[{ConnectionRemoteEndPoint}] Connection closed.", connection.RemoteEndPoint);
+            _logger.LogInformation("[{ConnectionRemoteEndPoint}] Connection closed.", connection.RemoteEndPoint);
         }
     }
 
