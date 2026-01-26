@@ -6,105 +6,81 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public sealed class PacketEncoder(IPacketRegistry registry)
 {
-    private const byte HeaderLength = 8;
+    private const int HeaderLength = 8;
 
-    public async Task<PacketInfo> EncodePacketAsync<TPacket>(
-        Stream stream,
-        TPacket packet,
-        CancellationToken cancellationToken
-    ) where TPacket : Packet
+    public Task<PacketInfo> EncodePacketAsync(Stream stream, Packet packet, CancellationToken ct)
     {
-        return await EncodePacketAsync(stream, (Packet)packet, cancellationToken);
-    }
+        var type = packet.GetType();
 
-    public async Task<PacketInfo> EncodePacketAsync(
-        Stream stream,
-        Packet packet,
-        CancellationToken cancellationToken
-    )
-    {
-        var packetType = packet.GetType();
-
-        if (!registry.TryGetPacketInfoByType(packetType, out var metadata))
-            ThrowInvalidPacketType(packetType);
+        if (!registry.TryGetPacketInfoByType(type, out var info))
+            ThrowInvalidPacketType(type);
 
         var writer = new PacketWriter();
-
         packet.Serialize(writer);
 
-        var payloadBuffer = writer.WrittenMemory;
+        var payload = writer.WrittenMemory;
 
-        if (payloadBuffer.Length > metadata.MaxSize)
-            ThrowPayloadTooLarge(payloadBuffer.Length, metadata.MaxSize);
+        if (payload.Length > info.MaxSize)
+            ThrowPayloadTooLarge(payload.Length, info.MaxSize);
 
-        if (!metadata.IsCompressed)
+        return info.IsCompressed
+            ? EncodeCompressed(stream, info, payload, ct)
+            : EncodeUncompressed(stream, info, payload, ct);
+    }
+
+    private static async Task<PacketInfo> EncodeUncompressed(Stream stream, PacketInfo info,
+        ReadOnlyMemory<byte> payload, CancellationToken ct)
+    {
+        await WriteHeader(stream, info.PacketId, payload.Length, ct);
+
+        if (payload.Length > 0)
+            await stream.WriteAsync(payload, ct);
+        
+        return info;
+    }
+
+    private static async Task<PacketInfo> EncodeCompressed(Stream stream, PacketInfo info, ReadOnlyMemory<byte> payload,
+        CancellationToken ct)
+    {
+        if (payload.Length is 0) return await EncodeUncompressed(stream, info, payload, ct);
+
+        var compressed = ZStdCompression.Compress(payload.Span);
+
+        if (compressed.Length > info.MaxSize)
+            ThrowCompressedPayloadTooLarge(compressed.Length, info.MaxSize);
+
+        await WriteHeader(stream, info.PacketId, compressed.Length, ct);
+        await stream.WriteAsync(compressed, ct);
+
+        return info;
+    }
+
+    private static async ValueTask WriteHeader(Stream stream, int id, int len, CancellationToken ct)
+    {
+        var buffer = ArrayPool<byte>.Shared.Rent(HeaderLength);
+
+        try
         {
-            await WriteHeaderAsync(stream, metadata.PacketId, payloadBuffer.Length, cancellationToken);
+            BinaryPrimitives.WriteInt32LittleEndian(buffer.AsSpan(0, 4), len);
+            BinaryPrimitives.WriteInt32LittleEndian(buffer.AsSpan(4, 4), id);
 
-            if (payloadBuffer.Length > 0)
-                await stream.WriteAsync(payloadBuffer, cancellationToken);
-
-            return metadata;
+            await stream.WriteAsync(buffer.AsMemory(0, HeaderLength), ct);
         }
-
-        return await EncodeCompressedPayloadAsync(stream, metadata, payloadBuffer, cancellationToken);
-    }
-
-    private static async Task<PacketInfo> EncodeCompressedPayloadAsync(
-        Stream stream,
-        PacketInfo packetInfo,
-        ReadOnlyMemory<byte> payload,
-        CancellationToken cancellationToken)
-    {
-        if (payload.Length is 0)
+        finally
         {
-            await WriteHeaderAsync(stream, packetInfo.PacketId, 0, cancellationToken);
-            return packetInfo;
+            ArrayPool<byte>.Shared.Return(buffer);
         }
-
-        var compressedBuffer = ZStdCompression.Compress(payload.Span);
-
-        if (compressedBuffer.Length > packetInfo.MaxSize)
-            ThrowCompressedPayloadTooLarge(compressedBuffer.Length, packetInfo.MaxSize);
-
-        await WriteHeaderAsync(stream, packetInfo.PacketId, compressedBuffer.Length, cancellationToken);
-        await stream.WriteAsync(compressedBuffer, cancellationToken);
-
-        return packetInfo;
-    }
-
-    private static async ValueTask WriteHeaderAsync(
-        Stream stream,
-        int packetId,
-        int payloadLength,
-        CancellationToken cancellationToken)
-    {
-        using var headerOwner = MemoryPool<byte>.Shared.Rent(HeaderLength);
-        var headerBuffer = headerOwner.Memory[..HeaderLength];
-
-        BinaryPrimitives.WriteInt32LittleEndian(headerBuffer.Span[..4], payloadLength);
-        BinaryPrimitives.WriteInt32LittleEndian(headerBuffer.Span[4..], packetId);
-
-        await stream.WriteAsync(headerBuffer, cancellationToken);
     }
 
     [DoesNotReturn]
-    private static void ThrowInvalidPacketType(Type packetType)
-    {
-        throw new InvalidOperationException($"The packet type {packetType.Name} is invalid or not registered.");
-    }
+    private static void ThrowInvalidPacketType(Type t) =>
+        throw new InvalidOperationException($"Packet {t.Name} not registered.");
 
     [DoesNotReturn]
-    private static void ThrowPayloadTooLarge(int payloadSize, int maxSize)
-    {
-        throw new InvalidOperationException(
-            $"The serialized payload size {payloadSize} exceeds the maximum allowed size {maxSize}.");
-    }
+    private static void ThrowPayloadTooLarge(int size, int max) =>
+        throw new InvalidOperationException($"Payload {size} > {max}");
 
     [DoesNotReturn]
-    private static void ThrowCompressedPayloadTooLarge(int compressedSize, int maxSize)
-    {
-        throw new InvalidOperationException(
-            $"The compressed payload size {compressedSize} exceeds the maximum allowed size {maxSize}.");
-    }
+    private static void ThrowCompressedPayloadTooLarge(int size, int max) =>
+        throw new InvalidOperationException($"Compressed {size} > {max}");
 }
