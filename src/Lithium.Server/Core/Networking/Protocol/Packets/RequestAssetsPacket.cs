@@ -7,5 +7,5 @@ public sealed class RequestAssetsPacket : Packet
 {
     // Java: assets (nullable, bit 0), no OffsetIndex (sequential)
     [PacketProperty(BitIndex = 0)]
-    public Asset[]? Assets { get; set; }
+    public Asset[]? Assets { get; init; }
 }

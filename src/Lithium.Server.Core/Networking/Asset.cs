@@ -3,21 +3,11 @@ using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking;
 
-public sealed record Asset : PacketObject
+public sealed record Asset(string Hash, string Name) : PacketObject
 {
-    private const int FixedBlockSize = 64;
-
-    [PacketProperty(FixedIndex = 0, FixedSize = FixedBlockSize)]
-    public string Hash { get; set; } = string.Empty;
+    [PacketProperty(FixedIndex = 0, FixedSize = 64)]
+    public string Hash { get; set; } = Hash;
 
     [PacketProperty(OffsetIndex = 0)]
-    public string Name { get; set; } = string.Empty;
-
-    public Asset() { }
-
-    public Asset(string hash, string name)
-    {
-        Hash = hash;
-        Name = name;
-    }
+    public string Name { get; set; } = Name;
 }

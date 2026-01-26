@@ -15,6 +15,7 @@ public sealed class PacketWriter(int initialCapacity = 256)
     private const byte VarIntShiftSize = 7;
     
     private int _varBlockStart = -1;
+    private readonly Stack<int> _varBlockStack = new();
     private int _offsetsPosition = -1;
     private int _offsetCount = 0;
     private readonly ArrayBufferWriter<byte> _writer = new(initialCapacity);
@@ -161,7 +162,13 @@ public sealed class PacketWriter(int initialCapacity = 256)
 
     public void BeginVarBlock()
     {
+        _varBlockStack.Push(_varBlockStart);
         _varBlockStart = Position;
+    }
+
+    public void EndVarBlock()
+    {
+        _varBlockStart = _varBlockStack.Pop();
     }
 
     public int GetCurrentOffset()

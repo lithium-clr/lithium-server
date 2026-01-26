@@ -1,4 +1,3 @@
-using Lithium.Server.Core.Networking.Protocol;
 using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
@@ -8,9 +7,9 @@ public sealed class WorldSettingsPacket : Packet
 {
     // Java: worldHeight (fixed, offset 1)
     [PacketProperty(FixedIndex = 0)]
-    public int WorldHeight { get; set; } = 320;
+    public int WorldHeight { get; init; } = 320;
 
     // Java: requiredAssets (nullable, bit 0), no OffsetIndex (sequential)
     [PacketProperty(BitIndex = 0)]
-    public Asset[]? RequiredAssets { get; set; }
+    public Asset[]? RequiredAssets { get; init; }
 }

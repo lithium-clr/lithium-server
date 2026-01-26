@@ -73,6 +73,8 @@ public abstract class Packet
                     WriteVariableField(writer, value, propInfo.PropertyType, propInfo.IsNullable, propInfo.IsPacketObject);
                 }
             }
+            
+            writer.EndVarBlock();
         }
     }
 

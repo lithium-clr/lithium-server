@@ -7,9 +7,9 @@ public sealed class AuthGrantPacket : Packet
 {
     // Java: authorizationGrant (nullable, bit 0), OffsetIndex 0
     [PacketProperty(BitIndex = 0, OffsetIndex = 0)]
-    public string? AuthorizationGrant { get; set; }
+    public string? AuthorizationGrant { get; init; }
 
     // Java: serverIdentityToken (nullable, bit 1), OffsetIndex 1
     [PacketProperty(BitIndex = 1, OffsetIndex = 1)]
-    public string? ServerIdentityToken { get; set; }
+    public string? ServerIdentityToken { get; init; }
 }

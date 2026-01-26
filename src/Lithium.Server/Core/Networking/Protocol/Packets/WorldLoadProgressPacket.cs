@@ -7,13 +7,13 @@ public sealed class WorldLoadProgressPacket : Packet
 {
     // Java: percentComplete (fixed, offset 1)
     [PacketProperty(FixedIndex = 0)]
-    public int PercentComplete { get; set; }
+    public int PercentComplete { get; init; }
 
     // Java: percentCompleteSubitem (fixed, offset 5)
     [PacketProperty(FixedIndex = 1)]
-    public int PercentCompleteSubitem { get; set; }
+    public int PercentCompleteSubitem { get; init; }
 
     // Java: status (nullable, bit 0), no OffsetIndex (sequential)
     [PacketProperty(BitIndex = 0)]
-    public string? Status { get; set; }
+    public string? Status { get; init; }
 }

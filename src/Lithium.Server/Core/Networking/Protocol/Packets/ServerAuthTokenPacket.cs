@@ -6,18 +6,8 @@ namespace Lithium.Server.Core.Networking.Protocol.Packets;
 public sealed class ServerAuthTokenPacket : Packet
 {
     [PacketProperty(BitIndex = 0, OffsetIndex = 0)]
-    public string? ServerAccessToken { get; set; }
+    public string? ServerAccessToken { get; init; }
 
     [PacketProperty(BitIndex = 1, OffsetIndex = 1)]
-    public byte[]? PasswordChallenge { get; set; }
-
-    public ServerAuthTokenPacket()
-    {
-    }
-    
-    public ServerAuthTokenPacket(string? serverAccessToken, byte[]? passwordChallenge)
-    {
-        ServerAccessToken = serverAccessToken;
-        PasswordChallenge = passwordChallenge;
-    }
+    public byte[]? PasswordChallenge { get; init; }
 }

@@ -7,5 +7,5 @@ public sealed class AssetPartPacket : Packet
 {
     // Java: part (nullable, bit 0), no OffsetIndex (sequential)
     [PacketProperty(BitIndex = 0)]
-    public byte[]? Part { get; set; }
+    public byte[]? Part { get; init; }
 }

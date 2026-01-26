@@ -7,5 +7,5 @@ public sealed class PasswordResponsePacket : Packet
 {
     // Java: hash (nullable, bit 0), no OffsetIndex (sequential)
     [PacketProperty(BitIndex = 0)]
-    public byte[]? Hash { get; set; }
+    public byte[]? Hash { get; init; }
 }

@@ -7,9 +7,9 @@ public sealed class AssetInitializePacket : Packet
 {
     // Java: size (fixed, offset 0)
     [PacketProperty(FixedIndex = 0)]
-    public int Size { get; set; }
+    public int Size { get; init; }
 
     // Java: asset (variable, offset 4), no OffsetIndex (sequential)
     [PacketProperty]
-    public Asset Asset { get; set; } = null!;
+    public Asset Asset { get; init; } = null!;
 }
