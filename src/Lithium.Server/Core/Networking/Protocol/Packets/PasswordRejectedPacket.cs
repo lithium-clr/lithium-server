@@ -2,12 +2,14 @@ using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 17, VariableBlockStart = 5, MaxSize = 1024)]
+[Packet(Id = 17, VariableBlockStart = 5, MaxSize = 74)]
 public sealed class PasswordRejectedPacket : Packet
 {
+    // Java: attemptsRemaining (fixed, offset 1)
     [PacketProperty(FixedIndex = 0)]
     public int AttemptsRemaining { get; set; }
 
-    [PacketProperty(BitIndex = 0, OffsetIndex = 0)]
-    public byte[]? PasswordChallenge { get; set; }
+    // Java: newChallenge (nullable, bit 0), no OffsetIndex (sequential)
+    [PacketProperty(BitIndex = 0)]
+    public byte[]? NewChallenge { get; set; }
 }

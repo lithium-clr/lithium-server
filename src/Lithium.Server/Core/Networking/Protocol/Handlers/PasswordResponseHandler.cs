@@ -66,7 +66,7 @@ public sealed class PasswordResponseHandler(
 
                             var passwordRejectedPacket = new PasswordRejectedPacket
                             {
-                                PasswordChallenge = passwordChallenge,
+                                NewChallenge = passwordChallenge,
                                 AttemptsRemaining = _attemptsRemaining
                             };
 
