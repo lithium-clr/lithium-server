@@ -26,10 +26,10 @@ public sealed class PacketRegistry : IPacketRegistry
 
     public void Register(Type type)
     {
-        var packetInfo = GenericPacketHelpers.CreatePacketInfo(type);
-        if (packetInfo is not null)
+        var metadata = GenericPacketHelpers.GetMetadata(type);
+        if (metadata.PacketInfo is not null)
         {
-            Register(packetInfo);
+            Register(metadata.PacketInfo);
         }
     }
 

@@ -18,7 +18,7 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
     public void Register<T>(IPacketHandler<T> handler) where T : Packet, new()
     {
         var type = typeof(T);
-        var packetInfo = GenericPacketHelpers.CreatePacketInfo(type);
+        var packetInfo = GenericPacketHelpers.GetMetadata(type).PacketInfo;
 
         if (packetInfo is null)
         {

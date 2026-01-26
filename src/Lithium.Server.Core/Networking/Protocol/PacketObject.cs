@@ -8,69 +8,52 @@ public abstract record PacketObject
 {
     public virtual void Serialize(PacketWriter writer)
     {
-        var type = GetType();
-        var propertiesInfo = GetOrAddCachedProperties(type);
-
-        var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1).OrderBy(p => p.Attribute.FixedIndex).ToList();
-        var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex).ToList();
-        var variableProperties = propertiesInfo.Where(p => IsVariableProperty(p)).OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex).ThenBy(p => p.Attribute.BitIndex).ToList();
-
-        // PacketObjects usually use offsets if they have variable fields,
-        // but we don't have VariableBlockStart here.
-        // Let's assume sequential for now if no OffsetIndex is used.
-        bool useOffsets = variableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
+        var metadata = GetMetadata(GetType());
+        bool useOffsets = metadata.VariableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
 
         // 1. Write BitSet for nullable fields
-        if (nullableProperties.Any())
+        if (metadata.NullableProperties.Count > 0)
         {
-            var maxBitIndex = nullableProperties.Max(p => p.Attribute.BitIndex);
-            var bitSetByteCount = (maxBitIndex / 8) + 1;
-            var bits = new BitSet(bitSetByteCount);
-            foreach (var propInfo in nullableProperties)
+            var bits = new BitSet((metadata.MaxBitIndex / 8) + 1);
+            foreach (var prop in metadata.NullableProperties)
             {
-                if (propInfo.Property.GetValue(this) is not null)
-                {
-                    bits.SetBit(propInfo.Attribute.BitIndex);
-                }
+                if (prop.Property.GetValue(this) is not null)
+                    bits.SetBit(prop.Attribute.BitIndex);
             }
             writer.WriteBits(bits);
         }
 
         // 2. Write Fixed Fields
-        foreach (var propInfo in fixedProperties)
+        foreach (var prop in metadata.FixedProperties)
         {
-            var value = propInfo.Property.GetValue(this);
-            WriteFixedField(writer, value, propInfo.PropertyType, propInfo.Attribute.FixedSize, propInfo.Property.Name);
+            WriteFixedField(writer, prop.Property.GetValue(this), prop);
         }
 
         // 3. Write Offset Placeholders
-        if (variableProperties.Any() && useOffsets)
+        if (metadata.VariableProperties.Count > 0 && useOffsets)
         {
-            writer.WriteOffsetPlaceholders(variableProperties.Count);
+            writer.WriteOffsetPlaceholders(metadata.VariableProperties.Count);
         }
 
         // 4. Write Variable Block
-        if (variableProperties.Any())
+        if (metadata.VariableProperties.Count > 0)
         {
-            writer.BeginVarBlock(); // Always call BeginVarBlock if there are variable fields
+            writer.BeginVarBlock();
             
             if (useOffsets)
             {
-                Span<int> offsets = stackalloc int[variableProperties.Count];
-                for (int i = 0; i < variableProperties.Count; i++)
+                Span<int> offsets = stackalloc int[metadata.VariableProperties.Count];
+                for (int i = 0; i < metadata.VariableProperties.Count; i++)
                 {
-                    var propInfo = variableProperties[i];
-                    var value = propInfo.Property.GetValue(this);
-                    offsets[i] = WriteVariableField(writer, value, propInfo.PropertyType, propInfo.IsNullable, propInfo.IsPacketObject);
+                    offsets[i] = WriteVariableField(writer, metadata.VariableProperties[i].Property.GetValue(this), metadata.VariableProperties[i]);
                 }
                 writer.BackfillOffsets(offsets);
             }
             else
             {
-                foreach (var propInfo in variableProperties)
+                foreach (var prop in metadata.VariableProperties)
                 {
-                    var value = propInfo.Property.GetValue(this);
-                    WriteVariableField(writer, value, propInfo.PropertyType, propInfo.IsNullable, propInfo.IsPacketObject);
+                    WriteVariableField(writer, prop.Property.GetValue(this), prop);
                 }
             }
             
@@ -80,55 +63,35 @@ public abstract record PacketObject
 
     public virtual void Deserialize(PacketReader reader, int offset)
     {
-        var type = GetType();
-        var propertiesInfo = GetOrAddCachedProperties(type);
+        var metadata = GetMetadata(GetType());
+        bool useOffsets = metadata.VariableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
 
-        var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1).OrderBy(p => p.Attribute.FixedIndex).ToList();
-        var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex).ToList();
-        var variableProperties = propertiesInfo.Where(p => IsVariableProperty(p)).OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex).ThenBy(p => p.Attribute.BitIndex).ToList();
-
-        bool useOffsets = variableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
-
-        // Seek to the object's start in the variable block
         if (offset is not -1)
-        {
             reader.SeekFixed(reader.VariableBlockStart + offset);
-        }
 
         // 1. Read BitSet for nullable fields
-        BitSet? bits = null;
-        if (nullableProperties.Any())
-        {
-            var maxBitIndex = nullableProperties.Max(p => p.Attribute.BitIndex);
-            var bitSetByteCount = (maxBitIndex / 8) + 1;
-            bits = reader.ReadBits(bitSetByteCount);
-        }
+        BitSet bits = (metadata.NullableProperties.Count > 0) 
+            ? reader.ReadBits((metadata.MaxBitIndex / 8) + 1) 
+            : new BitSet(0);
 
         // 2. Read Fixed Fields
-        foreach (var propInfo in fixedProperties)
+        foreach (var prop in metadata.FixedProperties)
         {
-            var value = ReadFixedField(reader, propInfo.PropertyType, propInfo.Attribute.FixedSize, propInfo.Property.Name);
-            propInfo.Property.SetValue(this, value);
+            prop.Property.SetValue(this, ReadFixedField(reader, prop));
         }
 
         // 3. Read Offset Placeholders
-        int[]? offsets = null;
-        if (variableProperties.Any() && useOffsets)
-        {
-            offsets = reader.ReadOffsets(variableProperties.Count);
-        }
+        int[]? offsets = metadata.VariableProperties.Count > 0 && useOffsets 
+            ? reader.ReadOffsets(metadata.VariableProperties.Count) 
+            : null;
 
         // 4. Read Variable Block
-        if (variableProperties.Any())
+        if (metadata.VariableProperties.Count > 0)
         {
-            var effectiveBits = bits ?? new BitSet(0);
-            for (int i = 0; i < variableProperties.Count; i++)
+            for (int i = 0; i < metadata.VariableProperties.Count; i++)
             {
-                var propInfo = variableProperties[i];
                 var propOffset = (offsets != null && i < offsets.Length) ? offsets[i] : -1;
-                
-                var value = ReadVariableField(reader, effectiveBits, propInfo, propOffset, propInfo.Property.Name);
-                propInfo.Property.SetValue(this, value);
+                metadata.VariableProperties[i].Property.SetValue(this, ReadVariableField(reader, bits, metadata.VariableProperties[i], propOffset));
             }
         }
     }
