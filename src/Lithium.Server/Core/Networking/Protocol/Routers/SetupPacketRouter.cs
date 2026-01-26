@@ -17,20 +17,20 @@ public sealed partial class SetupPacketRouter(
     public override async Task OnInitialize(INetworkConnection channel)
     {
         logger.LogInformation("Initializing SetupPacketRouter...");
-        
+
         var client = clientManager.GetClient(channel);
         if (client is null) return;
-        
+
         // Asset[] requiredAssets = [];
         // var requiredAssets = commonAssetModule.Assets;
-        
+
         var requiredAssets = assetManager.Assets;
         logger.LogInformation("Initializing assets: " + requiredAssets.Count);
-        
+
         // TODO - Block here
         assets.Initialize(requiredAssets);
         logger.LogInformation("Assets initialized.");
-        
+
         var worldSettings = new WorldSettingsPacket
         {
             WorldHeight = 320,
@@ -41,23 +41,24 @@ public sealed partial class SetupPacketRouter(
         await client.SendPacketAsync(worldSettings);
 
         var config = serverManager.Configuration;
-        
+
         logger.LogInformation("Sending server info...");
-        
+
         var serverInfo = new ServerInfoPacket
         {
             ServerName = config.ServerName,
             Motd = config.Motd,
             MaxPlayers = config.MaxPlayers
         };
-        
+
         await client.SendPacketAsync(serverInfo);
-        
+
         logger.LogInformation("SetupPacketRouter initialized.");
     }
 
-    protected override bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet)
+    protected override bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet) => packet switch
     {
-        return packetId is 1 or 23 or 32 or 33;
-    }
+        RequestAssetsPacket or DisconnectPacket or ViewRadiusPacket or PlayerOptionsPacket => true,
+        _ => false
+    };
 }
