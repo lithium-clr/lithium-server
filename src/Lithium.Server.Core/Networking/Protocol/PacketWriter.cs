@@ -123,8 +123,15 @@ public sealed class PacketWriter(int initialCapacity = 256)
 
     public void WriteGuid(Guid value)
     {
+        Span<byte> rfcBytes = stackalloc byte[16];
+        value.TryWriteBytes(rfcBytes, bigEndian: true, out _);
+        
+        var msb = BinaryPrimitives.ReadInt64BigEndian(rfcBytes[..8]);
+        var lsb = BinaryPrimitives.ReadInt64BigEndian(rfcBytes[8..]);
+        
         var span = _writer.GetSpan(GuidLength);
-        value.TryWriteBytes(span);
+        BinaryPrimitives.WriteInt64LittleEndian(span[..8], msb);
+        BinaryPrimitives.WriteInt64LittleEndian(span[8..], lsb);
         _writer.Advance(GuidLength);
     }
 
@@ -309,6 +316,13 @@ public sealed class PacketWriter(int initialCapacity = 256)
     {
         var offset = GetCurrentOffset();
         WriteEnum(value);
+        return offset;
+    }
+
+    public int WriteVarObject(PacketObject obj)
+    {
+        var offset = GetCurrentOffset();
+        obj.Serialize(this);
         return offset;
     }
 

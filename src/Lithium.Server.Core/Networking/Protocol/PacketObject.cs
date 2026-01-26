@@ -13,7 +13,12 @@ public abstract record PacketObject
 
         var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1).OrderBy(p => p.Attribute.FixedIndex).ToList();
         var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex).ToList();
-        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1).OrderBy(p => p.Attribute.OffsetIndex).ToList();
+        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1 || (p.Attribute.BitIndex is not -1 && p.Attribute.FixedIndex is -1)).OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex).ThenBy(p => p.Attribute.BitIndex).ToList();
+
+        // PacketObjects usually use offsets if they have variable fields,
+        // but we don't have VariableBlockStart here.
+        // Let's assume sequential for now if no OffsetIndex is used.
+        bool useOffsets = variableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
 
         // 1. Write BitSet for nullable fields
         if (nullableProperties.Any())
@@ -39,7 +44,7 @@ public abstract record PacketObject
         }
 
         // 3. Write Offset Placeholders
-        if (variableProperties.Any())
+        if (variableProperties.Any() && useOffsets)
         {
             writer.WriteOffsetPlaceholders(variableProperties.Count);
         }
@@ -47,15 +52,27 @@ public abstract record PacketObject
         // 4. Write Variable Block
         if (variableProperties.Any())
         {
-            writer.BeginVarBlock();
-            Span<int> offsets = stackalloc int[variableProperties.Count];
-            for (int i = 0; i < variableProperties.Count; i++)
+            writer.BeginVarBlock(); // Always call BeginVarBlock if there are variable fields
+            
+            if (useOffsets)
             {
-                var propInfo = variableProperties[i];
-                var value = propInfo.Property.GetValue(this);
-                offsets[i] = WriteVariableField(writer, value, propInfo.PropertyType, propInfo.IsNullable, propInfo.IsPacketObject);
+                Span<int> offsets = stackalloc int[variableProperties.Count];
+                for (int i = 0; i < variableProperties.Count; i++)
+                {
+                    var propInfo = variableProperties[i];
+                    var value = propInfo.Property.GetValue(this);
+                    offsets[i] = WriteVariableField(writer, value, propInfo.PropertyType, propInfo.IsNullable, propInfo.IsPacketObject);
+                }
+                writer.BackfillOffsets(offsets);
             }
-            writer.BackfillOffsets(offsets);
+            else
+            {
+                foreach (var propInfo in variableProperties)
+                {
+                    var value = propInfo.Property.GetValue(this);
+                    WriteVariableField(writer, value, propInfo.PropertyType, propInfo.IsNullable, propInfo.IsPacketObject);
+                }
+            }
         }
     }
 
@@ -66,10 +83,15 @@ public abstract record PacketObject
 
         var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1).OrderBy(p => p.Attribute.FixedIndex).ToList();
         var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex).ToList();
-        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1).OrderBy(p => p.Attribute.OffsetIndex).ToList();
+        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1 || (p.Attribute.BitIndex is not -1 && p.Attribute.FixedIndex is -1)).OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex).ThenBy(p => p.Attribute.BitIndex).ToList();
+
+        bool useOffsets = variableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
 
         // Seek to the object's start in the variable block
-        reader.SeekFixed(reader.VariableBlockStart + offset);
+        if (offset is not -1)
+        {
+            reader.SeekFixed(reader.VariableBlockStart + offset);
+        }
 
         // 1. Read BitSet for nullable fields
         BitSet? bits = null;
@@ -89,22 +111,19 @@ public abstract record PacketObject
 
         // 3. Read Offset Placeholders
         int[]? offsets = null;
-        if (variableProperties.Any())
+        if (variableProperties.Any() && useOffsets)
         {
             offsets = reader.ReadOffsets(variableProperties.Count);
         }
 
         // 4. Read Variable Block
-        if (variableProperties.Any() && offsets is not null)
+        if (variableProperties.Any())
         {
-            // Note: If bits is null (no nullable properties), ReadVariableField handles it if propInfo.IsNullable is false.
-            // But for safety, we pass an empty BitSet if bits is null but needed.
             var effectiveBits = bits ?? new BitSet(0);
-            
             for (int i = 0; i < variableProperties.Count; i++)
             {
                 var propInfo = variableProperties[i];
-                var propOffset = offsets[i];
+                var propOffset = (offsets != null && i < offsets.Length) ? offsets[i] : -1;
                 
                 var value = ReadVariableField(reader, effectiveBits, propInfo, propOffset, propInfo.Property.Name);
                 propInfo.Property.SetValue(this, value);

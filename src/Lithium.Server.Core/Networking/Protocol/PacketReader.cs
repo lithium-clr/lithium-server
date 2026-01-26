@@ -315,6 +315,13 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
         return obj;
     }
 
+    public object ReadObject(Type type, int offset)
+    {
+        var obj = (PacketObject)Activator.CreateInstance(type)!;
+        obj.Deserialize(this, offset);
+        return obj;
+    }
+
     public TEnum ReadVarEnumAt<TEnum>(int offset)
         where TEnum : struct, Enum
     {

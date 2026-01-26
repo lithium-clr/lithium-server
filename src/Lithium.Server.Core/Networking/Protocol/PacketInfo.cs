@@ -8,5 +8,6 @@ public sealed record PacketInfo(
     int NullableBitFieldSize,
     int VariableFieldCount,
     int VariableBlockStart,
-    int MaxSize
+    int MaxSize,
+    bool UseOffsets
 );

@@ -59,6 +59,78 @@ internal static class GenericPacketHelpers
         });
     }
 
+    internal static int GetTypeSize(Type type, int fixedSize)
+    {
+        if (type == typeof(int)) return 4;
+        if (type == typeof(uint)) return 4;
+        if (type == typeof(long)) return 8;
+        if (type == typeof(ulong)) return 8;
+        if (type == typeof(short)) return 2;
+        if (type == typeof(ushort)) return 2;
+        if (type == typeof(byte)) return 1;
+        if (type == typeof(sbyte)) return 1;
+        if (type == typeof(bool)) return 1;
+        if (type == typeof(float)) return 4;
+        if (type == typeof(double)) return 8;
+        if (type == typeof(Guid)) return 16;
+        if (type == typeof(string)) return fixedSize is not -1 ? fixedSize : 0;
+        if (type.IsEnum) return 1; // Assuming byte enum
+        return 0;
+    }
+
+    internal static PacketInfo? CreatePacketInfo(Type type)
+    {
+        var attribute = type.GetCustomAttribute<PacketAttribute>();
+        if (attribute is null) return null;
+
+        var properties = GetOrAddCachedProperties(type);
+        var maxBitIndex = -1;
+        var maxOffsetIndex = -1;
+        var fixedSizeSum = 0;
+        var variableFieldCount = 0;
+
+        foreach (var prop in properties)
+        {
+            var propAttr = prop.Attribute;
+
+            if (propAttr.BitIndex is not -1 && propAttr.BitIndex > maxBitIndex) maxBitIndex = propAttr.BitIndex;
+            if (propAttr.OffsetIndex is not -1 && propAttr.OffsetIndex > maxOffsetIndex) maxOffsetIndex = propAttr.OffsetIndex;
+            
+            if (propAttr.FixedIndex is not -1)
+            {
+                fixedSizeSum += GetTypeSize(prop.PropertyType, propAttr.FixedSize);
+            }
+            
+            if (propAttr.OffsetIndex is not -1 || (propAttr.BitIndex is not -1 && propAttr.FixedIndex is -1))
+            {
+                // It's a variable field if it has an offset index OR if it has a bit index but no fixed index
+                variableFieldCount++;
+            }
+        }
+
+        int bitSetSize = (maxBitIndex is -1 ? 0 : (maxBitIndex / 8) + 1);
+        // Hytale sometimes has a bitset even for 1 index.
+        if (bitSetSize is 0 && maxBitIndex is not -1) bitSetSize = 1;
+
+        int headerSize = bitSetSize + fixedSizeSum;
+        
+        // If VariableBlockStart is explicitly set and matches header + offsets size, use offsets.
+        // Otherwise, if it's set to header size, don't use offsets.
+        bool useOffsets = attribute.VariableBlockStart >= (headerSize + variableFieldCount * 4);
+
+        return new PacketInfo(
+            attribute.Id,
+            type.Name,
+            type,
+            attribute.IsCompressed,
+            bitSetSize,
+            variableFieldCount,
+            attribute.VariableBlockStart,
+            attribute.MaxSize,
+            useOffsets
+        );
+    }
+
     // Helper for writing fixed fields
     internal static void WriteFixedField(PacketWriter writer, object? value, Type propertyType, int fixedSize, string propertyName)
     {
@@ -141,17 +213,29 @@ internal static class GenericPacketHelpers
 
         if (offset is -1)
         {
-            throw new InvalidOperationException($"Variable field '{propertyName}' of type {propInfo.PropertyType.Name} has a -1 offset, but its null-bit was not checked or is missing.");
+            // Sequential reading from current position
+            if (propInfo.PropertyType == typeof(string)) return reader.ReadVarString();
+            else if (propInfo.PropertyType == typeof(byte[])) return reader.ReadVarBytes();
+            else if (propInfo.IsPacketObject) return reader.ReadObject(propInfo.PropertyType, -1);
+            else if (propInfo.PropertyType == typeof(int)) return reader.ReadVarInt32();
+            else if (propInfo.PropertyType == typeof(uint)) return reader.ReadVarUInt32();
+            else if (propInfo.PropertyType == typeof(long)) return reader.ReadVarInt64();
+            else if (propInfo.PropertyType == typeof(ulong)) return reader.ReadVarUInt64();
+            else if (propInfo.PropertyType == typeof(short)) return reader.ReadVarInt16();
+            else if (propInfo.PropertyType == typeof(ushort)) return reader.ReadVarUInt16();
+            else if (propInfo.PropertyType == typeof(byte)) return reader.ReadVarUInt8();
+            else if (propInfo.PropertyType == typeof(sbyte)) return reader.ReadVarInt8();
+            else if (propInfo.PropertyType == typeof(bool)) return reader.ReadVarBoolean();
+            else if (propInfo.PropertyType == typeof(float)) return reader.ReadVarFloat32();
+            else if (propInfo.PropertyType == typeof(double)) return reader.ReadVarFloat64();
+            else if (propInfo.PropertyType == typeof(Guid)) return reader.ReadVarGuid();
+            else if (propInfo.PropertyType.IsEnum) return reader.ReadVarEnum(propInfo.PropertyType, -1);
+            else ThrowUnsupportedVariableFieldType(propInfo.PropertyType, propertyName);
         }
 
         if (propInfo.PropertyType == typeof(string)) return reader.ReadVarStringAt(offset);
         else if (propInfo.PropertyType == typeof(byte[])) return reader.ReadVarBytesAt(offset);
-        else if (propInfo.IsPacketObject)
-        {
-            var method = typeof(PacketReader).GetMethod(nameof(PacketReader.ReadObjectAt))
-                ?.MakeGenericMethod(propInfo.PropertyType);
-            return method?.Invoke(reader, new object[] { offset });
-        }
+        else if (propInfo.IsPacketObject) return reader.ReadObject(propInfo.PropertyType, offset);
         else if (propInfo.PropertyType == typeof(int)) return reader.ReadVarInt32At(offset);
         else if (propInfo.PropertyType == typeof(uint)) return reader.ReadVarUInt32At(offset);
         else if (propInfo.PropertyType == typeof(long)) return reader.ReadVarInt64At(offset);
@@ -167,36 +251,6 @@ internal static class GenericPacketHelpers
         else if (propInfo.PropertyType.IsEnum) return reader.ReadVarEnum(propInfo.PropertyType, offset);
         else ThrowUnsupportedVariableFieldType(propInfo.PropertyType, propertyName);
         return null!; // Should not be reached
-    }
-
-    internal static PacketInfo? CreatePacketInfo(Type type)
-    {
-        var attribute = type.GetCustomAttribute<PacketAttribute>();
-        if (attribute is null) return null;
-
-        var properties = type.GetProperties();
-        var maxBitIndex = -1;
-        var maxOffsetIndex = -1;
-
-        foreach (var prop in properties)
-        {
-            var propAttr = prop.GetCustomAttribute<PacketPropertyAttribute>();
-            if (propAttr is null) continue;
-
-            if (propAttr.BitIndex is not -1 && propAttr.BitIndex > maxBitIndex) maxBitIndex = propAttr.BitIndex;
-            if (propAttr.OffsetIndex is not -1 && propAttr.OffsetIndex > maxOffsetIndex) maxOffsetIndex = propAttr.OffsetIndex;
-        }
-
-        return new PacketInfo(
-            attribute.Id,
-            type.Name,
-            type,
-            attribute.IsCompressed,
-            maxBitIndex is -1 ? 0 : (maxBitIndex / 8) + 1,
-            maxOffsetIndex is -1 ? 0 : maxOffsetIndex + 1,
-            attribute.VariableBlockStart,
-            attribute.MaxSize
-        );
     }
 
     [DoesNotReturn]
