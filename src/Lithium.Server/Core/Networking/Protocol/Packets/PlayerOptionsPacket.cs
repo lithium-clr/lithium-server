@@ -2,7 +2,7 @@ using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 33, IsCompressed = false, VariableBlockStart = 1, MaxSize = 327680184)]
+[Packet(Id = 33, VariableBlockStart = 1, MaxSize = 327680184)]
 public sealed class PlayerOptionsPacket : Packet
 {
     // Java: skin (nullable, bit 0), no OffsetIndex (sequential)

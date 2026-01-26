@@ -2,7 +2,7 @@ using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 0, IsCompressed = false, VariableBlockStart = 66, MaxSize = 38013)]
+[Packet(Id = 0, VariableBlockStart = 66, MaxSize = 38013)]
 public sealed class ConnectPacket : Packet
 {
     // Fixed fields (total 45 bytes after the 1 byte nullBits, so 46 physical bytes)
