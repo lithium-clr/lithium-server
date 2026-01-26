@@ -1,4 +1,4 @@
-using Lithium.Server.Core.Auth;
+using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Systems.Commands;
 
 namespace Lithium.Server;

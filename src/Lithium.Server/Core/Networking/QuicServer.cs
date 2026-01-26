@@ -1,14 +1,12 @@
-﻿using System.Collections.Concurrent;
-using System.Net;
+﻿using System.Net;
 using System.Net.Quic;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using Lithium.Server.Core.Auth;
+using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core.Protocol.Transport;
 using Lithium.Server.Dashboard;
 using Microsoft.AspNetCore.SignalR;
-using IPacket = Lithium.Server.Core.Protocol.IPacket;
 
 namespace Lithium.Server.Core.Networking;
 

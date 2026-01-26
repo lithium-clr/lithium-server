@@ -1,7 +1,7 @@
 ﻿using Lithium.Server.Core;
-using Lithium.Server.Core.Auth;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
+using Lithium.Server.Core.Networking.Authentication;
 
 namespace Lithium.Server;
 

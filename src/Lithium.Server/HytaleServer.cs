@@ -1,8 +1,6 @@
-using Lithium.Server.Core.Auth;
-using Lithium.Server.Core.Auth.OAuth;
-using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core;
-using Lithium.Server.Core.Networking.Protocol;
+using Lithium.Server.Core.Networking.Authentication;
+using Lithium.Server.Core.Networking.Authentication.OAuth;
 
 namespace Lithium.Server;
 

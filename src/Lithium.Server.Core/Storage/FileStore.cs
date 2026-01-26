@@ -1,6 +1,5 @@
 using System.Buffers;
 using Lithium.Codecs;
-using Lithium.Server.Core.Auth;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
