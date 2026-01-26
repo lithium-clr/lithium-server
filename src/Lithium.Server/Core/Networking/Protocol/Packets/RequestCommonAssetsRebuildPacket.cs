@@ -1,9 +1,6 @@
-using Lithium.Server.Core.Networking.Protocol;
 using Lithium.Server.Core.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(28)]
-public sealed class RequestCommonAssetsRebuildPacket : Packet
-{
-}
+[Packet(28, MaxSize = 0)]
+public sealed class RequestCommonAssetsRebuildPacket : Packet;
