@@ -100,22 +100,17 @@ internal static class GenericPacketHelpers
             {
                 fixedSizeSum += GetTypeSize(prop.PropertyType, propAttr.FixedSize);
             }
-            
-            if (propAttr.OffsetIndex is not -1 || (propAttr.BitIndex is not -1 && propAttr.FixedIndex is -1))
+            else if (IsVariableProperty(prop))
             {
-                // It's a variable field if it has an offset index OR if it has a bit index but no fixed index
                 variableFieldCount++;
             }
         }
 
         int bitSetSize = (maxBitIndex is -1 ? 0 : (maxBitIndex / 8) + 1);
-        // Hytale sometimes has a bitset even for 1 index.
         if (bitSetSize is 0 && maxBitIndex is not -1) bitSetSize = 1;
 
         int headerSize = bitSetSize + fixedSizeSum;
         
-        // If VariableBlockStart is explicitly set and matches header + offsets size, use offsets.
-        // Otherwise, if it's set to header size, don't use offsets.
         bool useOffsets = attribute.VariableBlockStart >= (headerSize + variableFieldCount * 4);
 
         return new PacketInfo(
@@ -129,6 +124,16 @@ internal static class GenericPacketHelpers
             attribute.MaxSize,
             useOffsets
         );
+    }
+
+    internal static bool IsVariableProperty(PropertySerializationInfo p)
+    {
+        return p.Attribute.FixedIndex is -1 && 
+               (p.Attribute.OffsetIndex is not -1 || 
+                p.Attribute.BitIndex is not -1 || 
+                p.PropertyType == typeof(string) || 
+                p.PropertyType == typeof(byte[]) || 
+                p.IsPacketObject);
     }
 
     // Helper for writing fixed fields
@@ -189,15 +194,15 @@ internal static class GenericPacketHelpers
         else if (propertyType == typeof(int)) return writer.WriteVarInt32((int)value);
         else if (propertyType == typeof(uint)) return writer.WriteVarUInt32((uint)value);
         else if (propertyType == typeof(long)) return writer.WriteVarInt64((long)value);
-        else if (propertyType == typeof(ulong)) return writer.WriteVarUInt64((ulong)value);
-        else if (propertyType == typeof(short)) return writer.WriteVarInt16((short)value);
-        else if (propertyType == typeof(ushort)) return writer.WriteVarUInt16((ushort)value);
-        else if (propertyType == typeof(byte)) return writer.WriteVarUInt8((byte)value);
-        else if (propertyType == typeof(sbyte)) return writer.WriteVarInt8((sbyte)value);
-        else if (propertyType == typeof(bool)) return writer.WriteVarBoolean((bool)value);
-        else if (propertyType == typeof(float)) return writer.WriteVarFloat32((float)value);
-        else if (propertyType == typeof(double)) return writer.WriteVarFloat64((double)value);
-        else if (propertyType == typeof(Guid)) return writer.WriteVarGuid((Guid)value);
+        else if (propertyType == typeof(ulong)) writer.WriteVarUInt64((ulong)value);
+        else if (propertyType == typeof(short)) writer.WriteVarInt16((short)value);
+        else if (propertyType == typeof(ushort)) writer.WriteVarUInt16((ushort)value);
+        else if (propertyType == typeof(byte)) writer.WriteVarUInt8((byte)value);
+        else if (propertyType == typeof(sbyte)) writer.WriteVarInt8((sbyte)value);
+        else if (propertyType == typeof(bool)) writer.WriteVarBoolean((bool)value);
+        else if (propertyType == typeof(float)) writer.WriteVarFloat32((float)value);
+        else if (propertyType == typeof(double)) writer.WriteVarFloat64((double)value);
+        else if (propertyType == typeof(Guid)) writer.WriteVarGuid((Guid)value);
         else if (propertyType.IsEnum) return writer.WriteVarEnum((Enum)value);
         else ThrowUnsupportedVariableFieldType(propertyType, "Unknown");
         return -1; // Should not be reached

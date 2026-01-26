@@ -13,7 +13,7 @@ public abstract record PacketObject
 
         var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1).OrderBy(p => p.Attribute.FixedIndex).ToList();
         var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex).ToList();
-        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1 || (p.Attribute.BitIndex is not -1 && p.Attribute.FixedIndex is -1)).OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex).ThenBy(p => p.Attribute.BitIndex).ToList();
+        var variableProperties = propertiesInfo.Where(p => IsVariableProperty(p)).OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex).ThenBy(p => p.Attribute.BitIndex).ToList();
 
         // PacketObjects usually use offsets if they have variable fields,
         // but we don't have VariableBlockStart here.
@@ -83,7 +83,7 @@ public abstract record PacketObject
 
         var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1).OrderBy(p => p.Attribute.FixedIndex).ToList();
         var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex).ToList();
-        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1 || (p.Attribute.BitIndex is not -1 && p.Attribute.FixedIndex is -1)).OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex).ThenBy(p => p.Attribute.BitIndex).ToList();
+        var variableProperties = propertiesInfo.Where(p => IsVariableProperty(p)).OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex).ThenBy(p => p.Attribute.BitIndex).ToList();
 
         bool useOffsets = variableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
 
