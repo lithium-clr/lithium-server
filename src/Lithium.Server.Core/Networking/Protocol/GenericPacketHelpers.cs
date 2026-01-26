@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Lithium.Server.Core.Protocol.Attributes;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 [assembly: InternalsVisibleTo("Lithium.Server")]
 [assembly: InternalsVisibleTo("Lithium.Server.Core")]
@@ -50,19 +51,19 @@ internal static class GenericPacketHelpers
             }
 
             return properties
-                .OrderBy(p => p.Attribute.FixedIndex)
-                .ThenBy(p => p.Attribute.OffsetIndex)
-                .ThenBy(p => p.Attribute.BitIndex)
+                .OrderBy(p => p.Attribute.FixedIndex is -1 ? int.MaxValue : p.Attribute.FixedIndex)
+                .ThenBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex)
+                .ThenBy(p => p.Attribute.BitIndex is -1 ? int.MaxValue : p.Attribute.BitIndex)
                 .ThenBy(p => p.Property.Name)
                 .ToList();
         });
     }
 
     // Helper for writing fixed fields
-    internal static void WriteFixedField(PacketWriter writer, object? value, Type propertyType, int? fixedSize)
+    internal static void WriteFixedField(PacketWriter writer, object? value, Type propertyType, int fixedSize, string propertyName)
     {
         if (value is null)
-            ThrowValueCannotBeNullForFixedField(propertyType);
+            ThrowValueCannotBeNullForFixedField(propertyType, propertyName);
 
         if (propertyType == typeof(int)) writer.WriteInt32((int)value);
         else if (propertyType == typeof(uint)) writer.WriteUInt32((uint)value);
@@ -76,13 +77,13 @@ internal static class GenericPacketHelpers
         else if (propertyType == typeof(float)) writer.WriteFloat32((float)value);
         else if (propertyType == typeof(double)) writer.WriteFloat64((double)value);
         else if (propertyType == typeof(Guid)) writer.WriteGuid((Guid)value);
-        else if (propertyType == typeof(string) && fixedSize.HasValue) writer.WriteFixedString((string)value, fixedSize.Value);
+        else if (propertyType == typeof(string) && fixedSize is not -1) writer.WriteFixedString((string)value, fixedSize);
         else if (propertyType.IsEnum) writer.WriteEnum((Enum)value);
-        else ThrowUnsupportedFixedFieldType(propertyType);
+        else ThrowUnsupportedFixedFieldType(propertyType, propertyName);
     }
 
     // Helper for reading fixed fields
-    internal static object ReadFixedField(PacketReader reader, Type propertyType, int? fixedSize)
+    internal static object ReadFixedField(PacketReader reader, Type propertyType, int fixedSize, string propertyName)
     {
         if (propertyType == typeof(int)) return reader.ReadInt32();
         else if (propertyType == typeof(uint)) return reader.ReadUInt32();
@@ -96,9 +97,9 @@ internal static class GenericPacketHelpers
         else if (propertyType == typeof(float)) return reader.ReadFloat32();
         else if (propertyType == typeof(double)) return reader.ReadFloat64();
         else if (propertyType == typeof(Guid)) return reader.ReadGuid();
-        else if (propertyType == typeof(string) && fixedSize.HasValue) return reader.ReadFixedString(fixedSize.Value);
+        else if (propertyType == typeof(string) && fixedSize is not -1) return reader.ReadFixedString(fixedSize);
         else if (propertyType.IsEnum) return reader.ReadEnum(propertyType);
-        else ThrowUnsupportedFixedFieldType(propertyType);
+        else ThrowUnsupportedFixedFieldType(propertyType, propertyName);
         return null!; // Should not be reached
     }
 
@@ -126,16 +127,21 @@ internal static class GenericPacketHelpers
         else if (propertyType == typeof(double)) return writer.WriteVarFloat64((double)value);
         else if (propertyType == typeof(Guid)) return writer.WriteVarGuid((Guid)value);
         else if (propertyType.IsEnum) return writer.WriteVarEnum((Enum)value);
-        else ThrowUnsupportedVariableFieldType(propertyType);
+        else ThrowUnsupportedVariableFieldType(propertyType, "Unknown");
         return -1; // Should not be reached
     }
     
     // Helper for reading variable fields
-    internal static object? ReadVariableField(PacketReader reader, BitSet bits, PropertySerializationInfo propInfo, int offset)
+    internal static object? ReadVariableField(PacketReader reader, BitSet bits, PropertySerializationInfo propInfo, int offset, string propertyName)
     {
-        if (propInfo.IsNullable)
+        if (propInfo.Attribute.BitIndex is not -1)
         {
             if (!bits.IsSet(propInfo.Attribute.BitIndex)) return null;
+        }
+
+        if (offset is -1)
+        {
+            throw new InvalidOperationException($"Variable field '{propertyName}' of type {propInfo.PropertyType.Name} has a -1 offset, but its null-bit was not checked or is missing.");
         }
 
         if (propInfo.PropertyType == typeof(string)) return reader.ReadVarStringAt(offset);
@@ -159,14 +165,14 @@ internal static class GenericPacketHelpers
         else if (propInfo.PropertyType == typeof(double)) return reader.ReadVarFloat64At(offset);
         else if (propInfo.PropertyType == typeof(Guid)) return reader.ReadVarGuidAt(offset);
         else if (propInfo.PropertyType.IsEnum) return reader.ReadVarEnum(propInfo.PropertyType, offset);
-        else ThrowUnsupportedVariableFieldType(propInfo.PropertyType);
+        else ThrowUnsupportedVariableFieldType(propInfo.PropertyType, propertyName);
         return null!; // Should not be reached
     }
 
     [DoesNotReturn]
-    private static void ThrowValueCannotBeNullForFixedField(Type type)
+    private static void ThrowValueCannotBeNullForFixedField(Type type, string propertyName)
     {
-        throw new InvalidOperationException($"Value for fixed field of type {type.Name} cannot be null.");
+        throw new InvalidOperationException($"Value for fixed field of type {type.Name} ({propertyName}) cannot be null.");
     }
     
     [DoesNotReturn]
@@ -176,14 +182,14 @@ internal static class GenericPacketHelpers
     }
 
     [DoesNotReturn]
-    private static void ThrowUnsupportedFixedFieldType(Type type)
+    private static void ThrowUnsupportedFixedFieldType(Type type, string propertyName)
     {
-        throw new InvalidOperationException($"Unsupported fixed field type: {type.Name}");
+        throw new InvalidOperationException($"Unsupported fixed field type: {type.Name} for property {propertyName}");
     }
 
     [DoesNotReturn]
-    private static void ThrowUnsupportedVariableFieldType(Type type)
+    private static void ThrowUnsupportedVariableFieldType(Type type, string propertyName)
     {
-        throw new InvalidOperationException($"Unsupported variable field type: {type.Name}");
+        throw new InvalidOperationException($"Unsupported variable field type: {type.Name} for property {propertyName}");
     }
 }

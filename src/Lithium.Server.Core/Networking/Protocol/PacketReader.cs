@@ -17,12 +17,27 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
     private int _position;
     private int _varPosition;
 
+    public void SeekFixed(int position)
+    {
+        if (position < 0 || position > buffer.Length)
+            ThrowNegativeOffset(position);
+
+        _position = position;
+    }
+
+    public int VariableBlockStart => packetInfo.VariableBlockStart;
+
     public ReadOnlySpan<byte> VariableBlock =>
         buffer.Span[packetInfo.VariableBlockStart..];
 
     public BitSet ReadBits()
     {
-        return new BitSet(ReadFixedSpan(packetInfo.NullableBitFieldSize));
+        return ReadBits(packetInfo.NullableBitFieldSize);
+    }
+
+    public BitSet ReadBits(int byteCount)
+    {
+        return new BitSet(ReadFixedSpan(byteCount));
     }
 
     public byte ReadUInt8()
@@ -111,7 +126,12 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
 
     public int[] ReadOffsets()
     {
-        var offsets = new int[packetInfo.VariableFieldCount];
+        return ReadOffsets(packetInfo.VariableFieldCount);
+    }
+
+    public int[] ReadOffsets(int count)
+    {
+        var offsets = new int[count];
 
         for (var i = 0; i < offsets.Length; i++)
             offsets[i] = ReadInt32();

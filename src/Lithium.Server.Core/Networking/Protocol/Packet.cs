@@ -11,12 +11,9 @@ public abstract class Packet
         var type = GetType();
         var propertiesInfo = GetOrAddCachedProperties(type);
 
-        var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1)
-            .OrderBy(p => p.Attribute.FixedIndex).ToList();
-        var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1)
-            .OrderBy(p => p.Attribute.BitIndex).ToList();
-        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1)
-            .OrderBy(p => p.Attribute.OffsetIndex).ToList();
+        var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1).OrderBy(p => p.Attribute.FixedIndex).ToList();
+        var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex).ToList();
+        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1).OrderBy(p => p.Attribute.OffsetIndex).ToList();
 
         // 1. Write BitSet for nullable fields
         if (nullableProperties.Any())
@@ -31,7 +28,6 @@ public abstract class Packet
                     bits.SetBit(propInfo.Attribute.BitIndex);
                 }
             }
-
             writer.WriteBits(bits);
         }
 
@@ -39,7 +35,7 @@ public abstract class Packet
         foreach (var propInfo in fixedProperties)
         {
             var value = propInfo.Property.GetValue(this);
-            WriteFixedField(writer, value, propInfo.PropertyType, propInfo.Attribute.FixedSize);
+            WriteFixedField(writer, value, propInfo.PropertyType, propInfo.Attribute.FixedSize, propInfo.Property.Name);
         }
 
         // 3. Write Offset Placeholders
@@ -57,10 +53,8 @@ public abstract class Packet
             {
                 var propInfo = variableProperties[i];
                 var value = propInfo.Property.GetValue(this);
-                offsets[i] = WriteVariableField(writer, value, propInfo.PropertyType, propInfo.IsNullable,
-                    propInfo.IsPacketObject);
+                offsets[i] = WriteVariableField(writer, value, propInfo.PropertyType, propInfo.IsNullable, propInfo.IsPacketObject);
             }
-
             writer.BackfillOffsets(offsets);
         }
     }
@@ -70,12 +64,9 @@ public abstract class Packet
         var type = GetType();
         var propertiesInfo = GetOrAddCachedProperties(type);
 
-        var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1)
-            .OrderBy(p => p.Attribute.FixedIndex).ToList();
-        var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1)
-            .OrderBy(p => p.Attribute.BitIndex).ToList();
-        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1)
-            .OrderBy(p => p.Attribute.OffsetIndex).ToList();
+        var fixedProperties = propertiesInfo.Where(p => p.Attribute.FixedIndex is not -1).OrderBy(p => p.Attribute.FixedIndex).ToList();
+        var nullableProperties = propertiesInfo.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex).ToList();
+        var variableProperties = propertiesInfo.Where(p => p.Attribute.OffsetIndex is not -1).OrderBy(p => p.Attribute.OffsetIndex).ToList();
 
         // 1. Read BitSet for nullable fields
         BitSet? bits = null;
@@ -87,7 +78,7 @@ public abstract class Packet
         // 2. Read Fixed Fields
         foreach (var propInfo in fixedProperties)
         {
-            var value = ReadFixedField(reader, propInfo.PropertyType, propInfo.Attribute.FixedSize);
+            var value = ReadFixedField(reader, propInfo.PropertyType, propInfo.Attribute.FixedSize, propInfo.Property.Name);
             propInfo.Property.SetValue(this, value);
         }
 
@@ -99,14 +90,15 @@ public abstract class Packet
         }
 
         // 4. Read Variable Block
-        if (variableProperties.Any() && offsets is not null && bits is not null)
+        if (variableProperties.Any() && offsets is not null)
         {
+            var effectiveBits = bits ?? new BitSet(0);
             for (int i = 0; i < variableProperties.Count; i++)
             {
                 var propInfo = variableProperties[i];
                 var offset = offsets[i];
-
-                var value = ReadVariableField(reader, bits, propInfo, offset);
+                
+                var value = ReadVariableField(reader, effectiveBits, propInfo, offset, propInfo.Property.Name);
                 propInfo.Property.SetValue(this, value);
             }
         }
