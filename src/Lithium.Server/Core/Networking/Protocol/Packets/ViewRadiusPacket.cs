@@ -7,12 +7,5 @@ public sealed class ViewRadiusPacket : Packet
 {
     // Java: value (fixed, offset 0)
     [PacketProperty(FixedIndex = 0)]
-    public int Value { get; set; }
-
-    public ViewRadiusPacket() { }
-
-    public ViewRadiusPacket(int value)
-    {
-        Value = value;
-    }
+    public int Value { get; init; }
 }

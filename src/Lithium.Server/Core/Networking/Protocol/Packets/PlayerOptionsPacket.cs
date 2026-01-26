@@ -7,5 +7,5 @@ public sealed class PlayerOptionsPacket : Packet
 {
     // Java: skin (nullable, bit 0), no OffsetIndex (sequential)
     [PacketProperty(BitIndex = 0)]
-    public PlayerSkin? Skin { get; set; }
+    public PlayerSkin? Skin { get; init; }
 }
