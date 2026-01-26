@@ -9,7 +9,7 @@ public sealed class PacketAttribute : Attribute
     public int Id { get; init; }
     public bool IsCompressed { get; init; }
     public int VariableBlockStart { get; init; }
-    public int MaxSize { get; init; }
+    public int MaxSize { get; init; } = 16384; // Default to 16KB
 
     public PacketAttribute() { }
 
