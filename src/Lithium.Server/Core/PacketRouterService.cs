@@ -17,8 +17,8 @@ public sealed class PacketRouterService(
     {
         _activeRouters[channel] = router;
         
-        router.OnInitialize(channel);
         logger.LogDebug("Switched router for channel to {RouterType}", router.GetType().Name);
+        router.OnInitialize(channel);
     }
 
     private IPacketRouter GetRouter(INetworkConnection channel)
