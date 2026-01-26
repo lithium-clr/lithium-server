@@ -430,7 +430,7 @@ public sealed class PacketWriter(int initialCapacity = 256)
         return value.HasValue ? WriteVarEnum(value.Value) : -1;
     }
 
-    private void WriteVarInt(int value)
+    public void WriteVarInt(int value)
     {
         if (value < 128)
         {
