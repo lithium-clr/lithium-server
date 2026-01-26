@@ -20,7 +20,6 @@ public sealed partial class ServerLifetime(
 ) : BackgroundService
 {
     private const string CertificateFileName = "lithium_cert.pfx";
-    // private const string CertificatePassword = "password";
 
     private readonly LoggerService _loggerService = (LoggerService)loggerService;
     private readonly PluginManager _pluginManager = (PluginManager)pluginManager;
