@@ -16,6 +16,8 @@ public interface IClient
 
     Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
         where T : IPacket<T>;
+        
+    Task SendPacketAsync(IPacket packet, CancellationToken ct = default);
 
     Task SendPacketsAsync(IPacket[] packet, CancellationToken ct = default);
 

@@ -11,18 +11,30 @@ public partial class Client
 
     private static readonly Compressor Compressor = new(CompressionLevel);
     
-    public async Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
+    // Generic version optimized for when T is known at compile time
+    public Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
         where T : IPacket<T>
+    {
+        return SendPacketInternalAsync(packet, ct);
+    }
+
+    // Non-generic version for IPacket interfaces
+    public Task SendPacketAsync(IPacket packet, CancellationToken ct = default)
+    {
+        return SendPacketInternalAsync(packet, ct);
+    }
+    
+    private async Task SendPacketInternalAsync(IPacket packet, CancellationToken ct)
     {
         await using var payloadStream = new MemoryStream();
         packet.Serialize(payloadStream);
 
-        var packetId = T.Id;
+        var packetId = packet.Id;
         var payload = payloadStream.ToArray();
 
         var finalPayload = payload;
 
-        if (T.IsCompressed && payload.Length > 0)
+        if (packet.IsCompressed && payload.Length > 0)
         {
             var span = Compressor.Wrap(payload);
             finalPayload = span.ToArray();
