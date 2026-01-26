@@ -1,6 +1,7 @@
+using Lithium.Server.Core.Networking.Protocol;
 using Lithium.SourceGenerators.Attributes;
 
-namespace Lithium.Server.Core.Networking.Protocol;
+namespace Lithium.Server.Core;
 
 public sealed partial class FileCommonAsset(string filePath, string name, string hash) : CommonAsset(name, hash)
 {

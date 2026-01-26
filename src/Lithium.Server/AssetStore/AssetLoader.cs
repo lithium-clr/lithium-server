@@ -2,9 +2,10 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Lithium.Server.Common;
+using Lithium.Server.Core;
 using Lithium.Server.Core.Networking.Protocol;
 using Lithium.Server.Core.Protocol;
-using FileCommonAsset = Lithium.Server.Core.Networking.Protocol.FileCommonAsset;
+using FileCommonAsset = Lithium.Server.Core.FileCommonAsset;
 
 namespace Lithium.Server.AssetStore;
 

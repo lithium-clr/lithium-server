@@ -1,4 +1,4 @@
-namespace Lithium.Server.Core.Networking.Protocol;
+namespace Lithium.Server.Core;
 
 public readonly record struct RegistryStats
 {

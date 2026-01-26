@@ -1,6 +1,6 @@
 using Lithium.SourceGenerators.Attributes;
 
-namespace Lithium.Server.Core.Networking.Protocol;
+namespace Lithium.Server.Core;
 
 public sealed partial record PackAsset(
     [property: ToStringInclude] string Pack,

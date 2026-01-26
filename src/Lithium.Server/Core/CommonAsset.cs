@@ -1,8 +1,9 @@
 using System.Security.Cryptography;
+using Lithium.Server.Core.Networking.Protocol;
 using Lithium.Server.Core.Protocol.Packets;
 using Lithium.SourceGenerators.Attributes;
 
-namespace Lithium.Server.Core.Networking.Protocol;
+namespace Lithium.Server.Core;
 
 public abstract partial class CommonAsset(string name, string hash)
 {

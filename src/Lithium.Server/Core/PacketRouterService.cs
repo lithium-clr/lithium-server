@@ -3,7 +3,7 @@ using Lithium.Server.Core.Networking.Protocol.Routers;
 using Lithium.Server.Core.Protocol;
 using Lithium.Server.Core.Protocol.Transport;
 
-namespace Lithium.Server.Core.Networking.Protocol;
+namespace Lithium.Server.Core;
 
 public sealed class PacketRouterService(
     ILogger<PacketRouterService> logger,
