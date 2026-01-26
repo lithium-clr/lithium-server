@@ -13,11 +13,8 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
         return Task.CompletedTask;
     }
 
-    protected virtual bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet)
-    {
-        return packet is not DisconnectPacket;
-    }
-    
+    protected virtual bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet) => true;
+
     public void Register<T>(IPacketHandler<T> handler) where T : Packet, new()
     {
         var type = typeof(T);
@@ -60,7 +57,11 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
     public async Task Route(INetworkConnection channel, int packetId, Packet packet)
     {
         if (!ShouldAcceptPacket(channel, packetId, packet))
+        {
+            // Disconnect the client
+            await channel.CloseAsync();
             return;
+        }
 
         if (_routes.TryGetValue(packetId, out var routeInfo))
             await routeInfo.Route(channel, packet);
