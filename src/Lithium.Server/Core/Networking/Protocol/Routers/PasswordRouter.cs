@@ -2,8 +2,6 @@ using System.Security.Cryptography;
 using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
@@ -20,8 +18,6 @@ public sealed partial class PasswordRouter(
 {
     private ServerManager ServerManager => (ServerManager)serverManager;
     private int _attemptsRemaining = 3; // Note: Shared state in singleton router
-
-    public override partial void Initialize(IServiceProvider sp);
 
     [PacketHandler]
     public async Task HandlePasswordResponse(INetworkConnection channel, PasswordResponsePacket packet)

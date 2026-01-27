@@ -1,6 +1,5 @@
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
-using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
@@ -13,8 +12,6 @@ public sealed partial class SetupPacketRouter(
     PlayerCommonAssets assets
 ) : BasePacketRouter(logger, packetRegistry)
 {
-    public override partial void Initialize(IServiceProvider sp);
-
     public override async Task OnInitialize(INetworkConnection channel)
     {
         logger.LogInformation("Initializing SetupPacketRouter...");

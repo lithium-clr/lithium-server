@@ -8,7 +8,7 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
     private Func<INetworkConnection, Packet, Task>?[]? _fastRoutes;
     private int _maxPacketId = -1;
 
-    public abstract void Initialize(IServiceProvider sp);
+    public virtual void Initialize(IServiceProvider sp) { }
 
     public virtual Task OnInitialize(INetworkConnection channel) => Task.CompletedTask;
 

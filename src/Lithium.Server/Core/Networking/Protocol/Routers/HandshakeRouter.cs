@@ -1,8 +1,6 @@
 using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
@@ -16,8 +14,6 @@ public sealed partial class HandshakeRouter(
     IServiceProvider serviceProvider
 ) : BasePacketRouter(logger, packetRegistry)
 {
-    public override partial void Initialize(IServiceProvider sp);
-
     [PacketHandler]
     public async Task HandleConnect(INetworkConnection channel, ConnectPacket packet)
     {
