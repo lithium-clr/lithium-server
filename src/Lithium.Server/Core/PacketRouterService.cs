@@ -16,8 +16,9 @@ public sealed class PacketRouterService(
 
     private IPacketRouter DefaultRouter => _defaultRouter ??= serviceProvider.GetRequiredService<HandshakeRouter>();
 
-    public void SetRouter(INetworkConnection channel, IPacketRouter router)
+    public void SetRouter<T>(INetworkConnection channel) where T : IPacketRouter
     {
+        var router = serviceProvider.GetService<T>()!;
         _activeRouters[channel] = router;
         
         logger.LogDebug("Switched router for channel to {RouterType}", router.GetType().Name);

@@ -9,16 +9,18 @@ public sealed partial class HandshakeRouter(
     IPacketRegistry packetRegistry,
     IServerAuthManager serverAuthManager,
     ISessionServiceClient sessionServiceClient,
-    IClientManager clientManager,
     PacketRouterService routerService,
     IServiceProvider serviceProvider
 ) : BasePacketRouter(logger, packetRegistry)
 {
     [PacketHandler]
-    public async Task HandleConnect(INetworkConnection channel, ConnectPacket packet)
+    public async Task HandleConnect(ConnectPacket packet)
     {
-        var client = clientManager.CreateClient(channel, packet.ClientType, packet.Uuid, packet.Username, packet.Language);
-        logger.LogInformation("(HandshakeRouter) -> Client connected: {RemoteEndPoint}", channel.RemoteEndPoint);
+        var clientManager = serviceProvider.GetRequiredService<IClientManager>();
+        var client = clientManager.CreateClient(Context.Connection, packet.ClientType, packet.Uuid, packet.Username,
+            packet.Language);
+        logger.LogInformation("(HandshakeRouter) -> Client connected: {RemoteEndPoint}",
+            Context.Connection.RemoteEndPoint);
 
         await RequestAuthGrant(client, packet);
     }
@@ -26,7 +28,7 @@ public sealed partial class HandshakeRouter(
     private async Task RequestAuthGrant(IClient client, ConnectPacket packet)
     {
         logger.LogInformation("Requesting authorization grant...: {Uuid}", packet.Uuid);
-        
+
         var identityToken = packet.IdentityToken;
         var serverSessionToken = serverAuthManager.GameSession?.SessionToken;
 
@@ -47,7 +49,6 @@ public sealed partial class HandshakeRouter(
             if (string.IsNullOrEmpty(authGrant))
             {
                 await client.DisconnectAsync("Failed to obtain authorization grant from session service");
-                logger.LogInformation("Failed to obtain authorization grant from session service");
             }
             else
             {
@@ -63,10 +64,8 @@ public sealed partial class HandshakeRouter(
 
                     logger.LogInformation("Sending authorization grant to client...");
                     await client.SendPacketAsync(authGrantPacket);
-                    
-                    // Switch to AuthenticationRouter to handle AuthTokenPacket
-                    var authenticationRouter = serviceProvider.GetRequiredService<AuthenticationRouter>();
-                    routerService.SetRouter(client.Channel, authenticationRouter);
+
+                    routerService.SetRouter<AuthenticationRouter>(client.Channel);
                 }
             }
         }

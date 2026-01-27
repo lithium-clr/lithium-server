@@ -5,9 +5,9 @@ namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
 public sealed partial class SetupPacketRouter(
     ILogger<SetupPacketRouter> logger,
-    IClientManager clientManager,
     IServerManager serverManager,
     IPacketRegistry packetRegistry,
+    IClientManager clientManager,
     AssetManager assetManager,
     PlayerCommonAssets assets
 ) : BasePacketRouter(logger, packetRegistry)
@@ -32,6 +32,7 @@ public sealed partial class SetupPacketRouter(
         });
 
         var config = serverManager.Configuration;
+
         await client.SendPacketAsync(new ServerInfoPacket
         {
             ServerName = config.ServerName,
@@ -43,9 +44,9 @@ public sealed partial class SetupPacketRouter(
     }
 
     [PacketHandler]
-    public async Task HandleRequestAssets(INetworkConnection channel, RequestAssetsPacket packet)
+    public async Task HandleRequestAssets(RequestAssetsPacket packet)
     {
-        var client = clientManager.GetClient(channel);
+        var client = Context.Client;
         if (client is null || !client.IsActive) return;
 
         logger.LogInformation("Received request assets packet: {Length}", packet.Assets?.Length);
@@ -53,24 +54,24 @@ public sealed partial class SetupPacketRouter(
 
         await SendAssetsToClient(client, packet.Assets ?? []);
 
-        await client.SendPacketAsync(new WorldLoadProgressPacket { Status = "Loading world ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
+        await client.SendPacketAsync(new WorldLoadProgressPacket
+            { Status = "Loading world ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
         await client.SendPacketAsync(new WorldLoadFinishedPacket());
     }
 
     [PacketHandler]
-    public Task HandleViewRadius(INetworkConnection channel, ViewRadiusPacket packet)
+    public Task HandleViewRadius(ViewRadiusPacket packet)
     {
-        var client = clientManager.GetClient(channel);
-        if (client is null) return Task.CompletedTask;
-        
-        client.ViewRadiusChunks = MathF.Ceiling(packet.Value / 32.0F);
+        var client = Context.Client;
+
+        client?.ViewRadiusChunks = MathF.Ceiling(packet.Value / 32.0F);
         return Task.CompletedTask;
     }
 
     [PacketHandler]
-    public Task HandlePlayerOptions(INetworkConnection channel, PlayerOptionsPacket packet)
+    public Task HandlePlayerOptions(PlayerOptionsPacket packet)
     {
-        var client = clientManager.GetClient(channel);
+        var client = Context.Client;
         if (client is null || !client.IsActive) return Task.CompletedTask;
 
         if (packet.Skin is not null)
@@ -83,11 +84,12 @@ public sealed partial class SetupPacketRouter(
     }
 
     [PacketHandler]
-    public async Task HandleDisconnect(INetworkConnection channel, DisconnectPacket packet)
+    public async Task HandleDisconnect(DisconnectPacket packet)
     {
-        var client = clientManager.GetClient(channel);
-        logger.LogInformation("Client {Username} disconnected: {Reason}", client?.Username ?? "Unknown", packet.Reason);
-        await channel.CloseAsync();
+        logger.LogInformation("Client {Username} disconnected: {Reason}", Context.Client?.Username ?? "Unknown",
+            packet.Reason);
+        
+        await Context.Connection.CloseAsync();
     }
 
     private async Task SendAssetsToClient(IClient client, IReadOnlyList<Asset> packetAssets)
@@ -119,16 +121,17 @@ public sealed partial class SetupPacketRouter(
             await client.SendPacketsAsync(packets);
         }
 
-        if (toSend.Count != 0) await client.SendPacketAsync(new RequestCommonAssetsRebuildPacket());
+        if (toSend.Count is not 0)
+            await client.SendPacketAsync(new RequestCommonAssetsRebuildPacket());
     }
-    
+
     private static IEnumerable<ReadOnlyMemory<byte>> Split(ReadOnlyMemory<byte> data, int chunkSize)
     {
         for (var offset = 0; offset < data.Length; offset += chunkSize)
             yield return data.Slice(offset, Math.Min(chunkSize, data.Length - offset));
     }
 
-    protected override bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet) => packet switch
+    protected override bool ShouldAcceptPacket(Packet packet) => packet switch
     {
         RequestAssetsPacket or DisconnectPacket or ViewRadiusPacket or PlayerOptionsPacket => true,
         _ => false

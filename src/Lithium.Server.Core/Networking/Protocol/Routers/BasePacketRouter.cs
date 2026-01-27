@@ -1,30 +1,43 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Frozen;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
 public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry) : IPacketRouter
 {
-    private readonly Dictionary<int, Func<INetworkConnection, Packet, Task>> _routes = new();
-    private Func<INetworkConnection, Packet, Task>?[]? _fastRoutes;
-    private int _maxPacketId = -1;
+    private static readonly AsyncLocal<PacketContext?> CurrentContext = new();
+    private readonly Dictionary<int, Func<Packet, Task>> _routes = [];
+    private FrozenDictionary<int, Func<Packet, Task>>? _frozenRoutes;
+    private Func<Packet, Task>?[]? _fastRoutes;
+    private readonly Lock _lock = new();
 
-    public virtual void Initialize(IServiceProvider sp) { }
+    protected IServiceProvider ServiceProvider { get; private set; } = null!;
+
+    /// <summary>
+    /// Gets the context for the current packet being processed.
+    /// </summary>
+    protected PacketContext Context => CurrentContext.Value ??
+                                       throw new InvalidOperationException(
+                                           "PacketContext is only available during packet handling.");
+
+    public virtual void Initialize(IServiceProvider sp) => ServiceProvider = sp;
 
     public virtual Task OnInitialize(INetworkConnection channel) => Task.CompletedTask;
 
-    protected virtual bool ShouldAcceptPacket(INetworkConnection channel, int packetId, Packet packet) => true;
+    protected virtual bool ShouldAcceptPacket(Packet packet) => true;
 
-    /// <summary>
-    /// Registers a handler method directly (Action style).
-    /// </summary>
-    public void RegisterAction<T>(Func<INetworkConnection, T, Task> handler) where T : Packet
+    public void RegisterAction<T>(Func<T, Task> handler) where T : Packet
     {
         var type = typeof(T);
+
         if (!registry.TryGetPacketInfoByType(type, out var packetInfo))
         {
             var metadata = GenericPacketHelpers.GetMetadata(type);
             packetInfo = metadata.PacketInfo;
-            if (packetInfo is not null) registry.Register(packetInfo);
+
+            if (packetInfo is not null)
+                registry.Register(packetInfo);
         }
 
         if (packetInfo is null)
@@ -33,58 +46,89 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
             return;
         }
 
-        var packetId = packetInfo.PacketId;
-        _routes[packetId] = async (channel, packet) =>
+        lock (_lock)
         {
-            try
+            var packetId = packetInfo.PacketId;
+
+            _routes[packetId] = async (packet) =>
             {
-                await handler(channel, (T)packet);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error handling packet {Packet} (ID {Id}) in {Router}.", type.Name, packetId, GetType().Name);
-            }
-        };
+                try
+                {
+                    await handler((T)packet);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Error handling packet {Packet} (ID {Id}) in {Router}.", typeof(T).Name,
+                        packetId, GetType().Name);
+                }
+            };
 
-        UpdateFastPath(packetId);
-        logger.LogDebug("Registered action handler for {Packet} (ID {Id}) to {Router}.", type.Name, packetId, GetType().Name);
-    }
-
-    /// <summary>
-    /// Registers a separate handler class.
-    /// </summary>
-    public void Register<T>(IPacketHandler<T> handler) where T : Packet, new()
-    {
-        RegisterAction<T>(handler.Handle);
-    }
-
-    private void UpdateFastPath(int packetId)
-    {
-        if (packetId > _maxPacketId) _maxPacketId = packetId;
-        if (_maxPacketId is >= 0 and < 2048)
-        {
-            var newFastRoutes = new Func<INetworkConnection, Packet, Task>?[_maxPacketId + 1];
-            foreach (var route in _routes) newFastRoutes[route.Key] = route.Value;
-            _fastRoutes = newFastRoutes;
+            _frozenRoutes = null;
+            _fastRoutes = null;
         }
     }
 
     public async Task Route(INetworkConnection channel, int packetId, Packet packet)
     {
-        if (!ShouldAcceptPacket(channel, packetId, packet))
+        var client = ServiceProvider.GetService<IClientManager>()?.GetClient(channel);
+        var context = new PacketContext(channel, client, packetId);
+
+        // Set AsyncLocal context
+        CurrentContext.Value = context;
+
+        try
         {
-            logger.LogWarning("Router {Router} rejected packet {PacketId} from {RemoteEndPoint}.", GetType().Name, packetId, channel.RemoteEndPoint);
-            await channel.CloseAsync();
-            return;
+            if (!ShouldAcceptPacket(packet))
+            {
+                logger.LogWarning("Router {Router} rejected packet {PacketId} from {RemoteEndPoint}.", GetType().Name,
+                    packetId, channel.RemoteEndPoint);
+                
+                await channel.CloseAsync();
+                return;
+            }
+
+            var route = GetRoute(packetId);
+            if (route is not null) await route(packet);
+            else logger.LogWarning("No route for packet {PacketId} in router {Router}.", packetId, GetType().Name);
+        }
+        finally
+        {
+            // Clear context
+            CurrentContext.Value = null;
+        }
+    }
+
+    private Func<Packet, Task>? GetRoute(int packetId)
+    {
+        if (_fastRoutes is null || _frozenRoutes is null)
+        {
+            lock (_lock)
+            {
+                if (_fastRoutes is null || _frozenRoutes is null)
+                {
+                    _frozenRoutes = _routes.ToFrozenDictionary();
+
+                    var maxId = _routes.Keys.DefaultIfEmpty(-1).Max();
+
+                    if (maxId is >= 0 and < 1024)
+                    {
+                        var fast = new Func<Packet, Task>?[maxId + 1];
+
+                        foreach (var (id, r) in _routes)
+                            fast[id] = r;
+
+                        _fastRoutes = fast;
+                    }
+                    else
+                    {
+                        _fastRoutes = [];
+                    }
+                }
+            }
         }
 
-        Func<INetworkConnection, Packet, Task>? route = null;
-        var fastRoutes = _fastRoutes;
-
-        if (fastRoutes is not null && (uint)packetId < (uint)fastRoutes.Length) route = fastRoutes[packetId];
-        else _routes.TryGetValue(packetId, out route);
-
-        if (route is not null) await route(channel, packet);
-        else logger.LogWarning("No route for packet {PacketId} in router {Router}.", packetId, GetType().Name);
+        return (uint)packetId < (uint)_fastRoutes.Length
+            ? _fastRoutes[packetId]
+            : _frozenRoutes.GetValueOrDefault(packetId);
     }
 }

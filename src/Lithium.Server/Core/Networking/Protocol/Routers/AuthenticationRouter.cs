@@ -9,7 +9,6 @@ public sealed partial class AuthenticationRouter(
     IPacketRegistry packetRegistry,
     IServerAuthManager serverAuthManager,
     ISessionServiceClient sessionServiceClient,
-    IClientManager clientManager,
     IServerManager serverManager,
     JwtValidator jwtValidator,
     PacketRouterService routerService,
@@ -19,38 +18,40 @@ public sealed partial class AuthenticationRouter(
     private ServerManager ServerManager => (ServerManager)serverManager;
 
     [PacketHandler]
-    public async Task HandleAuthToken(INetworkConnection channel, AuthTokenPacket packet)
+    public async Task HandleAuthToken(AuthTokenPacket packet)
     {
-        var client = clientManager.GetClient(channel);
+        var client = Context.Client;
         if (client is null) return;
 
         logger.LogInformation("(AuthenticationRouter) -> Auth Token received for {Username}", client.Username);
 
         var accessToken = packet.AccessToken;
+
         if (string.IsNullOrEmpty(accessToken))
         {
             await client.DisconnectAsync("Invalid access token");
             return;
         }
 
-        var clientCert = serverAuthManager.GetClientCertificate(channel.Connection);
+        var clientCert = serverAuthManager.GetClientCertificate(Context.Connection.Connection);
         var claims = await jwtValidator.ValidateAccessTokenAsync(accessToken, clientCert);
 
         if (claims is null)
         {
-            logger.LogWarning("JWT validation failed for {RemoteEndPoint}", channel.RemoteEndPoint);
+            logger.LogWarning("JWT validation failed for {RemoteEndPoint}", Context.Connection.RemoteEndPoint);
             await client.DisconnectAsync("Invalid access token");
             return;
         }
 
         if (claims.Subject != client.Uuid || claims.Username != client.Username)
         {
-            logger.LogWarning("JWT UUID/Username mismatch for {RemoteEndPoint}", channel.RemoteEndPoint);
+            logger.LogWarning("JWT UUID/Username mismatch for {RemoteEndPoint}", Context.Connection.RemoteEndPoint);
             await client.DisconnectAsync("Invalid token claims");
             return;
         }
 
         var serverAuthGrant = packet.ServerAuthorizationGrant;
+
         if (string.IsNullOrEmpty(serverAuthGrant))
         {
             await client.DisconnectAsync("Mutual authentication required");
@@ -63,6 +64,7 @@ public sealed partial class AuthenticationRouter(
     private async Task ExchangeServerAuthGrant(IClient client, string serverAuthGrant)
     {
         var serverCertFingerprint = serverAuthManager.ServerCertificate;
+
         if (serverCertFingerprint is null)
         {
             await client.DisconnectAsync("Server authentication unavailable");
@@ -70,6 +72,7 @@ public sealed partial class AuthenticationRouter(
         }
 
         var serverSessionToken = serverAuthManager.GameSession?.SessionToken;
+
         if (string.IsNullOrEmpty(serverSessionToken))
         {
             await client.DisconnectAsync("Server session token not available");
@@ -77,7 +80,9 @@ public sealed partial class AuthenticationRouter(
         }
 
         var fingerprintStr = X509Certificate2Factory.ComputeCertificateFingerprint(serverCertFingerprint);
-        var serverAccessToken = await sessionServiceClient.ExchangeAuthGrantForTokenAsync(serverAuthGrant, fingerprintStr, serverSessionToken);
+        var serverAccessToken =
+            await sessionServiceClient.ExchangeAuthGrantForTokenAsync(serverAuthGrant, fingerprintStr,
+                serverSessionToken);
 
         if (string.IsNullOrEmpty(serverAccessToken))
         {
@@ -87,6 +92,7 @@ public sealed partial class AuthenticationRouter(
 
         var hasPassword = !string.IsNullOrEmpty(ServerManager.Configuration.Password);
         var passwordChallenge = hasPassword ? PasswordChallengeUtility.GenerateChallenge() : null;
+
         ServerManager.CurrentPasswordChallenge = passwordChallenge;
 
         await client.SendPacketAsync(new ServerAuthTokenPacket
@@ -95,9 +101,9 @@ public sealed partial class AuthenticationRouter(
             PasswordChallenge = passwordChallenge
         });
 
-        logger.LogInformation("Authentication complete for {Username}, transitioning to password check", client.Username);
-        
-        var passwordRouter = serviceProvider.GetRequiredService<PasswordRouter>();
-        routerService.SetRouter(client.Channel, passwordRouter);
+        logger.LogInformation("Authentication complete for {Username}, transitioning to password check",
+            client.Username);
+
+        routerService.SetRouter<PasswordRouter>(client.Channel);
     }
 }
