@@ -14,16 +14,7 @@ public static class PacketServiceCollectionExtensions
         {
             foreach (var type in asm.GetTypes().Where(t => !t.IsAbstract && !t.IsInterface))
             {
-                // Register Packet Handlers
-                var handlerInterface = type.GetInterfaces()
-                    .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IPacketHandler<>));
-                
-                if (handlerInterface != null)
-                {
-                    services.AddSingleton(type);
-                }
-
-                // Register Packet Routers
+                // Register Packet Routers automatically
                 if (typeof(BasePacketRouter).IsAssignableFrom(type))
                 {
                     services.AddSingleton(type);

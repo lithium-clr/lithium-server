@@ -2,16 +2,19 @@ using System.Collections.Concurrent;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Protocol;
 using Lithium.Server.Core.Networking.Protocol.Routers;
-
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lithium.Server.Core;
 
 public sealed class PacketRouterService(
     ILogger<PacketRouterService> logger,
-    HandshakeRouter defaultRouter
+    IServiceProvider serviceProvider
 )
 {
     private readonly ConcurrentDictionary<INetworkConnection, IPacketRouter> _activeRouters = new();
+    private IPacketRouter? _defaultRouter;
+
+    private IPacketRouter DefaultRouter => _defaultRouter ??= serviceProvider.GetRequiredService<HandshakeRouter>();
 
     public void SetRouter(INetworkConnection channel, IPacketRouter router)
     {
@@ -23,7 +26,7 @@ public sealed class PacketRouterService(
 
     private IPacketRouter GetRouter(INetworkConnection channel)
     {
-        return _activeRouters.GetValueOrDefault(channel, defaultRouter);
+        return _activeRouters.GetValueOrDefault(channel, DefaultRouter);
     }
 
     public async Task Route(INetworkConnection channel, int packetId, Packet packet)
