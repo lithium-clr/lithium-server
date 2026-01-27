@@ -13,7 +13,8 @@ public abstract class Packet
         // 1. Write BitSet for nullable fields
         if (metadata.NullableProperties.Count > 0)
         {
-            var bits = new BitSet((metadata.MaxBitIndex / 8) + 1);
+            var bitSetSize = metadata.MaxBitIndex is -1 ? 0 : (metadata.MaxBitIndex / 8) + 1;
+            var bits = new BitSet(bitSetSize);
 
             foreach (var prop in metadata.NullableProperties)
             {
@@ -63,9 +64,8 @@ public abstract class Packet
         if (metadata.PacketInfo is null) return;
 
         // Read BitSet for nullable fields
-        var bits = metadata.NullableProperties.Count <= 0
-            ? new BitSet(0)
-            : reader.ReadBits((metadata.MaxBitIndex / 8) + 1);
+        var bitSetSize = metadata.MaxBitIndex is -1 ? 0 : (metadata.MaxBitIndex / 8) + 1;
+        var bits = reader.ReadBits(bitSetSize);
 
         // Read Fixed Fields
         foreach (var prop in metadata.FixedProperties)

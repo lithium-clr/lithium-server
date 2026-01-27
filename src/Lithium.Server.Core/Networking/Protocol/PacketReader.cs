@@ -37,6 +37,7 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
 
     public BitSet ReadBits(int byteCount)
     {
+        if (byteCount <= 0) return new BitSet(0);
         return new BitSet(ReadFixedSpan(byteCount));
     }
 
@@ -421,6 +422,18 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
             ThrowNegativeOffset(offset);
 
         _varPosition = offset;
+    }
+
+    public int GetVarPosition() => _varPosition;
+
+    public void SyncFixedToVar()
+    {
+        _position = packetInfo.VariableBlockStart + _varPosition;
+    }
+
+    public void SyncVarToFixed()
+    {
+        _varPosition = _position - packetInfo.VariableBlockStart;
     }
 
     private ReadOnlySpan<byte> ReadVarPrimitive(int length)

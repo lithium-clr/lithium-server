@@ -14,7 +14,8 @@ public abstract record PacketObject
         // 1. Write BitSet for nullable fields
         if (metadata.NullableProperties.Count > 0)
         {
-            var bits = new BitSet((metadata.MaxBitIndex / 8) + 1);
+            var bitSetSize = metadata.MaxBitIndex is -1 ? 0 : (metadata.MaxBitIndex / 8) + 1;
+            var bits = new BitSet(bitSetSize);
             foreach (var prop in metadata.NullableProperties)
             {
                 if (prop.Property.GetValue(this) is not null)
@@ -67,17 +68,27 @@ public abstract record PacketObject
         bool useOffsets = metadata.VariableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
 
         if (offset is not -1)
+        {
             reader.SeekFixed(reader.VariableBlockStart + offset);
+        }
+        else
+        {
+            reader.SyncFixedToVar();
+        }
 
         // 1. Read BitSet for nullable fields
-        BitSet bits = (metadata.NullableProperties.Count > 0) 
-            ? reader.ReadBits((metadata.MaxBitIndex / 8) + 1) 
-            : new BitSet(0);
+        var bitSetSize = metadata.MaxBitIndex is -1 ? 0 : (metadata.MaxBitIndex / 8) + 1;
+        BitSet bits = reader.ReadBits(bitSetSize);
 
         // 2. Read Fixed Fields
         foreach (var prop in metadata.FixedProperties)
         {
             prop.Property.SetValue(this, ReadFixedField(reader, prop));
+        }
+
+        if (offset is -1)
+        {
+            reader.SyncVarToFixed();
         }
 
         // 3. Read Offset Placeholders

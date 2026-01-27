@@ -252,13 +252,22 @@ internal static class GenericPacketHelpers
         var offset = writer.GetCurrentOffset();
         writer.WriteVarInt(array.Length);
 
-        foreach (var item in array)
+        if (isPacketObject)
         {
-            if (isPacketObject) ((PacketObject)item).Serialize(writer);
-            else
-                WriteFixedField(writer, item,
-                    new PropertySerializationInfo(null!, new PacketPropertyAttribute(), elementType, false, false,
-                        elementType.IsEnum, null, false, null));
+            foreach (var item in array)
+            {
+                if (item is PacketObject obj)
+                    obj.Serialize(writer);
+            }
+        }
+        else
+        {
+            var propInfo = new PropertySerializationInfo(null!, new PacketPropertyAttribute(), elementType, false, false,
+                elementType.IsEnum, null, false, null);
+            foreach (var item in array)
+            {
+                WriteFixedField(writer, item, propInfo);
+            }
         }
 
         return offset;

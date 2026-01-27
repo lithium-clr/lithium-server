@@ -19,12 +19,7 @@ public partial class Client
     
     private async Task SendPacketInternalAsync(Packet packet, CancellationToken ct)
     {
-        await using var stream = new MemoryStream();
-        await _encoder.EncodePacketAsync(stream, packet, ct);
-        
-        var data = stream.ToArray();
-
-        await Channel.Stream.WriteAsync(data, ct);
+        await _encoder.EncodePacketAsync(Channel.Stream, packet, ct);
         await Channel.Stream.FlushAsync(ct);
     }
     

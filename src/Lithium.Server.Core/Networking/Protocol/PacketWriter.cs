@@ -18,6 +18,7 @@ public sealed class PacketWriter(int initialCapacity = 256)
     private readonly Stack<int> _varBlockStack = new();
     private int _offsetsPosition = -1;
     private int _offsetCount = 0;
+    private readonly Stack<(int position, int count)> _offsetsStack = new();
     private readonly ArrayBufferWriter<byte> _writer = new(initialCapacity);
     
     public int Position => _writer.WrittenCount;
@@ -153,6 +154,9 @@ public sealed class PacketWriter(int initialCapacity = 256)
 
     public void WriteOffsetPlaceholders(int count)
     {
+        if (_offsetsPosition is not -1)
+            _offsetsStack.Push((_offsetsPosition, _offsetCount));
+
         _offsetsPosition = Position;
         _offsetCount = count;
         
@@ -198,6 +202,17 @@ public sealed class PacketWriter(int initialCapacity = 256)
         
         for (var i = 0; i < offsets.Length; i++) 
             BackfillOffset(i, offsets[i]);
+
+        if (_offsetsStack.TryPop(out var previous))
+        {
+            _offsetsPosition = previous.position;
+            _offsetCount = previous.count;
+        }
+        else
+        {
+            _offsetsPosition = -1;
+            _offsetCount = 0;
+        }
     }
 
     public int WriteVarString(string? value)

@@ -2,7 +2,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public sealed class BitSet
 {
-    private const int MinBitsetLength = 1;
+    private const int MinBitsetLength = 0;
     private const int MaxBitsetLength = 32;
 
     private readonly byte[] _bits;
@@ -14,12 +14,11 @@ public sealed class BitSet
         ArgumentOutOfRangeException.ThrowIfLessThan(byteCount, MinBitsetLength);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(byteCount, MaxBitsetLength);
 
-        _bits = new byte[byteCount];
+        _bits = byteCount is 0 ? [] : new byte[byteCount];
     }
 
     public BitSet(ReadOnlySpan<byte> bits)
     {
-        ArgumentOutOfRangeException.ThrowIfLessThan(bits.Length, MinBitsetLength);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(bits.Length, MaxBitsetLength);
 
         _bits = bits.ToArray();
@@ -27,6 +26,8 @@ public sealed class BitSet
 
     public void SetBit(int bitIndex)
     {
+        if (_bits.Length is 0) return;
+
         var index = bitIndex / 8;
         var offset = bitIndex % 8;
 
@@ -35,6 +36,8 @@ public sealed class BitSet
 
     public bool IsSet(int bitIndex)
     {
+        if (_bits.Length is 0) return false;
+
         var index = bitIndex / 8;
         var offset = bitIndex % 8;
 
