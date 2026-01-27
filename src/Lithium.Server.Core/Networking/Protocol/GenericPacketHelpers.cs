@@ -31,23 +31,28 @@ internal static class GenericPacketHelpers
         int MaxBitIndex
     );
 
-    private static readonly ConcurrentDictionary<Type, TypeSerializationMetadata> _metadataCache = new();
+    private static readonly ConcurrentDictionary<Type, TypeSerializationMetadata> MetadataCache = new();
 
     internal static TypeSerializationMetadata GetMetadata(Type type)
     {
-        return _metadataCache.GetOrAdd(type, t =>
+        return MetadataCache.GetOrAdd(type, t =>
         {
             var properties = new List<PropertySerializationInfo>();
-           
-            foreach (var prop in t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+
+            foreach (var prop in t.GetProperties(
+                         BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
                 var attr = prop.GetCustomAttribute<PacketPropertyAttribute>();
                 if (attr is null) continue;
 
                 var propertyType = prop.PropertyType;
                 var underlyingType = Nullable.GetUnderlyingType(propertyType);
-                var isNullable = underlyingType is not null;
-                if (isNullable) propertyType = underlyingType!;
+
+                // Hytale specific: A field is nullable/optional if it has a BitIndex.
+                // However, reference types in C# (string, byte[], objects) are also checked here.
+                var isNullable = underlyingType is not null || attr.BitIndex is not -1;
+
+                if (underlyingType is not null) propertyType = underlyingType;
 
                 var isArray = propertyType.IsArray && propertyType != typeof(byte[]);
                 var arrayElementType = isArray ? propertyType.GetElementType() : null;
@@ -65,24 +70,15 @@ internal static class GenericPacketHelpers
                 ));
             }
 
-            var fixedProps = properties
-                .Where(p => p.Attribute.FixedIndex is not -1)
-                .OrderBy(p => p.Attribute.FixedIndex)
+            var fixedProps = properties.Where(p => p.Attribute.FixedIndex is not -1)
+                .OrderBy(p => p.Attribute.FixedIndex).ToList();
+            var nullableProps = properties.Where(p => p.Attribute.BitIndex is not -1).OrderBy(p => p.Attribute.BitIndex)
                 .ToList();
-
-            var nullableProps = properties
-                .Where(p => p.Attribute.BitIndex is not -1)
-                .OrderBy(p => p.Attribute.BitIndex)
-                .ToList();
-
-            var variableProps = properties
-                .Where(IsVariableProperty)
+            var variableProps = properties.Where(IsVariableProperty)
                 .OrderBy(p => p.Attribute.OffsetIndex is -1 ? int.MaxValue : p.Attribute.OffsetIndex)
-                .ThenBy(p => p.Attribute.BitIndex)
-                .ToList();
-
+                .ThenBy(p => p.Attribute.BitIndex).ToList();
             var maxBitIndex = nullableProps.Count is 0 ? -1 : nullableProps.Max(p => p.Attribute.BitIndex);
-            
+
             var packetAttr = t.GetCustomAttribute<PacketAttribute>();
             PacketInfo? packetInfo = null;
 
@@ -95,17 +91,8 @@ internal static class GenericPacketHelpers
                 var headerSize = bitSetSize + fixedSizeSum;
                 var useOffsets = packetAttr.VariableBlockStart >= (headerSize + variableProps.Count * 4);
 
-                packetInfo = new PacketInfo(
-                    packetAttr.Id,
-                    t.Name,
-                    t,
-                    packetAttr.IsCompressed,
-                    bitSetSize,
-                    variableProps.Count,
-                    packetAttr.VariableBlockStart,
-                    packetAttr.MaxSize,
-                    useOffsets
-                );
+                packetInfo = new PacketInfo(packetAttr.Id, t.Name, t, packetAttr.IsCompressed, bitSetSize,
+                    variableProps.Count, packetAttr.VariableBlockStart, packetAttr.MaxSize, useOffsets);
             }
 
             return new TypeSerializationMetadata(packetInfo, fixedProps, nullableProps, variableProps, maxBitIndex);
@@ -123,95 +110,98 @@ internal static class GenericPacketHelpers
         return 0;
     }
 
-    private static bool IsVariableProperty(PropertySerializationInfo p)
-    {
-        return p.Attribute.FixedIndex is -1 && 
-               (p.Attribute.OffsetIndex is not -1 || 
-                p.Attribute.BitIndex is not -1 || 
-                p.PropertyType == typeof(string) || 
-                p.PropertyType == typeof(byte[]) || 
-                p.IsArray ||
-                p.IsPacketObject);
-    }
+    private static bool IsVariableProperty(PropertySerializationInfo p) =>
+        p.Attribute.FixedIndex is -1 &&
+        (p.Attribute.OffsetIndex is not -1 ||
+         p.Attribute.BitIndex is not -1 ||
+         p.PropertyType == typeof(string) ||
+         p.PropertyType == typeof(byte[]) ||
+         p.IsArray || p.IsPacketObject);
 
     internal static void WriteFixedField(PacketWriter writer, object? value, PropertySerializationInfo prop)
     {
         if (value is null) ThrowValueCannotBeNullForFixedField(prop.PropertyType, prop.Property.Name);
-
-        var type = prop.PropertyType;
-        if (type == typeof(int)) writer.WriteInt32((int)value);
-        else if (type == typeof(uint)) writer.WriteUInt32((uint)value);
-        else if (type == typeof(long)) writer.WriteInt64((long)value);
-        else if (type == typeof(ulong)) writer.WriteUInt64((ulong)value);
-        else if (type == typeof(short)) writer.WriteInt16((short)value);
-        else if (type == typeof(ushort)) writer.WriteUInt16((ushort)value);
-        else if (type == typeof(byte)) writer.WriteUInt8((byte)value);
-        else if (type == typeof(sbyte)) writer.WriteInt8((sbyte)value);
-        else if (type == typeof(bool)) writer.WriteBoolean((bool)value);
-        else if (type == typeof(float)) writer.WriteFloat32((float)value);
-        else if (type == typeof(double)) writer.WriteFloat64((double)value);
-        else if (type == typeof(Guid)) writer.WriteGuid((Guid)value);
-        else if (type == typeof(string) && prop.Attribute.FixedSize is not -1) writer.WriteFixedString((string)value, prop.Attribute.FixedSize);
+        var t = prop.PropertyType;
+        if (t == typeof(int)) writer.WriteInt32((int)value);
+        else if (t == typeof(uint)) writer.WriteUInt32((uint)value);
+        else if (t == typeof(long)) writer.WriteInt64((long)value);
+        else if (t == typeof(ulong)) writer.WriteUInt64((ulong)value);
+        else if (t == typeof(short)) writer.WriteInt16((short)value);
+        else if (t == typeof(ushort)) writer.WriteUInt16((ushort)value);
+        else if (t == typeof(byte)) writer.WriteUInt8((byte)value);
+        else if (t == typeof(sbyte)) writer.WriteInt8((sbyte)value);
+        else if (t == typeof(bool)) writer.WriteBoolean((bool)value);
+        else if (t == typeof(float)) writer.WriteFloat32((float)value);
+        else if (t == typeof(double)) writer.WriteFloat64((double)value);
+        else if (t == typeof(Guid)) writer.WriteGuid((Guid)value);
+        else if (t == typeof(string) && prop.Attribute.FixedSize is not -1)
+            writer.WriteFixedString((string)value, prop.Attribute.FixedSize);
         else if (prop.IsEnum) writer.WriteEnum((Enum)value);
-        else ThrowUnsupportedFixedFieldType(type, prop.Property.Name);
+        else ThrowUnsupportedFixedFieldType(t, prop.Property.Name);
     }
 
     internal static object ReadFixedField(PacketReader reader, PropertySerializationInfo prop)
     {
-        var type = prop.PropertyType;
-        if (type == typeof(int)) return reader.ReadInt32();
-        if (type == typeof(uint)) return reader.ReadUInt32();
-        if (type == typeof(long)) return reader.ReadInt64();
-        if (type == typeof(ulong)) return reader.ReadUInt64();
-        if (type == typeof(short)) return reader.ReadInt16();
-        if (type == typeof(ushort)) return reader.ReadUInt16();
-        if (type == typeof(byte)) return reader.ReadUInt8();
-        if (type == typeof(sbyte)) return reader.ReadInt8();
-        if (type == typeof(bool)) return reader.ReadBoolean();
-        if (type == typeof(float)) return reader.ReadFloat32();
-        if (type == typeof(double)) return reader.ReadFloat64();
-        if (type == typeof(Guid)) return reader.ReadGuid();
-        if (type == typeof(string) && prop.Attribute.FixedSize is not -1) return reader.ReadFixedString(prop.Attribute.FixedSize);
-        if (prop.IsEnum) return reader.ReadEnum(type);
-        
-        ThrowUnsupportedFixedFieldType(type, prop.Property.Name);
+        var t = prop.PropertyType;
+        if (t == typeof(int)) return reader.ReadInt32();
+        if (t == typeof(uint)) return reader.ReadUInt32();
+        if (t == typeof(long)) return reader.ReadInt64();
+        if (t == typeof(ulong)) return reader.ReadUInt64();
+        if (t == typeof(short)) return reader.ReadInt16();
+        if (t == typeof(ushort)) return reader.ReadUInt16();
+        if (t == typeof(byte)) return reader.ReadUInt8();
+        if (t == typeof(sbyte)) return reader.ReadInt8();
+        if (t == typeof(bool)) return reader.ReadBoolean();
+        if (t == typeof(float)) return reader.ReadFloat32();
+        if (t == typeof(double)) return reader.ReadFloat64();
+        if (t == typeof(Guid)) return reader.ReadGuid();
+        if (t == typeof(string) && prop.Attribute.FixedSize is not -1)
+            return reader.ReadFixedString(prop.Attribute.FixedSize);
+        if (prop.IsEnum) return reader.ReadEnum(t);
+        ThrowUnsupportedFixedFieldType(t, prop.Property.Name);
         return null!;
     }
 
     internal static int WriteVariableField(PacketWriter writer, object? value, PropertySerializationInfo prop)
     {
-        if (!prop.IsNullable && value is null) ThrowValueCannotBeNullForNonNullableVariableField(prop.PropertyType);
+        if (!prop.IsNullable && value is null)
+            ThrowValueCannotBeNullForNonNullableVariableField(prop.PropertyType, prop.Property.Name);
         if (value is null) return -1;
 
-        if (prop.IsArray) return WriteArray(writer, (Array)value, prop.ArrayElementType!, typeof(PacketObject).IsAssignableFrom(prop.ArrayElementType));
-        
-        var type = prop.PropertyType;
-        if (type == typeof(string)) return writer.WriteVarString((string)value);
-        if (type == typeof(byte[])) return writer.WriteVarBytes((byte[])value);
+        if (prop.IsArray)
+            return WriteArray(writer, (Array)value, prop.ArrayElementType!,
+                typeof(PacketObject).IsAssignableFrom(prop.ArrayElementType));
+
+        var t = prop.PropertyType;
+        if (t == typeof(string)) return writer.WriteVarString((string)value);
+        if (t == typeof(byte[])) return writer.WriteVarBytes((byte[])value);
         if (prop.IsPacketObject) return writer.WriteVarObject((PacketObject)value);
-        if (type == typeof(int)) return writer.WriteVarInt32((int)value);
-        if (type == typeof(uint)) return writer.WriteVarUInt32((uint)value);
-        if (type == typeof(long)) return writer.WriteVarInt64((long)value);
-        if (type == typeof(ulong)) return writer.WriteVarUInt64((ulong)value);
-        if (type == typeof(short)) return writer.WriteVarInt16((short)value);
-        if (type == typeof(ushort)) return writer.WriteVarUInt16((ushort)value);
-        if (type == typeof(byte)) return writer.WriteVarUInt8((byte)value);
-        if (type == typeof(sbyte)) return writer.WriteVarInt8((sbyte)value);
-        if (type == typeof(bool)) return writer.WriteVarBoolean((bool)value);
-        if (type == typeof(float)) return writer.WriteVarFloat32((float)value);
-        if (type == typeof(double)) return writer.WriteVarFloat64((double)value);
-        if (type == typeof(Guid)) return writer.WriteVarGuid((Guid)value);
+        if (t == typeof(int)) return writer.WriteVarInt32((int)value);
+        if (t == typeof(uint)) return writer.WriteVarUInt32((uint)value);
+        if (t == typeof(long)) return writer.WriteVarInt64((long)value);
+        if (t == typeof(ulong)) return writer.WriteVarUInt64((ulong)value);
+        if (t == typeof(short)) return writer.WriteVarInt16((short)value);
+        if (t == typeof(ushort)) return writer.WriteVarUInt16((ushort)value);
+        if (t == typeof(byte)) return writer.WriteVarUInt8((byte)value);
+        if (t == typeof(sbyte)) return writer.WriteVarInt8((sbyte)value);
+        if (t == typeof(bool)) return writer.WriteVarBoolean((bool)value);
+        if (t == typeof(float)) return writer.WriteVarFloat32((float)value);
+        if (t == typeof(double)) return writer.WriteVarFloat64((double)value);
+        if (t == typeof(Guid)) return writer.WriteVarGuid((Guid)value);
         if (prop.IsEnum) return writer.WriteVarEnum((Enum)value);
-        
-        ThrowUnsupportedVariableFieldType(type, prop.Property.Name);
+
+        ThrowUnsupportedVariableFieldType(t, prop.Property.Name);
         return -1;
     }
-    
-    internal static object? ReadVariableField(PacketReader reader, BitSet bits, PropertySerializationInfo prop, int offset)
+
+    internal static object? ReadVariableField(PacketReader reader, BitSet bits, PropertySerializationInfo prop,
+        int offset)
     {
         if (prop.Attribute.BitIndex is not -1 && !bits.IsSet(prop.Attribute.BitIndex)) return null;
 
-        if (prop.IsArray) return ReadArray(reader, prop.ArrayElementType!, typeof(PacketObject).IsAssignableFrom(prop.ArrayElementType), offset);
+        if (prop.IsArray)
+            return ReadArray(reader, prop.ArrayElementType!,
+                typeof(PacketObject).IsAssignableFrom(prop.ArrayElementType), offset);
 
         var type = prop.PropertyType;
         if (offset is -1)
@@ -261,24 +251,27 @@ internal static class GenericPacketHelpers
     {
         var offset = writer.GetCurrentOffset();
         writer.WriteVarInt(array.Length);
-        
+
         foreach (var item in array)
         {
             if (isPacketObject) ((PacketObject)item).Serialize(writer);
-            else WriteFixedField(writer, item, new PropertySerializationInfo(null!, new PacketPropertyAttribute(), elementType, false, false, elementType.IsEnum, null, false, null));
+            else
+                WriteFixedField(writer, item,
+                    new PropertySerializationInfo(null!, new PacketPropertyAttribute(), elementType, false, false,
+                        elementType.IsEnum, null, false, null));
         }
-        
+
         return offset;
     }
 
     internal static object ReadArray(PacketReader reader, Type elementType, bool isPacketObject, int offset)
     {
         if (offset is not -1) reader.SeekVar(offset);
-        
+
         var length = reader.ReadVarInt32();
         var array = Array.CreateInstance(elementType, length);
-        
-        for (var i = 0; i < length; i++)
+
+        for (int i = 0; i < length; i++)
         {
             if (isPacketObject)
             {
@@ -288,16 +281,31 @@ internal static class GenericPacketHelpers
             }
             else
             {
-                var value = ReadFixedField(reader, new PropertySerializationInfo(null!, new PacketPropertyAttribute(), elementType, false, false, elementType.IsEnum, null, false, null));
+                var value = ReadFixedField(reader,
+                    new PropertySerializationInfo(null!, new PacketPropertyAttribute(), elementType, false, false,
+                        elementType.IsEnum, null, false, null));
                 array.SetValue(value, i);
             }
         }
-        
+
         return array;
     }
 
-    [DoesNotReturn] private static void ThrowValueCannotBeNullForFixedField(Type type, string propertyName) => throw new InvalidOperationException($"Value for fixed field of type {type.Name} ({propertyName}) cannot be null.");
-    [DoesNotReturn] private static void ThrowValueCannotBeNullForNonNullableVariableField(Type type) => throw new InvalidOperationException($"Value for non-nullable variable field of type {type.Name} cannot be null.");
-    [DoesNotReturn] private static void ThrowUnsupportedFixedFieldType(Type type, string propertyName) => throw new InvalidOperationException($"Unsupported fixed field type: {type.Name} for property {propertyName}");
-    [DoesNotReturn] private static void ThrowUnsupportedVariableFieldType(Type type, string propertyName) => throw new InvalidOperationException($"Unsupported variable field type: {type.Name} for property {propertyName}");
+    [DoesNotReturn]
+    private static void ThrowValueCannotBeNullForFixedField(Type type, string propertyName) =>
+        throw new InvalidOperationException($"Fixed field {type.Name} ({propertyName}) cannot be null.");
+
+    [DoesNotReturn]
+    private static void ThrowValueCannotBeNullForNonNullableVariableField(Type type, string propertyName) =>
+        throw new InvalidOperationException(
+            $"Value for non-nullable variable field ({propertyName}) of type {type.Name} cannot be null.");
+
+    [DoesNotReturn]
+    private static void ThrowUnsupportedFixedFieldType(Type type, string propertyName) =>
+        throw new InvalidOperationException($"Unsupported fixed field type: {type.Name} for property {propertyName}");
+
+    [DoesNotReturn]
+    private static void ThrowUnsupportedVariableFieldType(Type type, string propertyName) =>
+        throw new InvalidOperationException(
+            $"Unsupported variable field type: {type.Name} for property {propertyName}");
 }

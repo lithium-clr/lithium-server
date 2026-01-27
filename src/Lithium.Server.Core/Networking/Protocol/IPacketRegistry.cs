@@ -27,10 +27,9 @@ public sealed class PacketRegistry : IPacketRegistry
     public void Register(Type type)
     {
         var metadata = GenericPacketHelpers.GetMetadata(type);
+        
         if (metadata.PacketInfo is not null)
-        {
             Register(metadata.PacketInfo);
-        }
     }
 
     public void RegisterAllFromAssembly(Assembly assembly)
