@@ -76,7 +76,12 @@ public sealed class AssetManager(
 
         foreach (var packAsset in assetRegistry.Assets)
         {
-            var asset = new Asset(packAsset.Asset.Name, packAsset.Asset.Hash);
+            var asset = new Asset
+            {
+                Hash = packAsset.Asset.Hash,
+                Name = packAsset.Asset.Name
+            };
+            
             _assets.Add(asset);
         }
     }

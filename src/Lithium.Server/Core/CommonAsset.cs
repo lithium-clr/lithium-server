@@ -32,7 +32,11 @@ public abstract record CommonAsset(string Name, string Hash)
 
     protected abstract Task<BlobData> ReadBlobAsync();
 
-    public Asset ToPacket() => new(Hash, Name);
+    public Asset ToPacket() => new()
+    {
+        Hash = Hash,
+        Name = Name
+    };
 
     private static string ComputeHash(ReadOnlySpan<byte> bytes)
         => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
