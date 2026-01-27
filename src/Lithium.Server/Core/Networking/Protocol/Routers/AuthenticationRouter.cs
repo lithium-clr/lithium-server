@@ -98,6 +98,10 @@ public sealed class AuthenticationRouter(
         });
 
         logger.LogInformation("Authentication complete for {Username}, transitioning to password check", client.Username);
-        routerService.SetRouter<PasswordRouter>(Context.Connection);
+        
+        if (hasPassword)
+            routerService.SetRouter<PasswordRouter>(Context.Connection);
+        else
+            routerService.SetRouter<SetupPacketRouter>(Context.Connection);
     }
 }
