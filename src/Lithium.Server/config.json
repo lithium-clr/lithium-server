@@ -1,7 +1,7 @@
 {
   "CertificatePassword": "password",
   "AssetsPath": "C:\\Users\\bubbl\\Desktop\\assets",
-  "Password": "PWD",
+  "Password": null,
   "ServerName": "Lithium Server",
   "Motd": "A Lithium Server",
   "MaxPlayers": 32,
