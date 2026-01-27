@@ -3,14 +3,14 @@ using Lithium.Server.Core.Networking.Protocol.Packets;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
-public sealed partial class SetupPacketRouter(
+public sealed class SetupPacketRouter(
     ILogger<SetupPacketRouter> logger,
     IServerManager serverManager,
     IPacketRegistry packetRegistry,
     IClientManager clientManager,
     AssetManager assetManager,
     PlayerCommonAssets assets
-) : BasePacketRouter(logger, packetRegistry)
+) : BasePacketRouter(logger, packetRegistry, clientManager)
 {
     public override async Task OnInitialize(INetworkConnection channel)
     {
@@ -28,7 +28,7 @@ public sealed partial class SetupPacketRouter(
         await client.SendPacketAsync(new WorldSettingsPacket
         {
             WorldHeight = 320,
-            RequiredAssets = requiredAssets.ToArray()
+            RequiredAssets = [.. requiredAssets]
         });
 
         var config = serverManager.Configuration;
@@ -56,6 +56,7 @@ public sealed partial class SetupPacketRouter(
 
         await client.SendPacketAsync(new WorldLoadProgressPacket
             { Status = "Loading world ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
+
         await client.SendPacketAsync(new WorldLoadFinishedPacket());
     }
 
@@ -88,7 +89,7 @@ public sealed partial class SetupPacketRouter(
     {
         logger.LogInformation("Client {Username} disconnected: {Reason}", Context.Client?.Username ?? "Unknown",
             packet.Reason);
-        
+
         await Context.Connection.CloseAsync();
     }
 
@@ -114,7 +115,7 @@ public sealed partial class SetupPacketRouter(
                     PercentComplete = percent,
                     PercentCompleteSubitem = 100 * partIndex / parts.Count
                 };
-                packets[1 + partIndex * 2 + 1] = new AssetPartPacket { Part = parts[partIndex].ToArray() };
+                packets[1 + partIndex * 2 + 1] = new AssetPartPacket { Part = [.. parts[partIndex].Span] };
             }
 
             packets[^1] = new AssetFinalizePacket();

@@ -1,16 +1,17 @@
 using System.Security.Cryptography;
+using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
-public sealed partial class PasswordRouter(
+public sealed class PasswordRouter(
     ILogger<PasswordRouter> logger,
     IPacketRegistry packetRegistry,
+    IClientManager clientManager,
     IServerManager serverManager,
-    PacketRouterService routerService,
-    IServiceProvider serviceProvider
-) : BasePacketRouter(logger, packetRegistry)
+    PacketRouterService routerService
+) : BasePacketRouter(logger, packetRegistry, clientManager)
 {
     private ServerManager ServerManager => (ServerManager)serverManager;
     private int _attemptsRemaining = 3;
@@ -22,7 +23,8 @@ public sealed partial class PasswordRouter(
         if (client is null) return;
 
         var challenge = ServerManager.CurrentPasswordChallenge;
-        if (challenge is null || challenge.Length == 0)
+        
+        if (challenge is null || challenge.Length is 0)
         {
             await client.DisconnectAsync("Protocol error: unexpected password response");
             return;
@@ -38,7 +40,7 @@ public sealed partial class PasswordRouter(
         }
 
         var expectedHash = PasswordChallengeUtility.ComputePasswordHash(challenge, password);
-
+        
         if (expectedHash is null)
         {
             await client.DisconnectAsync("Server error");
@@ -48,8 +50,7 @@ public sealed partial class PasswordRouter(
         if (!CryptographicOperations.FixedTimeEquals(expectedHash, clientHash))
         {
             _attemptsRemaining--;
-            logger.LogWarning("Invalid password from {Username}, {Attempts} attempts left", client.Username,
-                _attemptsRemaining);
+            logger.LogWarning("Invalid password from {Username}, {Attempts} attempts left", client.Username, _attemptsRemaining);
 
             if (_attemptsRemaining <= 0)
             {
@@ -59,16 +60,14 @@ public sealed partial class PasswordRouter(
             {
                 var newChallenge = PasswordChallengeUtility.GenerateChallenge();
                 ServerManager.CurrentPasswordChallenge = newChallenge;
-                await client.SendPacketAsync(new PasswordRejectedPacket
-                    { NewChallenge = newChallenge, AttemptsRemaining = _attemptsRemaining });
+                await client.SendPacketAsync(new PasswordRejectedPacket { NewChallenge = newChallenge, AttemptsRemaining = _attemptsRemaining });
             }
         }
         else
         {
             logger.LogInformation("Password accepted for {Username}", client.Username);
             await client.SendPacketAsync(new PasswordAcceptedPacket());
-
-            routerService.SetRouter<SetupPacketRouter>(client.Channel);
+            routerService.SetRouter<SetupPacketRouter>(Context.Connection);
         }
     }
 }

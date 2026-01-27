@@ -1,10 +1,13 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Frozen;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
-public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry) : IPacketRouter
+public abstract class BasePacketRouter(
+    ILogger logger,
+    IPacketRegistry registry,
+    IClientManager clientManager
+) : IPacketRouter
 {
     private static readonly AsyncLocal<PacketContext?> CurrentContext = new();
     private readonly Dictionary<int, Func<Packet, Task>> _routes = [];
@@ -12,16 +15,11 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
     private Func<Packet, Task>?[]? _fastRoutes;
     private readonly Lock _lock = new();
 
-    protected IServiceProvider ServiceProvider { get; private set; } = null!;
-
     /// <summary>
     /// Gets the context for the current packet being processed.
     /// </summary>
-    protected PacketContext Context => CurrentContext.Value ??
-                                       throw new InvalidOperationException(
-                                           "PacketContext is only available during packet handling.");
-
-    public virtual void Initialize(IServiceProvider sp) => ServiceProvider = sp;
+    protected PacketContext Context => CurrentContext.Value ?? throw new InvalidOperationException(
+        "PacketContext is only available during packet handling.");
 
     public virtual Task OnInitialize(INetworkConnection channel) => Task.CompletedTask;
 
@@ -35,9 +33,7 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
         {
             var metadata = GenericPacketHelpers.GetMetadata(type);
             packetInfo = metadata.PacketInfo;
-
-            if (packetInfo is not null)
-                registry.Register(packetInfo);
+            if (packetInfo is not null) registry.Register(packetInfo);
         }
 
         if (packetInfo is null)
@@ -70,10 +66,9 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
 
     public async Task Route(INetworkConnection channel, int packetId, Packet packet)
     {
-        var client = ServiceProvider.GetService<IClientManager>()?.GetClient(channel);
-        var context = new PacketContext(channel, client, packetId);
+        var client = clientManager.GetClient(channel);
+        var context = new PacketContext(channel, client, packetId, clientManager);
 
-        // Set AsyncLocal context
         CurrentContext.Value = context;
 
         try
@@ -82,7 +77,7 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
             {
                 logger.LogWarning("Router {Router} rejected packet {PacketId} from {RemoteEndPoint}.", GetType().Name,
                     packetId, channel.RemoteEndPoint);
-                
+
                 await channel.CloseAsync();
                 return;
             }
@@ -93,7 +88,6 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
         }
         finally
         {
-            // Clear context
             CurrentContext.Value = null;
         }
     }
@@ -113,10 +107,7 @@ public abstract class BasePacketRouter(ILogger logger, IPacketRegistry registry)
                     if (maxId is >= 0 and < 1024)
                     {
                         var fast = new Func<Packet, Task>?[maxId + 1];
-
-                        foreach (var (id, r) in _routes)
-                            fast[id] = r;
-
+                        foreach (var (id, r) in _routes) fast[id] = r;
                         _fastRoutes = fast;
                     }
                     else

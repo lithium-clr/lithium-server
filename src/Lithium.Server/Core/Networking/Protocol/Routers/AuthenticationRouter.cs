@@ -4,16 +4,16 @@ using Lithium.Server.Core.Networking.Protocol.Packets;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
-public sealed partial class AuthenticationRouter(
+public sealed class AuthenticationRouter(
     ILogger<AuthenticationRouter> logger,
     IPacketRegistry packetRegistry,
     IServerAuthManager serverAuthManager,
     ISessionServiceClient sessionServiceClient,
+    IClientManager clientManager,
     IServerManager serverManager,
     JwtValidator jwtValidator,
-    PacketRouterService routerService,
-    IServiceProvider serviceProvider
-) : BasePacketRouter(logger, packetRegistry)
+    PacketRouterService routerService
+) : BasePacketRouter(logger, packetRegistry, clientManager)
 {
     private ServerManager ServerManager => (ServerManager)serverManager;
 
@@ -26,7 +26,6 @@ public sealed partial class AuthenticationRouter(
         logger.LogInformation("(AuthenticationRouter) -> Auth Token received for {Username}", client.Username);
 
         var accessToken = packet.AccessToken;
-
         if (string.IsNullOrEmpty(accessToken))
         {
             await client.DisconnectAsync("Invalid access token");
@@ -51,7 +50,6 @@ public sealed partial class AuthenticationRouter(
         }
 
         var serverAuthGrant = packet.ServerAuthorizationGrant;
-
         if (string.IsNullOrEmpty(serverAuthGrant))
         {
             await client.DisconnectAsync("Mutual authentication required");
@@ -64,7 +62,7 @@ public sealed partial class AuthenticationRouter(
     private async Task ExchangeServerAuthGrant(IClient client, string serverAuthGrant)
     {
         var serverCertFingerprint = serverAuthManager.ServerCertificate;
-
+        
         if (serverCertFingerprint is null)
         {
             await client.DisconnectAsync("Server authentication unavailable");
@@ -72,7 +70,7 @@ public sealed partial class AuthenticationRouter(
         }
 
         var serverSessionToken = serverAuthManager.GameSession?.SessionToken;
-
+        
         if (string.IsNullOrEmpty(serverSessionToken))
         {
             await client.DisconnectAsync("Server session token not available");
@@ -80,9 +78,7 @@ public sealed partial class AuthenticationRouter(
         }
 
         var fingerprintStr = X509Certificate2Factory.ComputeCertificateFingerprint(serverCertFingerprint);
-        var serverAccessToken =
-            await sessionServiceClient.ExchangeAuthGrantForTokenAsync(serverAuthGrant, fingerprintStr,
-                serverSessionToken);
+        var serverAccessToken = await sessionServiceClient.ExchangeAuthGrantForTokenAsync(serverAuthGrant, fingerprintStr, serverSessionToken);
 
         if (string.IsNullOrEmpty(serverAccessToken))
         {
@@ -92,7 +88,7 @@ public sealed partial class AuthenticationRouter(
 
         var hasPassword = !string.IsNullOrEmpty(ServerManager.Configuration.Password);
         var passwordChallenge = hasPassword ? PasswordChallengeUtility.GenerateChallenge() : null;
-
+        
         ServerManager.CurrentPasswordChallenge = passwordChallenge;
 
         await client.SendPacketAsync(new ServerAuthTokenPacket
@@ -101,9 +97,7 @@ public sealed partial class AuthenticationRouter(
             PasswordChallenge = passwordChallenge
         });
 
-        logger.LogInformation("Authentication complete for {Username}, transitioning to password check",
-            client.Username);
-
-        routerService.SetRouter<PasswordRouter>(client.Channel);
+        logger.LogInformation("Authentication complete for {Username}, transitioning to password check", client.Username);
+        routerService.SetRouter<PasswordRouter>(Context.Connection);
     }
 }

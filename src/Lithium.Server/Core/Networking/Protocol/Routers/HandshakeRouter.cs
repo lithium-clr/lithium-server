@@ -4,23 +4,20 @@ using Lithium.Server.Core.Networking.Protocol.Packets;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
-public sealed partial class HandshakeRouter(
+public sealed class HandshakeRouter(
     ILogger<HandshakeRouter> logger,
     IPacketRegistry packetRegistry,
     IServerAuthManager serverAuthManager,
     ISessionServiceClient sessionServiceClient,
-    PacketRouterService routerService,
-    IServiceProvider serviceProvider
-) : BasePacketRouter(logger, packetRegistry)
+    IClientManager clientManager,
+    PacketRouterService routerService
+) : BasePacketRouter(logger, packetRegistry, clientManager)
 {
     [PacketHandler]
     public async Task HandleConnect(ConnectPacket packet)
     {
-        var clientManager = serviceProvider.GetRequiredService<IClientManager>();
-        var client = clientManager.CreateClient(Context.Connection, packet.ClientType, packet.Uuid, packet.Username,
-            packet.Language);
-        logger.LogInformation("(HandshakeRouter) -> Client connected: {RemoteEndPoint}",
-            Context.Connection.RemoteEndPoint);
+        var client = clientManager.CreateClient(Context.Connection, packet.ClientType, packet.Uuid, packet.Username, packet.Language);
+        logger.LogInformation("(HandshakeRouter) -> Client connected: {RemoteEndPoint}", Context.Connection.RemoteEndPoint);
 
         await RequestAuthGrant(client, packet);
     }
@@ -28,7 +25,7 @@ public sealed partial class HandshakeRouter(
     private async Task RequestAuthGrant(IClient client, ConnectPacket packet)
     {
         logger.LogInformation("Requesting authorization grant...: {Uuid}", packet.Uuid);
-
+        
         var identityToken = packet.IdentityToken;
         var serverSessionToken = serverAuthManager.GameSession?.SessionToken;
 
@@ -64,8 +61,8 @@ public sealed partial class HandshakeRouter(
 
                     logger.LogInformation("Sending authorization grant to client...");
                     await client.SendPacketAsync(authGrantPacket);
-
-                    routerService.SetRouter<AuthenticationRouter>(client.Channel);
+                    
+                    routerService.SetRouter<AuthenticationRouter>(Context.Connection);
                 }
             }
         }
