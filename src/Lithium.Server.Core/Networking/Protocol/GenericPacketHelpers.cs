@@ -20,7 +20,10 @@ internal static class GenericPacketHelpers
         bool IsEnum,
         Type? UnderlyingType,
         bool IsArray,
-        Type? ArrayElementType
+        Type? ArrayElementType,
+        bool IsDictionary,
+        Type? DictionaryKeyType,
+        Type? DictionaryValueType
     );
 
     internal sealed record TypeSerializationMetadata(
@@ -57,6 +60,10 @@ internal static class GenericPacketHelpers
                 var isArray = propertyType.IsArray && propertyType != typeof(byte[]);
                 var arrayElementType = isArray ? propertyType.GetElementType() : null;
 
+                var isDictionary = propertyType.IsGenericType && (propertyType.GetGenericTypeDefinition() == typeof(Dictionary<,>) || propertyType.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+                var dictionaryKeyType = isDictionary ? propertyType.GetGenericArguments()[0] : null;
+                var dictionaryValueType = isDictionary ? propertyType.GetGenericArguments()[1] : null;
+
                 properties.Add(new PropertySerializationInfo(
                     prop,
                     attr,
@@ -66,7 +73,10 @@ internal static class GenericPacketHelpers
                     propertyType.IsEnum,
                     underlyingType,
                     isArray,
-                    arrayElementType
+                    arrayElementType,
+                    isDictionary,
+                    dictionaryKeyType,
+                    dictionaryValueType
                 ));
             }
 
@@ -106,6 +116,8 @@ internal static class GenericPacketHelpers
         if (type == typeof(short) || type == typeof(ushort)) return 2;
         if (type == typeof(byte) || type == typeof(sbyte) || type == typeof(bool) || type.IsEnum) return 1;
         if (type == typeof(Guid)) return 16;
+        if (type == typeof(FloatRange)) return 8;
+        if (type == typeof(SoundEventLayer.SoundEventLayerRandomSettings)) return 20;
         if (type == typeof(string)) return fixedSize is not -1 ? fixedSize : 0;
         return 0;
     }
@@ -116,13 +128,24 @@ internal static class GenericPacketHelpers
          p.Attribute.BitIndex is not -1 ||
          p.PropertyType == typeof(string) ||
          p.PropertyType == typeof(byte[]) ||
-         p.IsArray || p.IsPacketObject);
+         p.IsArray || p.IsPacketObject || p.IsDictionary);
 
-    internal static void WriteFixedField(PacketWriter writer, object? value, PropertySerializationInfo prop)
+    internal static void WriteFixedField(PacketWriter writer, object? value, PropertySerializationInfo prop, BitSet bits)
     {
-        if (value is null) ThrowValueCannotBeNullForFixedField(prop.PropertyType, prop.Property.Name);
+        if (value is null)
+        {
+            if (prop.Attribute.BitIndex is -1)
+                ThrowValueCannotBeNullForFixedField(prop.PropertyType, prop.Property.Name);
+            
+            // If nullable but in fixed block, we must write zeros to maintain offsets
+            var size = GetTypeSize(prop.PropertyType, prop.Attribute.FixedSize);
+            for (int i = 0; i < size; i++) writer.WriteUInt8(0);
+            return;
+        }
+
         var t = prop.PropertyType;
-        if (t == typeof(int)) writer.WriteInt32((int)value);
+        if (prop.IsPacketObject) ((PacketObject)value).Serialize(writer);
+        else if (t == typeof(int)) writer.WriteInt32((int)value);
         else if (t == typeof(uint)) writer.WriteUInt32((uint)value);
         else if (t == typeof(long)) writer.WriteInt64((long)value);
         else if (t == typeof(ulong)) writer.WriteUInt64((ulong)value);
@@ -140,9 +163,23 @@ internal static class GenericPacketHelpers
         else ThrowUnsupportedFixedFieldType(t, prop.Property.Name);
     }
 
-    internal static object ReadFixedField(PacketReader reader, PropertySerializationInfo prop)
+    internal static object? ReadFixedField(PacketReader reader, PropertySerializationInfo prop, BitSet bits)
     {
+        if (prop.Attribute.BitIndex is not -1 && !bits.IsSet(prop.Attribute.BitIndex))
+        {
+            var size = GetTypeSize(prop.PropertyType, prop.Attribute.FixedSize);
+            reader.ReadFixedSpan(size); // Consume the bytes
+            return null;
+        }
+
         var t = prop.PropertyType;
+        if (prop.IsPacketObject)
+        {
+            var obj = (PacketObject)Activator.CreateInstance(t)!;
+            obj.Deserialize(reader, -1);
+            return obj;
+        }
+
         if (t == typeof(int)) return reader.ReadInt32();
         if (t == typeof(uint)) return reader.ReadUInt32();
         if (t == typeof(long)) return reader.ReadInt64();
@@ -171,6 +208,9 @@ internal static class GenericPacketHelpers
         if (prop.IsArray)
             return WriteArray(writer, (Array)value, prop.ArrayElementType!,
                 typeof(PacketObject).IsAssignableFrom(prop.ArrayElementType));
+
+        if (prop.IsDictionary)
+            return WriteDictionary(writer, (System.Collections.IDictionary)value, prop.DictionaryKeyType!, prop.DictionaryValueType!);
 
         var t = prop.PropertyType;
         if (t == typeof(string)) return writer.WriteVarString((string)value);
@@ -202,6 +242,10 @@ internal static class GenericPacketHelpers
         if (prop.IsArray)
             return ReadArray(reader, prop.ArrayElementType!,
                 typeof(PacketObject).IsAssignableFrom(prop.ArrayElementType), offset);
+
+        if (prop.IsDictionary)
+            return ReadDictionary(reader, prop.DictionaryKeyType!, prop.DictionaryValueType!,
+                typeof(PacketObject).IsAssignableFrom(prop.DictionaryValueType), offset);
 
         var type = prop.PropertyType;
         if (offset is -1)
@@ -263,10 +307,10 @@ internal static class GenericPacketHelpers
         else
         {
             var propInfo = new PropertySerializationInfo(null!, new PacketPropertyAttribute(), elementType, false, false,
-                elementType.IsEnum, null, false, null);
+                elementType.IsEnum, null, false, null, false, null, null);
             foreach (var item in array)
             {
-                WriteFixedField(writer, item, propInfo);
+                WriteFixedField(writer, item, propInfo, new BitSet(0));
             }
         }
 
@@ -292,12 +336,78 @@ internal static class GenericPacketHelpers
             {
                 var value = ReadFixedField(reader,
                     new PropertySerializationInfo(null!, new PacketPropertyAttribute(), elementType, false, false,
-                        elementType.IsEnum, null, false, null));
+                        elementType.IsEnum, null, false, null, false, null, null), new BitSet(0));
                 array.SetValue(value, i);
             }
         }
 
         return array;
+    }
+
+    internal static int WriteDictionary(PacketWriter writer, System.Collections.IDictionary dict, Type keyType, Type valueType)
+    {
+        var offset = writer.GetCurrentOffset();
+        writer.WriteVarInt(dict.Count);
+
+        var isValuePacketObject = typeof(PacketObject).IsAssignableFrom(valueType);
+        var isKeyEnum = keyType.IsEnum;
+        var keyPropInfo = isKeyEnum ? null : new PropertySerializationInfo(null!, new PacketPropertyAttribute(), keyType, false, false, false, null, false, null, false, null, null);
+        var valPropInfo = isValuePacketObject ? null : new PropertySerializationInfo(null!, new PacketPropertyAttribute(), valueType, false, false, valueType.IsEnum, null, false, null, false, null, null);
+
+        foreach (System.Collections.DictionaryEntry entry in dict)
+        {
+            if (isKeyEnum)
+            {
+                writer.WriteUInt8((byte)Convert.ChangeType(entry.Key, typeof(byte)));
+            }
+            else
+            {
+                WriteFixedField(writer, entry.Key, keyPropInfo!, new BitSet(0)); // Dummy bitset as it's not optional
+            }
+
+            if (isValuePacketObject)
+            {
+                ((PacketObject)entry.Value!).Serialize(writer);
+            }
+            else
+            {
+                WriteFixedField(writer, entry.Value, valPropInfo!, new BitSet(0));
+            }
+        }
+
+        return offset;
+    }
+
+    internal static object ReadDictionary(PacketReader reader, Type keyType, Type valueType, bool isValuePacketObject, int offset)
+    {
+        if (offset is not -1) reader.SeekVar(offset);
+
+        var count = reader.ReadVarInt32();
+        var dictType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+        var dict = (System.Collections.IDictionary)Activator.CreateInstance(dictType)!;
+
+        var isKeyEnum = keyType.IsEnum;
+        var keyPropInfo = isKeyEnum ? null : new PropertySerializationInfo(null!, new PacketPropertyAttribute(), keyType, false, false, false, null, false, null, false, null, null);
+        var valPropInfo = isValuePacketObject ? null : new PropertySerializationInfo(null!, new PacketPropertyAttribute(), valueType, false, false, valueType.IsEnum, null, false, null, false, null, null);
+
+        for (int i = 0; i < count; i++)
+        {
+            object key = isKeyEnum ? reader.ReadEnum(keyType) : ReadFixedField(reader, keyPropInfo!, new BitSet(0));
+            object value;
+            if (isValuePacketObject)
+            {
+                var obj = (PacketObject)Activator.CreateInstance(valueType)!;
+                obj.Deserialize(reader, -1);
+                value = obj;
+            }
+            else
+            {
+                value = ReadFixedField(reader, valPropInfo!, new BitSet(0));
+            }
+            dict.Add(key, value);
+        }
+
+        return dict;
     }
 
     [DoesNotReturn]

@@ -11,11 +11,11 @@ public abstract class Packet
         if (metadata.PacketInfo is null) return;
 
         // 1. Write BitSet for nullable fields
+        var bitSetSize = metadata.MaxBitIndex is -1 ? 0 : (metadata.MaxBitIndex / 8) + 1;
+        var bits = new BitSet(bitSetSize);
+
         if (metadata.NullableProperties.Count > 0)
         {
-            var bitSetSize = metadata.MaxBitIndex is -1 ? 0 : (metadata.MaxBitIndex / 8) + 1;
-            var bits = new BitSet(bitSetSize);
-
             foreach (var prop in metadata.NullableProperties)
             {
                 if (prop.Property.GetValue(this) is not null)
@@ -27,7 +27,7 @@ public abstract class Packet
 
         // Write Fixed Fields
         foreach (var prop in metadata.FixedProperties)
-            WriteFixedField(writer, prop.Property.GetValue(this), prop);
+            WriteFixedField(writer, prop.Property.GetValue(this), prop, bits);
 
         // Write Offset Placeholders
         if (metadata.VariableProperties.Count > 0 && metadata.PacketInfo.UseOffsets)
@@ -69,7 +69,7 @@ public abstract class Packet
 
         // Read Fixed Fields
         foreach (var prop in metadata.FixedProperties)
-            prop.Property.SetValue(this, ReadFixedField(reader, prop));
+            prop.Property.SetValue(this, ReadFixedField(reader, prop, bits));
 
         // Read Offset Placeholders
         var offsets = metadata.VariableProperties.Count > 0 && metadata.PacketInfo.UseOffsets

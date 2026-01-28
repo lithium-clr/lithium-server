@@ -1,5 +1,3 @@
-using System.Reflection;
-using System.Linq;
 using static Lithium.Server.Core.Networking.Protocol.GenericPacketHelpers;
 
 namespace Lithium.Server.Core.Networking.Protocol;
@@ -12,10 +10,11 @@ public abstract record PacketObject
         bool useOffsets = metadata.VariableProperties.Any(p => p.Attribute.OffsetIndex is not -1);
 
         // 1. Write BitSet for nullable fields
+        var bitSetSize = metadata.MaxBitIndex is -1 ? 0 : (metadata.MaxBitIndex / 8) + 1;
+        var bits = new BitSet(bitSetSize);
+
         if (metadata.NullableProperties.Count > 0)
         {
-            var bitSetSize = metadata.MaxBitIndex is -1 ? 0 : (metadata.MaxBitIndex / 8) + 1;
-            var bits = new BitSet(bitSetSize);
             foreach (var prop in metadata.NullableProperties)
             {
                 if (prop.Property.GetValue(this) is not null)
@@ -27,7 +26,7 @@ public abstract record PacketObject
         // 2. Write Fixed Fields
         foreach (var prop in metadata.FixedProperties)
         {
-            WriteFixedField(writer, prop.Property.GetValue(this), prop);
+            WriteFixedField(writer, prop.Property.GetValue(this), prop, bits);
         }
 
         // 3. Write Offset Placeholders
@@ -83,7 +82,7 @@ public abstract record PacketObject
         // 2. Read Fixed Fields
         foreach (var prop in metadata.FixedProperties)
         {
-            prop.Property.SetValue(this, ReadFixedField(reader, prop));
+            prop.Property.SetValue(this, ReadFixedField(reader, prop, bits));
         }
 
         if (offset is -1)
