@@ -1,14 +1,16 @@
 using System.Reflection;
 using Lithium.Codecs;
 using Lithium.Server;
-using Lithium.Server.AssetStore;
 using Lithium.Server.Core;
+using Lithium.Server.Core.AssetStore;
 using Lithium.Server.Core.Codecs;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Authentication.OAuth;
 using Lithium.Server.Core.Networking.Extensions;
+using Lithium.Server.Core.Networking.Protocol.Routers;
+using Lithium.Server.Core.Resources;
 using Lithium.Server.Core.Semver;
 using Lithium.Server.Core.Storage;
 using Lithium.Server.Core.Systems.Commands;
@@ -118,6 +120,27 @@ builder.Services.AddSingleton<JwtValidator>();
 builder.Services.AddLithiumCodecs()
     .AddSingleton<ICodec<Lithium.Server.Core.Semver.Semver>, SemverCodec>()
     .AddSingleton<ICodec<SemverRange>, SemverRangeCodec>();
+
+// Asset stores
+builder.Services.AddAssetStoreRegistry();
+
+builder.Services.AddAssetStore<AudioCategoryResource>(options =>
+{
+    options.Path = "Audio/AudioCategories";
+    options.Dependencies = [];
+});
+
+builder.Services.AddAssetStore<SoundEventResource>(options =>
+{
+    options.Path = "Audio/SoundEvents";
+    options.Dependencies = [];
+});
+
+// builder.Services.AddAssetStore<BlockSoundSetResource>(options =>
+// {
+//     options.Path = "Item/Block/Sounds";
+//     options.Dependencies = [typeof(SoundEvent)];
+// });
 
 builder.Services.AddJwkKeyCodec();
 builder.Services.AddJwksResponseCodec();

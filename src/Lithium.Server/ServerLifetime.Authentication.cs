@@ -39,7 +39,7 @@ public partial class ServerLifetime
         };
     }
     
-    private async Task EnsureAuthenticationAsync()
+    private async ValueTask<AuthResult> EnsureAuthenticationAsync()
     {
         logger.LogInformation("Ensuring authentication...");
         
@@ -54,11 +54,13 @@ public partial class ServerLifetime
         }
         else
         {
-            await RequestAuthenticationAsync();
+            return await RequestAuthenticationAsync();
         }
+        
+        return AuthResult.Success;
     }
     
-    private async Task RequestAuthenticationAsync()
+    private async ValueTask<AuthResult> RequestAuthenticationAsync()
     {
         var authResult = await serverAuthManager.StartFlowAsync(deviceFlow, new CancellationTokenSource());
 
@@ -80,6 +82,8 @@ public partial class ServerLifetime
                 logger.LogInformation("Authentication failed");
                 break;
         }
+
+        return authResult;
     }
     
     [ConsoleCommand("auth")]

@@ -1,9 +1,11 @@
 ﻿using Lithium.Server.Core;
+using Lithium.Server.Core.AssetStore;
 using Lithium.Server.Core.Logging;
 using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Authentication.OAuth;
 using Lithium.Server.Core.Networking.Protocol;
+using Lithium.Server.Core.Networking.Protocol.Routers;
 
 namespace Lithium.Server;
 
@@ -15,6 +17,7 @@ public sealed partial class ServerLifetime(
     IServerConfigurationProvider configurationProvider,
     IPacketHandler packetHandler,
     AssetManager assetManager,
+    AssetStoreRegistry assetStoreRegistry,
     IOAuthDeviceFlow deviceFlow
 ) : BackgroundService
 {
@@ -32,14 +35,24 @@ public sealed partial class ServerLifetime(
         _loggerService.Init();
         
         await configurationProvider.LoadAsync();
-        await assetManager.InitializeAsync();
         
         var context = SetupAuthenticationContext();
         await serverAuthManager.InitializeAsync(context);
         await serverAuthManager.InitializeCredentialStore();
+
+        var authResult = AuthResult.Success;
         
         if (serverAuthManager.AuthMode is AuthMode.None)
-            await EnsureAuthenticationAsync();
+            authResult = await EnsureAuthenticationAsync();
+        
+        if (authResult is AuthResult.Failed)
+        {
+            logger.LogInformation("Authentication failed. Restart the server.");
+            return;
+        }
+        
+        await assetManager.InitializeAsync();
+        await assetStoreRegistry.LoadAllAsync(ct);
         
         logger.LogInformation(
             "===============================================================================================");
