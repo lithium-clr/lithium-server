@@ -1,5 +1,8 @@
+using System.Text.Json;
+using Lithium.Server.Core.AssetStore;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
+using Lithium.Server.Core.Resources;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
@@ -9,6 +12,7 @@ public sealed class SetupPacketRouter(
     IPacketRegistry packetRegistry,
     IClientManager clientManager,
     AssetManager assetManager,
+    AssetStoreRegistry assetStoreRegistry,
     PlayerCommonAssets assets
 ) : BasePacketRouter(logger, packetRegistry, clientManager)
 {
@@ -30,6 +34,8 @@ public sealed class SetupPacketRouter(
             WorldHeight = 320,
             RequiredAssets = [.. requiredAssets]
         });
+        
+        logger.LogInformation("Sending server info packet...");
 
         var config = serverManager.Configuration;
 
@@ -54,8 +60,73 @@ public sealed class SetupPacketRouter(
 
         await SendAssetsToClient(client, packet.Assets ?? []);
 
+        logger.LogInformation("Assets sent.");
+
+        // var blockSoundSet = new BlockSoundSet
+        // {
+        //     Id = "Coins",
+        //     SoundEventIndices = new Dictionary<BlockSoundEvent, int>
+        //     {
+        //         [BlockSoundEvent.Build] = 540,
+        //         [BlockSoundEvent.Hit] = 1102,
+        //         [BlockSoundEvent.Break] = 692,
+        //         [BlockSoundEvent.Walk] = 810,
+        //         [BlockSoundEvent.Land] = 794,
+        //     }
+        // };
+
+        // {
+        //     var blockSoundSet = new BlockSoundSet
+        //     {
+        //         Id = "Empty",
+        //         SoundEventIndices = new Dictionary<BlockSoundEvent, int>()
+        //     };
+        //
+        //     var blockSoundSets = Enumerable.Range(0, 53)
+        //         .ToDictionary(i => i, _ => blockSoundSet);
+        //
+        //     // TODO - AssetRegistryLoader.sendAssets(this);
+        //     var updateBlockSoundSetsPacket = new UpdateBlockSoundSetsPacket
+        //     {
+        //         MaxId = 53,
+        //         Type = UpdateType.Init,
+        //         BlockSoundSets = blockSoundSets
+        //     };
+        //
+        //     logger.LogInformation("Send UpdateBlockSoundSetsPacket");
+        //     await client.SendPacketAsync(updateBlockSoundSetsPacket);
+        //     logger.LogInformation("UpdateBlockSoundSetsPacket sent.");
+        // }
+
+        var store = assetStoreRegistry.GetStore<AudioCategoryResource>();
+        var categories = new Dictionary<int, AudioCategory>();
+
+        for (var i = 0; i < store.Assets.Count; i++)
+        {
+            var asset = store.Assets[i];
+            categories[i] = (AudioCategory)asset.ToPacket();
+        }
+        
+        var updateAudioCategoriesPacket = new UpdateAudioCategoriesPacket
+        {
+            Type = UpdateType.Init,
+            MaxId = store.Assets.Count,
+            Categories = categories
+        };
+        
+        logger.LogInformation("Send UpdateAudioCategoriesPacket: \n" + JsonSerializer.Serialize(updateAudioCategoriesPacket));
+        await client.SendPacketAsync(updateAudioCategoriesPacket);
+        logger.LogInformation("UpdateAudioCategoriesPacket sent.");
+        
+        // TODO - I18nModule.get().sendTranslations(this, this.language);
+        
+        // await client.SendPacketAsync(new WorldLoadProgressPacket
+        //     { Status = "Loading assets ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
+        
         await client.SendPacketAsync(new WorldLoadProgressPacket
             { Status = "Loading world ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
+        
+        logger.LogInformation("WorldLoadProgressPacket sent.");
 
         await client.SendPacketAsync(new WorldLoadFinishedPacket());
     }
