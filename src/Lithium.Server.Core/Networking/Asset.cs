@@ -6,8 +6,7 @@ namespace Lithium.Server.Core.Networking;
 public sealed record Asset : PacketObject
 {
     [PacketProperty(FixedIndex = 0, FixedSize = 64)]
-    public string Hash { get; init; }
+    public string Hash { get; init; } = string.Empty;
 
-    [PacketProperty]
-    public string Name { get; init; }
+    [PacketProperty] public string Name { get; init; } = string.Empty;
 }
