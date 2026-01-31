@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
@@ -11,8 +12,8 @@ namespace Lithium.Server.Core.Networking.Protocol;
 )]
 public sealed class BenchUpgradeRequirement : INetworkSerializable
 {
-    public MaterialQuantity[]? Material { get; set; }
-    public double TimeSeconds { get; set; }
+    [JsonPropertyName("material")] public MaterialQuantity[]? Material { get; set; }
+    [JsonPropertyName("timeSeconds")] public double TimeSeconds { get; set; }
 
     public void Serialize(PacketWriter writer)
     {

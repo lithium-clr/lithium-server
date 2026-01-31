@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
@@ -11,10 +12,14 @@ namespace Lithium.Server.Core.Networking.Protocol;
 )]
 public sealed class BenchTierLevel : INetworkSerializable
 {
+    [JsonPropertyName("benchUpgradeRequirement")]
     public BenchUpgradeRequirement? BenchUpgradeRequirement { get; set; }
+
+    [JsonPropertyName("craftingTimeReductionModifier")]
     public double CraftingTimeReductionModifier { get; set; }
-    public int ExtraInputSlot { get; set; }
-    public int ExtraOutputSlot { get; set; }
+
+    [JsonPropertyName("extraInputSlot")] public int ExtraInputSlot { get; set; }
+    [JsonPropertyName("extraOutputSlot")] public int ExtraOutputSlot { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
