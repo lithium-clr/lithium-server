@@ -45,8 +45,8 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
         var value = ReadUInt8();
         return Unsafe.As<byte, TEnum>(ref value);
     }
-
-    public Dictionary<string, T>? ReadAnimationsDictionary<T>(int offset)
+    
+    public Dictionary<string, T>? ReadDictionary<T>(int offset)
         where T : INetworkSerializable, new()
     {
         if (offset is -1) return null;
@@ -66,6 +66,31 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
         }
 
         SeekTo(savedPos);
+        return dict;
+    }
+    
+    public Dictionary<TKey, TValue> ReadDictionaryAt<TKey, TValue>(
+        int offset,
+        Func<PacketReader, TKey> readKey,
+        Func<PacketReader, TValue> readValue)
+        where TKey : notnull
+    {
+        if (offset == -1) return null;
+
+        var savedPos = _position;
+        _position = packetInfo.VariableBlockStart + offset;
+
+        var count = ReadVarInt32();
+        var dict = new Dictionary<TKey, TValue>(count);
+
+        for (var i = 0; i < count; i++)
+        {
+            var key = readKey(this);
+            var value = readValue(this);
+            dict[key] = value;
+        }
+
+        _position = savedPos;
         return dict;
     }
 

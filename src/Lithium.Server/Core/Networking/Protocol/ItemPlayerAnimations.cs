@@ -115,7 +115,7 @@ public sealed class ItemPlayerAnimations : INetworkSerializable
             Id = reader.ReadVarUtf8StringAt(offsets[0]);
 
         if (bits.IsSet(8))
-            Animations = reader.ReadAnimationsDictionary<ItemAnimation>(offsets[1]);
+            Animations = reader.ReadDictionary<ItemAnimation>(offsets[1]);
 
         if (bits.IsSet(16))
             CameraSettings = reader.ReadObjectAt<CameraSettings>(offsets[2]);
