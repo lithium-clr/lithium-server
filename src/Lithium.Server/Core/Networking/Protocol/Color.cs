@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
+[JsonConverter(typeof(ColorJsonConverter))]
 public record struct Color : INetworkSerializable
 {
     [JsonPropertyName("red")] public byte Red { get; set; }
