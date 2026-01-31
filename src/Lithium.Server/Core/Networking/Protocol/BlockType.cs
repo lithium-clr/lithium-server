@@ -4,7 +4,6 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public sealed class BlockType : INetworkSerializable
 {
-    // Propriétés variables (avec offsets)
     [JsonPropertyName("item")] public string? Item { get; set; }
     [JsonPropertyName("name")] public string? Name { get; set; }
     [JsonPropertyName("shaderEffect")] public ShaderType[]? ShaderEffect { get; set; }
@@ -44,7 +43,6 @@ public sealed class BlockType : INetworkSerializable
     [JsonPropertyName("connectedBlockRuleSet")]
     public ConnectedBlockRuleSet? ConnectedBlockRuleSet { get; set; }
 
-    // Propriétés fixes
     [JsonPropertyName("unknown")] public bool Unknown { get; set; }
     [JsonPropertyName("drawType")] public DrawType DrawType { get; set; } = DrawType.Empty;
     [JsonPropertyName("material")] public BlockMaterial Material { get; set; } = BlockMaterial.Empty;
@@ -97,10 +95,8 @@ public sealed class BlockType : INetworkSerializable
 
     public void Serialize(PacketWriter writer)
     {
-        // 4 bytes de nullBits
         var nullBits = new byte[4];
 
-        // Configuration des bits (nullBits[0])
         if (ParticleColor is not null) nullBits[0] |= 1;
         if (Light is not null) nullBits[0] |= 2;
         if (Tint is not null) nullBits[0] |= 4;
@@ -110,7 +106,6 @@ public sealed class BlockType : INetworkSerializable
         if (PlacementSettings is not null) nullBits[0] |= 64;
         if (Item is not null) nullBits[0] |= 128;
 
-        // Configuration des bits (nullBits[1])
         if (Name is not null) nullBits[1] |= 1;
         if (ShaderEffect is not null) nullBits[1] |= 2;
         if (Model is not null) nullBits[1] |= 4;
@@ -120,7 +115,6 @@ public sealed class BlockType : INetworkSerializable
         if (Supporting is not null) nullBits[1] |= 64;
         if (CubeTextures is not null) nullBits[1] |= 128;
 
-        // Configuration des bits (nullBits[2])
         if (CubeSideMaskTexture is not null) nullBits[2] |= 1;
         if (Particles is not null) nullBits[2] |= 2;
         if (BlockParticleSetId is not null) nullBits[2] |= 4;
@@ -130,7 +124,6 @@ public sealed class BlockType : INetworkSerializable
         if (InteractionHint is not null) nullBits[2] |= 64;
         if (Gathering is not null) nullBits[2] |= 128;
 
-        // Configuration des bits (nullBits[3])
         if (Display is not null) nullBits[3] |= 1;
         if (Rail is not null) nullBits[3] |= 2;
         if (Interactions is not null) nullBits[3] |= 4;
@@ -139,11 +132,9 @@ public sealed class BlockType : INetworkSerializable
         if (Bench is not null) nullBits[3] |= 32;
         if (ConnectedBlockRuleSet is not null) nullBits[3] |= 64;
 
-        // Écrire les 4 bytes de nullBits
         foreach (var b in nullBits)
             writer.WriteUInt8(b);
 
-        // FIXED BLOCK - Champs fixes
         writer.WriteBoolean(Unknown);
         writer.WriteEnum(DrawType);
         writer.WriteEnum(Material);
@@ -162,30 +153,29 @@ public sealed class BlockType : INetworkSerializable
         writer.WriteInt32(BlockSoundSetIndex);
         writer.WriteInt32(AmbientSoundEventIndex);
 
-        // FIXED BLOCK - Objets nullable (écrire zéros si null)
         if (ParticleColor is not null)
             ParticleColor.Value.Serialize(writer);
         else
             for (var i = 0; i < 3; i++)
-                writer.WriteUInt8(0); // 3 bytes
+                writer.WriteUInt8(0);
 
         if (Light is not null)
             Light.Value.Serialize(writer);
         else
             for (var i = 0; i < 4; i++)
-                writer.WriteUInt8(0); // 4 bytes
+                writer.WriteUInt8(0);
 
         if (Tint is not null)
             Tint.Value.Serialize(writer);
         else
             for (var i = 0; i < 24; i++)
-                writer.WriteUInt8(0); // 24 bytes
+                writer.WriteUInt8(0);
 
         if (BiomeTint is not null)
             BiomeTint.Value.Serialize(writer);
         else
             for (var i = 0; i < 24; i++)
-                writer.WriteUInt8(0); // 24 bytes
+                writer.WriteUInt8(0);
 
         writer.WriteInt32(Group);
 
@@ -193,24 +183,23 @@ public sealed class BlockType : INetworkSerializable
             MovementSettings.Serialize(writer);
         else
             for (var i = 0; i < 42; i++)
-                writer.WriteUInt8(0); // 42 bytes
+                writer.WriteUInt8(0);
 
         if (Flags is not null)
             Flags.Value.Serialize(writer);
         else
             for (var i = 0; i < 2; i++)
-                writer.WriteUInt8(0); // 2 bytes
+                writer.WriteUInt8(0);
 
         if (PlacementSettings is not null)
             PlacementSettings.Serialize(writer);
         else
             for (var i = 0; i < 16; i++)
-                writer.WriteUInt8(0); // 16 bytes
+                writer.WriteUInt8(0);
 
         writer.WriteBoolean(IgnoreSupportWhenPlaced);
         writer.WriteInt32(TransitionToTag);
 
-        // Réserver 24 offsets (4 bytes chacun)
         var itemOffsetSlot = writer.ReserveOffset();
         var nameOffsetSlot = writer.ReserveOffset();
         var shaderEffectOffsetSlot = writer.ReserveOffset();
@@ -238,7 +227,6 @@ public sealed class BlockType : INetworkSerializable
 
         var varBlockStart = writer.Position;
 
-        // VARIABLE BLOCK - Écrire les données avec offsets
         WriteStringOffset(writer, itemOffsetSlot, Item, varBlockStart);
         WriteStringOffset(writer, nameOffsetSlot, Name, varBlockStart);
         WriteArrayOffset(writer, shaderEffectOffsetSlot, ShaderEffect, varBlockStart,
@@ -283,7 +271,6 @@ public sealed class BlockType : INetworkSerializable
         WriteObjectOffset(writer, connectedBlockRuleSetOffsetSlot, ConnectedBlockRuleSet, varBlockStart);
     }
 
-    // Helper methods pour la sérialisation
     private static void WriteStringOffset(PacketWriter writer, int slot, string? value, int varBlockStart)
     {
         if (value is not null)
@@ -318,7 +305,7 @@ public sealed class BlockType : INetworkSerializable
         {
             writer.WriteOffsetAt(slot, writer.Position - varBlockStart);
             writer.WriteVarInt(array.Length);
-            
+
             foreach (var item in array)
                 writeItem(writer, item);
         }
@@ -334,7 +321,7 @@ public sealed class BlockType : INetworkSerializable
         {
             writer.WriteOffsetAt(slot, writer.Position - varBlockStart);
             writer.WriteVarInt(array.Length);
-            
+
             foreach (var item in array)
                 writer.WriteInt32(item);
         }
@@ -352,7 +339,7 @@ public sealed class BlockType : INetworkSerializable
         {
             writer.WriteOffsetAt(slot, writer.Position - varBlockStart);
             writer.WriteVarInt(dict.Count);
-            
+
             foreach (var kvp in dict)
             {
                 writeKey(writer, kvp.Key);
@@ -373,7 +360,7 @@ public sealed class BlockType : INetworkSerializable
         {
             writer.WriteOffsetAt(slot, writer.Position - varBlockStart);
             writer.WriteVarInt(dict.Count);
-            
+
             foreach (var kvp in dict)
             {
                 writeKey(writer, kvp.Key);
@@ -388,7 +375,6 @@ public sealed class BlockType : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        // À implémenter (très long...)
         throw new NotImplementedException();
     }
 }
