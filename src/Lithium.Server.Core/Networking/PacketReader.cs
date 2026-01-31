@@ -145,6 +145,23 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
         _position = savedPos;
         return obj;
     }
+    
+    public T[] ReadArrayAt<T>(int offset, Func<PacketReader, T> readItem)
+    {
+        if (offset == -1) return null;
+    
+        var savedPos = _position;
+        _position = packetInfo.VariableBlockStart + offset;
+    
+        var count = ReadVarInt32();
+        var array = new T[count];
+    
+        for (var i = 0; i < count; i++)
+            array[i] = readItem(this);
+    
+        _position = savedPos;
+        return array;
+    }
 
     // ============================================================
     // SEQUENTIAL READING (RequestAssetsPacket style)
