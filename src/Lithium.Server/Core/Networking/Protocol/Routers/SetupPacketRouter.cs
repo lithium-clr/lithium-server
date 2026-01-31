@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Lithium.Server.Core.AssetStore;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
@@ -158,13 +159,21 @@ public sealed class SetupPacketRouter(
         }
 
         {
-            // ID: 40
-            // Name: UpdateBlockTypes
-            
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_types.json"));
+            packetFile = SanitizeJson(packetFile);
+            
             var packet = JsonSerializer.Deserialize<UpdateBlockTypesPacket>(packetFile);
-
             await client.SendPacketAsync(packet);
+
+            static string SanitizeJson(string json)
+            {
+                // Replace all NaN/Infinity non quoted values by valid values
+                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*NaN\b", ": 0.0");
+                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*Infinity\b", ": 3.4028235E+38"); // float.MaxValue
+                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*-Infinity\b", ": -3.4028235E+38"); // float.MinValue
+                
+                return json;
+            }
         }
     }
 
