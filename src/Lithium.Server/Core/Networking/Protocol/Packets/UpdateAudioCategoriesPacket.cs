@@ -1,19 +1,22 @@
-using Lithium.Server.Core.Protocol.Attributes;
+using System.Text.Json.Serialization;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 80, IsCompressed = true, VariableBlockStart = 6, MaxSize = 1677721600)]
-public sealed class UpdateAudioCategoriesPacket : Packet
+[Packet(Id = 80, IsCompressed = true)]
+public sealed class UpdateAudioCategoriesPacket : INetworkSerializable
 {
-    // Java: type (fixed, offset 1)
-    [PacketProperty(FixedIndex = 0)]
-    public UpdateType Type { get; init; } = UpdateType.Init;
+    [JsonPropertyName("type")] public UpdateType Type { get; init; } = UpdateType.Init;
+    [JsonPropertyName("maxId")] public int MaxId { get; init; }
+    [JsonPropertyName("categories")] public Dictionary<int, AudioCategory>? Categories { get; init; }
 
-    // Java: maxId (fixed, offset 2)
-    [PacketProperty(FixedIndex = 1)]
-    public int MaxId { get; init; }
+    public void Serialize(PacketWriter writer)
+    {
+        throw new NotImplementedException();
+    }
 
-    // Java: categories (nullable, bit 0), no OffsetIndex (sequential)
-    [PacketProperty(BitIndex = 0)]
-    public Dictionary<int, AudioCategory>? Categories { get; init; }
+    public void Deserialize(PacketReader reader)
+    {
+        throw new NotImplementedException();
+    }
 }

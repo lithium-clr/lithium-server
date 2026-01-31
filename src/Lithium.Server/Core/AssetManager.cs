@@ -1,5 +1,6 @@
 using Lithium.Server.AssetStore;
 using Lithium.Server.Core.Networking;
+using Lithium.Server.Core.Networking.Protocol;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 
 namespace Lithium.Server.Core;

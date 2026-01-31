@@ -16,8 +16,10 @@ public sealed class HandshakeRouter(
     [PacketHandler]
     public async Task HandleConnect(ConnectPacket packet)
     {
-        var client = clientManager.CreateClient(Context.Connection, packet.ClientType, packet.Uuid, packet.Username, packet.Language);
-        logger.LogInformation("(HandshakeRouter) -> Client connected: {RemoteEndPoint}", Context.Connection.RemoteEndPoint);
+        var client = clientManager.CreateClient(Context.Connection, packet.ClientType, packet.Uuid, packet.Username,
+            packet.Language);
+        logger.LogInformation("(HandshakeRouter) -> Client connected: {RemoteEndPoint}",
+            Context.Connection.RemoteEndPoint);
 
         await RequestAuthGrant(client, packet);
     }
@@ -25,8 +27,14 @@ public sealed class HandshakeRouter(
     private async Task RequestAuthGrant(IClient client, ConnectPacket packet)
     {
         logger.LogInformation("Requesting authorization grant...: {Uuid}", packet.Uuid);
-        
+
         var identityToken = packet.IdentityToken;
+
+        // 🔍 DEBUG: Vérifier le token reçu
+        Console.WriteLine($"[DEBUG] IdentityToken received: {identityToken}");
+        Console.WriteLine($"[DEBUG] IdentityToken length: {identityToken?.Length ?? 0}");
+        Console.WriteLine($"[DEBUG] IdentityToken is null or empty: {string.IsNullOrEmpty(identityToken)}");
+
         var serverSessionToken = serverAuthManager.GameSession?.SessionToken;
 
         if (!string.IsNullOrEmpty(serverSessionToken))
@@ -34,6 +42,12 @@ public sealed class HandshakeRouter(
             logger.LogInformation("Server session token available - requesting auth grant..");
 
             var serverAudience = AuthConstants.GetServerAudience(serverSessionToken);
+
+            // 🔍 DEBUG: Vérifier avant l'envoi
+            Console.WriteLine($"[DEBUG] Sending to session service:");
+            Console.WriteLine($"[DEBUG]   - identityToken: {identityToken}");
+            Console.WriteLine($"[DEBUG]   - serverAudience: {serverAudience}");
+            Console.WriteLine($"[DEBUG]   - serverSessionToken: {serverSessionToken}");
 
             var authGrant = await sessionServiceClient.RequestAuthorizationGrantAsync(
                 identityToken!,
@@ -61,7 +75,7 @@ public sealed class HandshakeRouter(
 
                     logger.LogInformation("Sending authorization grant to client...");
                     await client.SendPacketAsync(authGrantPacket);
-                    
+
                     routerService.SetRouter<AuthenticationRouter>(Context.Connection);
                 }
             }

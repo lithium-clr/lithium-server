@@ -41,18 +41,18 @@ public sealed record SoundEventResource : AssetResource
     public SoundEventLayer[] Layers { get; set; } = [];
     public string? AudioCategory { get; set; } = string.Empty;
 
-    public override PacketObject ToPacket() => new SoundEvent
-    {
-        Id = FileName,
-        Volume = Volume,
-        Pitch = Pitch,
-        MusicDuckingVolume = MusicDuckingVolume,
-        AmbientDuckingVolume = AmbientDuckingVolume,
-        StartAttenuationDistance = StartAttenuationDistance,
-        MaxDistance = MaxDistance,
-        MaxInstance = MaxInstance,
-        PreventSoundInterruption = PreventSoundInterruption,
-        Layers = Layers,
-        AudioCategory = AudioCategory
-    };
+    // public override PacketObject ToPacket() => new SoundEvent
+    // {
+    //     Id = FileName,
+    //     Volume = Volume,
+    //     Pitch = Pitch,
+    //     MusicDuckingVolume = MusicDuckingVolume,
+    //     AmbientDuckingVolume = AmbientDuckingVolume,
+    //     StartAttenuationDistance = StartAttenuationDistance,
+    //     MaxDistance = MaxDistance,
+    //     MaxInstance = MaxInstance,
+    //     PreventSoundInterruption = PreventSoundInterruption,
+    //     Layers = Layers,
+    //     // AudioCategory = AudioCategory
+    // };
 }

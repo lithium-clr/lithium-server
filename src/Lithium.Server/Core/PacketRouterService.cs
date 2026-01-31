@@ -34,7 +34,7 @@ public sealed class PacketRouterService(
         return _activeRouters.GetValueOrDefault(channel, DefaultRouter);
     }
 
-    public async Task Route(INetworkConnection channel, int packetId, Packet packet)
+    public async Task Route(INetworkConnection channel, int packetId, INetworkSerializable packet)
     {
         var router = GetRouter(channel);
         await router.Route(channel, packetId, packet);

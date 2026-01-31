@@ -1,15 +1,23 @@
-using Lithium.Server.Core.Protocol.Attributes;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 12, VariableBlockStart = 9, MaxSize = 49171)]
-public sealed class AuthTokenPacket : Packet
+[Packet(Id = 12, NullableBitFieldSize = 1, FixedBlockSize = 1, VariableFieldCount = 2, VariableBlockStart = 9,
+    MaxSize = 49171)]
+public sealed class AuthTokenPacket : INetworkSerializable
 {
-    // Java: accessToken (nullable, bit 0), OffsetIndex 0
-    [PacketProperty(BitIndex = 0, OffsetIndex = 0)]
-    public string? AccessToken { get; init; }
+    public string? AccessToken { get; set; }
+    public string? ServerAuthorizationGrant { get; set; }
+    
+    public void Deserialize(PacketReader reader)
+    {
+        var bits = reader.ReadBits();
+        var offsets = reader.ReadOffsets(2);
 
-    // Java: serverAuthorizationGrant (nullable, bit 1), OffsetIndex 1
-    [PacketProperty(BitIndex = 1, OffsetIndex = 1)]
-    public string? ServerAuthorizationGrant { get; init; }
+        if (bits.IsSet(1))
+            AccessToken = reader.ReadVarUtf8StringAt(offsets[0]);
+
+        if (bits.IsSet(2))
+            ServerAuthorizationGrant = reader.ReadVarUtf8StringAt(offsets[1]);
+    }
 }

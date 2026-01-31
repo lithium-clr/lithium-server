@@ -1,15 +1,23 @@
-using Lithium.Server.Core.Protocol.Attributes;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 24, VariableBlockStart = 4, MaxSize = 2121)]
-public sealed class AssetInitializePacket : Packet
+[Packet(Id = 24, NullableBitFieldSize = 0, FixedBlockSize = 4, VariableFieldCount = 1, VariableBlockStart = 4,
+    MaxSize = 2121)]
+public sealed class AssetInitializePacket : INetworkSerializable
 {
-    // Java: size (fixed, offset 0)
-    [PacketProperty(FixedIndex = 0)]
-    public int Size { get; init; }
+    public int Size { get; set; }
+    public Asset Asset { get; set; } = new();
 
-    // Java: asset (variable, offset 4), no OffsetIndex (sequential)
-    [PacketProperty]
-    public Asset Asset { get; init; } = null!;
+    public void Serialize(PacketWriter writer)
+    {
+        writer.WriteInt32(Size);
+        Asset.Serialize(writer);
+    }
+
+    public void Deserialize(PacketReader reader)
+    {
+        Size = reader.ReadInt32();
+        Asset.Deserialize(reader);
+    }
 }

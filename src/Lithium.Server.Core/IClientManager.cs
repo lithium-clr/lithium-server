@@ -13,8 +13,8 @@ public interface IClientManager
     IEnumerable<IClient> GetAllClients();
 
     Task SendToClient<T>(IClient client, T packet, CancellationToken ct = default)
-        where T : Packet;
+        where T : INetworkSerializable;
 
     Task Broadcast<T>(T packet, IClient? except = null, CancellationToken ct = default)
-        where T : Packet;
+        where T : INetworkSerializable;
 }

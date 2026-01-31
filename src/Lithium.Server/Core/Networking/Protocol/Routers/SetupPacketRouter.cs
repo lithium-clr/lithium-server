@@ -2,7 +2,6 @@ using System.Text.Json;
 using Lithium.Server.Core.AssetStore;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
-using Lithium.Server.Core.Resources;
 
 namespace Lithium.Server.Core.Networking.Protocol.Routers;
 
@@ -34,7 +33,7 @@ public sealed class SetupPacketRouter(
             WorldHeight = 320,
             RequiredAssets = [.. requiredAssets]
         });
-        
+
         logger.LogInformation("Sending server info packet...");
 
         var config = serverManager.Configuration;
@@ -98,37 +97,75 @@ public sealed class SetupPacketRouter(
         //     logger.LogInformation("UpdateBlockSoundSetsPacket sent.");
         // }
 
-        var store = assetStoreRegistry.GetStore<AudioCategoryResource>();
-        var categories = new Dictionary<int, AudioCategory>();
+        // var store = assetStoreRegistry.GetStore<AudioCategoryResource>();
+        // var categories = new Dictionary<int, AudioCategory>();
+        //
+        // for (var i = 0; i < store.Assets.Count; i++)
+        // {
+        //     var asset = store.Assets[i];
+        //     categories[i] = (AudioCategory)asset.ToPacket();
+        // }
+        //
+        // var updateAudioCategoriesPacket = new UpdateAudioCategoriesPacket
+        // {
+        //     Type = UpdateType.Init,
+        //     MaxId = store.Assets.Count,
+        //     Categories = categories
+        // };
+        //
+        // logger.LogInformation("Send UpdateAudioCategoriesPacket: \n" + JsonSerializer.Serialize(updateAudioCategoriesPacket));
+        // await client.SendPacketAsync(updateAudioCategoriesPacket);
+        // logger.LogInformation("UpdateAudioCategoriesPacket sent.");
 
-        for (var i = 0; i < store.Assets.Count; i++)
-        {
-            var asset = store.Assets[i];
-            categories[i] = (AudioCategory)asset.ToPacket();
-        }
-        
-        var updateAudioCategoriesPacket = new UpdateAudioCategoriesPacket
-        {
-            Type = UpdateType.Init,
-            MaxId = store.Assets.Count,
-            Categories = categories
-        };
-        
-        logger.LogInformation("Send UpdateAudioCategoriesPacket: \n" + JsonSerializer.Serialize(updateAudioCategoriesPacket));
-        await client.SendPacketAsync(updateAudioCategoriesPacket);
-        logger.LogInformation("UpdateAudioCategoriesPacket sent.");
-        
+        await SendFakeAssets(client);
+
         // TODO - I18nModule.get().sendTranslations(this, this.language);
-        
+
         // await client.SendPacketAsync(new WorldLoadProgressPacket
         //     { Status = "Loading assets ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
-        
+
         await client.SendPacketAsync(new WorldLoadProgressPacket
             { Status = "Loading world ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
-        
+
         logger.LogInformation("WorldLoadProgressPacket sent.");
 
         await client.SendPacketAsync(new WorldLoadFinishedPacket());
+    }
+
+    private async Task SendFakeAssets(IClient client)
+    {
+        const string BasePath = @"C:\Users\bubbl\Desktop\Lithium\lithium-server\src\Lithium.Server\Data";
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_sound_sets.json"));
+            var packet = JsonSerializer.Deserialize<UpdateBlockSoundSetsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_sound_sets.json"));
+            var packet = JsonSerializer.Deserialize<UpdateSoundSetsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_player_animations.json"));
+            var packet = JsonSerializer.Deserialize<UpdateItemPlayerAnimationsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        {
+            // ID: 40
+            // Name: UpdateBlockTypes
+            
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_types.json"));
+            var packet = JsonSerializer.Deserialize<UpdateBlockTypesPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
@@ -174,7 +211,7 @@ public sealed class SetupPacketRouter(
             var asset = toSend[i];
             var allBytes = await asset.GetBlobAsync();
             var parts = Split(allBytes.Data, 2_621_440).ToList();
-            var packets = new Packet[2 + parts.Count * 2];
+            var packets = new INetworkSerializable[2 + parts.Count * 2];
 
             packets[0] = new AssetInitializePacket { Asset = asset.ToPacket(), Size = allBytes.Length };
 
@@ -203,7 +240,7 @@ public sealed class SetupPacketRouter(
             yield return data.Slice(offset, Math.Min(chunkSize, data.Length - offset));
     }
 
-    protected override bool ShouldAcceptPacket(Packet packet) => packet switch
+    protected override bool ShouldAcceptPacket(INetworkSerializable packet) => packet switch
     {
         RequestAssetsPacket or DisconnectPacket or ViewRadiusPacket or PlayerOptionsPacket => true,
         _ => false

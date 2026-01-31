@@ -1,11 +1,19 @@
-using Lithium.Server.Core.Protocol.Attributes;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 32, VariableBlockStart = 4, MaxSize = 4)]
-public sealed class ViewRadiusPacket : Packet
+[Packet(Id = 32)]
+public sealed class ViewRadiusPacket : INetworkSerializable
 {
-    // Java: value (fixed, offset 0)
-    [PacketProperty(FixedIndex = 0)]
     public int Value { get; init; }
+    
+    public void Serialize(PacketWriter writer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Deserialize(PacketReader reader)
+    {
+        throw new NotImplementedException();
+    }
 }

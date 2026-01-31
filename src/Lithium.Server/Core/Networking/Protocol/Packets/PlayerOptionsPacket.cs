@@ -1,11 +1,19 @@
-using Lithium.Server.Core.Protocol.Attributes;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 33, VariableBlockStart = 1, MaxSize = 327680184)]
-public sealed class PlayerOptionsPacket : Packet
+[Packet(Id = 33)]
+public sealed class PlayerOptionsPacket : INetworkSerializable
 {
-    // Java: skin (nullable, bit 0), no OffsetIndex (sequential)
-    [PacketProperty(BitIndex = 0)]
     public PlayerSkin? Skin { get; init; }
+
+    public void Serialize(PacketWriter writer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Deserialize(PacketReader reader)
+    {
+        throw new NotImplementedException();
+    }
 }

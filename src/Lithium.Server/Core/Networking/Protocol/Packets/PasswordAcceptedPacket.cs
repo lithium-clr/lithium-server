@@ -1,6 +1,17 @@
-using Lithium.Server.Core.Protocol.Attributes;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
-[Packet(Id = 16, MaxSize = 0)]
-public sealed class PasswordAcceptedPacket : Packet;
+[Packet(Id = 16)]
+public sealed class PasswordAcceptedPacket : INetworkSerializable
+{
+    public void Serialize(PacketWriter writer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Deserialize(PacketReader reader)
+    {
+        throw new NotImplementedException();
+    }
+}

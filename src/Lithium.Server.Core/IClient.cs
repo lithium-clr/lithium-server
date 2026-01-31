@@ -14,11 +14,11 @@ public interface IClient
     bool IsActive { get; }
 
     Task SendPacketAsync<T>(T packet, CancellationToken ct = default)
-        where T : Packet;
+        where T : INetworkSerializable;
         
-    Task SendPacketAsync(Packet packet, CancellationToken ct = default);
+    Task SendPacketAsync(INetworkSerializable packet, CancellationToken ct = default);
 
-    Task SendPacketsAsync(Packet[] packet, CancellationToken ct = default);
+    Task SendPacketsAsync(INetworkSerializable[] packet, CancellationToken ct = default);
 
     Task DisconnectAsync(string? reason = null);
 }

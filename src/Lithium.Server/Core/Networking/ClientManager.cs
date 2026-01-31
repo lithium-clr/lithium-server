@@ -47,13 +47,13 @@ public sealed class ClientManager(ILoggerFactory loggerFactory, PacketEncoder en
     }
 
     public async Task SendToClient<T>(IClient client, T packet, CancellationToken ct = default)
-        where T : Packet
+        where T : INetworkSerializable
     {
         await client.SendPacketAsync(packet, ct);
     }
 
     public async Task Broadcast<T>(T packet, IClient? except = null, CancellationToken ct = default)
-        where T : Packet
+        where T : INetworkSerializable
     {
         var tasks = new List<Task>();
 

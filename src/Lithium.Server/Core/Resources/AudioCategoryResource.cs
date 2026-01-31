@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Lithium.Server.Core.Networking;
-using Lithium.Server.Core.Networking.Protocol;
 
 namespace Lithium.Server.Core.Resources;
 
@@ -13,9 +12,9 @@ public sealed record AudioCategoryResource : AssetResource
         set => field = AudioUtil.DecibelsToLinearGain(value);
     } = 1f;
 
-    public override PacketObject ToPacket() => new AudioCategory
-    {
-        Id = FileName,
-        Volume = Volume
-    };
+    // public override PacketObject ToPacket() => new AudioCategory
+    // {
+    //     Id = FileName,
+    //     Volume = Volume
+    // };
 }
