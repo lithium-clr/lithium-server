@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace Lithium.Server.Core.Networking.Protocol;
 
+[JsonConverter(typeof(Vector3FloatJsonConverter))]
 public record struct Vector3Float : IVector<float>, INetworkSerializable
 {
     public float X;
