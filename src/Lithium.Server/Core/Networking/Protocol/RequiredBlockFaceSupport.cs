@@ -1,15 +1,7 @@
 using System.Text.Json.Serialization;
-using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-[Packet(
-    NullableBitFieldSize = 1,
-    FixedBlockSize = 17,
-    VariableFieldCount = 4,
-    VariableBlockStart = 33,
-    MaxSize = 98304053
-)]
 public sealed class RequiredBlockFaceSupport : INetworkSerializable
 {
     [JsonPropertyName("faceType")] public string? FaceType { get; set; }
@@ -52,7 +44,7 @@ public sealed class RequiredBlockFaceSupport : INetworkSerializable
         var fillerOffsetSlot = writer.ReserveOffset();
 
         var varBlockStart = writer.Position;
-
+        
         if (FaceType is not null)
         {
             writer.WriteOffsetAt(faceTypeOffsetSlot, writer.Position - varBlockStart);
@@ -88,9 +80,7 @@ public sealed class RequiredBlockFaceSupport : INetworkSerializable
             writer.WriteOffsetAt(fillerOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(Filler.Length);
             foreach (var item in Filler)
-            {
                 item.Serialize(writer);
-            }
         }
         else
         {
@@ -111,33 +101,22 @@ public sealed class RequiredBlockFaceSupport : INetworkSerializable
         Rotate = reader.ReadBoolean();
 
         var offsets = reader.ReadOffsets(4);
-
+        
         if (bits.IsSet(1))
-        {
             FaceType = reader.ReadVarUtf8StringAt(offsets[0]);
-        }
 
         if (bits.IsSet(2))
-        {
             SelfFaceType = reader.ReadVarUtf8StringAt(offsets[1]);
-        }
 
         if (bits.IsSet(4))
-        {
             BlockSetId = reader.ReadVarUtf8StringAt(offsets[2]);
-        }
 
         if (bits.IsSet(8))
         {
-            var count = reader.ReadVarIntAt(offsets[3], out var bytesRead);
-            var pos = offsets[3] + bytesRead;
-
-            Filler = new Vector3Int[count];
-            for (var i = 0; i < count; i++)
-            {
-                Filler[i] = reader.ReadObjectAt<Vector3Int>(pos);
-                pos += 12; // Vector3Int is 3x4 bytes fixed size
-            }
+            Filler = reader.ReadArrayAt(
+                offsets[3],
+                r => r.ReadObject<Vector3Int>()
+            );
         }
     }
 }
