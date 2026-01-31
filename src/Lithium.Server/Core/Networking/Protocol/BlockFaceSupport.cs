@@ -1,15 +1,7 @@
 using System.Text.Json.Serialization;
-using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-[Packet(
-    NullableBitFieldSize = 1,
-    FixedBlockSize = 1,
-    VariableFieldCount = 2,
-    VariableBlockStart = 9,
-    MaxSize = 65536019
-)]
 public sealed class BlockFaceSupport : INetworkSerializable
 {
     [JsonPropertyName("faceType")] public string? FaceType { get; set; }
@@ -44,9 +36,7 @@ public sealed class BlockFaceSupport : INetworkSerializable
             writer.WriteOffsetAt(fillerOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(Filler.Length);
             foreach (var item in Filler)
-            {
                 item.Serialize(writer);
-            }
         }
         else
         {
@@ -61,21 +51,14 @@ public sealed class BlockFaceSupport : INetworkSerializable
         var offsets = reader.ReadOffsets(2);
 
         if (bits.IsSet(1))
-        {
             FaceType = reader.ReadVarUtf8StringAt(offsets[0]);
-        }
 
         if (bits.IsSet(2))
         {
-            var count = reader.ReadVarIntAt(offsets[1], out var bytesRead);
-            var pos = offsets[1] + bytesRead;
-
-            Filler = new Vector3Int[count];
-            for (var i = 0; i < count; i++)
-            {
-                Filler[i] = reader.ReadObjectAt<Vector3Int>(pos);
-                pos += 12; // Vector3Int is 3x4 bytes fixed size
-            }
+            Filler = reader.ReadArrayAt(
+                offsets[1],
+                r => r.ReadObject<Vector3Int>()
+            );
         }
     }
 }
