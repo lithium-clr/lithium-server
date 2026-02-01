@@ -1,0 +1,45 @@
+{
+  "type": "Init",
+  "maxId": 3,
+  "effects": {
+    "0": {
+      "id": "EMPTY",
+      "lowGain": 1.0,
+      "lowCutOff": 200.0,
+      "lowMidGain": 1.0,
+      "lowMidCenter": 500.0,
+      "lowMidWidth": 1.0,
+      "highMidGain": 1.0,
+      "highMidCenter": 3000.0,
+      "highMidWidth": 1.0,
+      "highGain": 1.0,
+      "highCutOff": 6000.0
+    },
+    "1": {
+      "id": "EQ_Underwater",
+      "lowGain": 1.0,
+      "lowCutOff": 300.0,
+      "lowMidGain": 0.13819742,
+      "lowMidCenter": 1000.0,
+      "lowMidWidth": 1.0,
+      "highMidGain": 0.12735032,
+      "highMidCenter": 1500.0,
+      "highMidWidth": 1.0,
+      "highGain": 0.12735032,
+      "highCutOff": 4000.0
+    },
+    "2": {
+      "id": "EQ_Default",
+      "lowGain": 1.0,
+      "lowCutOff": 200.0,
+      "lowMidGain": 1.0,
+      "lowMidCenter": 500.0,
+      "lowMidWidth": 1.0,
+      "highMidGain": 1.0,
+      "highMidCenter": 3000.0,
+      "highMidWidth": 1.0,
+      "highGain": 1.0,
+      "highCutOff": 6000.0
+    }
+  }
+}
