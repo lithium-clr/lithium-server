@@ -1,7 +1,15 @@
 using System.Text.Json.Serialization;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
+[Packet(
+    NullableBitFieldSize = 0,
+    FixedBlockSize = 3,
+    VariableFieldCount = 0,
+    VariableBlockStart = 3,
+    MaxSize = 3
+)]
 [JsonConverter(typeof(ColorJsonConverter))]
 public record struct Color : INetworkSerializable
 {

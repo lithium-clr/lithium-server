@@ -1,5 +1,14 @@
+using Lithium.Server.Core.Networking.Protocol.Attributes;
+
 namespace Lithium.Server.Core.Networking.Protocol;
 
+[Packet(
+    NullableBitFieldSize = 0,
+    FixedBlockSize = 24,
+    VariableFieldCount = 0,
+    VariableBlockStart = 24,
+    MaxSize = 24
+)]
 public record struct Tint : INetworkSerializable
 {
     public int Top { get; set; }
