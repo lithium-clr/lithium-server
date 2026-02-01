@@ -1,7 +1,15 @@
 using System.Text.Json.Serialization;
+using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
+[Packet(
+    NullableBitFieldSize = 0,
+    FixedBlockSize = 2,
+    VariableFieldCount = 0,
+    VariableBlockStart = 2,
+    MaxSize = 2
+)]
 public struct RangeByte : INetworkSerializable
 {
     [JsonPropertyName("min")] public byte Min { get; set; }

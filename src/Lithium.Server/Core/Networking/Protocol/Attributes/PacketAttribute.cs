@@ -3,7 +3,7 @@ namespace Lithium.Server.Core.Networking.Protocol.Attributes;
 /// <summary>
 /// Marks a struct or class as a network packet.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public sealed class PacketAttribute : Attribute
 {
     public int Id { get; init; }
