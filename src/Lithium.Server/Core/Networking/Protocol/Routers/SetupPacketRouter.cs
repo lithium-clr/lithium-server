@@ -283,36 +283,16 @@ public sealed class SetupPacketRouter(
         }
 
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_projectile_configs.json"));
             var packet = JsonSerializer.Deserialize<UpdateProjectileConfigsPacket>(packetFile);
             
-            // var config = JsonSerializer.Deserialize<UpdateProjectileConfigsPacket>(packetFile);
-
-            // var packet = new UpdateProjectileConfigsPacket
-            // {
-            //     Type = UpdateType.Init,
-            //     Configs = new Dictionary<string, ProjectileConfig>
-            //     {
-            //         ["Projectile_Config_Bow_Vamp_Charge_01"] = new()
-            //         {
-            //             PhysicsConfig = new PhysicsConfig(),
-            //             Model = new Model(),
-            //             Interactions = new Dictionary<InteractionType, int>
-            //             {
-            //                 [InteractionType.ProjectileHit] = 2403,
-            //                 [InteractionType.ProjectileMiss] = 2404
-            //             }
-            //         }
-            //     },
-            //     RemovedConfigs = []
-            // };
-
-            logger.LogInformation("packet: " + JsonSerializer.Serialize(packet, options));
-
+            await client.SendPacketAsync(packet);
+        }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_model_vfxs.json"));
+            var packet = JsonSerializer.Deserialize<UpdateModelVFXsPacket>(packetFile);
+            
             await client.SendPacketAsync(packet);
         }
     }

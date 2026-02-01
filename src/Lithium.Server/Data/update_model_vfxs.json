@@ -1,0 +1,1062 @@
+{
+  "type": "Init",
+  "maxId": 33,
+  "modelVFXs": {
+    "0": {
+      "id": "Trinket_Last_Stand_Skull",
+      "switchTo": "PostColor",
+      "effectDirection": "FromCenter",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.37
+      },
+      "loopOption": "LoopMirror",
+      "curveType": "QuartInOut",
+      "highlightColor": {
+        "red": -33,
+        "green": 0,
+        "blue": 0
+      },
+      "highlightThickness": 1.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 4.0,
+        "y": 20.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.0,
+        "y": -0.1
+      },
+      "postColor": {
+        "red": -112,
+        "green": 0,
+        "blue": 46
+      },
+      "postColorOpacity": 0.6
+    },
+    "29": {
+      "id": "Dagger_Signature",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 0.3,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.5
+      },
+      "loopOption": "LoopMirror",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 33,
+        "green": -13,
+        "blue": -1
+      },
+      "highlightThickness": 0.5,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 3.0,
+        "y": 3.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -42,
+        "blue": 81
+      },
+      "postColorOpacity": 0.0
+    },
+    "25": {
+      "id": "PrototypeBlockPlaceFail",
+      "switchTo": "PostColor",
+      "effectDirection": "None",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 0.2,
+        "y": 0.2
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": 46,
+        "blue": 46
+      },
+      "postColorOpacity": 0.6
+    },
+    "4": {
+      "id": "Stoneskin",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 0.7,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.58
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 114,
+        "green": 116,
+        "blue": 94
+      },
+      "highlightThickness": 1.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 200.0,
+        "y": 250.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.02,
+        "y": -0.1
+      },
+      "postColor": {
+        "red": -120,
+        "green": -116,
+        "blue": -115
+      },
+      "postColorOpacity": 1.0
+    },
+    "12": {
+      "id": "Drop_Epic",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "Loop",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -32,
+        "green": 125,
+        "blue": -1
+      },
+      "highlightThickness": 2.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 0.0
+    },
+    "13": {
+      "id": "Drop_Rare",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "Loop",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 125,
+        "green": -78,
+        "blue": -1
+      },
+      "highlightThickness": 1.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 0.0
+    },
+    "8": {
+      "id": "Crown_Gold",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 0.6,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.93
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -1,
+        "green": -37,
+        "blue": -111
+      },
+      "highlightThickness": 10.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 10.0,
+        "y": 200.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.1,
+        "y": 0.5
+      },
+      "postColor": {
+        "red": -28,
+        "green": 95,
+        "blue": 20
+      },
+      "postColorOpacity": 0.0
+    },
+    "9": {
+      "id": "Trinket_Empowered",
+      "switchTo": "PostColor",
+      "effectDirection": "FromCenter",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.37
+      },
+      "loopOption": "LoopMirror",
+      "curveType": "QuartInOut",
+      "highlightColor": {
+        "red": -33,
+        "green": 0,
+        "blue": 0
+      },
+      "highlightThickness": 1.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 4.0,
+        "y": 20.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.0,
+        "y": -0.1
+      },
+      "postColor": {
+        "red": -112,
+        "green": 0,
+        "blue": 46
+      },
+      "postColorOpacity": 0.6
+    },
+    "30": {
+      "id": "Creative",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 0.2,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.4
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -124,
+        "green": -50,
+        "blue": -1
+      },
+      "highlightThickness": 1.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 200.0,
+        "y": 250.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.02,
+        "y": -0.1
+      },
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 0.0
+    },
+    "28": {
+      "id": "Sword_Signature_Status",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.19,
+        "y": 0.4
+      },
+      "loopOption": "Loop",
+      "curveType": "QuartOut",
+      "highlightColor": {
+        "red": -108,
+        "green": -7,
+        "blue": -1
+      },
+      "highlightThickness": 5.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 1.0,
+        "y": 100.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -98,
+        "green": -9,
+        "blue": -1
+      },
+      "postColorOpacity": 0.192
+    },
+    "24": {
+      "id": "Death",
+      "switchTo": "Disappear",
+      "effectDirection": "None",
+      "animationDuration": 4.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -57,
+        "green": -57,
+        "blue": -83
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 50.0,
+        "y": 50.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 1.0
+    },
+    "23": {
+      "id": "Poison",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 6.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 51,
+        "green": -86,
+        "blue": 51
+      },
+      "highlightThickness": 0.3,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 29.0,
+        "y": 25.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": 8,
+        "green": 32,
+        "blue": 8
+      },
+      "postColorOpacity": 0.792
+    },
+    "26": {
+      "id": "Bow_Signature_Status",
+      "switchTo": "PostColor",
+      "effectDirection": "FromCenter",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.6
+      },
+      "loopOption": "Loop",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -108,
+        "green": -7,
+        "blue": -1
+      },
+      "highlightThickness": 5.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 1.0,
+        "y": 5.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -98,
+        "green": -9,
+        "blue": -1
+      },
+      "postColorOpacity": 0.192
+    },
+    "16": {
+      "id": "Test2",
+      "switchTo": "Distortion",
+      "effectDirection": "None",
+      "animationDuration": 3.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "Loop",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -1,
+        "green": 108,
+        "blue": 0
+      },
+      "highlightThickness": 3.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 50.0,
+        "y": 50.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 1.0
+    },
+    "17": {
+      "id": "Sword_Test",
+      "switchTo": "PostColor",
+      "effectDirection": "TopDown",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.2
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "QuartOut",
+      "highlightColor": {
+        "red": -1,
+        "green": -32,
+        "blue": -108
+      },
+      "highlightThickness": 2.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 10.0,
+        "y": 1.0
+      },
+      "noiseScrollSpeed": {
+        "x": -1.0,
+        "y": 0.0
+      },
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 0.0
+    },
+    "19": {
+      "id": "Prototype_CreativeTool_Sel_ModelVFX",
+      "switchTo": "PostColor",
+      "effectDirection": "FromCenter",
+      "animationDuration": 5.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.36
+      },
+      "loopOption": "LoopMirror",
+      "curveType": "QuartInOut",
+      "highlightColor": {
+        "red": 16,
+        "green": 37,
+        "blue": -71
+      },
+      "highlightThickness": 0.1,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.0,
+        "y": -0.1
+      },
+      "postColor": {
+        "red": 0,
+        "green": 8,
+        "blue": -112
+      },
+      "postColorOpacity": 0.564
+    },
+    "18": {
+      "id": "Creative_Tool",
+      "switchTo": "Disappear",
+      "effectDirection": "ToCenter",
+      "animationDuration": 0.5,
+      "animationRange": {
+        "x": 1.0,
+        "y": 0.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -58,
+        "green": -3,
+        "blue": -1
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 50.0,
+        "y": 10.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.0,
+        "y": 4.0
+      },
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 0.0
+    },
+    "20": {
+      "id": "Prototype_CreativeTool_ModelVFX",
+      "switchTo": "PostColor",
+      "effectDirection": "FromCenter",
+      "animationDuration": 15.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.37
+      },
+      "loopOption": "LoopMirror",
+      "curveType": "QuartInOut",
+      "highlightColor": {
+        "red": 0,
+        "green": 29,
+        "blue": -33
+      },
+      "highlightThickness": 1.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 20.0,
+        "y": 50.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.0,
+        "y": -0.1
+      },
+      "postColor": {
+        "red": 0,
+        "green": 8,
+        "blue": -112
+      },
+      "postColorOpacity": 0.6
+    },
+    "22": {
+      "id": "Crossbow_Signature_Status",
+      "switchTo": "PostColor",
+      "effectDirection": "TopDown",
+      "animationDuration": 2.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "Loop",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -108,
+        "green": -7,
+        "blue": -1
+      },
+      "highlightThickness": 5.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 1.0,
+        "y": 2.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -98,
+        "green": -9,
+        "blue": -1
+      },
+      "postColorOpacity": 0.192
+    },
+    "21": {
+      "id": "Intangible",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 0.4,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "QuartOut",
+      "highlightColor": {
+        "red": -114,
+        "green": -95,
+        "blue": -86
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 20.0,
+        "y": 20.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -89,
+        "green": -24,
+        "blue": -1
+      },
+      "postColorOpacity": 0.304
+    },
+    "2": {
+      "id": "Portal_Teleport",
+      "switchTo": "Disappear",
+      "effectDirection": "None",
+      "animationDuration": 0.3,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 43,
+        "green": -20,
+        "blue": -1
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 50.0,
+        "y": 50.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 1.0
+    },
+    "6": {
+      "id": "Intangible_Dark",
+      "switchTo": "PostColor",
+      "effectDirection": "ToCenter",
+      "animationDuration": 0.2,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "LoopMirror",
+      "curveType": "QuartOut",
+      "highlightColor": {
+        "red": 36,
+        "green": 38,
+        "blue": 44
+      },
+      "highlightThickness": 4.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 40.0,
+        "y": 40.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": 11,
+        "green": 13,
+        "blue": 20
+      },
+      "postColorOpacity": 0.82
+    },
+    "27": {
+      "id": "Drop_Legendary",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "Loop",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -1,
+        "green": -37,
+        "blue": -111
+      },
+      "highlightThickness": 5.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 0.0
+    },
+    "15": {
+      "id": "test",
+      "switchTo": "Distortion",
+      "effectDirection": "TopDown",
+      "animationDuration": 3.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 0,
+        "green": -12,
+        "blue": -1
+      },
+      "highlightThickness": 2.0,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 50.0,
+        "y": 50.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 1.0
+    },
+    "14": {
+      "id": "PrototypePastePreview",
+      "switchTo": "PostColor",
+      "effectDirection": "None",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 12,
+        "green": 20,
+        "blue": -99
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 50.0,
+        "y": 50.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -2,
+        "green": -2,
+        "blue": -2
+      },
+      "postColorOpacity": 0.112
+    },
+    "31": {
+      "id": "Burn",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 6.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -1,
+        "green": -112,
+        "blue": 33
+      },
+      "highlightThickness": 0.3,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 29.0,
+        "y": 25.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": 23,
+        "green": 19,
+        "blue": 19
+      },
+      "postColorOpacity": 0.792
+    },
+    "11": {
+      "id": "Dagger_Dash",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 0.4,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "QuartOut",
+      "highlightColor": {
+        "red": -114,
+        "green": -95,
+        "blue": -86
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 20.0,
+        "y": 20.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -89,
+        "green": -24,
+        "blue": -1
+      },
+      "postColorOpacity": 0.304
+    },
+    "10": {
+      "id": "Drop_Uncommon",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "Loop",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -32,
+        "green": -1,
+        "blue": 125
+      },
+      "highlightThickness": 0.5,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 0.0
+    },
+    "32": {
+      "id": "Mace_Signature",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 0.85,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.3
+      },
+      "loopOption": "LoopMirror",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 33,
+        "green": -13,
+        "blue": -1
+      },
+      "highlightThickness": 0.5,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 2.0,
+        "y": 2.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -42,
+        "blue": 81
+      },
+      "postColorOpacity": 0.0
+    },
+    "1": {
+      "id": "Erosion_Test",
+      "switchTo": "Disappear",
+      "effectDirection": "None",
+      "animationDuration": 2.5,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": 40,
+        "green": -4,
+        "blue": -1
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 50.0,
+        "y": 50.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 1.0
+    },
+    "3": {
+      "id": "PrototypeBlockPlaceSuccess",
+      "switchTo": "PostColor",
+      "effectDirection": "None",
+      "animationDuration": 1.0,
+      "animationRange": {
+        "x": 1.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "highlightThickness": 0.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": false,
+      "noiseScale": {
+        "x": 0.2,
+        "y": 0.2
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "postColorOpacity": 0.0
+    },
+    "7": {
+      "id": "Trinket",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 6.0,
+      "animationRange": {
+        "x": 0.0,
+        "y": 1.0
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -1,
+        "green": -112,
+        "blue": 33
+      },
+      "highlightThickness": 0.3,
+      "useBloomOnHighlight": true,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 29.0,
+        "y": 25.0
+      },
+      "noiseScrollSpeed": null,
+      "postColor": {
+        "red": 23,
+        "green": 19,
+        "blue": 19
+      },
+      "postColorOpacity": 0.792
+    },
+    "5": {
+      "id": "Freeze",
+      "switchTo": "PostColor",
+      "effectDirection": "BottomUp",
+      "animationDuration": 0.7,
+      "animationRange": {
+        "x": 0.0,
+        "y": 0.58
+      },
+      "loopOption": "PlayOnce",
+      "curveType": "Linear",
+      "highlightColor": {
+        "red": -124,
+        "green": -50,
+        "blue": -1
+      },
+      "highlightThickness": 1.0,
+      "useBloomOnHighlight": false,
+      "useProgessiveHighlight": true,
+      "noiseScale": {
+        "x": 200.0,
+        "y": 250.0
+      },
+      "noiseScrollSpeed": {
+        "x": 0.02,
+        "y": -0.1
+      },
+      "postColor": {
+        "red": -29,
+        "green": -5,
+        "blue": -1
+      },
+      "postColorOpacity": 1.0
+    }
+  }
+}
