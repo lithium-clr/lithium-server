@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 
-namespace Lithium.Server.Core.Networking.Protocol;
+namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
 [Packet(Id = 52, IsCompressed = true, NullableBitFieldSize = 1, FixedBlockSize = 2, VariableFieldCount = 1,
     VariableBlockStart = 2, MaxSize = 1677721600)]
