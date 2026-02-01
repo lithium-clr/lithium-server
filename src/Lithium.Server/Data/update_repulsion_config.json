@@ -1,0 +1,16 @@
+{
+  "type": "Init",
+  "maxId": 2,
+  "repulsionConfigs": {
+    "0": {
+      "radius": 5.0,
+      "minForce": 0.0,
+      "maxForce": 5.0
+    },
+    "1": {
+      "radius": 1.1,
+      "minForce": 1.5,
+      "maxForce": 1.5
+    }
+  }
+}
