@@ -1,6 +1,7 @@
 using System.Reflection;
 using Lithium.Codecs;
 using Lithium.Server;
+using Lithium.Server.AssetStore;
 using Lithium.Server.Core;
 using Lithium.Server.Core.AssetStore;
 using Lithium.Server.Core.Codecs;
@@ -9,7 +10,6 @@ using Lithium.Server.Core.Networking;
 using Lithium.Server.Core.Networking.Authentication;
 using Lithium.Server.Core.Networking.Authentication.OAuth;
 using Lithium.Server.Core.Networking.Extensions;
-using Lithium.Server.Core.Networking.Protocol.Routers;
 using Lithium.Server.Core.Resources;
 using Lithium.Server.Core.Semver;
 using Lithium.Server.Core.Storage;
