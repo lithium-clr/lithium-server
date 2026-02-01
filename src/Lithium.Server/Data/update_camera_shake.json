@@ -1,0 +1,4349 @@
+{
+  "type": "Init",
+  "profiles": {
+    "0": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 10.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 5.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.125,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "1": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "2": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.2,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "3": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.5,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.4,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.5,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.2,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "4": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 10.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 5.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "5": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 4.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 2,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.125,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 2,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "6": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "7": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.12,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.06,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.06,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.03,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "8": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 10.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 5.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.125,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "9": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "10": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.2121,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.2121,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1061,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1061,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "11": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 60.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Cos",
+              "frequency": 20.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 60.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Cos",
+              "frequency": 20.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "12": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 10.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 5.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "13": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 1.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.75,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "14": {
+      "firstPerson": {
+        "duration": 2.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 2.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.75,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "15": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "16": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.8,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.4,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "17": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "18": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.2,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "19": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1414,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.1414,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.0707,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.0707,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "20": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "21": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.0707,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.0707,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.0354,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.0354,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "22": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.06,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.12,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.03,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.06,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "23": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.5,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.6,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.5,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "24": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "25": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "26": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.05,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.05,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.125,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "27": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "28": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.4,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.4,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "29": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 10.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 5.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "30": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.35,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.4,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.35,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.2,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "31": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 10.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.6,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 10.0,
+              "amplitude": 5.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": 0.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "32": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.0707,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.0707,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.0354,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.0354,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "33": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1061,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.1061,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.05,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.0531,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.0531,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.025,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "34": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "35": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.06,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.12,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.03,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.06,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "36": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.15,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.05,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "37": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": [
+            {
+              "seed": 2,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": [
+            {
+              "seed": 2,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.125,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "38": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.2121,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.2121,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1061,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.1061,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "39": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 2.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 3.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 2.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 3.0,
+              "amplitude": 0.05,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "40": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "41": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 3.0,
+        "continuous": false,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 1.0,
+        "continuous": false,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [],
+          "roll": []
+        }
+      }
+    },
+    "42": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 2.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.3,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.25,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 1.0,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.15,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "43": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.2,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 30.0,
+              "amplitude": 0.05,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "44": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.3,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.2,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.3,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "45": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.5,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.01,
+          "type": "Linear"
+        },
+        "easeOut": {
+          "time": 0.1,
+          "type": "Linear"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.25,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "46": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.5,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.2,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.05,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.5,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 40.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    },
+    "47": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.1,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.05,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.05,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 15.0,
+              "amplitude": 0.025,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "48": {
+      "firstPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.06,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.12,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      },
+      "thirdPerson": {
+        "duration": 0.0,
+        "startTime": 0.0,
+        "continuous": true,
+        "easeIn": {
+          "time": 0.1,
+          "type": "QuadInOut"
+        },
+        "easeOut": {
+          "time": 0.2,
+          "type": "QuadInOut"
+        },
+        "offset": {
+          "x": [],
+          "y": [],
+          "z": []
+        },
+        "rotation": {
+          "pitch": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": 0.03,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "yaw": [
+            {
+              "seed": 0,
+              "type": "Sin",
+              "frequency": 20.0,
+              "amplitude": -0.06,
+              "clamp": {
+                "min": -1.0,
+                "max": 1.0,
+                "normalize": true
+              }
+            }
+          ],
+          "roll": []
+        }
+      }
+    }
+  }
+}
