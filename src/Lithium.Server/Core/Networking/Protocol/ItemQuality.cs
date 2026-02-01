@@ -54,7 +54,7 @@ public sealed class ItemQuality : INetworkSerializable
 
         if (TextColor is not null)
         {
-            TextColor.Value.Serialize(writer);
+            TextColor.Serialize(writer);
         }
         else
         {

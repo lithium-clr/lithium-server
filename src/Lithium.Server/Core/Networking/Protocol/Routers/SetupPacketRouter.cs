@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Lithium.Server.Core.AssetStore;
+using Lithium.Server.Core.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 
@@ -143,14 +144,34 @@ public sealed class SetupPacketRouter(
 
             await client.SendPacketAsync(packet);
         }
-        
+
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_sound_sets.json"));
             var packet = JsonSerializer.Deserialize<UpdateSoundSetsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
-        
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_types.json"));
+            packetFile = SanitizeJson(packetFile);
+
+            var packet = JsonSerializer.Deserialize<UpdateBlockTypesPacket>(packetFile);
+            await client.SendPacketAsync(packet);
+
+            static string SanitizeJson(string json)
+            {
+                // Replace all NaN/Infinity non quoted values by valid values
+                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*NaN\b", ": 0.0");
+                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*Infinity\b",
+                    ": 3.4028235E+38"); // float.MaxValue
+                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*-Infinity\b",
+                    ": -3.4028235E+38"); // float.MinValue
+
+                return json;
+            }
+        }
+
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_player_animations.json"));
             var packet = JsonSerializer.Deserialize<UpdateItemPlayerAnimationsPacket>(packetFile);
@@ -159,21 +180,140 @@ public sealed class SetupPacketRouter(
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_types.json"));
-            packetFile = SanitizeJson(packetFile);
-            
-            var packet = JsonSerializer.Deserialize<UpdateBlockTypesPacket>(packetFile);
-            await client.SendPacketAsync(packet);
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_categories.json"));
+            var packet = JsonSerializer.Deserialize<UpdateItemCategoriesPacket>(packetFile);
 
-            static string SanitizeJson(string json)
+            await client.SendPacketAsync(packet);
+        }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_breaking_decals.json"));
+            var packet = JsonSerializer.Deserialize<UpdateBlockBreakingDecalsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_fieldcraft_categories.json"));
+            var packet = JsonSerializer.Deserialize<UpdateFieldcraftCategoriesPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_qualities.json"));
+            var packet = JsonSerializer.Deserialize<UpdateItemQualitiesPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        // Direction: Inbound
+        // Id: 50
+        // {
+        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_particle_spawners.json"));
+        //     var packet = JsonSerializer.Deserialize<UpdateParticleSpawnersPacket>(packetFile);
+        //
+        //     await client.SendPacketAsync(packet);
+        // }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_unarmed_interactions.json"));
+            var packet = JsonSerializer.Deserialize<UpdateUnarmedInteractionsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_particle_sets.json"));
+            var packet = JsonSerializer.Deserialize<UpdateBlockParticleSetsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        // {
+        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_ambience_fx.json"));
+        //     // var options = new JsonSerializerOptions
+        //     // {
+        //     //     Converters = { new IntKeyDictionaryConverter<AmbienceFx>(), new JsonStringEnumConverter() }
+        //     // };
+        //     var packet = JsonSerializer.Deserialize<UpdateAmbienceFxPacket>(packetFile);
+        //
+        //     logger.LogInformation("Send UpdateAmbienceFxPacket: \n" + JsonSerializer.Serialize(packet, new JsonSerializerOptions
+        //     {
+        //         WriteIndented = true,
+        //         // Converters = { new JsonStringEnumConverter() }
+        //     }));
+        //     
+        //     await client.SendPacketAsync(packet);
+        // }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_groups.json"));
+            var packet = JsonSerializer.Deserialize<UpdateBlockGroupsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        // {
+        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_interactions.json"));
+        //     var packet = JsonSerializer.Deserialize<UpdateInteractionsPacket>(packetFile);
+        //
+        //     await client.SendPacketAsync(packet);
+        // }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_view_bobbing.json"));
+            var packet = JsonSerializer.Deserialize<UpdateViewBobbingPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_fluids.json"));
+            var packet = JsonSerializer.Deserialize<UpdateFluidsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_camera_shake.json"));
+            var packet = JsonSerializer.Deserialize<UpdateCameraShakePacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
+
+        {
+            var options = new JsonSerializerOptions
             {
-                // Replace all NaN/Infinity non quoted values by valid values
-                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*NaN\b", ": 0.0");
-                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*Infinity\b", ": 3.4028235E+38"); // float.MaxValue
-                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*-Infinity\b", ": -3.4028235E+38"); // float.MinValue
-                
-                return json;
-            }
+                WriteIndented = true
+            };
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_projectile_configs.json"));
+            var packet = JsonSerializer.Deserialize<UpdateProjectileConfigsPacket>(packetFile);
+            
+            // var config = JsonSerializer.Deserialize<UpdateProjectileConfigsPacket>(packetFile);
+
+            // var packet = new UpdateProjectileConfigsPacket
+            // {
+            //     Type = UpdateType.Init,
+            //     Configs = new Dictionary<string, ProjectileConfig>
+            //     {
+            //         ["Projectile_Config_Bow_Vamp_Charge_01"] = new()
+            //         {
+            //             PhysicsConfig = new PhysicsConfig(),
+            //             Model = new Model(),
+            //             Interactions = new Dictionary<InteractionType, int>
+            //             {
+            //                 [InteractionType.ProjectileHit] = 2403,
+            //                 [InteractionType.ProjectileMiss] = 2404
+            //             }
+            //         }
+            //     },
+            //     RemovedConfigs = []
+            // };
+
+            logger.LogInformation("packet: " + JsonSerializer.Serialize(packet, options));
+
+            await client.SendPacketAsync(packet);
         }
     }
 

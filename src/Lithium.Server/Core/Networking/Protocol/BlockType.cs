@@ -154,25 +154,25 @@ public sealed class BlockType : INetworkSerializable
         writer.WriteInt32(AmbientSoundEventIndex);
 
         if (ParticleColor is not null)
-            ParticleColor.Value.Serialize(writer);
+            ParticleColor.Serialize(writer);
         else
             for (var i = 0; i < 3; i++)
                 writer.WriteUInt8(0);
 
         if (Light is not null)
-            Light.Value.Serialize(writer);
+            Light.Serialize(writer);
         else
             for (var i = 0; i < 4; i++)
                 writer.WriteUInt8(0);
 
         if (Tint is not null)
-            Tint.Value.Serialize(writer);
+            Tint.Serialize(writer);
         else
             for (var i = 0; i < 24; i++)
                 writer.WriteUInt8(0);
 
         if (BiomeTint is not null)
-            BiomeTint.Value.Serialize(writer);
+            BiomeTint.Serialize(writer);
         else
             for (var i = 0; i < 24; i++)
                 writer.WriteUInt8(0);
@@ -186,7 +186,7 @@ public sealed class BlockType : INetworkSerializable
                 writer.WriteUInt8(0);
 
         if (Flags is not null)
-            Flags.Value.Serialize(writer);
+            Flags.Serialize(writer);
         else
             for (var i = 0; i < 2; i++)
                 writer.WriteUInt8(0);

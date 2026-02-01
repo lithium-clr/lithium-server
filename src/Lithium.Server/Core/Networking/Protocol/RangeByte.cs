@@ -10,7 +10,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
     VariableBlockStart = 2,
     MaxSize = 2
 )]
-public struct RangeByte : INetworkSerializable
+public sealed class RangeByte : INetworkSerializable
 {
     [JsonPropertyName("min")] public byte Min { get; set; }
     [JsonPropertyName("max")] public byte Max { get; set; }

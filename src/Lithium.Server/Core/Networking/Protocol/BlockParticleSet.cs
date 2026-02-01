@@ -36,7 +36,7 @@ public sealed class BlockParticleSet : INetworkSerializable
 
         if (Color is not null)
         {
-            Color.Value.Serialize(writer);
+            Color.Serialize(writer);
         }
         else
         {
@@ -62,7 +62,7 @@ public sealed class BlockParticleSet : INetworkSerializable
 
         if (RotationOffset is not null)
         {
-            RotationOffset.Value.Serialize(writer);
+            RotationOffset.Serialize(writer);
         }
         else
         {

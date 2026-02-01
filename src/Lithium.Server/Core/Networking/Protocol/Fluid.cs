@@ -66,10 +66,15 @@ public sealed class Fluid : INetworkSerializable
         writer.WriteInt32(MaxFluidLevel);
         writer.WriteBoolean(RequiresAlphaBlending);
         writer.WriteEnum(Opacity);
-        if (Light is not null) Light.Value.Serialize(writer); else writer.WriteZero(4); // Padding 4 bytes
+        
+        if (Light is not null) Light.Serialize(writer); 
+        else writer.WriteZero(4);
+        
         writer.WriteInt32(FluidFxIndex);
         writer.WriteInt32(BlockSoundSetIndex);
-        if (ParticleColor is not null) ParticleColor.Value.Serialize(writer); else writer.WriteZero(3); // Padding 3 bytes
+        
+        if (ParticleColor is not null) ParticleColor.Serialize(writer);
+        else writer.WriteZero(3);
 
         // Reserve Offsets
         var idOffset = writer.ReserveOffset();
@@ -128,10 +133,15 @@ public sealed class Fluid : INetworkSerializable
         MaxFluidLevel = reader.ReadInt32();
         RequiresAlphaBlending = reader.ReadBoolean();
         Opacity = reader.ReadEnum<Opacity>();
-        if (bits.IsSet(1)) Light = reader.ReadObject<ColorLight>(); else reader.ReadInt32(); // Skip 4 bytes
+        
+        if (bits.IsSet(1)) 
+            Light = reader.ReadObject<ColorLight>();
+        
         FluidFxIndex = reader.ReadInt32();
         BlockSoundSetIndex = reader.ReadInt32();
-        if (bits.IsSet(2)) ParticleColor = reader.ReadObject<Color>(); else reader.ReadBytes(3); // Skip 3 bytes
+        
+        if (bits.IsSet(2)) 
+            ParticleColor = reader.ReadObject<Color>();
 
         // Read Offsets
         var offsets = reader.ReadOffsets(5);

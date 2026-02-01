@@ -36,7 +36,7 @@ public sealed class ItemPullbackConfiguration : INetworkSerializable
 
         if (LeftOffsetOverride is not null)
         {
-            LeftOffsetOverride.Value.Serialize(writer);
+            LeftOffsetOverride.Serialize(writer);
         }
         else
         {
@@ -47,7 +47,7 @@ public sealed class ItemPullbackConfiguration : INetworkSerializable
 
         if (LeftRotationOverride is not null)
         {
-            LeftRotationOverride.Value.Serialize(writer);
+            LeftRotationOverride.Serialize(writer);
         }
         else
         {
@@ -58,7 +58,7 @@ public sealed class ItemPullbackConfiguration : INetworkSerializable
 
         if (RightOffsetOverride is not null)
         {
-            RightOffsetOverride.Value.Serialize(writer);
+            RightOffsetOverride.Serialize(writer);
         }
         else
         {
@@ -69,7 +69,7 @@ public sealed class ItemPullbackConfiguration : INetworkSerializable
 
         if (RightRotationOverride is not null)
         {
-            RightRotationOverride.Value.Serialize(writer);
+            RightRotationOverride.Serialize(writer);
         }
         else
         {
@@ -86,25 +86,25 @@ public sealed class ItemPullbackConfiguration : INetworkSerializable
         if (bits.IsSet(1))
         {
             LeftOffsetOverride = new Vector3Float();
-            LeftOffsetOverride.Value.Deserialize(reader);
+            LeftOffsetOverride.Deserialize(reader);
         }
 
         if (bits.IsSet(2))
         {
             LeftRotationOverride = new Vector3Float();
-            LeftRotationOverride.Value.Deserialize(reader);
+            LeftRotationOverride.Deserialize(reader);
         }
 
         if (bits.IsSet(4))
         {
             RightOffsetOverride = new Vector3Float();
-            RightOffsetOverride.Value.Deserialize(reader);
+            RightOffsetOverride.Deserialize(reader);
         }
 
         if (bits.IsSet(8))
         {
             RightRotationOverride = new Vector3Float();
-            RightRotationOverride.Value.Deserialize(reader);
+            RightRotationOverride.Deserialize(reader);
         }
     }
 }

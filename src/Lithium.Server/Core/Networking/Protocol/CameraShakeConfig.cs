@@ -55,8 +55,7 @@ public sealed class CameraShakeConfig : INetworkSerializable
         }
         else
         {
-            writer.WriteUInt32(0); // 4 bytes padding
-            writer.WriteUInt8(0);   // 1 byte padding
+            writer.WriteZero(5);
         }
 
         if (EaseOut is not null)
@@ -65,8 +64,7 @@ public sealed class CameraShakeConfig : INetworkSerializable
         }
         else
         {
-            writer.WriteUInt32(0); // 4 bytes padding
-            writer.WriteUInt8(0);   // 1 byte padding
+            writer.WriteZero(5);
         }
 
         // Reserve offsets for variable fields
@@ -111,20 +109,10 @@ public sealed class CameraShakeConfig : INetworkSerializable
         {
             EaseIn = reader.ReadObject<EasingConfig>();
         }
-        else
-        {
-            reader.ReadUInt32(); // Skip 4 bytes
-            reader.ReadUInt8();   // Skip 1 byte
-        }
 
         if (bits.IsSet(2))
         {
             EaseOut = reader.ReadObject<EasingConfig>();
-        }
-        else
-        {
-            reader.ReadUInt32(); // Skip 4 bytes
-            reader.ReadUInt8();   // Skip 1 byte
         }
 
         // Read offsets

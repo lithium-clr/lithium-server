@@ -24,7 +24,7 @@ public sealed class ModelDisplay : INetworkSerializable
 
         if (Translation is not null)
         {
-            Translation.Value.Serialize(writer);
+            Translation.Serialize(writer);
         }
         else
         {
@@ -34,7 +34,7 @@ public sealed class ModelDisplay : INetworkSerializable
 
         if (Rotation is not null)
         {
-            Rotation.Value.Serialize(writer);
+            Rotation.Serialize(writer);
         }
         else
         {
@@ -44,7 +44,7 @@ public sealed class ModelDisplay : INetworkSerializable
 
         if (Scale is not null)
         {
-            Scale.Value.Serialize(writer);
+            Scale.Serialize(writer);
         }
         else
         {

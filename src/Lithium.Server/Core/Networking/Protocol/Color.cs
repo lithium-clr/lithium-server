@@ -11,7 +11,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
     MaxSize = 3
 )]
 [JsonConverter(typeof(ColorJsonConverter))]
-public record struct Color : INetworkSerializable
+public sealed class Color : INetworkSerializable
 {
     [JsonPropertyName("red")] public byte Red { get; set; }
     [JsonPropertyName("green")] public byte Green { get; set; }

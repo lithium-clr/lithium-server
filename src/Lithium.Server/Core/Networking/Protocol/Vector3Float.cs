@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Lithium.Server.Core.Networking.Protocol;
 
 [JsonConverter(typeof(Vector3FloatJsonConverter))]
-public record struct Vector3Float : IVector<float>, INetworkSerializable
+public sealed class Vector3Float : IVector<float>, INetworkSerializable
 {
     [JsonPropertyName("x")] public float X { get; set; }
     [JsonPropertyName("y")] public float Y { get; set; }
@@ -40,16 +40,5 @@ public record struct Vector3Float : IVector<float>, INetworkSerializable
         X = reader.ReadFloat32();
         Y = reader.ReadFloat32();
         Z = reader.ReadFloat32();
-    }
-
-    public string ToString(string? format, IFormatProvider? formatProvider)
-    {
-        FormattableString formattable = $"";
-        return formattable.ToString(formatProvider);
-    }
-
-    public override string ToString()
-    {
-        return $"";
     }
 }

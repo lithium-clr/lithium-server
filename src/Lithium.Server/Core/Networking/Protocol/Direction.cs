@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public record struct Direction : INetworkSerializable
+public sealed class Direction : INetworkSerializable
 {
     [JsonPropertyName("yaw")] public float Yaw { get; set; }
     [JsonPropertyName("pitch")] public float Pitch { get; set; }

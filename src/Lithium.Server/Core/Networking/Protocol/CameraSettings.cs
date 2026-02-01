@@ -25,7 +25,7 @@ public sealed class CameraSettings : INetworkSerializable
 
         if (PositionOffset is not null)
         {
-            PositionOffset.Value.Serialize(writer);
+            PositionOffset.Serialize(writer);
         }
         else
         {
@@ -67,7 +67,7 @@ public sealed class CameraSettings : INetworkSerializable
         if (bits.IsSet(1))
         {
             PositionOffset = new Vector3Float();
-            PositionOffset.Value.Deserialize(reader);
+            PositionOffset.Deserialize(reader);
         }
 
         if (bits.IsSet(2))

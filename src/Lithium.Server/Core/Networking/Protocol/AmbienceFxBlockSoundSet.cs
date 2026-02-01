@@ -29,7 +29,7 @@ public sealed class AmbienceFxBlockSoundSet : INetworkSerializable
 
         if (Percent is not null)
         {
-            Percent.Value.Serialize(writer);
+            Percent.Serialize(writer);
         }
         else
         {

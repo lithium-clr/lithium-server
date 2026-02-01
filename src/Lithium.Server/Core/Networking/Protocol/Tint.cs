@@ -9,7 +9,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
     VariableBlockStart = 24,
     MaxSize = 24
 )]
-public record struct Tint : INetworkSerializable
+public sealed class Tint : INetworkSerializable
 {
     public int Top { get; set; }
     public int Bottom { get; set; }

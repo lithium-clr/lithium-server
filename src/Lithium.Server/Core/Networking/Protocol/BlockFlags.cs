@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public record struct BlockFlags : INetworkSerializable
+public sealed class BlockFlags : INetworkSerializable
 {
     [JsonPropertyName("isUsable")] public bool IsUsable { get; set; }
     [JsonPropertyName("isStackable")] public bool IsStackable { get; set; }

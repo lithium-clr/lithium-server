@@ -31,51 +31,73 @@ public sealed class ProjectileConfig : INetworkSerializable
 
     public void Serialize(PacketWriter writer)
     {
-        var bits = new BitSet(1);
-        if (PhysicsConfig is not null) bits.SetBit(1);
-        if (SpawnOffset is not null) bits.SetBit(2);
-        if (RotationOffset is not null) bits.SetBit(4);
-        if (Model is not null) bits.SetBit(8);
-        if (Interactions is not null) bits.SetBit(16);
+        // 1. Nullable bits
+        byte nullBits = 0;
+        if (PhysicsConfig != null) nullBits |= 1;
+        if (SpawnOffset != null) nullBits |= 2;
+        if (RotationOffset != null) nullBits |= 4;
+        if (Model != null) nullBits |= 8;
+        if (Interactions != null) nullBits |= 16;
 
-        writer.WriteBits(bits);
+        writer.WriteUInt8(nullBits);
 
-        // Fixed Block
-        if (PhysicsConfig is not null) PhysicsConfig.Serialize(writer);
-        else writer.WriteZero(122);
+        // 2. Fixed block
+        if (PhysicsConfig != null)
+            PhysicsConfig.Serialize(writer);
+        else
+            writer.WriteZero(122); // PhysicsConfig padding
+
         writer.WriteFloat64(LaunchForce);
-        if (SpawnOffset is not null) SpawnOffset.Value.Serialize(writer);
-        else writer.WriteZero(12);
-        if (RotationOffset is not null) RotationOffset.Value.Serialize(writer);
-        else writer.WriteZero(12);
+
+        if (SpawnOffset != null)
+            SpawnOffset.Serialize(writer);
+        else
+            writer.WriteZero(12);
+
+        if (RotationOffset != null)
+            RotationOffset.Serialize(writer);
+        else
+            writer.WriteZero(12);
+
         writer.WriteInt32(LaunchLocalSoundEventIndex);
         writer.WriteInt32(ProjectileSoundEventIndex);
 
-        // Reserve Offsets
-        var modelOffset = writer.ReserveOffset();
-        var interactionsOffset = writer.ReserveOffset();
+        // 3. Reserve offset slots
+        int modelOffsetSlot = writer.ReserveOffset();
+        int interactionsOffsetSlot = writer.ReserveOffset();
 
-        var varBlockStart = writer.Position;
+        int varBlockStart = writer.Position;
 
-        // Variable Block
-        if (Model is not null)
+        // 4. Variable block
+        if (Model != null)
         {
-            writer.WriteOffsetAt(modelOffset, writer.Position - varBlockStart);
+            writer.WriteOffsetAt(modelOffsetSlot, writer.Position - varBlockStart);
             Model.Serialize(writer);
         }
-        else writer.WriteOffsetAt(modelOffset, -1);
-
-        if (Interactions is not null)
+        else
         {
-            writer.WriteOffsetAt(interactionsOffset, writer.Position - varBlockStart);
+            writer.WriteOffsetAt(modelOffsetSlot, -1);
+        }
+
+        if (Interactions != null)
+        {
+            writer.WriteOffsetAt(interactionsOffsetSlot, writer.Position - varBlockStart);
+
+            if (Interactions.Count > 4096000)
+                throw new Exception("Interactions too large");
+
             writer.WriteVarInt(Interactions.Count);
-            foreach (var (key, value) in Interactions)
+
+            foreach (var kvp in Interactions)
             {
-                writer.WriteEnum(key);
-                writer.WriteInt32(value);
+                writer.WriteUInt8((byte)kvp.Key);
+                writer.WriteInt32(kvp.Value);
             }
         }
-        else writer.WriteOffsetAt(interactionsOffset, -1);
+        else
+        {
+            writer.WriteOffsetAt(interactionsOffsetSlot, -1);
+        }
     }
 
     public void Deserialize(PacketReader reader)
@@ -83,13 +105,35 @@ public sealed class ProjectileConfig : INetworkSerializable
         var bits = reader.ReadBits();
 
         // Fixed Block
-        if (bits.IsSet(1)) PhysicsConfig = reader.ReadObject<PhysicsConfig>();
-        else reader.ReadBytes(122);
+        if (bits.IsSet(1))
+        {
+            PhysicsConfig = reader.ReadObject<PhysicsConfig>();
+        }
+        else
+        {
+            reader.ReadBytes(122);
+        }
+
         LaunchForce = reader.ReadFloat64();
-        if (bits.IsSet(2)) SpawnOffset = reader.ReadObject<Vector3Float>();
-        else reader.ReadBytes(12);
-        if (bits.IsSet(4)) RotationOffset = reader.ReadObject<Direction>();
-        else reader.ReadBytes(12);
+
+        if (bits.IsSet(2))
+        {
+            SpawnOffset = reader.ReadObject<Vector3Float>();
+        }
+        else
+        {
+            reader.ReadBytes(12);
+        }
+
+        if (bits.IsSet(4))
+        {
+            RotationOffset = reader.ReadObject<Direction>();
+        }
+        else
+        {
+            reader.ReadBytes(12);
+        }
+
         LaunchLocalSoundEventIndex = reader.ReadInt32();
         ProjectileSoundEventIndex = reader.ReadInt32();
 

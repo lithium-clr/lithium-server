@@ -40,7 +40,7 @@ public sealed class AmbienceFxSound : INetworkSerializable
 
         if (Frequency is not null)
         {
-            Frequency.Value.Serialize(writer);
+            Frequency.Serialize(writer);
         }
         else
         {
@@ -50,7 +50,7 @@ public sealed class AmbienceFxSound : INetworkSerializable
 
         if (Radius is not null)
         {
-            Radius.Value.Serialize(writer);
+            Radius.Serialize(writer);
         }
         else
         {

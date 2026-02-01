@@ -1,18 +1,13 @@
 using System.Text.Json.Serialization;
-using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-[Packet(
-    NullableBitFieldSize = 0,
-    FixedBlockSize = 122,
-    VariableFieldCount = 0,
-    VariableBlockStart = 122,
-    MaxSize = 122
-)]
 public sealed class PhysicsConfig : INetworkSerializable
 {
-    [JsonPropertyName("type")] public PhysicsType Type { get; set; } = PhysicsType.Standard;
+    [JsonPropertyName("type")]
+    [JsonConverter(typeof(JsonStringEnumConverter<PhysicsType>))]
+    public PhysicsType Type { get; set; } = PhysicsType.Standard;
+    
     [JsonPropertyName("density")] public double Density { get; set; }
     [JsonPropertyName("gravity")] public double Gravity { get; set; }
     [JsonPropertyName("bounciness")] public double Bounciness { get; set; }
@@ -21,7 +16,11 @@ public sealed class PhysicsConfig : INetworkSerializable
     [JsonPropertyName("sticksVertically")] public bool SticksVertically { get; set; }
     [JsonPropertyName("computeYaw")] public bool ComputeYaw { get; set; }
     [JsonPropertyName("computePitch")] public bool ComputePitch { get; set; }
-    [JsonPropertyName("rotationMode")] public RotationMode RotationMode { get; set; } = RotationMode.None;
+    
+    [JsonPropertyName("rotationMode")]
+    [JsonConverter(typeof(JsonStringEnumConverter<RotationMode>))]
+    public RotationMode RotationMode { get; set; } = RotationMode.None;
+    
     [JsonPropertyName("moveOutOfSolidSpeed")] public double MoveOutOfSolidSpeed { get; set; }
     [JsonPropertyName("terminalVelocityAir")] public double TerminalVelocityAir { get; set; }
     [JsonPropertyName("densityAir")] public double DensityAir { get; set; }

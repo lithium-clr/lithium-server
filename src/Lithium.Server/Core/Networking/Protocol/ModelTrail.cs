@@ -1,26 +1,17 @@
-using System.Numerics;
 using System.Text.Json.Serialization;
-using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-[Packet(
-    NullableBitFieldSize = 1,
-    FixedBlockSize = 27,
-    VariableFieldCount = 2,
-    VariableBlockStart = 35,
-    MaxSize = 32768045)
-]
 public sealed class ModelTrail : INetworkSerializable
 {
     [JsonPropertyName("trailId")] public string? TrailId { get; set; }
 
     [JsonPropertyName("targetEntityPart")]
-    [JsonConverter(typeof(EnumStringConverter<EntityPart>))]
+    [JsonConverter(typeof(JsonStringEnumConverter<EntityPart>))]
     public EntityPart TargetEntityPart { get; set; } = EntityPart.Self;
 
     [JsonPropertyName("targetNodeName")] public string? TargetNodeName { get; set; }
-    [JsonPropertyName("positionOffset")] public Vector3? PositionOffset { get; set; }
+    [JsonPropertyName("positionOffset")] public Vector3Float? PositionOffset { get; set; }
     [JsonPropertyName("rotationOffset")] public Direction? RotationOffset { get; set; }
     [JsonPropertyName("fixedRotation")] public bool FixedRotation { get; set; }
 
@@ -33,102 +24,67 @@ public sealed class ModelTrail : INetworkSerializable
         if (TrailId is not null) bits.SetBit(4);
         if (TargetNodeName is not null) bits.SetBit(8);
 
+        // 1. BITS
         writer.WriteBits(bits);
 
+        // 2. FIXED BLOCK - 26 bytes
         writer.WriteEnum(TargetEntityPart);
 
         if (PositionOffset is not null)
-        {
-            writer.WriteFloat32(PositionOffset.Value.X);
-            writer.WriteFloat32(PositionOffset.Value.Y);
-            writer.WriteFloat32(PositionOffset.Value.Z);
-        }
+            PositionOffset.Serialize(writer);
         else
-        {
-            writer.WriteFloat32(0);
-            writer.WriteFloat32(0);
-            writer.WriteFloat32(0);
-        }
+            writer.WriteZero(12);
 
         if (RotationOffset is not null)
-        {
-            RotationOffset.Value.Serialize(writer);
-        }
+            RotationOffset.Serialize(writer);
         else
-        {
-            writer.WriteFloat32(0);
-            writer.WriteFloat32(0);
-            writer.WriteFloat32(0);
-        }
+            writer.WriteZero(12);
 
         writer.WriteBoolean(FixedRotation);
 
+        // 3. OFFSETS
         var trailIdOffsetSlot = writer.ReserveOffset();
         var targetNodeNameOffsetSlot = writer.ReserveOffset();
 
         var varBlockStart = writer.Position;
 
+        // 4. VARIABLE BLOCK
         if (TrailId is not null)
         {
             writer.WriteOffsetAt(trailIdOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarUtf8String(TrailId, 4096000);
         }
-        else
-        {
-            writer.WriteOffsetAt(trailIdOffsetSlot, -1);
-        }
+        else writer.WriteOffsetAt(trailIdOffsetSlot, -1);
 
         if (TargetNodeName is not null)
         {
             writer.WriteOffsetAt(targetNodeNameOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarUtf8String(TargetNodeName, 4096000);
         }
-        else
-        {
-            writer.WriteOffsetAt(targetNodeNameOffsetSlot, -1);
-        }
+        else writer.WriteOffsetAt(targetNodeNameOffsetSlot, -1);
     }
 
     public void Deserialize(PacketReader reader)
     {
         var bits = reader.ReadBits();
 
+        // FIXED BLOCK
         TargetEntityPart = reader.ReadEnum<EntityPart>();
 
         if (bits.IsSet(1))
-        {
-            PositionOffset = new Vector3(reader.ReadFloat32(), reader.ReadFloat32(), reader.ReadFloat32());
-        }
-        else
-        {
-            reader.ReadFloat32();
-            reader.ReadFloat32();
-            reader.ReadFloat32();
-        }
+            PositionOffset = reader.ReadObject<Vector3Float>();
 
         if (bits.IsSet(2))
-        {
             RotationOffset = reader.ReadObject<Direction>();
-        }
-        else
-        {
-            reader.ReadFloat32();
-            reader.ReadFloat32();
-            reader.ReadFloat32();
-        }
 
         FixedRotation = reader.ReadBoolean();
 
         var offsets = reader.ReadOffsets(2);
 
         if (bits.IsSet(4))
-        {
             TrailId = reader.ReadVarUtf8StringAt(offsets[0]);
-        }
 
         if (bits.IsSet(8))
-        {
             TargetNodeName = reader.ReadVarUtf8StringAt(offsets[1]);
-        }
     }
 }

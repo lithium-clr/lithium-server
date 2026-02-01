@@ -50,26 +50,26 @@ public sealed class AmbienceFxConditions : INetworkSerializable
         writer.WriteInt32(EnvironmentTagPatternIndex);
         writer.WriteInt32(WeatherTagPatternIndex);
 
-        if (Altitude is not null) Altitude.Value.Serialize(writer);
+        if (Altitude is not null) Altitude.Serialize(writer);
         else { writer.WriteInt32(0); writer.WriteInt32(0); }
 
-        if (Walls is not null) Walls.Value.Serialize(writer);
+        if (Walls is not null) Walls.Serialize(writer);
         else { writer.WriteUInt8(0); writer.WriteUInt8(0); }
 
         writer.WriteBoolean(Roof);
         writer.WriteInt32(RoofMaterialTagPatternIndex);
         writer.WriteBoolean(Floor);
 
-        if (SunLightLevel is not null) SunLightLevel.Value.Serialize(writer);
+        if (SunLightLevel is not null) SunLightLevel.Serialize(writer);
         else { writer.WriteUInt8(0); writer.WriteUInt8(0); }
 
-        if (TorchLightLevel is not null) TorchLightLevel.Value.Serialize(writer);
+        if (TorchLightLevel is not null) TorchLightLevel.Serialize(writer);
         else { writer.WriteUInt8(0); writer.WriteUInt8(0); }
 
-        if (GlobalLightLevel is not null) GlobalLightLevel.Value.Serialize(writer);
+        if (GlobalLightLevel is not null) GlobalLightLevel.Serialize(writer);
         else { writer.WriteUInt8(0); writer.WriteUInt8(0); }
 
-        if (DayTime is not null) DayTime.Value.Serialize(writer);
+        if (DayTime is not null) DayTime.Serialize(writer);
         else { writer.WriteFloat32(0); writer.WriteFloat32(0); }
 
         var environmentIndicesOffsetSlot = writer.ReserveOffset();

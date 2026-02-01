@@ -25,7 +25,7 @@ public sealed class DetailBox : INetworkSerializable
 
         if (Offset is not null)
         {
-            Offset.Value.Serialize(writer);
+            Offset.Serialize(writer);
         }
         else
         {
@@ -49,21 +49,9 @@ public sealed class DetailBox : INetworkSerializable
         var bits = reader.ReadBits();
 
         if (bits.IsSet(1))
-        {
             Offset = reader.ReadObject<Vector3Float>();
-        }
-        else
-        {
-            reader.ReadBytes(12); // Skip padding
-        }
 
         if (bits.IsSet(2))
-        {
             Box = reader.ReadObject<Hitbox>();
-        }
-        else
-        {
-            reader.ReadBytes(24); // Skip padding
-        }
     }
 }

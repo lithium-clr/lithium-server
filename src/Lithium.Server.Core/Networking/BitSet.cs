@@ -38,4 +38,9 @@ public sealed class BitSet
     }
 
     public void CopyTo(Span<byte> destination) => _bits.CopyTo(destination);
+
+    public ReadOnlySpan<byte> AsSpan()
+    {
+        return _bits;
+    }
 }

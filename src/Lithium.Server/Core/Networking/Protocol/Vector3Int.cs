@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Lithium.Server.Core.Networking.Protocol;
 
 [JsonConverter(typeof(Vector3IntJsonConverter))]
-public record struct Vector3Int : IVector<int>, INetworkSerializable
+public sealed class Vector3Int : IVector<int>, INetworkSerializable
 {
     [JsonPropertyName("x")] public int X { get; set; }
     [JsonPropertyName("y")] public int Y { get; set; }

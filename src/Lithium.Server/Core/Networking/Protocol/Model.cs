@@ -1,16 +1,7 @@
 using System.Text.Json.Serialization;
-using Lithium.Server.Core.Json.Serialization;
-using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-[Packet(
-    NullableBitFieldSize = 2,
-    FixedBlockSize = 43,
-    VariableFieldCount = 12,
-    VariableBlockStart = 91,
-    MaxSize = 1677721600
-)]
 public sealed class Model : INetworkSerializable
 {
     [JsonPropertyName("assetId")] public string? AssetId { get; set; }
@@ -22,25 +13,24 @@ public sealed class Model : INetworkSerializable
     [JsonPropertyName("scale")] public float Scale { get; set; }
     [JsonPropertyName("eyeHeight")] public float EyeHeight { get; set; }
     [JsonPropertyName("crouchOffset")] public float CrouchOffset { get; set; }
-
-    [JsonPropertyName("animationSets")]
-    public Dictionary<string, AnimationSet>? AnimationSets { get; set; }
-
+    [JsonPropertyName("animationSets")] public Dictionary<string, AnimationSet>? AnimationSets { get; set; }
     [JsonPropertyName("attachments")] public ModelAttachment[]? Attachments { get; set; }
     [JsonPropertyName("hitbox")] public Hitbox? Hitbox { get; set; }
     [JsonPropertyName("particles")] public ModelParticle[]? Particles { get; set; }
     [JsonPropertyName("trails")] public ModelTrail[]? Trails { get; set; }
     [JsonPropertyName("light")] public ColorLight? Light { get; set; }
+    [JsonPropertyName("detailBoxes")] public Dictionary<string, DetailBox[]>? DetailBoxes { get; set; }
 
-    [JsonPropertyName("detailBoxes")]
-    public Dictionary<string, DetailBox[]>? DetailBoxes { get; set; }
+    [JsonPropertyName("phobia")]
+    [JsonConverter(typeof(JsonStringEnumConverter<Phobia>))]
+    public Phobia Phobia { get; set; } = Phobia.None;
 
-    [JsonPropertyName("phobia")] public Phobia Phobia { get; set; } = Phobia.None;
     [JsonPropertyName("phobiaModel")] public Model? PhobiaModel { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
         var bits = new BitSet(2);
+
         if (Hitbox is not null) bits.SetBit(1);
         if (Light is not null) bits.SetBit(2);
         if (AssetId is not null) bits.SetBit(4);
@@ -56,165 +46,268 @@ public sealed class Model : INetworkSerializable
         if (DetailBoxes is not null) bits.SetBit(4096);
         if (PhobiaModel is not null) bits.SetBit(8192);
 
+        // 1. BITS (2 bytes)
+        // 1. BITS (2 bytes)
         writer.WriteBits(bits);
 
-        // Fixed Block
+        // 2. FIXED BLOCK - 41 bytes
         writer.WriteFloat32(Scale);
         writer.WriteFloat32(EyeHeight);
         writer.WriteFloat32(CrouchOffset);
+
         if (Hitbox is not null)
-        {
             Hitbox.Serialize(writer);
-        }
         else
-        {
-            writer.WriteInt64(0);
-            writer.WriteInt64(0);
-            writer.WriteInt64(0);
-        }
-        if (Light is not null) Light.Value.Serialize(writer);
-        else writer.WriteInt32(0);
+            writer.WriteZero(24);
+
+        if (Light is not null)
+            Light.Serialize(writer);
+        else
+            writer.WriteZero(4);
+
         writer.WriteEnum(Phobia);
 
-        // Reserve Offsets
-        var offsets = new int[12];
-        for (int i = 0; i < 12; i++) offsets[i] = writer.ReserveOffset();
+        // 3. OFFSETS (12 offsets × 4 bytes = 48 bytes)
+        var assetIdOffsetSlot = writer.ReserveOffset();
+        var pathOffsetSlot = writer.ReserveOffset();
+        var textureOffsetSlot = writer.ReserveOffset();
+        var gradientSetOffsetSlot = writer.ReserveOffset();
+        var gradientIdOffsetSlot = writer.ReserveOffset();
+        var cameraOffsetSlot = writer.ReserveOffset();
+        var animationSetsOffsetSlot = writer.ReserveOffset();
+        var attachmentsOffsetSlot = writer.ReserveOffset();
+        var particlesOffsetSlot = writer.ReserveOffset();
+        var trailsOffsetSlot = writer.ReserveOffset();
+        var detailBoxesOffsetSlot = writer.ReserveOffset();
+        var phobiaModelOffsetSlot = writer.ReserveOffset();
 
         var varBlockStart = writer.Position;
 
-        // Variable Block
+        // 4. VARIABLE BLOCK - AssetId
         if (AssetId is not null)
         {
-            writer.WriteOffsetAt(offsets[0], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(assetIdOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarUtf8String(AssetId, 4096000);
         }
-        else writer.WriteOffsetAt(offsets[0], -1);
+        else writer.WriteOffsetAt(assetIdOffsetSlot, -1);
 
+        // 5. VARIABLE BLOCK - Path
+        // 5. VARIABLE BLOCK - Path
         if (Path is not null)
         {
-            writer.WriteOffsetAt(offsets[1], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(pathOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarUtf8String(Path, 4096000);
         }
-        else writer.WriteOffsetAt(offsets[1], -1);
+        else writer.WriteOffsetAt(pathOffsetSlot, -1);
 
+        // 6. VARIABLE BLOCK - Texture
+        // 6. VARIABLE BLOCK - Texture
         if (Texture is not null)
         {
-            writer.WriteOffsetAt(offsets[2], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(textureOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarUtf8String(Texture, 4096000);
         }
-        else writer.WriteOffsetAt(offsets[2], -1);
+        else writer.WriteOffsetAt(textureOffsetSlot, -1);
 
+        // 7. VARIABLE BLOCK - GradientSet
+        // 7. VARIABLE BLOCK - GradientSet
         if (GradientSet is not null)
         {
-            writer.WriteOffsetAt(offsets[3], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(gradientSetOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarUtf8String(GradientSet, 4096000);
         }
-        else writer.WriteOffsetAt(offsets[3], -1);
+        else writer.WriteOffsetAt(gradientSetOffsetSlot, -1);
 
+        // 8. VARIABLE BLOCK - GradientId
+        // 8. VARIABLE BLOCK - GradientId
         if (GradientId is not null)
         {
-            writer.WriteOffsetAt(offsets[4], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(gradientIdOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarUtf8String(GradientId, 4096000);
         }
-        else writer.WriteOffsetAt(offsets[4], -1);
+        else writer.WriteOffsetAt(gradientIdOffsetSlot, -1);
 
+        // 9. VARIABLE BLOCK - Camera
+        // 9. VARIABLE BLOCK - Camera
         if (Camera is not null)
         {
-            writer.WriteOffsetAt(offsets[5], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(cameraOffsetSlot, writer.Position - varBlockStart);
             Camera.Serialize(writer);
         }
-        else writer.WriteOffsetAt(offsets[5], -1);
+        else writer.WriteOffsetAt(cameraOffsetSlot, -1);
 
+        // 10. VARIABLE BLOCK - AnimationSets (Dictionary<string, AnimationSet>)
+        // 10. VARIABLE BLOCK - AnimationSets (Dictionary<string, AnimationSet>)
         if (AnimationSets is not null)
         {
-            writer.WriteOffsetAt(offsets[6], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(animationSetsOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(AnimationSets.Count);
-            foreach (var (k, v) in AnimationSets)
+            foreach (var kvp in AnimationSets)
             {
-                writer.WriteVarUtf8String(k, 4096000);
-                v.Serialize(writer);
+                writer.WriteVarUtf8String(kvp.Key, 4096000);
+                kvp.Value.Serialize(writer);
             }
         }
-        else writer.WriteOffsetAt(offsets[6], -1);
+        else writer.WriteOffsetAt(animationSetsOffsetSlot, -1);
 
+        // 11. VARIABLE BLOCK - Attachments
+        // 11. VARIABLE BLOCK - Attachments
         if (Attachments is not null)
         {
-            writer.WriteOffsetAt(offsets[7], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(attachmentsOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(Attachments.Length);
-            foreach (var item in Attachments) item.Serialize(writer);
+            foreach (var item in Attachments)
+                item.Serialize(writer);
         }
-        else writer.WriteOffsetAt(offsets[7], -1);
+        else writer.WriteOffsetAt(attachmentsOffsetSlot, -1);
 
+        // 12. VARIABLE BLOCK - Particles
+        // 12. VARIABLE BLOCK - Particles
         if (Particles is not null)
         {
-            writer.WriteOffsetAt(offsets[8], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(particlesOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(Particles.Length);
-            foreach (var item in Particles) item.Serialize(writer);
+            foreach (var item in Particles)
+                item.Serialize(writer);
         }
-        else writer.WriteOffsetAt(offsets[8], -1);
+        else writer.WriteOffsetAt(particlesOffsetSlot, -1);
 
+        // 13. VARIABLE BLOCK - Trails
+        // 13. VARIABLE BLOCK - Trails
         if (Trails is not null)
         {
-            writer.WriteOffsetAt(offsets[9], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(trailsOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(Trails.Length);
-            foreach (var item in Trails) item.Serialize(writer);
+            foreach (var item in Trails)
+                item.Serialize(writer);
         }
-        else writer.WriteOffsetAt(offsets[9], -1);
+        else writer.WriteOffsetAt(trailsOffsetSlot, -1);
 
+        // 14. VARIABLE BLOCK - DetailBoxes (Dictionary<string, DetailBox[]>)
+        // 14. VARIABLE BLOCK - DetailBoxes (Dictionary<string, DetailBox[]>)
         if (DetailBoxes is not null)
         {
-            writer.WriteOffsetAt(offsets[10], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(detailBoxesOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(DetailBoxes.Count);
-            foreach (var (k, v) in DetailBoxes)
+            foreach (var kvp in DetailBoxes)
             {
-                writer.WriteVarUtf8String(k, 4096000);
-                writer.WriteVarInt(v.Length);
-                foreach (var item in v) item.Serialize(writer);
+                writer.WriteVarUtf8String(kvp.Key, 4096000);
+                writer.WriteVarInt(kvp.Value.Length);
+                foreach (var item in kvp.Value)
+                    item.Serialize(writer);
             }
         }
-        else writer.WriteOffsetAt(offsets[10], -1);
+        else writer.WriteOffsetAt(detailBoxesOffsetSlot, -1);
 
+        // 15. VARIABLE BLOCK - PhobiaModel (RÉCURSIF)
+        // 15. VARIABLE BLOCK - PhobiaModel (RÉCURSIF)
         if (PhobiaModel is not null)
         {
-            writer.WriteOffsetAt(offsets[11], writer.Position - varBlockStart);
+            writer.WriteOffsetAt(phobiaModelOffsetSlot, writer.Position - varBlockStart);
             PhobiaModel.Serialize(writer);
         }
-        else writer.WriteOffsetAt(offsets[11], -1);
+        else writer.WriteOffsetAt(phobiaModelOffsetSlot, -1);
     }
 
     public void Deserialize(PacketReader reader)
     {
         var bits = reader.ReadBits();
 
-        // Fixed Block
+        // FIXED BLOCK
         Scale = reader.ReadFloat32();
         EyeHeight = reader.ReadFloat32();
         CrouchOffset = reader.ReadFloat32();
-        if (bits.IsSet(1)) Hitbox = reader.ReadObject<Hitbox>();
-        else reader.ReadBytes(24);
-        if (bits.IsSet(2)) Light = reader.ReadObject<ColorLight>();
-        else reader.ReadInt32();
+
+        if (bits.IsSet(1))
+            Hitbox = reader.ReadObject<Hitbox>();
+
+        if (bits.IsSet(2))
+            Light = reader.ReadObject<ColorLight>();
+
         Phobia = reader.ReadEnum<Phobia>();
 
-        // Read Offsets
         var offsets = reader.ReadOffsets(12);
 
-        // Variable Block
-        if (bits.IsSet(4)) AssetId = reader.ReadVarUtf8StringAt(offsets[0]);
-        if (bits.IsSet(8)) Path = reader.ReadVarUtf8StringAt(offsets[1]);
-        if (bits.IsSet(16)) Texture = reader.ReadVarUtf8StringAt(offsets[2]);
-        if (bits.IsSet(32)) GradientSet = reader.ReadVarUtf8StringAt(offsets[3]);
-        if (bits.IsSet(64)) GradientId = reader.ReadVarUtf8StringAt(offsets[4]);
-        if (bits.IsSet(128)) Camera = reader.ReadObjectAt<CameraSettings>(offsets[5]);
+        if (bits.IsSet(4))
+            AssetId = reader.ReadVarUtf8StringAt(offsets[0]);
+
+        if (bits.IsSet(8))
+            Path = reader.ReadVarUtf8StringAt(offsets[1]);
+
+        if (bits.IsSet(16))
+            Texture = reader.ReadVarUtf8StringAt(offsets[2]);
+
+        if (bits.IsSet(32))
+            GradientSet = reader.ReadVarUtf8StringAt(offsets[3]);
+
+        if (bits.IsSet(64))
+            GradientId = reader.ReadVarUtf8StringAt(offsets[4]);
+
+        if (bits.IsSet(128))
+            Camera = reader.ReadObjectAt<CameraSettings>(offsets[5]);
+
         if (bits.IsSet(256))
-            AnimationSets =
-                reader.ReadDictionaryAt(offsets[6], r => r.ReadUtf8String(), r => r.ReadObject<AnimationSet>());
-        if (bits.IsSet(512)) Attachments = reader.ReadObjectArrayAt<ModelAttachment>(offsets[7]);
-        if (bits.IsSet(1024)) Particles = reader.ReadObjectArrayAt<ModelParticle>(offsets[8]);
-        if (bits.IsSet(2048)) Trails = reader.ReadObjectArrayAt<ModelTrail>(offsets[9]);
+        {
+            AnimationSets = reader.ReadDictionaryAt(
+                offsets[6],
+                r => r.ReadUtf8String(),
+                r => r.ReadObject<AnimationSet>()
+            );
+        }
+
+        if (bits.IsSet(512))
+        {
+            Attachments = reader.ReadArrayAt(
+                offsets[7],
+                r => r.ReadObject<ModelAttachment>()
+            );
+        }
+
+        if (bits.IsSet(1024))
+        {
+            Particles = reader.ReadArrayAt(
+                offsets[8],
+                r => r.ReadObject<ModelParticle>()
+            );
+        }
+
+        if (bits.IsSet(2048))
+        {
+            Trails = reader.ReadArrayAt(
+                offsets[9],
+                r => r.ReadObject<ModelTrail>()
+            );
+        }
+
         if (bits.IsSet(4096))
-            DetailBoxes = reader.ReadDictionaryAt(offsets[10], r => r.ReadUtf8String(),
-                r => r.ReadObjectArray<DetailBox>());
-        if (bits.IsSet(8192)) PhobiaModel = reader.ReadObjectAt<Model>(offsets[11]);
+        {
+            // Dictionary<string, DetailBox[]> - nécessite une lecture spéciale
+            var offset = offsets[10];
+            if (offset != -1)
+            {
+                var savedPos = reader.GetPosition();
+                reader.SeekTo(reader.VariableBlockStart + offset);
+
+                var count = reader.ReadVarInt32();
+                DetailBoxes = new Dictionary<string, DetailBox[]>(count);
+
+                for (var i = 0; i < count; i++)
+                {
+                    var key = reader.ReadUtf8String();
+                    var arrayLength = reader.ReadVarInt32();
+                    var array = new DetailBox[arrayLength];
+
+                    for (var j = 0; j < arrayLength; j++)
+                        array[j] = reader.ReadObject<DetailBox>();
+
+                    DetailBoxes[key] = array;
+                }
+
+                reader.SeekTo(savedPos);
+            }
+        }
+
+        if (bits.IsSet(8192))
+            PhobiaModel = reader.ReadObjectAt<Model>(offsets[11]); // RÉCURSIF
     }
 }

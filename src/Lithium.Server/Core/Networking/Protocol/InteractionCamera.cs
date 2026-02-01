@@ -43,7 +43,7 @@ public sealed class InteractionCamera : INetworkSerializable
 
         if (Rotation is not null)
         {
-            Rotation.Value.Serialize(writer);
+            Rotation.Serialize(writer);
         }
         else
         {

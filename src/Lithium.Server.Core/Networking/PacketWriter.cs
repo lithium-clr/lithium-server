@@ -39,7 +39,7 @@ public sealed class PacketWriter(int initialCapacity = 256)
         if (count <= 0) return;
 
         var span = _writer.GetSpan(count);
-        span[..count].Clear();
+        span[..count].Fill(0);
         _writer.Advance(count);
     }
     

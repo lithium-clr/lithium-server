@@ -33,7 +33,7 @@ public sealed class AnimationSet : INetworkSerializable
         // Fixed Block
         if (NextAnimationDelay is not null)
         {
-            NextAnimationDelay.Value.Serialize(writer);
+            NextAnimationDelay.Serialize(writer);
         }
         else
         {

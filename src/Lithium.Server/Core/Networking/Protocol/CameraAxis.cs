@@ -21,7 +21,7 @@ public sealed class CameraAxis : INetworkSerializable
 
         if (AngleRange is not null)
         {
-            AngleRange.Value.Serialize(writer);
+            AngleRange.Serialize(writer);
         }
         else
         {
@@ -45,7 +45,7 @@ public sealed class CameraAxis : INetworkSerializable
         if (bits.IsSet(1))
         {
             AngleRange = new RangeFloat();
-            AngleRange.Value.Deserialize(reader);
+            AngleRange.Deserialize(reader);
         }
 
         if (bits.IsSet(2))

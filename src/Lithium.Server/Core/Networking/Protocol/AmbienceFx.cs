@@ -36,8 +36,14 @@ public sealed class AmbienceFx : INetworkSerializable
 
         writer.WriteBits(bits);
 
-        if (SoundEffect is not null) SoundEffect.Serialize(writer);
-        else { writer.WriteInt32(0); writer.WriteInt32(0); writer.WriteUInt8(0); } // 9 bytes zero-padding
+        if (SoundEffect is not null)
+        {
+            SoundEffect.Serialize(writer);
+        }
+        else
+        {
+            writer.WriteZero(9);
+        }
 
         writer.WriteInt32(Priority);
         writer.WriteInt32(AudioCategoryIndex);
@@ -100,8 +106,14 @@ public sealed class AmbienceFx : INetworkSerializable
     {
         var bits = reader.ReadBits();
 
-        if (bits.IsSet(1)) SoundEffect = reader.ReadObject<AmbienceFxSoundEffect>();
-        else { reader.ReadInt32(); reader.ReadInt32(); reader.ReadUInt8(); }
+        if (bits.IsSet(1))
+        {
+            SoundEffect = reader.ReadObject<AmbienceFxSoundEffect>();
+        }
+        else
+        {
+            reader.ReadBytes(9);
+        }
 
         Priority = reader.ReadInt32();
         AudioCategoryIndex = reader.ReadInt32();
