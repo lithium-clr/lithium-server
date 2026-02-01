@@ -1,0 +1,14 @@
+{
+  "type": "Init",
+  "maxId": 2,
+  "hitboxCollisionConfigs": {
+    "0": {
+      "collisionType": "Hard",
+      "softCollisionOffsetRatio": 1.0
+    },
+    "1": {
+      "collisionType": "Soft",
+      "softCollisionOffsetRatio": 1.25
+    }
+  }
+}

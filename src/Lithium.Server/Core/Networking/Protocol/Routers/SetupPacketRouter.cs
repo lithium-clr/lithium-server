@@ -379,6 +379,13 @@ public sealed class SetupPacketRouter(
         //
         //     await client.SendPacketAsync(packet);
         // }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_hitbox_collision_config.json"));
+            var packet = JsonSerializer.Deserialize<UpdateHitboxCollisionConfigPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
