@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Lithium.Server.Core.Json.Serialization;
 
-public class IntKeyDictionaryConverter<TValue> : JsonConverter<Dictionary<int, TValue>>
+public sealed class IntKeyDictionaryConverter<TValue> : JsonConverter<Dictionary<int, TValue>>
 {
     public override Dictionary<int, TValue> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

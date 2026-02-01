@@ -69,6 +69,18 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
         return dict;
     }
     
+    public T[] ReadObjectArray<T>() where T : INetworkSerializable, new()
+    {
+        var count = ReadVarInt32();
+        var array = new T[count];
+        for (var i = 0; i < count; i++)
+        {
+            array[i] = new T();
+            array[i].Deserialize(this);
+        }
+        return array;
+    }
+    
     public Dictionary<TKey, TValue> ReadDictionaryAt<TKey, TValue>(
         int offset,
         Func<PacketReader, TKey> readKey,
