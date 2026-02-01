@@ -1,0 +1,273 @@
+{
+  "type": "Init",
+  "itemCategories": [
+    {
+      "id": "Items",
+      "name": null,
+      "icon": "Icons/ItemCategories/Items.png",
+      "order": 2,
+      "infoDisplayMode": "Tooltip",
+      "children": [
+        {
+          "id": "Tools",
+          "name": "server.ui.itemcategory.tools",
+          "icon": "Icons/ItemCategories/Items-Tools.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Weapons",
+          "name": "server.ui.itemcategory.weapons",
+          "icon": "Icons/ItemCategories/Items-Weapons.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Armors",
+          "name": "server.ui.itemcategory.armors",
+          "icon": "Icons/ItemCategories/Items-Armor.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Foods",
+          "name": "server.ui.itemcategory.foods",
+          "icon": "Icons/ItemCategories/Items-Food.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Potions",
+          "name": "server.ui.itemcategory.potions",
+          "icon": "Icons/ItemCategories/Items-Potion.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Recipes",
+          "name": "server.ui.itemcategory.recipes",
+          "icon": "Icons/ItemCategories/Items-Recipe.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Ingredients",
+          "name": "server.ui.itemcategory.ingredients",
+          "icon": "Icons/ItemCategories/Items-Ingredients.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": "Tool",
+      "name": null,
+      "icon": "Icons/ItemCategories/Editor.png",
+      "order": 3,
+      "infoDisplayMode": "Tooltip",
+      "children": [
+        {
+          "id": "BuilderTool",
+          "name": "server.ui.itemcategory.buildertool",
+          "icon": "Icons/ItemCategories/Builder Tools.png",
+          "order": 0,
+          "infoDisplayMode": "Adjacent",
+          "children": null
+        },
+        {
+          "id": "BuilderToolSecondPage",
+          "name": "server.ui.itemcategory.buildertoolsecondpage",
+          "icon": "Icons/ItemCategories/Builder Tools.png",
+          "order": 0,
+          "infoDisplayMode": "Adjacent",
+          "children": null
+        },
+        {
+          "id": "ScriptedBrushes",
+          "name": "server.ui.itemcategory.scriptedbrushes",
+          "icon": "Icons/ItemCategories/Scripted Brushes.png",
+          "order": 0,
+          "infoDisplayMode": "Adjacent",
+          "children": null
+        },
+        {
+          "id": "Block",
+          "name": "server.ui.itemcategory.block",
+          "icon": "Icons/ItemCategories/Scripted Blocks.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "BrushFilters",
+          "name": "server.ui.itemcategory.brushfilters",
+          "icon": "Icons/ItemCategories/Scripted Brushes.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Machinima",
+          "name": "server.ui.itemcategory.machinima",
+          "icon": "Icons/ItemCategories/Machinima.png",
+          "order": 0,
+          "infoDisplayMode": "Adjacent",
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": "Blocks",
+      "name": null,
+      "icon": "Icons/ItemCategories/Natural.png",
+      "order": 0,
+      "infoDisplayMode": "Tooltip",
+      "children": [
+        {
+          "id": "Rocks",
+          "name": "server.ui.itemcategory.rocks",
+          "icon": "Icons/ItemCategories/Blocks.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Structural",
+          "name": "server.ui.itemcategory.structural",
+          "icon": "Icons/ItemCategories/Build-Roofs.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Soils",
+          "name": "server.ui.itemcategory.soils",
+          "icon": "Icons/ItemCategories/Soil.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Ores",
+          "name": "server.ui.itemcategory.ores",
+          "icon": "Icons/ItemCategories/Natural-Ore.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Plants",
+          "name": "server.ui.itemcategory.plants",
+          "icon": "Icons/ItemCategories/Natural-Vegetal.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Fluids",
+          "name": "server.ui.itemcategory.fluids",
+          "icon": "Icons/ItemCategories/Natural-Fluid.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Portals",
+          "name": "server.ui.itemcategory.portals",
+          "icon": "Icons/ItemCategories/Portal.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Deco",
+          "name": "server.ui.itemcategory.deco",
+          "icon": "Icons/ItemCategories/Natural-Fire.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": "Furniture",
+      "name": null,
+      "icon": "Icons/ItemCategories/Furniture.png",
+      "order": 1,
+      "infoDisplayMode": "Tooltip",
+      "children": [
+        {
+          "id": "Benches",
+          "name": "server.ui.itemcategory.benches",
+          "icon": "Icons/ItemCategories/Bench.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Containers",
+          "name": "server.ui.itemcategory.containers",
+          "icon": "Icons/ItemCategories/Container.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Furniture",
+          "name": "server.ui.itemcategory.furniture",
+          "icon": "Icons/ItemCategories/Build-Furnitures.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Doors",
+          "name": "server.ui.itemcategory.doors",
+          "icon": "Icons/ItemCategories/Doors.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Lighting",
+          "name": "server.ui.itemcategory.lighting",
+          "icon": "Icons/ItemCategories/Build-Lights.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Beds",
+          "name": "server.ui.itemcategory.beds",
+          "icon": "Icons/ItemCategories/Build-Beds.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Shelves",
+          "name": "server.ui.itemcategory.shelves",
+          "icon": "Icons/ItemCategories/Shelves.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        },
+        {
+          "id": "Signs",
+          "name": "server.ui.itemcategory.signs",
+          "icon": "Icons/ItemCategories/Signs.png",
+          "order": 0,
+          "infoDisplayMode": "Tooltip",
+          "children": null
+        }
+      ]
+    }
+  ]
+}

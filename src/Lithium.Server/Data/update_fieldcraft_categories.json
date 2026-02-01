@@ -1,0 +1,13 @@
+{
+  "type": "Init",
+  "itemCategories": [
+    {
+      "id": "Tools",
+      "name": "server.benchCategories.workbench.tools",
+      "icon": "Icons/CraftingCategories/Fieldcraft/Tool_Pickaxe_Crude.png",
+      "order": 0,
+      "infoDisplayMode": "Tooltip",
+      "children": null
+    }
+  ]
+}

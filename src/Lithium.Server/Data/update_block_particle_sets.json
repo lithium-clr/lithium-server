@@ -1,0 +1,426 @@
+{
+  "type": "Init",
+  "blockParticleSets": {
+    "Ice": {
+      "id": "Ice",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Block_Run_Ice",
+        "Sprint": "Block_Sprint_Ice",
+        "SoftLand": "Block_Land_Soft_Ice",
+        "HardLand": "Block_Land_Hard_Ice",
+        "Hit": "Block_Hit_Ice",
+        "Break": "Block_Break_Ice"
+      }
+    },
+    "Leaves": {
+      "id": "Leaves",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Leaves",
+        "SoftLand": "Block_Land_Soft_Leaves",
+        "HardLand": "Block_Land_Hard_Leaves",
+        "Break": "Block_Break_Leaves",
+        "Physics": "Block_Break_Leaves_Light"
+      }
+    },
+    "Sand": {
+      "id": "Sand",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Block_Run_Sand",
+        "Sprint": "Block_Sprint_Sand",
+        "SoftLand": "Block_Land_Sand_Soft",
+        "HardLand": "Block_Land_Sand_Hard",
+        "Hit": "Block_Hit_Sand",
+        "Break": "Block_Break_Sand"
+      }
+    },
+    "Clay": {
+      "id": "Clay",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Dust",
+        "SoftLand": "Block_Land_Soft_Dust",
+        "HardLand": "Block_Land_Hard_Dust",
+        "Hit": "Block_Hit_Clay",
+        "Break": "Block_Break_Clay"
+      }
+    },
+    "Grass": {
+      "id": "Grass",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Grass",
+        "HardLand": "Block_Land_Hard_Grass",
+        "Hit": "Block_Break_Grass",
+        "Break": "Block_Break_Grass"
+      }
+    },
+    "Leaves_Fir": {
+      "id": "Leaves_Fir",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Leaves_Fir",
+        "SoftLand": "Block_Land_Soft_Leaves_Fir",
+        "HardLand": "Block_Land_Hard_Leaves_Fir",
+        "Break": "Block_Break_Leaves_Fir",
+        "Physics": "Block_Break_Leaves_Fir_Light"
+      }
+    },
+    "GlassMagic": {
+      "id": "GlassMagic",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Item_Break_GlassMagic",
+        "SoftLand": "Item_Break_GlassMagic",
+        "HardLand": "Item_Break_GlassMagic",
+        "Hit": "Item_Break_GlassMagic",
+        "Break": "Item_Break_GlassMagic"
+      }
+    },
+    "Water": {
+      "id": "Water",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Water_Run",
+        "Sprint": "Water_Sprint",
+        "SoftLand": "Water_Splash_Sofr_Ver4",
+        "HardLand": "Water_Splash",
+        "MoveOut": "Water_Splash_Sofr_Ver4",
+        "Hit": "Water_Splash_Sofr_Ver4",
+        "Break": "Water_Splash"
+      }
+    },
+    "Leaves_Sharp": {
+      "id": "Leaves_Sharp",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Leaves_Sharp",
+        "SoftLand": "Block_Land_Soft_Leaves_Sharp",
+        "HardLand": "Block_Land_Hard_Leaves_Sharp",
+        "Break": "Block_Break_Leaves_Sharp",
+        "Physics": "Block_Break_Leaves_Sharp_Light"
+      }
+    },
+    "GlassSmall": {
+      "id": "GlassSmall",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Item_Break_GlassPotionSmall",
+        "SoftLand": "Item_Break_GlassPotionSmall",
+        "HardLand": "Item_Break_GlassPotionSmall",
+        "Hit": "Item_Break_GlassPotionSmall",
+        "Break": "Item_Break_GlassPotionSmall"
+      }
+    },
+    "Metal": {
+      "id": "Metal",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "HardLand": "Block_Land_Hard_Metal",
+        "Hit": "Block_Hit_Metal",
+        "Break": "Block_Break_Metal"
+      }
+    },
+    "Leaves_Branches": {
+      "id": "Leaves_Branches",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "HardLand": "Block_Land_Hard_Branches",
+        "Break": "Block_Break_Branches",
+        "Physics": "Block_Break_Branches_Light"
+      }
+    },
+    "Dust": {
+      "id": "Dust",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Dust",
+        "SoftLand": "Block_Land_Soft_Dust",
+        "HardLand": "Block_Land_Hard_Dust",
+        "Hit": "Block_Hit_Dust",
+        "Break": "Block_Break_Dust"
+      }
+    },
+    "Glass": {
+      "id": "Glass",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Item_Break_GlassPotion",
+        "SoftLand": "Item_Break_GlassPotion",
+        "HardLand": "Item_Break_GlassPotion",
+        "Hit": "Item_Break_GlassPotion",
+        "Break": "Item_Break_GlassPotion"
+      }
+    },
+    "Crystal": {
+      "id": "Crystal",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Block_Run_Crystal",
+        "Sprint": "Block_Sprint_Crystal",
+        "SoftLand": "Block_Land_Soft_Crystal",
+        "HardLand": "Block_Land_Hard_Crystal",
+        "Hit": "Block_Hit_Crystal",
+        "Break": "Block_Break_Crystal"
+      }
+    },
+    "Mud": {
+      "id": "Mud",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Block_Run_Mud",
+        "Sprint": "Block_Sprint_Mud",
+        "SoftLand": "Block_Land_Mud_Soft",
+        "HardLand": "Block_Land_Mud_Hard",
+        "Hit": "Block_Hit_Mud",
+        "Break": "Block_Break_Mud"
+      }
+    },
+    "Flower": {
+      "id": "Flower",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Break": "Block_Break_Soft_Flower"
+      }
+    },
+    "Lava": {
+      "id": "Lava",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Block_Run_Lava",
+        "Sprint": "Block_Run_Lava",
+        "SoftLand": "Block_Land_Lava_Soft",
+        "HardLand": "Block_Land_Lava_Hard",
+        "Hit": "Block_Land_Lava_Soft",
+        "Break": "Block_Land_Lava_Soft"
+      }
+    },
+    "Stone": {
+      "id": "Stone",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Stone",
+        "SoftLand": "Block_Land_Soft_Stone",
+        "HardLand": "Block_Land_Hard_Stone",
+        "Hit": "Block_Hit_Stone",
+        "Break": "Block_Break_Stone",
+        "Build": "Block_Build_Generic_Dust"
+      }
+    },
+    "GlassEmptySmall": {
+      "id": "GlassEmptySmall",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Item_Break_Glass_Small",
+        "SoftLand": "Item_Break_Glass_Small",
+        "HardLand": "Item_Break_Glass_Small",
+        "Hit": "Item_Break_Glass_Small",
+        "Break": "Item_Break_Glass_Small"
+      }
+    },
+    "Tar": {
+      "id": "Tar",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Block_Run_Tar",
+        "Sprint": "Block_Run_Tar",
+        "SoftLand": "Block_Land_Tar_Soft",
+        "HardLand": "Block_Land_Tar_Soft"
+      }
+    },
+    "Snow": {
+      "id": "Snow",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Block_Run_Snow",
+        "Sprint": "Block_Sprint_Snow",
+        "SoftLand": "Block_Land_Snow_Soft",
+        "HardLand": "Block_Land_Snow_Hard",
+        "Hit": "Block_Hit_Snow",
+        "Break": "Block_Break_Snow"
+      }
+    },
+    "Leaves_Round": {
+      "id": "Leaves_Round",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Leaves_Round",
+        "SoftLand": "Block_Land_Soft_Leaves_Round",
+        "HardLand": "Block_Land_Hard_Leaves_Round",
+        "Break": "Block_Break_Leaves_Round",
+        "Physics": "Block_Break_Leaves_Round_Light"
+      }
+    },
+    "Dirt": {
+      "id": "Dirt",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Run": "Block_Run_Dirt",
+        "Sprint": "Block_Sprint_Dirt",
+        "SoftLand": "Block_Land_Soft_Dirt",
+        "HardLand": "Block_Land_Hard_Dirt",
+        "Hit": "Block_Hit_Dirt",
+        "Break": "Block_Break_Dirt"
+      }
+    },
+    "Grass_Earth": {
+      "id": "Grass_Earth",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Grass",
+        "HardLand": "Block_Land_Hard_Grass",
+        "Hit": "Block_Break_Grass_Earth",
+        "Break": "Block_Break_Grass_Earth"
+      }
+    },
+    "GlassEmpty": {
+      "id": "GlassEmpty",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Item_Break_Glass",
+        "SoftLand": "Item_Break_Glass",
+        "HardLand": "Item_Break_Glass",
+        "Hit": "Item_Break_Glass",
+        "Break": "Item_Break_Glass"
+      }
+    },
+    "Wood": {
+      "id": "Wood",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Wood",
+        "SoftLand": "Block_Land_Soft_Wood",
+        "HardLand": "Block_Land_Hard_Wood",
+        "Hit": "Block_Hit_Wood",
+        "Break": "Block_Break_Wood",
+        "Physics": "Block_Break_Wood_Light"
+      }
+    },
+    "Ore": {
+      "id": "Ore",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Stone",
+        "SoftLand": "Block_Land_Soft_Stone",
+        "HardLand": "Block_Land_Hard_Stone",
+        "Hit": "Block_Hit_Stone",
+        "Break": "Block_Break_Ore",
+        "Build": "Block_Build_Generic_Dust"
+      }
+    },
+    "GlassPoison": {
+      "id": "GlassPoison",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Item_Break_GlassPoison",
+        "SoftLand": "Item_Break_GlassPoison",
+        "HardLand": "Item_Break_GlassPoison",
+        "Hit": "Item_Break_GlassPoison",
+        "Break": "Item_Break_GlassPoison"
+      }
+    },
+    "Leaves_Fir_Snow": {
+      "id": "Leaves_Fir_Snow",
+      "color": null,
+      "scale": 1.0,
+      "positionOffset": null,
+      "rotationOffset": null,
+      "particleSystemIds": {
+        "Sprint": "Block_Sprint_Leaves_Snow",
+        "SoftLand": "Block_Land_Soft_Leaves_Snow",
+        "HardLand": "Block_Land_Hard_Leaves_Snow",
+        "Break": "Block_Break_Leaves_Snow",
+        "Physics": "Block_Break_Leaves_Snow_Light"
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "type": "Init",
+  "blockBreakingDecals": {
+    "Breaking_Decals_Soil": {
+      "stageTextures": [
+        "BlockTextures/Cracks/T_Crack_Dirt_01.png",
+        "BlockTextures/Cracks/T_Crack_Dirt_02.png",
+        "BlockTextures/Cracks/T_Crack_Dirt_03.png",
+        "BlockTextures/Cracks/T_Crack_Dirt_04.png",
+        "BlockTextures/Cracks/T_Crack_Dirt_05.png",
+        "BlockTextures/Cracks/T_Crack_Dirt_06.png",
+        "BlockTextures/Cracks/T_Crack_Dirt_07.png"
+      ]
+    },
+    "Unknown": {
+      "stageTextures": [
+        "BlockTextures/Cracks/T_Crack_Generic_01.png",
+        "BlockTextures/Cracks/T_Crack_Generic_02.png",
+        "BlockTextures/Cracks/T_Crack_Generic_03.png",
+        "BlockTextures/Cracks/T_Crack_Generic_04.png",
+        "BlockTextures/Cracks/T_Crack_Generic_05.png",
+        "BlockTextures/Cracks/T_Crack_Generic_06.png",
+        "BlockTextures/Cracks/T_Crack_Generic_07.png"
+      ]
+    },
+    "Breaking_Decals_Wood": {
+      "stageTextures": [
+        "BlockTextures/Cracks/T_Crack_Wood_01.png",
+        "BlockTextures/Cracks/T_Crack_Wood_02.png",
+        "BlockTextures/Cracks/T_Crack_Wood_03.png",
+        "BlockTextures/Cracks/T_Crack_Wood_04.png",
+        "BlockTextures/Cracks/T_Crack_Wood_05.png",
+        "BlockTextures/Cracks/T_Crack_Wood_06.png",
+        "BlockTextures/Cracks/T_Crack_Wood_07.png"
+      ]
+    },
+    "Breaking_Decals_Rock": {
+      "stageTextures": [
+        "BlockTextures/Cracks/T_Crack_Stone_01.png",
+        "BlockTextures/Cracks/T_Crack_Stone_02.png",
+        "BlockTextures/Cracks/T_Crack_Stone_03.png",
+        "BlockTextures/Cracks/T_Crack_Stone_04.png",
+        "BlockTextures/Cracks/T_Crack_Stone_05.png",
+        "BlockTextures/Cracks/T_Crack_Stone_06.png",
+        "BlockTextures/Cracks/T_Crack_Stone_07.png"
+      ]
+    }
+  }
+}

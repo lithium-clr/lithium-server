@@ -1,0 +1,210 @@
+{
+  "type": "Init",
+  "maxId": 12,
+  "itemQualities": {
+    "0": {
+      "id": "Default",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipDefault.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipDefaultArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotDefault.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotDefault.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SpecialSlotDefault.png",
+      "textColor": {
+        "red": -55,
+        "green": -46,
+        "blue": -35
+      },
+      "localizationKey": "server.general.qualities.Default",
+      "visibleQualityLabel": false,
+      "renderSpecialSlot": false,
+      "hideFromSearch": false
+    },
+    "2": {
+      "id": "Epic",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipEpic.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipEpicArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotEpic.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotEpic.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotEpic.png",
+      "textColor": {
+        "red": -117,
+        "green": 51,
+        "blue": -98
+      },
+      "localizationKey": "server.general.qualities.Epic",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": false
+    },
+    "6": {
+      "id": "Legendary",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipLegendary.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipLegendaryArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotLegendary.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotLegendary.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotLegendary.png",
+      "textColor": {
+        "red": -69,
+        "green": -118,
+        "blue": 44
+      },
+      "localizationKey": "server.general.qualities.Legendary",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": false
+    },
+    "4": {
+      "id": "Uncommon",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipUncommon.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipUncommonArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotUncommon.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotUncommon.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotUncommon.png",
+      "textColor": {
+        "red": 62,
+        "green": -112,
+        "blue": 73
+      },
+      "localizationKey": "server.general.qualities.Uncommon",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": false
+    },
+    "8": {
+      "id": "Tool",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipDefault.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipDefaultArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotTool.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotTool.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotTool.png",
+      "textColor": {
+        "red": 38,
+        "green": -98,
+        "blue": -36
+      },
+      "localizationKey": "server.general.qualities.Tool",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": false
+    },
+    "9": {
+      "id": "Junk",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipJunk.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipJunkArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotJunk.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotJunk.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotJunk.png",
+      "textColor": {
+        "red": -55,
+        "green": -46,
+        "blue": -35
+      },
+      "localizationKey": "server.general.qualities.Junk",
+      "visibleQualityLabel": false,
+      "renderSpecialSlot": false,
+      "hideFromSearch": false
+    },
+    "11": {
+      "id": "Technical",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipTechnical.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipTechnicalArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotDefault.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotDefault.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotDefault.png",
+      "textColor": {
+        "red": 59,
+        "green": 122,
+        "blue": -113
+      },
+      "localizationKey": "server.general.qualities.Technical",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": false
+    },
+    "10": {
+      "id": "Common",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipCommon.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipCommonArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotCommon.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotCommon.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotCommon.png",
+      "textColor": {
+        "red": -55,
+        "green": -46,
+        "blue": -35
+      },
+      "localizationKey": "server.general.qualities.Common",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": false
+    },
+    "1": {
+      "id": "Template",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipTechnical.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipTechnicalArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "textColor": {
+        "red": -50,
+        "green": 22,
+        "blue": 36
+      },
+      "localizationKey": "server.general.qualities.Template",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": true
+    },
+    "3": {
+      "id": "Developer",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipCommon.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipCommonArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "textColor": {
+        "red": -69,
+        "green": 47,
+        "blue": 44
+      },
+      "localizationKey": "server.general.qualities.Developer",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": false
+    },
+    "7": {
+      "id": "Debug",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipCommon.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipCommonArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotDeveloper.png",
+      "textColor": {
+        "red": -50,
+        "green": 22,
+        "blue": 36
+      },
+      "localizationKey": "server.general.qualities.Debug",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": true
+    },
+    "5": {
+      "id": "Rare",
+      "itemTooltipTexture": "UI/ItemQualities/Tooltips/ItemTooltipRare.png",
+      "itemTooltipArrowTexture": "UI/ItemQualities/Tooltips/ItemTooltipRareArrow.png",
+      "slotTexture": "UI/ItemQualities/Slots/SlotRare.png",
+      "blockSlotTexture": "UI/ItemQualities/Slots/SlotRare.png",
+      "specialSlotTexture": "UI/ItemQualities/Slots/SlotRare.png",
+      "textColor": {
+        "red": 39,
+        "green": 112,
+        "blue": -73
+      },
+      "localizationKey": "server.general.qualities.Rare",
+      "visibleQualityLabel": true,
+      "renderSpecialSlot": true,
+      "hideFromSearch": false
+    }
+  }
+}

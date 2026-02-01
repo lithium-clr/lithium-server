@@ -1,0 +1,306 @@
+{
+  "type": "Init",
+  "groups": {
+    "FullBlocks_SandStone_Red": {
+      "names": [
+        "Rock_Sandstone_Red",
+        "Rock_Sandstone_Red_Cobble"
+      ]
+    },
+    "FullBlocks_Gold_Brick": {
+      "names": [
+        "Rock_Gold_Brick",
+        "Rock_Gold_Brick_Decorative",
+        "Rock_Gold_Brick_Ornate",
+        "Rock_Gold_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Hardwood": {
+      "names": [
+        "Wood_Hardwood_Planks",
+        "Wood_Hardwood_Decorative",
+        "Wood_Hardwood_Ornate"
+      ]
+    },
+    "FullBlocks_Stone_Mossy": {
+      "names": [
+        "Rock_Stone_Mossy",
+        "Rock_Stone_Cobble_Mossy"
+      ]
+    },
+    "FullBlocks_Ledgestone": {
+      "names": [
+        "Rock_Ledge"
+      ]
+    },
+    "FullBlocks_Slate": {
+      "names": [
+        "Rock_Slate",
+        "Rock_Slate_Cobble"
+      ]
+    },
+    "FullBlocks_Lightwood": {
+      "names": [
+        "Wood_Lightwood_Planks",
+        "Wood_Lightwood_Decorative",
+        "Wood_Lightwood_Ornate"
+      ]
+    },
+    "FullBlocks_Limestone": {
+      "names": [
+        "Rock_Lime_Cobble"
+      ]
+    },
+    "FullBlocks_Limestone_Brick": {
+      "names": [
+        "Rock_Lime_Brick",
+        "Rock_Lime_Brick_Decorative",
+        "Rock_Lime_Brick_Ornate",
+        "Rock_Lime_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Shale_Brick": {
+      "names": [
+        "Rock_Shale_Brick",
+        "Rock_Shale_Brick_Decorative",
+        "Rock_Shale_Brick_Ornate",
+        "Rock_Shale_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Drywood": {
+      "names": [
+        "Wood_Drywood_Planks",
+        "Wood_Drywood_Decorative",
+        "Wood_Drywood_Ornate"
+      ]
+    },
+    "FullBlocks_Sandstone_Brick": {
+      "names": [
+        "Rock_Sandstone_Brick",
+        "Rock_Sandstone_Brick_Decorative",
+        "Rock_Sandstone_Brick_Ornate",
+        "Rock_Sandstone_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Quartzite": {
+      "names": [
+        "Rock_Quartzite",
+        "Rock_Quartzite_Cobble"
+      ]
+    },
+    "FullBlocks_SandStone_White_Brick": {
+      "names": [
+        "Rock_Sandstone_White_Brick",
+        "Rock_Sandstone_White_Brick_Decorative",
+        "Rock_Sandstone_White_Brick_Ornate",
+        "Rock_Sandstone_White_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Clay_Ocean_Brick": {
+      "names": [
+        "Soil_Clay_Ocean_Brick",
+        "Soil_Clay_Ocean_Brick_Decorative",
+        "Soil_Clay_Ocean_Brick_Ornate",
+        "Soil_Clay_Ocean_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Shale": {
+      "names": [
+        "Rock_Shale",
+        "Rock_Shale_Cobble"
+      ]
+    },
+    "FullBlocks_Stone": {
+      "names": [
+        "Rock_Stone",
+        "Rock_Stone_Cobble"
+      ]
+    },
+    "FullBlocks_Blackwood": {
+      "names": [
+        "Wood_Blackwood_Planks",
+        "Wood_Blackwood_Decorative",
+        "Wood_Blackwood_Ornate"
+      ]
+    },
+    "FullBlocks_Volcanic_Brick": {
+      "names": [
+        "Rock_Volcanic_Brick",
+        "Rock_Volcanic_Brick_Decorative",
+        "Rock_Volcanic_Brick_Ornate",
+        "Rock_Volcanic_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Aqua": {
+      "names": [
+        "Rock_Aqua",
+        "Rock_Aqua_Cobble"
+      ]
+    },
+    "FullBlocks_Basalt_Brick": {
+      "names": [
+        "Rock_Basalt_Brick",
+        "Rock_Basalt_Brick_Decorative",
+        "Rock_Basalt_Brick_Ornate",
+        "Rock_Basalt_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Peach_Brick": {
+      "names": [
+        "Rock_Peach_Brick"
+      ]
+    },
+    "FullBlocks_Stone_Brick": {
+      "names": [
+        "Rock_Stone_Brick",
+        "Rock_Stone_Brick_Decorative",
+        "Rock_Stone_Brick_Ornate",
+        "Rock_Stone_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Tropicalwood": {
+      "names": [
+        "Wood_Tropicalwood_Planks",
+        "Wood_Tropicalwood_Decorative",
+        "Wood_Tropicalwood_Ornate"
+      ]
+    },
+    "FullBlocks_Deadwood": {
+      "names": [
+        "Wood_Deadwood_Planks",
+        "Wood_Deadwood_Decorative",
+        "Wood_Deadwood_Ornate"
+      ]
+    },
+    "FullBlocks_Sandstone": {
+      "names": [
+        "Rock_Sandstone",
+        "Rock_Sandstone_Cobble"
+      ]
+    },
+    "FullBlocks_SandStone_Red_Brick": {
+      "names": [
+        "Rock_Sandstone_Red_Brick",
+        "Rock_Sandstone_Red_Brick_Decorative",
+        "Rock_Sandstone_Red_Brick_Ornate",
+        "Rock_Sandstone_Red_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Darkwood": {
+      "names": [
+        "Wood_Darkwood_Planks",
+        "Wood_Darkwood_Decorative",
+        "Wood_Darkwood_Ornate"
+      ]
+    },
+    "FullBlocks_Quartzite_Brick": {
+      "names": [
+        "Rock_Quartzite_Brick",
+        "Rock_Quartzite_Brick_Decorative",
+        "Rock_Quartzite_Brick_Ornate",
+        "Rock_Quartzite_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Marble_Brick": {
+      "names": [
+        "Rock_Marble_Brick",
+        "Rock_Marble_Brick_Decorative",
+        "Rock_Marble_Brick_Ornate",
+        "Rock_Marble_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Redwood": {
+      "names": [
+        "Wood_Redwood_Planks",
+        "Wood_Redwood_Decorative",
+        "Wood_Redwood_Ornate"
+      ]
+    },
+    "FullBlocks_Marble": {
+      "names": [
+        "Rock_Marble",
+        "Rock_Marble_Cobble"
+      ]
+    },
+    "FullBlocks_Slate_Brick": {
+      "names": [
+        "Rock_Slate_Brick",
+        "Rock_Slate_Brick_Decorative",
+        "Rock_Slate_Brick_Ornate",
+        "Rock_Slate_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Calcite": {
+      "names": [
+        "Rock_Calcite",
+        "Rock_Calcite_Cobble"
+      ]
+    },
+    "FullBlocks_Greenwood": {
+      "names": [
+        "Wood_Greenwood_Planks",
+        "Wood_Greenwood_Decorative",
+        "Wood_Greenwood_Ornate"
+      ]
+    },
+    "FullBlocks_Calcite_Brick": {
+      "names": [
+        "Rock_Calcite_Brick",
+        "Rock_Calcite_Brick_Decorative",
+        "Rock_Calcite_Brick_Ornate",
+        "Rock_Calcite_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Softwood": {
+      "names": [
+        "Wood_Softwood_Planks",
+        "Wood_Softwood_Decorative",
+        "Wood_Softwood_Ornate"
+      ]
+    },
+    "FullBlocks_SandStone_White": {
+      "names": [
+        "Rock_Sandstone_White",
+        "Rock_Sandstone_White_Cobble"
+      ]
+    },
+    "FullBlocks_Basalt": {
+      "names": [
+        "Rock_Basalt",
+        "Rock_Basalt_Cobble"
+      ]
+    },
+    "FullBlocks_Goldenwood": {
+      "names": [
+        "Wood_Goldenwood_Planks",
+        "Wood_Goldenwood_Decorative",
+        "Wood_Goldenwood_Ornate"
+      ]
+    },
+    "FullBlocks_Volcanic": {
+      "names": [
+        "Rock_Volcanic",
+        "Rock_Volcanic_Cobble",
+        "Rock_Volcanic_Cracked_Lava",
+        "Rock_Volcanic"
+      ]
+    },
+    "FullBlocks_Ledgestone_Brick": {
+      "names": [
+        "Rock_Ledge_Brick",
+        "Rock_Ledge_Brick_Decorative",
+        "Rock_Ledge_Brick_Ornate",
+        "Rock_Ledge_Brick_Smooth"
+      ]
+    },
+    "FullBlocks_Aqua_Brick": {
+      "names": [
+        "Rock_Aqua_Brick",
+        "Rock_Aqua_Brick_Decorative",
+        "Rock_Aqua_Brick_Ornate",
+        "Rock_Aqua_Brick_Smooth",
+        "Rock_Stone_Aqua"
+      ]
+    }
+  }
+}

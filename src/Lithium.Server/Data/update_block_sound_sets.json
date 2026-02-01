@@ -1,0 +1,718 @@
+{
+  "type": "Init",
+  "maxId": 53,
+  "blockSoundSets": {
+    "0": {
+      "id": "Empty",
+      "soundEventIndices": {},
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "33": {
+      "id": "Coins",
+      "soundEventIndices": {
+        "Build": 540,
+        "Hit": 1102,
+        "Break": 692,
+        "Walk": 810,
+        "Land": 794
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "25": {
+      "id": "Fern",
+      "soundEventIndices": {
+        "Build": 817,
+        "Break": 900,
+        "MoveIn": 801,
+        "Harvest": 852
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "49": {
+      "id": "Mud",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 487,
+        "Break": 249,
+        "Walk": 721,
+        "Land": 757
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "50": {
+      "id": "Cloth",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 884,
+        "Break": 1063,
+        "Walk": 1132,
+        "Land": 1135
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "8": {
+      "id": "Water",
+      "soundEventIndices": {
+        "Build": 817,
+        "MoveOut": 711,
+        "MoveIn": 459
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "9": {
+      "id": "Sand",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 388,
+        "Break": 723,
+        "Walk": 1055,
+        "Land": 1058
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "24": {
+      "id": "Mushroom",
+      "soundEventIndices": {
+        "Build": 817,
+        "Break": 426,
+        "Harvest": 750
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "26": {
+      "id": "Tall_Grass",
+      "soundEventIndices": {
+        "MoveIn": 890
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "16": {
+      "id": "Ore",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 568,
+        "Break": 756,
+        "Walk": 1091,
+        "Land": 1046
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "17": {
+      "id": "Cactus_Small",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 520,
+        "Break": 357,
+        "Walk": 959,
+        "Land": 936
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "23": {
+      "id": "Campfire",
+      "soundEventIndices": {
+        "Build": 1107,
+        "Hit": 863,
+        "Break": 441,
+        "Walk": 959,
+        "Land": 936
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "18": {
+      "id": "Crystal",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 933,
+        "Break": 971,
+        "Walk": 1147,
+        "Land": 688
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "35": {
+      "id": "Bush",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 712,
+        "Break": 720,
+        "MoveIn": 259,
+        "Harvest": 852
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "39": {
+      "id": "Tombstone",
+      "soundEventIndices": {
+        "Build": 817,
+        "Break": 304,
+        "Walk": 1091,
+        "Land": 1046
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "27": {
+      "id": "Rope",
+      "soundEventIndices": {
+        "Build": 817,
+        "Break": 980,
+        "Walk": 958,
+        "Land": 944
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "47": {
+      "id": "Plushie",
+      "soundEventIndices": {
+        "Build": 433,
+        "Break": 977,
+        "Walk": 1132,
+        "Land": 1135
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "48": {
+      "id": "Cactus_Large",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 314,
+        "Break": 758,
+        "Walk": 959,
+        "Land": 936
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "51": {
+      "id": "Snow",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 397,
+        "Break": 922,
+        "Walk": 848,
+        "Land": 897
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "52": {
+      "id": "Ice",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 1084,
+        "Break": 651,
+        "Walk": 664,
+        "Land": 688
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "31": {
+      "id": "Web",
+      "soundEventIndices": {
+        "Build": 300,
+        "Hit": 680,
+        "Break": 836,
+        "MoveIn": 1099
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "32": {
+      "id": "Window_Stone",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 595,
+        "Break": 266,
+        "Walk": 1091,
+        "Land": 1046
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "34": {
+      "id": "Wood_Breakable",
+      "soundEventIndices": {
+        "Build": 609,
+        "Hit": 863,
+        "Break": 758,
+        "Walk": 959,
+        "Land": 936
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "36": {
+      "id": "Bone",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 1051,
+        "Break": 1038,
+        "Walk": 519,
+        "Land": 541
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "38": {
+      "id": "Eggsac",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 680,
+        "Break": 836,
+        "Walk": 194,
+        "Land": 757
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "46": {
+      "id": "Soft",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 979,
+        "Break": 294,
+        "Walk": 868,
+        "Land": 821
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "40": {
+      "id": "Default",
+      "soundEventIndices": {
+        "Build": 817,
+        "Break": 1158,
+        "Walk": 747,
+        "Land": 438,
+        "Clone": 467
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "42": {
+      "id": "LeavesGround",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 686,
+        "Break": 559,
+        "Walk": 542,
+        "Land": 315
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "45": {
+      "id": "Trashpile",
+      "soundEventIndices": {
+        "Build": 540,
+        "Hit": 1102,
+        "Break": 692,
+        "Walk": 859,
+        "Land": 850
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "44": {
+      "id": "Clay_Pot_Large",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 658,
+        "Break": 764,
+        "Walk": 838,
+        "Land": 821
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "41": {
+      "id": "Cactus",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 782,
+        "Break": 649,
+        "Walk": 959,
+        "Land": 936
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "43": {
+      "id": "Clay_Pot_Small",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 1011,
+        "Break": 965,
+        "Walk": 724,
+        "Land": 821
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "29": {
+      "id": "Seeds",
+      "soundEventIndices": {
+        "Build": 367,
+        "Hit": 534,
+        "Break": 566,
+        "MoveIn": 490
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "4": {
+      "id": "Torch",
+      "soundEventIndices": {
+        "Build": 1031,
+        "Hit": 863,
+        "Break": 229,
+        "Walk": 959,
+        "Land": 936
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "37": {
+      "id": "Grass",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 887,
+        "Break": 939,
+        "Walk": 1152,
+        "Land": 1157
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "12": {
+      "id": "Dirt",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 706,
+        "Break": 734,
+        "Walk": 477,
+        "Land": 438
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "13": {
+      "id": "Cocoon",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 680,
+        "Break": 836,
+        "Walk": 194,
+        "Land": 757
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "30": {
+      "id": "Leaves",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 575,
+        "Break": 1096,
+        "Walk": 1094,
+        "Land": 315
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "28": {
+      "id": "Glass",
+      "soundEventIndices": {
+        "Build": 817,
+        "Break": 908,
+        "Walk": 664,
+        "Land": 688
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "19": {
+      "id": "Branch",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 1129,
+        "Break": 215,
+        "Walk": 384,
+        "Land": 376
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "21": {
+      "id": "Plant",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 534,
+        "Break": 566,
+        "MoveIn": 490,
+        "Harvest": 852
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "22": {
+      "id": "Stone",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 595,
+        "Break": 1016,
+        "Walk": 1091,
+        "Land": 1046,
+        "Harvest": 569
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "20": {
+      "id": "Reed",
+      "soundEventIndices": {
+        "MoveIn": 349
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "2": {
+      "id": "Sticks",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 863,
+        "Break": 1067,
+        "Walk": 959,
+        "Land": 936,
+        "Harvest": 1067
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "6": {
+      "id": "Gravel",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 919,
+        "Break": 1018,
+        "Walk": 935,
+        "Land": 942
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "15": {
+      "id": "Metal",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 1102,
+        "Break": 692,
+        "Walk": 776,
+        "Land": 753
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "14": {
+      "id": "Bramble",
+      "soundEventIndices": {
+        "MoveIn": 722
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "11": {
+      "id": "Flame",
+      "soundEventIndices": {
+        "Build": 489,
+        "Break": 195
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "10": {
+      "id": "Wood",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 863,
+        "Break": 758,
+        "Walk": 959,
+        "Land": 936
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "1": {
+      "id": "Window",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 863,
+        "Break": 402,
+        "Walk": 959,
+        "Land": 936
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "3": {
+      "id": "Gem",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 933,
+        "Break": 1137,
+        "Walk": 1147,
+        "Land": 688
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "7": {
+      "id": "Brazier",
+      "soundEventIndices": {
+        "Build": 238,
+        "Hit": 595,
+        "Break": 1138,
+        "Walk": 1091,
+        "Land": 1046
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    },
+    "5": {
+      "id": "Poop",
+      "soundEventIndices": {
+        "Build": 817,
+        "Hit": 681,
+        "Break": 495,
+        "Walk": 471,
+        "Land": 757
+      },
+      "moveInRepeatRange": {
+        "inclusiveMin": 0.5,
+        "inclusiveMax": 1.5
+      }
+    }
+  }
+}

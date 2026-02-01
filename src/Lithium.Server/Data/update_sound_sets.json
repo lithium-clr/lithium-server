@@ -1,0 +1,36 @@
+{
+  "type": "Init",
+  "maxId": 2,
+  "soundSets": {
+    "0": {
+      "id": "EMPTY",
+      "sounds": {},
+      "category": "SFX"
+    },
+    "1": {
+      "id": "CreativePlayDefaults",
+      "sounds": {
+        "Brush_Paint": 1014,
+        "Eyedropper_Select": 309,
+        "Selection_Place": 882,
+        "Error": 670,
+        "Rotate_Pitch": 983,
+        "Brush_Erase": 708,
+        "Rotate_Yaw": 461,
+        "Brush_Stamp": 705,
+        "Rotate_Roll": 226,
+        "Brush_Mode": 339,
+        "Selection_Drag": 1101,
+        "Paste": 290,
+        "Brush_Shape": 277,
+        "Add_Mask": 1027,
+        "Selection_Widget": 677,
+        "Brush_Paint_Move_Layer": 429,
+        "Selection_Scale": 795,
+        "Set_Mask": 624,
+        "Brush_Paint_Idle_Layer": 779
+      },
+      "category": "UI"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "Init",
+  "interactions": {
+    "SwapFrom": 5,
+    "Primary": 3214,
+    "Wielding": 3031,
+    "Use": 3215,
+    "Pick": 3216
+  }
+}
