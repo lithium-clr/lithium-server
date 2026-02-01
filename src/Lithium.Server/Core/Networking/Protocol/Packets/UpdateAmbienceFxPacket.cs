@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using Lithium.Server.Core.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
@@ -13,8 +15,11 @@ namespace Lithium.Server.Core.Networking.Protocol.Packets;
 )]
 public sealed class UpdateAmbienceFxPacket : INetworkSerializable
 {
-    public UpdateType Type { get; set; } = UpdateType.Init;
-    public int MaxId { get; set; }
+    [JsonPropertyName("type")] public UpdateType Type { get; set; } = UpdateType.Init;
+    [JsonPropertyName("maxId")] public int MaxId { get; set; }
+
+    [JsonPropertyName("ambienceFX")]
+    [JsonConverter(typeof(IntKeyDictionaryConverter<AmbienceFx>))]
     public Dictionary<int, AmbienceFx>? AmbienceFx { get; set; }
 
     public void Serialize(PacketWriter writer)
