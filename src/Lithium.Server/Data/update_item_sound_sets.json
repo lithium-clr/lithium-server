@@ -1,0 +1,258 @@
+{
+  "type": "Init",
+  "maxId": 36,
+  "itemSoundSets": {
+    "0": {
+      "id": "ISS_Weapons_Wood",
+      "soundEventIndices": {
+        "Drop": 29,
+        "Drag": 117
+      }
+    },
+    "33": {
+      "id": "ISS_Items_Gadget",
+      "soundEventIndices": {
+        "Drop": 183,
+        "Drag": 170
+      }
+    },
+    "29": {
+      "id": "ISS_Weapons_Shield_Metal",
+      "soundEventIndices": {
+        "Drop": 27,
+        "Drag": 100
+      }
+    },
+    "25": {
+      "id": "ISS_Armor_Cloth",
+      "soundEventIndices": {
+        "Drop": 178,
+        "Drag": 104
+      }
+    },
+    "4": {
+      "id": "ISS_Weapons_Arrows",
+      "soundEventIndices": {
+        "Drop": 50,
+        "Drag": 15
+      }
+    },
+    "12": {
+      "id": "ISS_Items_Clay",
+      "soundEventIndices": {
+        "Drop": 191,
+        "Drag": 147
+      }
+    },
+    "13": {
+      "id": "ISS_Items_Bones",
+      "soundEventIndices": {
+        "Drop": 149,
+        "Drag": 18
+      }
+    },
+    "8": {
+      "id": "ISS_Weapons_Blunt_Small",
+      "soundEventIndices": {
+        "Drop": 173,
+        "Drag": 75
+      }
+    },
+    "9": {
+      "id": "ISS_Weapon_Blunt_Large",
+      "soundEventIndices": {
+        "Drop": 92,
+        "Drag": 66
+      }
+    },
+    "30": {
+      "id": "ISS_Weapons_Shield_Wood",
+      "soundEventIndices": {
+        "Drop": 1,
+        "Drag": 127
+      }
+    },
+    "28": {
+      "id": "ISS_Blocks_Soft",
+      "soundEventIndices": {
+        "Drop": 41,
+        "Drag": 157
+      }
+    },
+    "24": {
+      "id": "ISS_Items_Foliage",
+      "soundEventIndices": {
+        "Drop": 121,
+        "Drag": 184
+      }
+    },
+    "17": {
+      "id": "ISS_Items_Shells",
+      "soundEventIndices": {
+        "Drop": 59,
+        "Drag": 98
+      }
+    },
+    "26": {
+      "id": "ISS_Items_Potion",
+      "soundEventIndices": {
+        "Drop": 55,
+        "Drag": 83
+      }
+    },
+    "16": {
+      "id": "ISS_Items_Leather",
+      "soundEventIndices": {
+        "Drop": 129,
+        "Drag": 143
+      }
+    },
+    "23": {
+      "id": "ISS_Items_Gems",
+      "soundEventIndices": {
+        "Drop": 162,
+        "Drag": 58
+      }
+    },
+    "19": {
+      "id": "ISS_Weapon_Blade_Small",
+      "soundEventIndices": {
+        "Drop": 40,
+        "Drag": 31
+      }
+    },
+    "18": {
+      "id": "ISS_Weapons_Blade_Large",
+      "soundEventIndices": {
+        "Drop": 8,
+        "Drag": 110
+      }
+    },
+    "21": {
+      "id": "ISS_Blocks_Splatty",
+      "soundEventIndices": {
+        "Drop": 153,
+        "Drag": 118
+      }
+    },
+    "22": {
+      "id": "ISS_Items_Seeds",
+      "soundEventIndices": {
+        "Drop": 56,
+        "Drag": 139
+      }
+    },
+    "20": {
+      "id": "ISS_Items_Ingots",
+      "soundEventIndices": {
+        "Drop": 20,
+        "Drag": 123
+      }
+    },
+    "35": {
+      "id": "ISS_Blocks_Wood",
+      "soundEventIndices": {
+        "Drop": 165,
+        "Drag": 88
+      }
+    },
+    "2": {
+      "id": "ISS_Armor_Heavy",
+      "soundEventIndices": {
+        "Drop": 164,
+        "Drag": 138
+      }
+    },
+    "27": {
+      "id": "ISS_Default",
+      "soundEventIndices": {
+        "Drop": 76,
+        "Drag": 159
+      }
+    },
+    "6": {
+      "id": "ISS_Weapons_Books",
+      "soundEventIndices": {
+        "Drop": 169,
+        "Drag": 4
+      }
+    },
+    "15": {
+      "id": "ISS_Items_Chest",
+      "soundEventIndices": {
+        "Drop": 52,
+        "Drag": 119
+      }
+    },
+    "14": {
+      "id": "ISS_Items_Splatty",
+      "soundEventIndices": {
+        "Drop": 46,
+        "Drag": 7
+      }
+    },
+    "10": {
+      "id": "ISS_Blocks_Stone",
+      "soundEventIndices": {
+        "Drop": 142,
+        "Drag": 25
+      }
+    },
+    "11": {
+      "id": "ISS_Weapons_Stone_Small",
+      "soundEventIndices": {
+        "Drop": 44,
+        "Drag": 89
+      }
+    },
+    "31": {
+      "id": "ISS_Items_Metal",
+      "soundEventIndices": {
+        "Drop": 187,
+        "Drag": 103
+      }
+    },
+    "32": {
+      "id": "ISS_Items_Paper",
+      "soundEventIndices": {
+        "Drop": 146,
+        "Drag": 3
+      }
+    },
+    "1": {
+      "id": "ISS_Armor_Leather",
+      "soundEventIndices": {
+        "Drop": 48,
+        "Drag": 26
+      }
+    },
+    "3": {
+      "id": "ISS_Weapons_Wand",
+      "soundEventIndices": {
+        "Drop": 150,
+        "Drag": 10
+      }
+    },
+    "34": {
+      "id": "ISS_Weapons_Stone_Large",
+      "soundEventIndices": {
+        "Drop": 186,
+        "Drag": 148
+      }
+    },
+    "7": {
+      "id": "ISS_Blocks_Gravel",
+      "soundEventIndices": {
+        "Drop": 188,
+        "Drag": 97
+      }
+    },
+    "5": {
+      "id": "ISS_Items_Cloth",
+      "soundEventIndices": {
+        "Drop": 14,
+        "Drag": 125
+      }
+    }
+  }
+}

@@ -295,6 +295,13 @@ public sealed class SetupPacketRouter(
             
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_sound_sets.json"));
+            var packet = JsonSerializer.Deserialize<UpdateItemSoundSetsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
