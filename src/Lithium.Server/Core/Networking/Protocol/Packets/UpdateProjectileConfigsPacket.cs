@@ -39,6 +39,10 @@ public sealed class UpdateProjectileConfigsPacket : INetworkSerializable
         if (Configs is not null)
         {
             writer.WriteOffsetAt(configsOffsetSlot, writer.Position - varBlockStart);
+            
+            if (Configs.Count > 4096000)
+                throw new Exception("Configs too large");
+            
             writer.WriteVarInt(Configs.Count);
             foreach (var kvp in Configs)
             {
@@ -51,6 +55,10 @@ public sealed class UpdateProjectileConfigsPacket : INetworkSerializable
         if (RemovedConfigs is not null)
         {
             writer.WriteOffsetAt(removedConfigsOffsetSlot, writer.Position - varBlockStart);
+            
+            if (RemovedConfigs.Length > 4096000)
+                throw new Exception("RemovedConfigs too large");
+
             writer.WriteVarInt(RemovedConfigs.Length);
             foreach (var item in RemovedConfigs)
                 writer.WriteVarUtf8String(item, 4096000);
