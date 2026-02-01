@@ -25,7 +25,13 @@ public sealed class BitSet
         if (bit < 1 || (bit & (bit - 1)) != 0)
             throw new ArgumentException("Bit must be a power of two (1, 2, 4, 8, etc.).");
 
-        _bits[0] |= (byte)bit;  // Simplifié : toujours dans le premier byte
+        var bitIndex = System.Numerics.BitOperations.Log2((uint)bit);
+        var byteIndex = bitIndex / 8;
+        
+        if (byteIndex < _bits.Length)
+        {
+            _bits[byteIndex] |= (byte)(1 << (bitIndex % 8));
+        }
     }
 
     public bool IsSet(int bit)
@@ -34,7 +40,10 @@ public sealed class BitSet
         if (bit < 1 || (bit & (bit - 1)) != 0)
             throw new ArgumentException("Bit must be a power of two (1, 2, 4, 8, etc.).");
 
-        return (_bits[0] & (byte)bit) != 0;
+        var bitIndex = System.Numerics.BitOperations.Log2((uint)bit);
+        var byteIndex = bitIndex / 8;
+
+        return byteIndex < _bits.Length && (_bits[byteIndex] & (byte)(1 << (bitIndex % 8))) != 0;
     }
 
     public void CopyTo(Span<byte> destination) => _bits.CopyTo(destination);
