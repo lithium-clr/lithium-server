@@ -1,0 +1,501 @@
+{
+  "type": "Init",
+  "resourceTypes": {
+    "Rock_Slate_Brick": {
+      "id": "Rock_Slate_Brick",
+      "icon": "Icons/ResourceTypes/Any_Rock.png"
+    },
+    "Rock_Aqua": {
+      "id": "Rock_Aqua",
+      "icon": "Icons/ResourceTypes/Rock_Aqua_Cobble.png"
+    },
+    "Vegetables": {
+      "id": "Vegetables",
+      "icon": "Icons/ResourceTypes/Rubble.png"
+    },
+    "Fish": {
+      "id": "Fish",
+      "icon": "Icons/ResourceTypes/Fish.png"
+    },
+    "Rock_Chalk": {
+      "id": "Rock_Chalk",
+      "icon": "Icons/ResourceTypes/Rock_Stone.png"
+    },
+    "Wood_Softwood_Trunk": {
+      "id": "Wood_Softwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Fruits": {
+      "id": "Fruits",
+      "icon": "Icons/ResourceTypes/Rubble.png"
+    },
+    "Rock_Gold_Brick": {
+      "id": "Rock_Gold_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Gold_Brick.png"
+    },
+    "Wood_Blackwood": {
+      "id": "Wood_Blackwood",
+      "icon": "Icons/ResourceTypes/Blackwood.png"
+    },
+    "Rock_Shale": {
+      "id": "Rock_Shale",
+      "icon": "Icons/ResourceTypes/Rock_Shale_Cobble.png"
+    },
+    "Salvage_Prisma": {
+      "id": "Salvage_Prisma",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Wood_Greenwood_Trunk": {
+      "id": "Wood_Greenwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Soil_Snow_Brick": {
+      "id": "Soil_Snow_Brick",
+      "icon": "Icons/ResourceTypes/Soil_Snow_Brick.png"
+    },
+    "Rock_Sandstone_White_Brick": {
+      "id": "Rock_Sandstone_White_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Sandstone_White_Brick.png"
+    },
+    "Books": {
+      "id": "Books",
+      "icon": "Icons/ResourceTypes/Any_Book.png"
+    },
+    "Prototype_Rock_Concrete_Brick": {
+      "id": "Prototype_Rock_Concrete_Brick",
+      "icon": "Icons/ResourceTypes/Prototype_Rock_Concrete_Brick.png"
+    },
+    "Wood_Goldenwood": {
+      "id": "Wood_Goldenwood",
+      "icon": "Icons/ResourceTypes/Goldenwood.png"
+    },
+    "Wood_Tropicalwood_Trunk": {
+      "id": "Wood_Tropicalwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Rock_Marble": {
+      "id": "Rock_Marble",
+      "icon": "Icons/ResourceTypes/Rock_Marble_Cobble.png"
+    },
+    "Wood_Tropicalwood_Greenwood_Trunk": {
+      "id": "Wood_Tropicalwood_Greenwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Sands": {
+      "id": "Sands",
+      "icon": "Icons/ResourceTypes/Any_Rock.png"
+    },
+    "Salvage_Copper": {
+      "id": "Salvage_Copper",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Rock_Ledge": {
+      "id": "Rock_Ledge",
+      "icon": "Icons/ResourceTypes/Rock_Ledge_Cobble.png"
+    },
+    "Wood_Blackwood_Deadwood": {
+      "id": "Wood_Blackwood_Deadwood",
+      "icon": "Icons/ResourceTypes/Wood_Planks.png"
+    },
+    "Wood_Drywood_Goldenwood_Trunk": {
+      "id": "Wood_Drywood_Goldenwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Rock_Basalt": {
+      "id": "Rock_Basalt",
+      "icon": "Icons/ResourceTypes/Rock_Basalt_Cobble.png"
+    },
+    "Rock_Aqua_Brick": {
+      "id": "Rock_Aqua_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Aqua_Brick.png"
+    },
+    "Rock_Stone_Brick": {
+      "id": "Rock_Stone_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Stone_Brick.png"
+    },
+    "Rock_Sandstone": {
+      "id": "Rock_Sandstone",
+      "icon": "Icons/ResourceTypes/Rock_Sandstone_Cobble.png"
+    },
+    "Rock_Peach": {
+      "id": "Rock_Peach",
+      "icon": "Icons/ResourceTypes/Rock_Peach_Cobble.png"
+    },
+    "Rock": {
+      "id": "Rock",
+      "icon": "Icons/ResourceTypes/Any_Rock.png"
+    },
+    "Fish_Rare": {
+      "id": "Fish_Rare",
+      "icon": "Icons/ResourceTypes/Fish_Rare.png"
+    },
+    "Rock_Stone": {
+      "id": "Rock_Stone",
+      "icon": "Icons/ResourceTypes/Rock_Stone_Cobble.png"
+    },
+    "Rock_Volcanic": {
+      "id": "Rock_Volcanic",
+      "icon": "Icons/ResourceTypes/Rock_Volcanic_Cobble.png"
+    },
+    "Wood_Darkwood": {
+      "id": "Wood_Darkwood",
+      "icon": "Icons/ResourceTypes/Darkwood.png"
+    },
+    "Plant_Red": {
+      "id": "Plant_Red",
+      "icon": "Icons/ResourceTypes/Rubble.png"
+    },
+    "Soils": {
+      "id": "Soils",
+      "icon": "Icons/ResourceTypes/Any_Rock.png"
+    },
+    "Soil_Hive_Corrupted_Brick": {
+      "id": "Soil_Hive_Corrupted_Brick",
+      "icon": "Icons/ResourceTypes/Soil_Hive_Corrupted_Brick.png"
+    },
+    "Fuel": {
+      "id": "Fuel",
+      "icon": "Icons/ResourceTypes/Fuel.png"
+    },
+    "Fish_Legendary": {
+      "id": "Fish_Legendary",
+      "icon": "Icons/ResourceTypes/Fish_Legendary.png"
+    },
+    "Wood_Drywood_Goldenwood": {
+      "id": "Wood_Drywood_Goldenwood",
+      "icon": "Icons/ResourceTypes/Wood_Planks.png"
+    },
+    "Fish_Epic": {
+      "id": "Fish_Epic",
+      "icon": "Icons/ResourceTypes/Fish_Epic.png"
+    },
+    "Rock_Calcite_Brick": {
+      "id": "Rock_Calcite_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Calcite_Brick.png"
+    },
+    "Wood_Ice_Trunk": {
+      "id": "Wood_Ice_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Rock_Sandstone_Red_Brick": {
+      "id": "Rock_Sandstone_Red_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Sandstone_Red_Brick.png"
+    },
+    "Soil_Hive_Corrupted": {
+      "id": "Soil_Hive_Corrupted",
+      "icon": "Icons/ResourceTypes/Rock_Stone.png"
+    },
+    "Clays": {
+      "id": "Clays",
+      "icon": "Icons/ResourceTypes/Any_Rock.png"
+    },
+    "Wood_Lightwood_Trunk": {
+      "id": "Wood_Lightwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Salvage_Bronze": {
+      "id": "Salvage_Bronze",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Wood_Tropicalwood_Greenwood": {
+      "id": "Wood_Tropicalwood_Greenwood",
+      "icon": "Icons/ResourceTypes/Wood_Planks.png"
+    },
+    "Flowers": {
+      "id": "Flowers",
+      "icon": "Icons/ResourceTypes/Flowers.png"
+    },
+    "Salvage_Mithril": {
+      "id": "Salvage_Mithril",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Rock_Shale_Brick": {
+      "id": "Rock_Shale_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Shale_Brick.png"
+    },
+    "Wood_Deadwood_Trunk": {
+      "id": "Wood_Deadwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Foods": {
+      "id": "Foods",
+      "icon": null
+    },
+    "Rock_Slate": {
+      "id": "Rock_Slate",
+      "icon": "Icons/ResourceTypes/Rock_Slate_Cobble.png"
+    },
+    "Charcoal": {
+      "id": "Charcoal",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Rock_Volcanic_Brick": {
+      "id": "Rock_Volcanic_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Volcanic_Brick.png"
+    },
+    "Bricks": {
+      "id": "Bricks",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Wood_Redwood": {
+      "id": "Wood_Redwood",
+      "icon": "Icons/ResourceTypes/Redwood.png"
+    },
+    "Wood_Lightwood": {
+      "id": "Wood_Lightwood",
+      "icon": "Icons/ResourceTypes/Lightwood.png"
+    },
+    "Ice": {
+      "id": "Ice",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Rock_Stone_Mossy": {
+      "id": "Rock_Stone_Mossy",
+      "icon": "Icons/ResourceTypes/Rock_Stone.png"
+    },
+    "Soil_Clay_Ocean_Brick": {
+      "id": "Soil_Clay_Ocean_Brick",
+      "icon": "Icons/ResourceTypes/Soil_Clay_Ocean_Brick.png"
+    },
+    "Wood_Lightwood_Softwood": {
+      "id": "Wood_Lightwood_Softwood",
+      "icon": "Icons/ResourceTypes/Wood_Planks.png"
+    },
+    "Mushrooms": {
+      "id": "Mushrooms",
+      "icon": "Icons/ResourceTypes/Any_Mushroom.png"
+    },
+    "Rock_Ledge_Brick": {
+      "id": "Rock_Ledge_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Ledge_Brick.png"
+    },
+    "Wood_Greenwood": {
+      "id": "Wood_Greenwood",
+      "icon": "Icons/ResourceTypes/Greenwood.png"
+    },
+    "Salvage_Thorium": {
+      "id": "Salvage_Thorium",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Rock_Quartzite_Brick": {
+      "id": "Rock_Quartzite_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Quartzite_Brick.png"
+    },
+    "Wood_Blackwood_Trunk": {
+      "id": "Wood_Blackwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Salvage_Wood": {
+      "id": "Salvage_Wood",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Salvage_Cobalt": {
+      "id": "Salvage_Cobalt",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Rock_Calcite": {
+      "id": "Rock_Calcite",
+      "icon": "Icons/ResourceTypes/Rock_Calcite_Cobble.png"
+    },
+    "Meats": {
+      "id": "Meats",
+      "icon": "Icons/ResourceTypes/Any_Meat.png"
+    },
+    "Wood_Softwood": {
+      "id": "Wood_Softwood",
+      "icon": "Icons/ResourceTypes/Softwood.png"
+    },
+    "Salvage_Iron": {
+      "id": "Salvage_Iron",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Milk_Bucket": {
+      "id": "Milk_Bucket",
+      "icon": "Icons/ResourceTypes/Milk_Bucket.png"
+    },
+    "Salvage_Onyxium": {
+      "id": "Salvage_Onyxium",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Wood_Hardwood_Trunk": {
+      "id": "Wood_Hardwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Salvage_Stone": {
+      "id": "Salvage_Stone",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Bone": {
+      "id": "Bone",
+      "icon": "Icons/ResourceTypes/Any_Bone.png"
+    },
+    "Rock_Chalk_Brick": {
+      "id": "Rock_Chalk_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Chalk_Brick.png"
+    },
+    "Metal_Bars": {
+      "id": "Metal_Bars",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Wood_Darkwood_Trunk": {
+      "id": "Wood_Darkwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Rubble": {
+      "id": "Rubble",
+      "icon": "Icons/ResourceTypes/Any_Rubble.png"
+    },
+    "Soil_Hive_Brick": {
+      "id": "Soil_Hive_Brick",
+      "icon": "Icons/ResourceTypes/Soil_Hive_Brick.png"
+    },
+    "Copper_Iron_Bar": {
+      "id": "Copper_Iron_Bar",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Salvage_Adamantite": {
+      "id": "Salvage_Adamantite",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Moss": {
+      "id": "Moss",
+      "icon": "Icons/ResourceTypes/Moss.png"
+    },
+    "Rock_Runic_Blue_Brick": {
+      "id": "Rock_Runic_Blue_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Runic_Blue_Brick.png"
+    },
+    "Rock_Marble_Brick": {
+      "id": "Rock_Marble_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Marble_Brick.png"
+    },
+    "Rock_Runic_Brick": {
+      "id": "Rock_Runic_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Runic_Brick.png"
+    },
+    "Wood_Drywood": {
+      "id": "Wood_Drywood",
+      "icon": "Icons/ResourceTypes/Drywood.png"
+    },
+    "Wood_All": {
+      "id": "Wood_All",
+      "icon": "Icons/ResourceTypes/Wood_Planks.png"
+    },
+    "Prototype_Rock_Concrete": {
+      "id": "Prototype_Rock_Concrete",
+      "icon": "Icons/ResourceTypes/Rock_Stone.png"
+    },
+    "Rock_Lime_Brick": {
+      "id": "Rock_Lime_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Lime_Brick.png"
+    },
+    "Milk_Mosshorn_Bucket": {
+      "id": "Milk_Mosshorn_Bucket",
+      "icon": "Icons/ResourceTypes/Milk_Mosshorn_Bucket.png"
+    },
+    "Rock_Peach_Brick": {
+      "id": "Rock_Peach_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Peach_Brick.png"
+    },
+    "Salvage_Silver": {
+      "id": "Salvage_Silver",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Wood_Goldenwood_Trunk": {
+      "id": "Wood_Goldenwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Wood_Blackwood_Deadwood_Trunk": {
+      "id": "Wood_Blackwood_Deadwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Wood_Tropicalwood": {
+      "id": "Wood_Tropicalwood",
+      "icon": "Icons/ResourceTypes/Tropicalwood.png"
+    },
+    "Wood_All_Trunk": {
+      "id": "Wood_All_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Rock_Quartzite": {
+      "id": "Rock_Quartzite",
+      "icon": "Icons/ResourceTypes/Rock_Quartzite_Cobble.png"
+    },
+    "Wood_Trunk": {
+      "id": "Wood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Wood_Ice": {
+      "id": "Wood_Ice",
+      "icon": "Icons/ResourceTypes/Wood_Planks.png"
+    },
+    "Wood_Drywood_Trunk": {
+      "id": "Wood_Drywood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Rock_Lime": {
+      "id": "Rock_Lime",
+      "icon": "Icons/ResourceTypes/Rock_Lime_Cobble.png"
+    },
+    "Rock_Runic_Dark_Brick": {
+      "id": "Rock_Runic_Dark_Brick",
+      "icon": "Icons/ResourceTypes/Any_Rock.png"
+    },
+    "Rock_Sandstone_Red": {
+      "id": "Rock_Sandstone_Red",
+      "icon": "Icons/ResourceTypes/Rock_Sandstone_Red_Cobble.png"
+    },
+    "Rock_Runic_Teal_Brick": {
+      "id": "Rock_Runic_Teal_Brick",
+      "icon": "Icons/ResourceTypes/Any_Rock.png"
+    },
+    "Salvage_Gold": {
+      "id": "Salvage_Gold",
+      "icon": "Icons/ResourceTypes/Rock.png"
+    },
+    "Wood_Planks": {
+      "id": "Wood_Planks",
+      "icon": "Icons/ResourceTypes/Wood_Planks.png"
+    },
+    "Wood_Hardwood": {
+      "id": "Wood_Hardwood",
+      "icon": "Icons/ResourceTypes/Hardwood.png"
+    },
+    "Soil_Clay_Brick": {
+      "id": "Soil_Clay_Brick",
+      "icon": "Icons/ResourceTypes/Soil_Clay_Brick.png"
+    },
+    "Rock_Sandstone_White": {
+      "id": "Rock_Sandstone_White",
+      "icon": "Icons/ResourceTypes/Rock_Sandstone_White_Cobble.png"
+    },
+    "Wood_Deadwood": {
+      "id": "Wood_Deadwood",
+      "icon": "Icons/ResourceTypes/Deadwood.png"
+    },
+    "Wood_Redwood_Trunk": {
+      "id": "Wood_Redwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Fish_Uncommon": {
+      "id": "Fish_Uncommon",
+      "icon": "Icons/ResourceTypes/Fish_Uncommon.png"
+    },
+    "Rock_Sandstone_Brick": {
+      "id": "Rock_Sandstone_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Sandstone_Brick.png"
+    },
+    "Rock_Basalt_Brick": {
+      "id": "Rock_Basalt_Brick",
+      "icon": "Icons/ResourceTypes/Rock_Basalt_Brick.png"
+    },
+    "Wood_Lightwood_Softwood_Trunk": {
+      "id": "Wood_Lightwood_Softwood_Trunk",
+      "icon": "Icons/ResourceTypes/Any_Trunk.png"
+    },
+    "Fish_Common": {
+      "id": "Fish_Common",
+      "icon": "Icons/ResourceTypes/Fish.png"
+    }
+  }
+}
