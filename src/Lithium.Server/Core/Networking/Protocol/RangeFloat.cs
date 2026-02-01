@@ -1,9 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public struct RangeFloat : INetworkSerializable
+public record struct RangeFloat : INetworkSerializable
 {
-    public float Min { get; set; }
-    public float Max { get; set; }
+    [JsonPropertyName("min")] public float Min { get; set; }
+    [JsonPropertyName("max")] public float Max { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
