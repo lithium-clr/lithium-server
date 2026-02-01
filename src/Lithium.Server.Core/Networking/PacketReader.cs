@@ -228,7 +228,7 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
     // HELPERS
     // ============================================================
 
-    private ReadOnlySpan<byte> ReadBytes(int count)
+    public ReadOnlySpan<byte> ReadBytes(int count)
     {
         if (_position + count > buffer.Length)
             throw new EndOfStreamException("The end of the buffer was reached.");
