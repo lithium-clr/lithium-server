@@ -1,0 +1,168 @@
+{
+  "type": "Init",
+  "maxId": 5,
+  "fluidFX": {
+    "0": {
+      "id": "Empty",
+      "shader": "None",
+      "fogMode": "Color",
+      "fogColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "fogDistance": {
+        "near": 0.0,
+        "far": 32.0
+      },
+      "fogDepthStart": 40.0,
+      "fogDepthFalloff": 10.0,
+      "colorFilter": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "colorSaturation": 1.0,
+      "distortionAmplitude": 8.0,
+      "distortionFrequency": 4.0,
+      "particle": null,
+      "movementSettings": null
+    },
+    "2": {
+      "id": "Water",
+      "shader": "None",
+      "fogMode": "EnvironmentTint",
+      "fogColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "fogDistance": {
+        "near": -437.0,
+        "far": 190.0
+      },
+      "fogDepthStart": 95.0,
+      "fogDepthFalloff": 1.3,
+      "colorFilter": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "colorSaturation": 1.6,
+      "distortionAmplitude": 5.0,
+      "distortionFrequency": 6.0,
+      "particle": {
+        "systemId": "Underwater_Effects",
+        "color": null,
+        "scale": 1.0
+      },
+      "movementSettings": {
+        "swimUpSpeed": 2.5,
+        "swimDownSpeed": -2.5,
+        "sinkSpeed": -1.35,
+        "horizontalSpeedMultiplier": 0.6,
+        "fieldOfViewMultiplier": 1.0,
+        "entryVelocityMultiplier": 1.0
+      }
+    },
+    "4": {
+      "id": "Mud",
+      "shader": "None",
+      "fogMode": "ColorLight",
+      "fogColor": {
+        "red": 77,
+        "green": 46,
+        "blue": 32
+      },
+      "fogDistance": {
+        "near": 0.0,
+        "far": 8.0
+      },
+      "fogDepthStart": 40.0,
+      "fogDepthFalloff": 10.0,
+      "colorFilter": {
+        "red": 79,
+        "green": 45,
+        "blue": 33
+      },
+      "colorSaturation": 0.0,
+      "distortionAmplitude": 4.0,
+      "distortionFrequency": 5.0,
+      "particle": null,
+      "movementSettings": {
+        "swimUpSpeed": 2.5,
+        "swimDownSpeed": -2.5,
+        "sinkSpeed": -1.35,
+        "horizontalSpeedMultiplier": 0.6,
+        "fieldOfViewMultiplier": 1.0,
+        "entryVelocityMultiplier": 1.0
+      }
+    },
+    "1": {
+      "id": "Slime",
+      "shader": "None",
+      "fogMode": "ColorLight",
+      "fogColor": {
+        "red": 45,
+        "green": -114,
+        "blue": 53
+      },
+      "fogDistance": {
+        "near": -16.0,
+        "far": 16.0
+      },
+      "fogDepthStart": 40.0,
+      "fogDepthFalloff": 10.0,
+      "colorFilter": {
+        "red": -103,
+        "green": -1,
+        "blue": -78
+      },
+      "colorSaturation": 0.5,
+      "distortionAmplitude": 10.0,
+      "distortionFrequency": 8.0,
+      "particle": null,
+      "movementSettings": {
+        "swimUpSpeed": 2.5,
+        "swimDownSpeed": -2.5,
+        "sinkSpeed": -0.1,
+        "horizontalSpeedMultiplier": 0.6,
+        "fieldOfViewMultiplier": 1.0,
+        "entryVelocityMultiplier": 1.0
+      }
+    },
+    "3": {
+      "id": "Lava",
+      "shader": "None",
+      "fogMode": "Color",
+      "fogColor": {
+        "red": -1,
+        "green": 45,
+        "blue": 0
+      },
+      "fogDistance": {
+        "near": -32.0,
+        "far": 6.0
+      },
+      "fogDepthStart": 40.0,
+      "fogDepthFalloff": 10.0,
+      "colorFilter": {
+        "red": -1,
+        "green": -52,
+        "blue": 0
+      },
+      "colorSaturation": 0.8,
+      "distortionAmplitude": 10.0,
+      "distortionFrequency": 8.0,
+      "particle": null,
+      "movementSettings": {
+        "swimUpSpeed": 2.5,
+        "swimDownSpeed": -2.5,
+        "sinkSpeed": -1.35,
+        "horizontalSpeedMultiplier": 0.6,
+        "fieldOfViewMultiplier": 1.0,
+        "entryVelocityMultiplier": 1.0
+      }
+    }
+  }
+}
