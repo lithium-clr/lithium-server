@@ -309,6 +309,13 @@ public sealed class SetupPacketRouter(
 
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_audio_categories.json"));
+            var packet = JsonSerializer.Deserialize<UpdateAudioCategoriesPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]

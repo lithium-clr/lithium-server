@@ -1,0 +1,382 @@
+{
+  "type": "Init",
+  "maxId": 94,
+  "categories": {
+    "0": {
+      "id": "EMPTY",
+      "volume": 1.0
+    },
+    "66": {
+      "id": "AudioCat_NPC_Feran",
+      "volume": 1.0
+    },
+    "91": {
+      "id": "AudioCat_NPC_Golem_Sand",
+      "volume": 1.0
+    },
+    "25": {
+      "id": "AudioCat_NPC_Squirrel",
+      "volume": 1.0
+    },
+    "58": {
+      "id": "AudioCat_NPC_Snake",
+      "volume": 1.0
+    },
+    "49": {
+      "id": "AudioCat_NPC_Rabbit",
+      "volume": 1.0
+    },
+    "50": {
+      "id": "AudioCat_NPC_Toad_Rhino_Magma",
+      "volume": 1.0
+    },
+    "8": {
+      "id": "AudioCat_Hand_Crossbow",
+      "volume": 0.5011872
+    },
+    "75": {
+      "id": "AudioCat_NPC_Klops",
+      "volume": 0.39810717
+    },
+    "74": {
+      "id": "AudioCat_NPC_Emberwulf",
+      "volume": 1.0
+    },
+    "9": {
+      "id": "AudioCat_NPC_Vulture",
+      "volume": 1.0
+    },
+    "67": {
+      "id": "AudioCat_NPC_Flamingo",
+      "volume": 1.0
+    },
+    "65": {
+      "id": "AudioCat_NPC_Spider",
+      "volume": 1.0
+    },
+    "57": {
+      "id": "AudioCat_NPC_Eye_Void",
+      "volume": 1.0
+    },
+    "24": {
+      "id": "AudioCat_NPC_Larva",
+      "volume": 1.0
+    },
+    "59": {
+      "id": "AudioCat_NPC_Leopard_Snow",
+      "volume": 1.0
+    },
+    "26": {
+      "id": "AudioCat_NPC_Camel",
+      "volume": 1.0
+    },
+    "16": {
+      "id": "AudioCat_NPC_Tetrabird",
+      "volume": 1.0
+    },
+    "17": {
+      "id": "AudioCat_NPC_Calf",
+      "volume": 1.0
+    },
+    "23": {
+      "id": "AudioCat_NPC_Bunny",
+      "volume": 1.0
+    },
+    "18": {
+      "id": "AudioCat_NPC_Woodpecker",
+      "volume": 1.0
+    },
+    "35": {
+      "id": "AudioCat_NPC_Golem_Earth",
+      "volume": 0.5011872
+    },
+    "39": {
+      "id": "AudioCat_NPC_Sparrow",
+      "volume": 1.0
+    },
+    "60": {
+      "id": "AudioCat_NPC_Skeleton_Praetorian",
+      "volume": 0.7943282
+    },
+    "27": {
+      "id": "AudioCat_NPC_Owl",
+      "volume": 1.0
+    },
+    "56": {
+      "id": "AudioCat_NPC_Goat",
+      "volume": 1.0
+    },
+    "47": {
+      "id": "AudioCat_Sword",
+      "volume": 0.5011872
+    },
+    "51": {
+      "id": "AudioCat_NPC_Fen_Stalker",
+      "volume": 1.0
+    },
+    "48": {
+      "id": "AudioCat_NPC_Deer",
+      "volume": 1.0
+    },
+    "55": {
+      "id": "AudioCat_NPC_Dragon",
+      "volume": 1.0
+    },
+    "31": {
+      "id": "AudioCat_Shield",
+      "volume": 0.5011872
+    },
+    "52": {
+      "id": "AudioCat_NPC_Zombie",
+      "volume": 1.0
+    },
+    "32": {
+      "id": "AudioCat_NPC_Yeti",
+      "volume": 1.0
+    },
+    "34": {
+      "id": "AudioCat_NPC_Spirit_Root",
+      "volume": 1.0
+    },
+    "36": {
+      "id": "AudioCat_NPC_Pigeon",
+      "volume": 1.0
+    },
+    "38": {
+      "id": "AudioCat_NPC_Trork_Chieftain",
+      "volume": 1.0
+    },
+    "46": {
+      "id": "AudioCat_NPC_Outlander",
+      "volume": 1.0
+    },
+    "40": {
+      "id": "AudioCat_Mace",
+      "volume": 0.5011872
+    },
+    "42": {
+      "id": "AudioCat_NPC_Raven",
+      "volume": 1.0
+    },
+    "45": {
+      "id": "AudioCat_NPC_Wolf",
+      "volume": 1.0
+    },
+    "44": {
+      "id": "AudioCat_NPC_Shark",
+      "volume": 1.0
+    },
+    "41": {
+      "id": "AudioCat_NPC_Hedera",
+      "volume": 1.0
+    },
+    "43": {
+      "id": "AudioCat_NPC_Kweebec",
+      "volume": 1.0
+    },
+    "70": {
+      "id": "AudioCat_NPC_Hyena",
+      "volume": 1.0
+    },
+    "29": {
+      "id": "AudioCat_NPC_Mouse",
+      "volume": 1.0
+    },
+    "4": {
+      "id": "AudioCat_Discovery",
+      "volume": 0.5011872
+    },
+    "78": {
+      "id": "AudioCat_NPC_Chick",
+      "volume": 1.0
+    },
+    "37": {
+      "id": "AudioCat_NPC_Scorpion",
+      "volume": 1.0
+    },
+    "54": {
+      "id": "AudioCat_NPC_Moose_Bull",
+      "volume": 1.0
+    },
+    "12": {
+      "id": "AudioCat_NPC_Crawler_Void",
+      "volume": 1.0
+    },
+    "13": {
+      "id": "AudioCat_Daggers",
+      "volume": 0.5011872
+    },
+    "71": {
+      "id": "AudioCat_NPC_Sheep",
+      "volume": 1.0
+    },
+    "53": {
+      "id": "AudioCat_NPC_Bison",
+      "volume": 1.0
+    },
+    "28": {
+      "id": "AudioCat_NPC_Spark_Living",
+      "volume": 1.0
+    },
+    "69": {
+      "id": "AudioCat_NPC_Crocodile",
+      "volume": 1.0
+    },
+    "30": {
+      "id": "AudioCat_NPC_Lamb",
+      "volume": 1.0
+    },
+    "61": {
+      "id": "AudioCat_NPC_Raptor_Cave",
+      "volume": 1.0
+    },
+    "5": {
+      "id": "AudioCat_Music",
+      "volume": 0.19952624
+    },
+    "20": {
+      "id": "AudioCat_NPC_Fish",
+      "volume": 1.0
+    },
+    "19": {
+      "id": "AudioCat_NPC_Horse",
+      "volume": 1.0
+    },
+    "21": {
+      "id": "AudioCat_NPC_Pig",
+      "volume": 1.0
+    },
+    "62": {
+      "id": "AudioCat_NPC_Meerkat",
+      "volume": 1.0
+    },
+    "22": {
+      "id": "AudioCat_NPC_Cow",
+      "volume": 1.0
+    },
+    "63": {
+      "id": "AudioCat_NPC_Fox",
+      "volume": 1.0
+    },
+    "89": {
+      "id": "AudioCat_NPC_Trork",
+      "volume": 1.0
+    },
+    "14": {
+      "id": "AudioCat_NPC_Tiger_Sabertooth",
+      "volume": 1.0
+    },
+    "64": {
+      "id": "AudioCat_NPC_Crow",
+      "volume": 1.0
+    },
+    "2": {
+      "id": "AudioCat_Footsteps",
+      "volume": 1.9952624
+    },
+    "7": {
+      "id": "AudioCat_Magic_Staff",
+      "volume": 1.0
+    },
+    "72": {
+      "id": "AudioCat_NPC_Golem_Firesteel",
+      "volume": 1.0
+    },
+    "6": {
+      "id": "AudioCat_Weapons",
+      "volume": 1.0
+    },
+    "85": {
+      "id": "AudioCat_NPC_Gecko",
+      "volume": 1.0
+    },
+    "68": {
+      "id": "AudioCat_NPC_Antelope",
+      "volume": 1.0
+    },
+    "15": {
+      "id": "AudioCat_NPC_Golem_Frost",
+      "volume": 1.0
+    },
+    "86": {
+      "id": "AudioCat_NPC_Rex",
+      "volume": 1.0
+    },
+    "11": {
+      "id": "AudioCat_NPC_Bat",
+      "volume": 1.0
+    },
+    "76": {
+      "id": "AudioCat_NPC_Boar",
+      "volume": 1.0
+    },
+    "92": {
+      "id": "AudioCat_NPC_Ram",
+      "volume": 1.0
+    },
+    "93": {
+      "id": "AudioCat_NPC_Skeleton",
+      "volume": 0.56234133
+    },
+    "10": {
+      "id": "AudioCat_Shortbow",
+      "volume": 0.5011872
+    },
+    "73": {
+      "id": "AudioCat_Battleaxe",
+      "volume": 0.63095737
+    },
+    "83": {
+      "id": "AudioCat_NPC_Chicken",
+      "volume": 1.0
+    },
+    "1": {
+      "id": "AudioCat_Inventory",
+      "volume": 0.63095737
+    },
+    "3": {
+      "id": "AudioCat_NPC",
+      "volume": 1.0
+    },
+    "90": {
+      "id": "AudioCat_NPC_Frog",
+      "volume": 1.0
+    },
+    "88": {
+      "id": "AudioCat_NPC_Goblin",
+      "volume": 1.0
+    },
+    "77": {
+      "id": "AudioCat_NPC_Piglet",
+      "volume": 1.0
+    },
+    "79": {
+      "id": "AudioCat_NPC_Warthog",
+      "volume": 0.5011872
+    },
+    "84": {
+      "id": "AudioCat_NPC_Bear_Grizzly",
+      "volume": 1.0
+    },
+    "82": {
+      "id": "AudioCat_NPC_Toad_Rhino",
+      "volume": 1.0
+    },
+    "80": {
+      "id": "AudioCat_NPC_Duck",
+      "volume": 1.0
+    },
+    "87": {
+      "id": "AudioCat_NPC_Rat",
+      "volume": 1.0
+    },
+    "81": {
+      "id": "AudioCat_NPC_Spawn_Void",
+      "volume": 1.0
+    },
+    "33": {
+      "id": "AudioCat_NPC_Scarak",
+      "volume": 1.0
+    }
+  }
+}
