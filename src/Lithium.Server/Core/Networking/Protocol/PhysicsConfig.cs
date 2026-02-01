@@ -36,7 +36,15 @@ public sealed class PhysicsConfig : INetworkSerializable
 
     public void Serialize(PacketWriter writer)
     {
-        writer.WriteEnum(Type);
+        if (Enum.IsDefined(Type))
+        {
+            writer.WriteEnum(Type);
+        }
+        else
+        {
+            writer.WriteEnum(PhysicsType.Standard);
+        }
+
         writer.WriteFloat64(Density);
         writer.WriteFloat64(Gravity);
         writer.WriteFloat64(Bounciness);
@@ -45,7 +53,16 @@ public sealed class PhysicsConfig : INetworkSerializable
         writer.WriteBoolean(SticksVertically);
         writer.WriteBoolean(ComputeYaw);
         writer.WriteBoolean(ComputePitch);
-        writer.WriteEnum(RotationMode);
+
+        if (Enum.IsDefined(RotationMode))
+        {
+            writer.WriteEnum(RotationMode);
+        }
+        else
+        {
+            writer.WriteEnum(RotationMode.None);
+        }
+
         writer.WriteFloat64(MoveOutOfSolidSpeed);
         writer.WriteFloat64(TerminalVelocityAir);
         writer.WriteFloat64(DensityAir);
