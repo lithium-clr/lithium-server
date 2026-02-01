@@ -5,22 +5,22 @@ namespace Lithium.Server.Core.Networking.Protocol;
 [JsonConverter(typeof(Vector3FloatJsonConverter))]
 public record struct Vector3Float : IVector<float>, INetworkSerializable
 {
-    public float X;
-    public float Y;
-    public float Z;
-    
+    [JsonPropertyName("x")] public float X { get; set; }
+    [JsonPropertyName("y")] public float Y { get; set; }
+    [JsonPropertyName("z")] public float Z { get; set; }
+
     public static Vector3Float Zero => new();
     public static Vector3Float One => new();
 
     public Vector3Float()
     {
     }
-    
+
     public Vector3Float(float all)
     {
         X = Y = Z = all;
     }
-    
+
     public Vector3Float(float x, float y, float z)
     {
         X = x;

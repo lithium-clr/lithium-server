@@ -5,9 +5,9 @@ namespace Lithium.Server.Core.Networking.Protocol;
 [JsonConverter(typeof(Vector3IntJsonConverter))]
 public record struct Vector3Int : IVector<int>, INetworkSerializable
 {
-    public int X;
-    public int Y;
-    public int Z;
+    [JsonPropertyName("x")] public int X { get; set; }
+    [JsonPropertyName("y")] public int Y { get; set; }
+    [JsonPropertyName("z")] public int Z { get; set; }
     
     public static Vector3Int Zero => new();
     public static Vector3Int One => new();
