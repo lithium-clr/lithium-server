@@ -316,6 +316,13 @@ public sealed class SetupPacketRouter(
 
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_environments.json"));
+            var packet = JsonSerializer.Deserialize<UpdateEnvironmentsPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]

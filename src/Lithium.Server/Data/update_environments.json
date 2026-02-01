@@ -1,0 +1,1559 @@
+{
+  "type": "Init",
+  "maxId": 117,
+  "environments": {
+    "0": {
+      "id": "Unknown",
+      "waterTint": {
+        "red": 10,
+        "green": 51,
+        "blue": 85
+      },
+      "fluidParticles": null,
+      "tagIndexes": null
+    },
+    "99": {
+      "id": "Env_Zone1_Encounters",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        499,
+        388,
+        477
+      ]
+    },
+    "49": {
+      "id": "Env_Zone3_Encounters",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        478,
+        362,
+        477
+      ]
+    },
+    "50": {
+      "id": "Env_Zone3_Outlander",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        470,
+        362,
+        469
+      ]
+    },
+    "116": {
+      "id": "Env_Zone1_Trork",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        528,
+        206,
+        388
+      ]
+    },
+    "100": {
+      "id": "Env_Zone0_Warm",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        517,
+        447,
+        516
+      ]
+    },
+    "115": {
+      "id": "Env_Zone4_Mage_Towers",
+      "waterTint": {
+        "red": 98,
+        "green": 122,
+        "blue": 56
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        507,
+        496,
+        525,
+        477
+      ]
+    },
+    "67": {
+      "id": "Env_Zone2_Caves_Plateaus",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        484,
+        365,
+        427,
+        426,
+        483
+      ]
+    },
+    "98": {
+      "id": "Env_Zone2_Mage_Towers",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        365,
+        507,
+        510,
+        477,
+        509
+      ]
+    },
+    "65": {
+      "id": "Env_Zone1_Caves_Volcanic_T2",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        437,
+        432,
+        426,
+        124,
+        388
+      ]
+    },
+    "16": {
+      "id": "Env_Zone1_Autumn",
+      "waterTint": {
+        "red": 97,
+        "green": 111,
+        "blue": 111
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        436,
+        388,
+        435
+      ]
+    },
+    "17": {
+      "id": "Env_Zone4_Jungles",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        444,
+        443
+      ]
+    },
+    "18": {
+      "id": "Env_Zone3_Glacial",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        442,
+        441,
+        362
+      ]
+    },
+    "35": {
+      "id": "Dungeon_GoblinLair_SpiderCave",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "48": {
+      "id": "Env_Zone3_Caves_Mountains",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        473,
+        426,
+        362,
+        448,
+        449,
+        459,
+        472
+      ]
+    },
+    "47": {
+      "id": "Env_Zone1_Caves_Spiders",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        468,
+        432,
+        426,
+        388,
+        467
+      ]
+    },
+    "114": {
+      "id": "Env_Forgotten_Temple_Interior_Grand",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        386,
+        527,
+        526,
+        460
+      ]
+    },
+    "51": {
+      "id": "Env_Zone2_Caves_Rats",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        365,
+        481,
+        427,
+        426,
+        482
+      ]
+    },
+    "113": {
+      "id": "Env_Zone2_Caves_Scarak",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        523,
+        365,
+        427,
+        426,
+        524
+      ]
+    },
+    "52": {
+      "id": "Env_Zone2_Feran",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        471,
+        130,
+        365
+      ]
+    },
+    "31": {
+      "id": "Env_Zone1_Swamps",
+      "waterTint": {
+        "red": 102,
+        "green": 104,
+        "blue": 43
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        451,
+        450,
+        388
+      ]
+    },
+    "32": {
+      "id": "Env_Portals_Oasis",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        453,
+        452,
+        365
+      ]
+    },
+    "34": {
+      "id": "Env_Zone1_Caves_Goblins",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        454,
+        455,
+        432,
+        426,
+        388
+      ]
+    },
+    "46": {
+      "id": "Env_Zone3_Caves_Volcanic_T1",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        459,
+        426,
+        124,
+        466,
+        362
+      ]
+    },
+    "36": {
+      "id": "Env_Zone4_Caves_Volcanic",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        124,
+        426,
+        457,
+        456
+      ]
+    },
+    "29": {
+      "id": "Env_Forgotten_Temple_Base",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        460
+      ]
+    },
+    "70": {
+      "id": "Env_Zone2_Caves_Scrub",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        487,
+        365,
+        427,
+        426,
+        488
+      ]
+    },
+    "37": {
+      "id": "Env_Creative_Hub",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        458
+      ]
+    },
+    "78": {
+      "id": "Env_Zone3_Caves_Volcanic_T2",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        459,
+        426,
+        124,
+        466,
+        362
+      ]
+    },
+    "112": {
+      "id": "Env_Zone4_Dungeons",
+      "waterTint": {
+        "red": 98,
+        "green": 122,
+        "blue": 56
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        463,
+        462,
+        426,
+        456
+      ]
+    },
+    "54": {
+      "id": "Env_Zone3_Caves_Forests",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        449,
+        448,
+        459,
+        426,
+        362
+      ]
+    },
+    "13": {
+      "id": "Env_Default_Void",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        440
+      ]
+    },
+    "94": {
+      "id": "Env_Forgotten_Temple_Exterior",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        460,
+        423
+      ]
+    },
+    "96": {
+      "id": "Env_Zone1_Mage_Towers",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        521,
+        507,
+        477,
+        499,
+        388
+      ]
+    },
+    "102": {
+      "id": "Env_Zone4_Wastes",
+      "waterTint": {
+        "red": 98,
+        "green": 122,
+        "blue": 56
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        531,
+        530
+      ]
+    },
+    "110": {
+      "id": "Env_Zone3_Caves_Glacial",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        459,
+        442,
+        426,
+        441,
+        362
+      ]
+    },
+    "19": {
+      "id": "Env_Zone4",
+      "waterTint": {
+        "red": 98,
+        "green": 122,
+        "blue": 56
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369
+      ]
+    },
+    "21": {
+      "id": "Zone2_Overground",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        445,
+        365,
+        446
+      ]
+    },
+    "104": {
+      "id": "Env_Zone2_Mineshafts",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        533,
+        505,
+        365,
+        427,
+        426
+      ]
+    },
+    "62": {
+      "id": "Env_Zone2_Caves_Goblins",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        454,
+        365,
+        476,
+        427,
+        426
+      ]
+    },
+    "64": {
+      "id": "Env_Forgotten_Temple_Interior_Small",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        386,
+        494,
+        460,
+        493
+      ]
+    },
+    "68": {
+      "id": "Env_Zone3_Caves_Spider",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        503,
+        459,
+        426,
+        504,
+        362
+      ]
+    },
+    "15": {
+      "id": "Env_Zone3_Glacial_Henges",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        442,
+        441,
+        362
+      ]
+    },
+    "76": {
+      "id": "Env_Zone1_Graveyard",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        499,
+        388,
+        477
+      ]
+    },
+    "92": {
+      "id": "Env_Zone4_Volcanoes",
+      "waterTint": {
+        "red": 98,
+        "green": 122,
+        "blue": 56
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        520,
+        519
+      ]
+    },
+    "72": {
+      "id": "Env_Zone1_Shores",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        497,
+        489,
+        388
+      ]
+    },
+    "11": {
+      "id": "Zone2_Underground",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        427,
+        426,
+        365
+      ]
+    },
+    "1": {
+      "id": "Env_Zone4_Crucible",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        434,
+        433
+      ]
+    },
+    "3": {
+      "id": "Zone4_Underground",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "90": {
+      "id": "Env_Zone1_Caves_Plains",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        439,
+        432,
+        438,
+        426,
+        388
+      ]
+    },
+    "7": {
+      "id": "Zone1_Overground",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "5": {
+      "id": "Env_Zone2_Caves",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        427,
+        426,
+        365
+      ]
+    },
+    "88": {
+      "id": "Env_Zone0_Temperate",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        447,
+        500,
+        501
+      ]
+    },
+    "84": {
+      "id": "Env_Forgotten_Temple_Interior_Tent",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        386,
+        512,
+        513,
+        460
+      ]
+    },
+    "80": {
+      "id": "Env_Zone1_Forests",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        479,
+        448,
+        388
+      ]
+    },
+    "82": {
+      "id": "Env_Zone3_Caves_Volcanic_T3",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        459,
+        426,
+        124,
+        466,
+        362
+      ]
+    },
+    "86": {
+      "id": "Env_Zone2_Plateaus",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        484,
+        483,
+        365
+      ]
+    },
+    "58": {
+      "id": "Env_Zone1_Azure",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        285,
+        486,
+        388
+      ]
+    },
+    "107": {
+      "id": "Env_Zone2_Caves_Deserts",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        429,
+        365,
+        428,
+        427,
+        426
+      ]
+    },
+    "91": {
+      "id": "Env_Zone3_Mountains",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        473,
+        362,
+        472
+      ]
+    },
+    "25": {
+      "id": "Env_Zone3_Hedera",
+      "waterTint": {
+        "red": 38,
+        "green": 77,
+        "blue": 61
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        363,
+        364,
+        362
+      ]
+    },
+    "75": {
+      "id": "Env_Zone3_Caves_Tundra",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        491,
+        459,
+        426,
+        492,
+        362
+      ]
+    },
+    "74": {
+      "id": "Env_Zone1_Caves_Mountains",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        432,
+        498,
+        426,
+        388,
+        472
+      ]
+    },
+    "8": {
+      "id": "Env_Zone1_Caves_Volcanic_T1",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        437,
+        432,
+        426,
+        124,
+        388
+      ]
+    },
+    "9": {
+      "id": "Env_Portals_Hedera",
+      "waterTint": {
+        "red": 38,
+        "green": 77,
+        "blue": 61
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        431,
+        363,
+        430
+      ]
+    },
+    "24": {
+      "id": "Zone1_Underground",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "57": {
+      "id": "Env_Zone2_Scrub",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        487,
+        365,
+        488
+      ]
+    },
+    "108": {
+      "id": "Env_Zone3_Tundra",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        492,
+        491,
+        362
+      ]
+    },
+    "59": {
+      "id": "Env_Zone1_Caves_Volcanic_T3",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        437,
+        432,
+        426,
+        124,
+        388
+      ]
+    },
+    "26": {
+      "id": "Dungeon_GoblinLair_Duke",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "23": {
+      "id": "Env_Zone3_Forests",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        449,
+        448,
+        362
+      ]
+    },
+    "106": {
+      "id": "Env_Zone4_Shores",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        489,
+        522
+      ]
+    },
+    "56": {
+      "id": "Env_Zone4_Forests",
+      "waterTint": {
+        "red": 98,
+        "green": 122,
+        "blue": 56
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        448,
+        495
+      ]
+    },
+    "60": {
+      "id": "Env_Zone2_Savanna",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        445,
+        365,
+        446
+      ]
+    },
+    "39": {
+      "id": "Env_Zone4_Sewers",
+      "waterTint": {
+        "red": 98,
+        "green": 122,
+        "blue": 56
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        465,
+        464,
+        426,
+        456,
+        462,
+        463
+      ]
+    },
+    "109": {
+      "id": "Env_Zone2_Encounters",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        509,
+        365,
+        477
+      ]
+    },
+    "27": {
+      "id": "Env_Zone2_Oasis",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        453,
+        452,
+        365
+      ]
+    },
+    "55": {
+      "id": "Env_Zone2_Caves_Volcanic_T3",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        365,
+        427,
+        461,
+        124,
+        426
+      ]
+    },
+    "38": {
+      "id": "Env_Zone3_Caves",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        426,
+        459,
+        362
+      ]
+    },
+    "41": {
+      "id": "Zone3_Overground_Poisoned",
+      "waterTint": {
+        "red": 38,
+        "green": 77,
+        "blue": 61
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "40": {
+      "id": "Env_Zone2_Caves_Volcanic_T1",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        461,
+        365,
+        124,
+        427,
+        426
+      ]
+    },
+    "45": {
+      "id": "Env_Zone1",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        388
+      ]
+    },
+    "44": {
+      "id": "Env_Zone4_Caves",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        426,
+        456
+      ]
+    },
+    "42": {
+      "id": "Zone3_Underground",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "43": {
+      "id": "Dungeon_GoblinLair_Ogre",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "103": {
+      "id": "Env_Zone1_Mountains",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        498,
+        388,
+        472
+      ]
+    },
+    "111": {
+      "id": "Env_Zone2_Scarak",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        524,
+        523,
+        365
+      ]
+    },
+    "4": {
+      "id": "Dungeon_GoblinLair_RatCave",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "12": {
+      "id": "Env_Default_Flat",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        439,
+        388,
+        438
+      ]
+    },
+    "71": {
+      "id": "Env_Zone4_Encounters",
+      "waterTint": {
+        "red": 98,
+        "green": 122,
+        "blue": 56
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        369,
+        496,
+        477
+      ]
+    },
+    "95": {
+      "id": "Env_Zone3_Mage_Towers",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        507,
+        478,
+        508,
+        477,
+        362
+      ]
+    },
+    "53": {
+      "id": "Env_Zone2_Caves_Volcanic_T2",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        365,
+        427,
+        461,
+        124,
+        426
+      ]
+    },
+    "28": {
+      "id": "Env_Zone0",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        447
+      ]
+    },
+    "69": {
+      "id": "Env_Zone2_Dungeons",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        485,
+        365,
+        462,
+        427,
+        426
+      ]
+    },
+    "30": {
+      "id": "Default",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "61": {
+      "id": "Env_Zone0_Cold",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        475,
+        447,
+        474
+      ]
+    },
+    "20": {
+      "id": "Env_Zone3",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        362
+      ]
+    },
+    "105": {
+      "id": "Env_Zone1_Mineshafts",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        505,
+        432,
+        532,
+        426,
+        388
+      ]
+    },
+    "22": {
+      "id": "Env_Void",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        440
+      ]
+    },
+    "63": {
+      "id": "Env_Zone1_Plains",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        439,
+        388,
+        438
+      ]
+    },
+    "101": {
+      "id": "Env_Zone2_Shores",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        529,
+        489,
+        365
+      ]
+    },
+    "2": {
+      "id": "Env_Zone2_Deserts",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        428,
+        365,
+        429
+      ]
+    },
+    "97": {
+      "id": "Env_Zone2_Caves_Savanna",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        365,
+        445,
+        427,
+        426,
+        446
+      ]
+    },
+    "6": {
+      "id": "Zone4_Overground",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    },
+    "89": {
+      "id": "Env_Zone1_Caves_Rats",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        502,
+        432,
+        426,
+        481,
+        388
+      ]
+    },
+    "14": {
+      "id": "Env_Zone1_Caves",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        426,
+        432,
+        388
+      ]
+    },
+    "93": {
+      "id": "Env_Zone3_Mineshafts",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        505,
+        506,
+        459,
+        426,
+        362
+      ]
+    },
+    "73": {
+      "id": "Env_Zone3_Shores",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        489,
+        490,
+        362
+      ]
+    },
+    "10": {
+      "id": "Env_Zone2",
+      "waterTint": {
+        "red": 25,
+        "green": -115,
+        "blue": -22
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        365
+      ]
+    },
+    "77": {
+      "id": "Env_Temple_of_Gaia",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        460
+      ]
+    },
+    "79": {
+      "id": "Env_Zone1_Caves_Forests",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        432,
+        448,
+        479,
+        426,
+        388
+      ]
+    },
+    "83": {
+      "id": "Env_Zone1_Dungeons",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        432,
+        511,
+        462,
+        426,
+        388
+      ]
+    },
+    "85": {
+      "id": "Env_Forgotten_Temple_Heart",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        515,
+        460,
+        514
+      ]
+    },
+    "87": {
+      "id": "Env_Zone3_Dungeons",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        518,
+        459,
+        462,
+        426,
+        362
+      ]
+    },
+    "81": {
+      "id": "Env_Zone1_Caves_Swamps",
+      "waterTint": null,
+      "fluidParticles": null,
+      "tagIndexes": [
+        432,
+        451,
+        426,
+        450,
+        388
+      ]
+    },
+    "66": {
+      "id": "Env_Zone1_Kweebec",
+      "waterTint": {
+        "red": 25,
+        "green": -125,
+        "blue": -39
+      },
+      "fluidParticles": null,
+      "tagIndexes": [
+        32,
+        448,
+        480,
+        479,
+        388
+      ]
+    },
+    "33": {
+      "id": "Zone3_Overground",
+      "waterTint": {
+        "red": 32,
+        "green": 118,
+        "blue": -75
+      },
+      "fluidParticles": null,
+      "tagIndexes": []
+    }
+  },
+  "rebuildMapGeometry": true
+}
