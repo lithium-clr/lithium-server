@@ -1,0 +1,488 @@
+{
+  "type": "Init",
+  "maxId": 15,
+  "fluids": {
+    "0": {
+      "id": "Empty",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Unknown.png",
+          "bottom": "BlockTextures/Unknown.png",
+          "front": "BlockTextures/Unknown.png",
+          "back": "BlockTextures/Unknown.png",
+          "left": "BlockTextures/Unknown.png",
+          "right": "BlockTextures/Unknown.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Solid",
+      "shaderEffect": [
+        "None"
+      ],
+      "light": null,
+      "fluidFXIndex": 0,
+      "blockSoundSetIndex": 0,
+      "blockParticleSetId": null,
+      "particleColor": null,
+      "tagIndexes": null
+    },
+    "1": {
+      "id": "Unknown",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Unknown.png",
+          "bottom": "BlockTextures/Unknown.png",
+          "front": "BlockTextures/Unknown.png",
+          "back": "BlockTextures/Unknown.png",
+          "left": "BlockTextures/Unknown.png",
+          "right": "BlockTextures/Unknown.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Solid",
+      "shaderEffect": [
+        "None"
+      ],
+      "light": null,
+      "fluidFXIndex": 0,
+      "blockSoundSetIndex": 0,
+      "blockParticleSetId": null,
+      "particleColor": null,
+      "tagIndexes": null
+    },
+    "2": {
+      "id": "Slime_Red_Source",
+      "maxFluidLevel": 1,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Slime_Red.png",
+          "bottom": "BlockTextures/Fluid_Slime_Red.png",
+          "front": "BlockTextures/Fluid_Slime_Red.png",
+          "back": "BlockTextures/Fluid_Slime_Red.png",
+          "left": "BlockTextures/Fluid_Slime_Red.png",
+          "right": "BlockTextures/Fluid_Slime_Red.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Slime"
+      ],
+      "light": {
+        "radius": 0,
+        "red": 7,
+        "green": 6,
+        "blue": 5
+      },
+      "fluidFXIndex": 1,
+      "blockSoundSetIndex": 49,
+      "blockParticleSetId": "Snow",
+      "particleColor": {
+        "red": -1,
+        "green": -121,
+        "blue": 118
+      },
+      "tagIndexes": []
+    },
+    "3": {
+      "id": "Tar_Source",
+      "maxFluidLevel": 1,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Tar.png",
+          "bottom": "BlockTextures/Fluid_Tar.png",
+          "front": "BlockTextures/Fluid_Tar.png",
+          "back": "BlockTextures/Fluid_Tar.png",
+          "left": "BlockTextures/Fluid_Tar.png",
+          "right": "BlockTextures/Fluid_Tar.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Slime"
+      ],
+      "light": null,
+      "fluidFXIndex": 2,
+      "blockSoundSetIndex": 49,
+      "blockParticleSetId": "Tar",
+      "particleColor": {
+        "red": 114,
+        "green": 86,
+        "blue": 80
+      },
+      "tagIndexes": []
+    },
+    "4": {
+      "id": "Poison_Source",
+      "maxFluidLevel": 1,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Poison.png",
+          "bottom": "BlockTextures/Fluid_Poison.png",
+          "front": "BlockTextures/Fluid_Poison.png",
+          "back": "BlockTextures/Fluid_Poison.png",
+          "left": "BlockTextures/Fluid_Poison.png",
+          "right": "BlockTextures/Fluid_Poison.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Lava"
+      ],
+      "light": {
+        "radius": 0,
+        "red": 12,
+        "green": 11,
+        "blue": 3
+      },
+      "fluidFXIndex": 3,
+      "blockSoundSetIndex": 49,
+      "blockParticleSetId": "Water",
+      "particleColor": {
+        "red": -52,
+        "green": -69,
+        "blue": 51
+      },
+      "tagIndexes": []
+    },
+    "5": {
+      "id": "Slime_Source",
+      "maxFluidLevel": 1,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Slime.png",
+          "bottom": "BlockTextures/Fluid_Slime.png",
+          "front": "BlockTextures/Fluid_Slime.png",
+          "back": "BlockTextures/Fluid_Slime.png",
+          "left": "BlockTextures/Fluid_Slime.png",
+          "right": "BlockTextures/Fluid_Slime.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Slime"
+      ],
+      "light": {
+        "radius": 0,
+        "red": 5,
+        "green": 6,
+        "blue": 5
+      },
+      "fluidFXIndex": 1,
+      "blockSoundSetIndex": 49,
+      "blockParticleSetId": "Snow",
+      "particleColor": {
+        "red": 103,
+        "green": -1,
+        "blue": 78
+      },
+      "tagIndexes": []
+    },
+    "6": {
+      "id": "Lava_Source",
+      "maxFluidLevel": 1,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Lava.png",
+          "bottom": "BlockTextures/Fluid_Lava.png",
+          "front": "BlockTextures/Fluid_Lava.png",
+          "back": "BlockTextures/Fluid_Lava.png",
+          "left": "BlockTextures/Fluid_Lava.png",
+          "right": "BlockTextures/Fluid_Lava.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Lava"
+      ],
+      "light": {
+        "radius": 0,
+        "red": 14,
+        "green": 9,
+        "blue": 0
+      },
+      "fluidFXIndex": 3,
+      "blockSoundSetIndex": 0,
+      "blockParticleSetId": "Lava",
+      "particleColor": {
+        "red": -7,
+        "green": 78,
+        "blue": 17
+      },
+      "tagIndexes": []
+    },
+    "7": {
+      "id": "Water_Source",
+      "maxFluidLevel": 1,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Water.png",
+          "bottom": "BlockTextures/Fluid_Water.png",
+          "front": "BlockTextures/Fluid_Water.png",
+          "back": "BlockTextures/Fluid_Water.png",
+          "left": "BlockTextures/Fluid_Water.png",
+          "right": "BlockTextures/Fluid_Water.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Water"
+      ],
+      "light": null,
+      "fluidFXIndex": 2,
+      "blockSoundSetIndex": 8,
+      "blockParticleSetId": "Water",
+      "particleColor": null,
+      "tagIndexes": [
+        4,
+        3,
+        5
+      ]
+    },
+    "8": {
+      "id": "Water",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Water.png",
+          "bottom": "BlockTextures/Fluid_Water.png",
+          "front": "BlockTextures/Fluid_Water.png",
+          "back": "BlockTextures/Fluid_Water.png",
+          "left": "BlockTextures/Fluid_Water.png",
+          "right": "BlockTextures/Fluid_Water.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Water"
+      ],
+      "light": null,
+      "fluidFXIndex": 2,
+      "blockSoundSetIndex": 8,
+      "blockParticleSetId": "Water",
+      "particleColor": null,
+      "tagIndexes": [
+        3,
+        4,
+        5
+      ]
+    },
+    "9": {
+      "id": "Slime_Red",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Slime_Red.png",
+          "bottom": "BlockTextures/Fluid_Slime_Red.png",
+          "front": "BlockTextures/Fluid_Slime_Red.png",
+          "back": "BlockTextures/Fluid_Slime_Red.png",
+          "left": "BlockTextures/Fluid_Slime_Red.png",
+          "right": "BlockTextures/Fluid_Slime_Red.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Slime"
+      ],
+      "light": {
+        "radius": 0,
+        "red": 7,
+        "green": 6,
+        "blue": 5
+      },
+      "fluidFXIndex": 1,
+      "blockSoundSetIndex": 49,
+      "blockParticleSetId": "Snow",
+      "particleColor": {
+        "red": -1,
+        "green": -121,
+        "blue": 118
+      },
+      "tagIndexes": []
+    },
+    "10": {
+      "id": "Tar",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Tar.png",
+          "bottom": "BlockTextures/Fluid_Tar.png",
+          "front": "BlockTextures/Fluid_Tar.png",
+          "back": "BlockTextures/Fluid_Tar.png",
+          "left": "BlockTextures/Fluid_Tar.png",
+          "right": "BlockTextures/Fluid_Tar.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Slime"
+      ],
+      "light": null,
+      "fluidFXIndex": 2,
+      "blockSoundSetIndex": 49,
+      "blockParticleSetId": "Tar",
+      "particleColor": {
+        "red": 114,
+        "green": 86,
+        "blue": 80
+      },
+      "tagIndexes": []
+    },
+    "11": {
+      "id": "Lava",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Lava.png",
+          "bottom": "BlockTextures/Fluid_Lava.png",
+          "front": "BlockTextures/Fluid_Lava.png",
+          "back": "BlockTextures/Fluid_Lava.png",
+          "left": "BlockTextures/Fluid_Lava.png",
+          "right": "BlockTextures/Fluid_Lava.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Lava"
+      ],
+      "light": {
+        "radius": 0,
+        "red": 14,
+        "green": 9,
+        "blue": 0
+      },
+      "fluidFXIndex": 3,
+      "blockSoundSetIndex": 0,
+      "blockParticleSetId": "Lava",
+      "particleColor": {
+        "red": -7,
+        "green": 78,
+        "blue": 17
+      },
+      "tagIndexes": []
+    },
+    "12": {
+      "id": "Water_Finite",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Water.png",
+          "bottom": "BlockTextures/Fluid_Water.png",
+          "front": "BlockTextures/Fluid_Water.png",
+          "back": "BlockTextures/Fluid_Water.png",
+          "left": "BlockTextures/Fluid_Water.png",
+          "right": "BlockTextures/Fluid_Water.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Water"
+      ],
+      "light": null,
+      "fluidFXIndex": 2,
+      "blockSoundSetIndex": 8,
+      "blockParticleSetId": "Water",
+      "particleColor": null,
+      "tagIndexes": [
+        3,
+        4,
+        5
+      ]
+    },
+    "13": {
+      "id": "Poison",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Poison.png",
+          "bottom": "BlockTextures/Fluid_Poison.png",
+          "front": "BlockTextures/Fluid_Poison.png",
+          "back": "BlockTextures/Fluid_Poison.png",
+          "left": "BlockTextures/Fluid_Poison.png",
+          "right": "BlockTextures/Fluid_Poison.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Lava"
+      ],
+      "light": {
+        "radius": 0,
+        "red": 12,
+        "green": 11,
+        "blue": 3
+      },
+      "fluidFXIndex": 3,
+      "blockSoundSetIndex": 49,
+      "blockParticleSetId": "Water",
+      "particleColor": {
+        "red": -52,
+        "green": -69,
+        "blue": 51
+      },
+      "tagIndexes": []
+    },
+    "14": {
+      "id": "Slime",
+      "maxFluidLevel": 8,
+      "cubeTextures": [
+        {
+          "top": "BlockTextures/Fluid_Slime.png",
+          "bottom": "BlockTextures/Fluid_Slime.png",
+          "front": "BlockTextures/Fluid_Slime.png",
+          "back": "BlockTextures/Fluid_Slime.png",
+          "left": "BlockTextures/Fluid_Slime.png",
+          "right": "BlockTextures/Fluid_Slime.png",
+          "weight": 1.0
+        }
+      ],
+      "requiresAlphaBlending": true,
+      "opacity": "Transparent",
+      "shaderEffect": [
+        "Slime"
+      ],
+      "light": {
+        "radius": 0,
+        "red": 5,
+        "green": 6,
+        "blue": 5
+      },
+      "fluidFXIndex": 1,
+      "blockSoundSetIndex": 49,
+      "blockParticleSetId": "Snow",
+      "particleColor": {
+        "red": 103,
+        "green": -1,
+        "blue": 78
+      },
+      "tagIndexes": []
+    }
+  }
+}
