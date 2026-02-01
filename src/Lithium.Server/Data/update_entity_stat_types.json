@@ -1,0 +1,151 @@
+{
+  "type": "Init",
+  "maxId": 13,
+  "types": {
+    "0": {
+      "id": "Unknown",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "minValueEffects": null,
+      "maxValueEffects": null,
+      "resetBehavior": "InitialValue"
+    },
+    "2": {
+      "id": "SignatureCharges",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 100.0,
+      "minValueEffects": null,
+      "maxValueEffects": {
+        "triggerAtZero": false,
+        "soundEventIndex": 0,
+        "particles": null
+      },
+      "resetBehavior": "InitialValue"
+    },
+    "6": {
+      "id": "Mana",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "minValueEffects": null,
+      "maxValueEffects": null,
+      "resetBehavior": "MaxValue"
+    },
+    "4": {
+      "id": "Oxygen",
+      "value": 100.0,
+      "min": 0.0,
+      "max": 100.0,
+      "minValueEffects": null,
+      "maxValueEffects": null,
+      "resetBehavior": "InitialValue"
+    },
+    "12": {
+      "id": "Immunity",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 100.0,
+      "minValueEffects": null,
+      "maxValueEffects": {
+        "triggerAtZero": false,
+        "soundEventIndex": 0,
+        "particles": null
+      },
+      "resetBehavior": "InitialValue"
+    },
+    "8": {
+      "id": "Health",
+      "value": 100.0,
+      "min": 0.0,
+      "max": 100.0,
+      "minValueEffects": null,
+      "maxValueEffects": null,
+      "resetBehavior": "MaxValue"
+    },
+    "9": {
+      "id": "Stamina",
+      "value": 10.0,
+      "min": -4.0,
+      "max": 10.0,
+      "minValueEffects": {
+        "triggerAtZero": true,
+        "soundEventIndex": 0,
+        "particles": null
+      },
+      "maxValueEffects": {
+        "triggerAtZero": false,
+        "soundEventIndex": 0,
+        "particles": null
+      },
+      "resetBehavior": "InitialValue"
+    },
+    "11": {
+      "id": "StaminaRegenDelay",
+      "value": 0.0,
+      "min": -60.0,
+      "max": 0.0,
+      "minValueEffects": null,
+      "maxValueEffects": null,
+      "resetBehavior": "InitialValue"
+    },
+    "10": {
+      "id": "GlidingActive",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 1.0,
+      "minValueEffects": {
+        "triggerAtZero": true,
+        "soundEventIndex": 0,
+        "particles": null
+      },
+      "maxValueEffects": null,
+      "resetBehavior": "InitialValue"
+    },
+    "1": {
+      "id": "DeployablePreview",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 1.0,
+      "minValueEffects": null,
+      "maxValueEffects": {
+        "triggerAtZero": false,
+        "soundEventIndex": 0,
+        "particles": null
+      },
+      "resetBehavior": "InitialValue"
+    },
+    "3": {
+      "id": "Ammo",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "minValueEffects": null,
+      "maxValueEffects": null,
+      "resetBehavior": "InitialValue"
+    },
+    "7": {
+      "id": "MagicCharges",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "minValueEffects": null,
+      "maxValueEffects": null,
+      "resetBehavior": "InitialValue"
+    },
+    "5": {
+      "id": "SignatureEnergy",
+      "value": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "minValueEffects": null,
+      "maxValueEffects": {
+        "triggerAtZero": false,
+        "soundEventIndex": 0,
+        "particles": null
+      },
+      "resetBehavior": "InitialValue"
+    }
+  }
+}

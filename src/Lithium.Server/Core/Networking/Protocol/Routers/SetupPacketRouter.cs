@@ -351,6 +351,13 @@ public sealed class SetupPacketRouter(
 
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_entity_stat_types.json"));
+            var packet = JsonSerializer.Deserialize<UpdateEntityStatTypesPacket>(packetFile);
+
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
