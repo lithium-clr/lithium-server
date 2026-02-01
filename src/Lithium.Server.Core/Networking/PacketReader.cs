@@ -17,6 +17,11 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
     {
         return new BitSet(ReadBytes(packetInfo.NullableBitFieldSize));
     }
+    
+    public BitSet ReadBits(int count)
+    {
+        return new BitSet(ReadBytes(count));
+    }
 
     // ============================================================
     // FIXED BLOCK (lecture séquentielle avec _position)

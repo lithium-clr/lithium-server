@@ -1,0 +1,5043 @@
+{
+  "type": "Init",
+  "maxId": 175,
+  "entityEffects": {
+    "0": {
+      "id": "****Lava_Source_Interactions_Collision_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 0.5,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "66": {
+      "id": "Potion_Stamina_Instant_Lesser",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Potion_Stamina_Burst",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 613,
+        "soundEventIndexWorld": 613,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 36.0
+      },
+      "valueType": "Percent"
+    },
+    "132": {
+      "id": "***Potion_Template_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "165": {
+      "id": "****Fluid_Tar_Interactions_Collision_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 0.2,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "4": -1.0
+      },
+      "valueType": "Absolute"
+    },
+    "116": {
+      "id": "Poison",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 16.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "49": {
+      "id": "Dagger_Pounce",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Daggers_Charged_Trail",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Entity",
+            "targetNodeName": "Hip",
+            "positionOffset": {
+              "x": 0.0,
+              "y": 1.0,
+              "z": 0.0
+            },
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.4,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "50": {
+      "id": "Erosion_Test",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Erosion_Status_Effect",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Erosion_Test",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "115": {
+      "id": "Two_Handed_Bow_Ability2_Slow",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -128,
+          "green": -20,
+          "blue": -1
+        },
+        "entityTopTint": {
+          "red": -38,
+          "green": 114,
+          "blue": -1
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Snow.png",
+        "horizontalSpeedMultiplier": 0.5,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Intangible_Dark",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 5.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "67": {
+      "id": "Food_Instant_Heal_T3",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 15.0
+      },
+      "valueType": "Percent"
+    },
+    "100": {
+      "id": "Food_Stamina_Boost_Medium",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddStamina/Medium.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Percent"
+    },
+    "98": {
+      "id": "Food_Instant_Heal_T1",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 5.0
+      },
+      "valueType": "Percent"
+    },
+    "65": {
+      "id": "FruitVeggie_Buff_T2",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 150.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Stamina/Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.10000000149011612,
+      "statModifiers": {
+        "9": 0.025
+      },
+      "valueType": "Absolute"
+    },
+    "16": {
+      "id": "Flame_Staff_Burn",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 16,
+          "green": 6,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": -49,
+          "green": 35,
+          "blue": 2
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Fire",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Fire.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 35,
+        "soundEventIndexWorld": 650,
+        "modelVFXId": "Burn",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 3.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Burn.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 2.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "148": {
+      "id": "***Food_Candy_Cane_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "150": {
+      "id": "***Potion_Health_Large_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 60.0
+      },
+      "valueType": "Percent"
+    },
+    "17": {
+      "id": "Rubble_Hit",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Stone_Bounce",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Entity",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "149": {
+      "id": "***Potion_Regen_Stamina_Small_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "18": {
+      "id": "Food_Health_Restore_Large",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 20.0
+      },
+      "valueType": "Absolute"
+    },
+    "147": {
+      "id": "***Potion_Regen_Health_Small_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 4.0,
+      "statModifiers": {
+        "8": 5.0
+      },
+      "valueType": "Absolute"
+    },
+    "134": {
+      "id": "***Potion_Regen_Mana_Large_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "35": {
+      "id": "Potion_Morph_Pigeon",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Potion_Morph_Burst",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 634,
+        "soundEventIndexWorld": 634,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Purify.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "117": {
+      "id": "Food_Stamina_Boost_Large",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddStamina/Large.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Percent"
+    },
+    "48": {
+      "id": "Food_Buff_Small_T1",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 120.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "8": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "130": {
+      "id": "**Block_Speed_Next_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 0.8,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "47": {
+      "id": "BlockPlaceSuccess",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "entityTopTint": {
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "PrototypeBlockPlaceSuccess",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 3600.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "114": {
+      "id": "Food_Stamina_Regen_Large",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 360.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Large.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "9": 1.5
+      },
+      "valueType": "Absolute"
+    },
+    "51": {
+      "id": "Potion_Morph_Frog",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Potion_Morph_Burst",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 355,
+        "soundEventIndexWorld": 355,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Purify.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "113": {
+      "id": "Stoneskin",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 114,
+          "green": 116,
+          "blue": 94
+        },
+        "entityTopTint": {
+          "red": -120,
+          "green": -116,
+          "blue": -115
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Blue_Beam",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          },
+          {
+            "systemId": "Ash",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 651,
+        "soundEventIndexWorld": 651,
+        "modelVFXId": "Stoneskin",
+        "movementEffects": {
+          "disableForward": false,
+          "disableBackward": false,
+          "disableLeft": false,
+          "disableRight": false,
+          "disableSprint": true,
+          "disableJump": false,
+          "disableCrouch": false
+        },
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 10.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "118": {
+      "id": "Immune",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": -1,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -1,
+          "blue": 0
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Immune.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 20.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "32": {
+      "id": "Burn",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 16,
+          "green": 6,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": -49,
+          "green": 35,
+          "blue": 2
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Fire",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Fire.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 35,
+        "soundEventIndexWorld": 650,
+        "modelVFXId": "Burn",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 3.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Burn.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 1.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "52": {
+      "id": "Mana",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 12.0
+      },
+      "valueType": "Absolute"
+    },
+    "31": {
+      "id": "Stamina_Regen_Delay_Action",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 10.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "133": {
+      "id": "***Potion_Mana_Large_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "135": {
+      "id": "***Potion_Regen_Mana_Small_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "129": {
+      "id": "**Environmental_Block_Damage_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.2,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "34": {
+      "id": "Drop_Legendary",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -120,
+          "green": 119,
+          "blue": 88
+        },
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Drop_Legendary",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Drop_Legendary",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "46": {
+      "id": "Drop_Uncommon",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 90,
+          "green": -120,
+          "blue": 38
+        },
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Drop_Uncommon",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Drop_Uncommon",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "36": {
+      "id": "Stamina_Broken",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": true,
+      "statusEffectIcon": "UI/Crosshairs/Reticle_BlockingStateBreak.png",
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "131": {
+      "id": "**Block_Damage_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.2,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "29": {
+      "id": "Damage",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": -1,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -1,
+          "blue": 0
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Poison.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": {
+        "model": "VFX/Spells/Roots/Model.blockymodel",
+        "texture": "VFX/Spells/Roots/Model.png",
+        "animationSets": {
+          "Despawn": {
+            "id": "Despawn",
+            "animations": [
+              {
+                "name": "VFX/Spells/Roots/Despawn.blockyanim",
+                "speed": 1.0,
+                "blendingDuration": 0.2,
+                "looping": false,
+                "weight": 1.0,
+                "footstepIntervals": [],
+                "soundEventIndex": 0,
+                "passiveLoopCount": 1
+              }
+            ],
+            "nextAnimationDelay": {
+              "min": 2.0,
+              "max": 10.0
+            }
+          },
+          "Spawn": {
+            "id": "Spawn",
+            "animations": [
+              {
+                "name": "VFX/Spells/Roots/Spawn.blockyanim",
+                "speed": 1.0,
+                "blendingDuration": 0.2,
+                "looping": false,
+                "weight": 1.0,
+                "footstepIntervals": [],
+                "soundEventIndex": 0,
+                "passiveLoopCount": 1
+              }
+            ],
+            "nextAnimationDelay": {
+              "min": 2.0,
+              "max": 10.0
+            }
+          }
+        }
+      },
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "169": {
+      "id": "****Survival_Trap_Snapjaw_State_Definitions_Closed_Interactions_Collision_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 0.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.2,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "70": {
+      "id": "Meat_Buff_T1",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 45.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Tiny.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "161": {
+      "id": "******Debug_Forking_Interactions_Secondary_Interactions_0_Next_ForkInteractions_Interactions_1_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": {
+          "red": -1,
+          "green": 0,
+          "blue": 0
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "37": {
+      "id": "Potion_Morph_Mouse",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Potion_Morph_Burst",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 707,
+        "soundEventIndexWorld": 707,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Purify.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "120": {
+      "id": "Food_Buff_Medium_T2",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 120.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "78": {
+      "id": "FlamethrowerSource",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 197,
+        "soundEventIndexWorld": 726,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 311,
+      "localRemovalSoundEventIndex": 516,
+      "modelOverride": null,
+      "duration": 0.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "153": {
+      "id": "***Potion_Stamina_Small_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "112": {
+      "id": "Healing_Totem_Heal",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": {
+          "red": 2,
+          "green": -34,
+          "blue": 69
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Immune.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 99,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Tiny.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 2.0
+      },
+      "valueType": "Absolute"
+    },
+    "54": {
+      "id": "Mana_Regen",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.75,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 1.0
+      },
+      "valueType": "Absolute"
+    },
+    "13": {
+      "id": "Food_Health_Regen_Tiny",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Tiny.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 3.0,
+      "statModifiers": {
+        "8": 1.0
+      },
+      "valueType": "Absolute"
+    },
+    "137": {
+      "id": "***Potion_Purify_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "94": {
+      "id": "BlockPlaceFail",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -1,
+          "green": 21,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": -1,
+          "green": 51,
+          "blue": -89
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "PrototypeBlockPlaceFail",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 3600.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "96": {
+      "id": "Potion_Stamina_Regen",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 15.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 1.0,
+      "statModifiers": {
+        "9": 5.0
+      },
+      "valueType": "Absolute"
+    },
+    "102": {
+      "id": "Food_Health_Boost_Medium",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 240.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Medium.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "143": {
+      "id": "***Potion_Regen_Stamina_Large_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "110": {
+      "id": "Food_Stamina_Restore_Large",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 80.0
+      },
+      "valueType": "Absolute"
+    },
+    "151": {
+      "id": "***Potion_Regen_Mana_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "19": {
+      "id": "Dodge_Left",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": "DashLeft",
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.25,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "62": {
+      "id": "Potion_Health_Lesser_Regen",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Potion_Health_Heal",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Entity",
+            "targetNodeName": "Pelvis",
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 5.05,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Health_Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "8": 30.0
+      },
+      "valueType": "Percent"
+    },
+    "145": {
+      "id": "***Potion_Health_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 40.0
+      },
+      "valueType": "Percent"
+    },
+    "21": {
+      "id": "HealthRegen_Buff_T2",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 150.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/HealthRegen.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 2.0,
+      "statModifiers": {
+        "8": 1.5
+      },
+      "valueType": "Percent"
+    },
+    "104": {
+      "id": "Mana_Low",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 5.0
+      },
+      "valueType": "Absolute"
+    },
+    "167": {
+      "id": "****Survival_Trap_Spike_Wood_Large_Interactions_Collision_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "64": {
+      "id": "Stick_Stun",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Poison.png",
+        "horizontalSpeedMultiplier": 0.3,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": {
+          "disabled": [
+            "Primary",
+            "Secondary"
+          ]
+        }
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "171": {
+      "id": "*****CAE_Test_Combat_Knight_CombatActionEvaluator_AvailableActions_SwordSignature_Ability_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "5": -100.0
+      },
+      "valueType": "Percent"
+    },
+    "163": {
+      "id": "****Survival_Trap_Spike_Wood_Interactions_Collision_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "68": {
+      "id": "Food_Stamina_Restore_Tiny",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "15": {
+      "id": "Red_Flash",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -1,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": -1,
+          "green": 0,
+          "blue": 0
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.2,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "155": {
+      "id": "***Plant_Crop_Mushroom_Glowing_Purple_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "159": {
+      "id": "***Plant_Crop_Mushroom_Glowing_Orange_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "76": {
+      "id": "Drop_Epic",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 76,
+          "green": 74,
+          "blue": -78
+        },
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Drop_Epic",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Drop_Epic",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "92": {
+      "id": "Mana_Regen_High",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 1.0
+      },
+      "valueType": "Absolute"
+    },
+    "72": {
+      "id": "Food_Health_Regen_Large",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 360.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Large.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 2.0,
+      "statModifiers": {
+        "8": 3.0
+      },
+      "valueType": "Absolute"
+    },
+    "11": {
+      "id": "Antidote",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 120.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Weapon_Bomb_Potion_Poison.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "1": {
+      "id": "Potion_Stamina_Instant_Greater",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Potion_Stamina_Burst",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 613,
+        "soundEventIndexWorld": 613,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 100.0
+      },
+      "valueType": "Percent"
+    },
+    "3": {
+      "id": "Crossbow_Combo_2",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 5.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "90": {
+      "id": "Potion_Signature_Lesser_Regen",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 30.05,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Regen_Mana_Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "5": 6.67
+      },
+      "valueType": "Percent"
+    },
+    "7": {
+      "id": "Potion_Health_Greater_Regen",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Potion_Health_Heal",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Entity",
+            "targetNodeName": "Pelvis",
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 5.05,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Health.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "8": 50.0
+      },
+      "valueType": "Percent"
+    },
+    "82": {
+      "id": "Bomb_Explode_Stun",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Poison.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": {
+          "disableForward": true,
+          "disableBackward": true,
+          "disableLeft": true,
+          "disableRight": true,
+          "disableSprint": true,
+          "disableJump": true,
+          "disableCrouch": true
+        },
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": {
+          "disabled": [
+            "Primary",
+            "Secondary"
+          ]
+        }
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 5.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "88": {
+      "id": "Food_Health_Regen_Small",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 120.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 2.0,
+      "statModifiers": {
+        "8": 1.0
+      },
+      "valueType": "Absolute"
+    },
+    "5": {
+      "id": "Potion_Morph_Dog",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Potion_Morph_Burst",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 269,
+        "soundEventIndexWorld": 269,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Purify.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "84": {
+      "id": "Death",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -1,
+          "green": 41,
+          "blue": 41
+        },
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Death",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Death",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "80": {
+      "id": "Freeze",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -128,
+          "green": -20,
+          "blue": -1
+        },
+        "entityTopTint": {
+          "red": -38,
+          "green": 114,
+          "blue": -1
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Snow",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          },
+          {
+            "systemId": "Effect_Snow_Impact",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Snow.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Freeze",
+        "movementEffects": {
+          "disableForward": true,
+          "disableBackward": true,
+          "disableLeft": true,
+          "disableRight": true,
+          "disableSprint": true,
+          "disableJump": true,
+          "disableCrouch": true
+        },
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "86": {
+      "id": "Sword_Test",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Sword_Test",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "25": {
+      "id": "Portal_Teleport",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Portal_Going_Through_Blue",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Portal_Teleport",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "91": {
+      "id": "Potion_Health_Instant_Lesser",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 15.0
+      },
+      "valueType": "Percent"
+    },
+    "107": {
+      "id": "Potion_Morph_Mosshorn",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 0.3,
+        "soundEventIndexLocal": 967,
+        "soundEventIndexWorld": 967,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "58": {
+      "id": "Rubble_Miss",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Stone_Bounce",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Entity",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "140": {
+      "id": "***Bandage_Potion_Test_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 30.0
+      },
+      "valueType": "Absolute"
+    },
+    "173": {
+      "id": "*****CAE_Test_Combat_Elite_Goblin_CombatActionEvaluator_AvailableActions_SwordSignature_Ability_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "5": -100.0
+      },
+      "valueType": "Percent"
+    },
+    "74": {
+      "id": "Food_EffectCondition_Buff_Medium",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "156": {
+      "id": "***Plant_Crop_Mushroom_Glowing_Blue_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "8": {
+      "id": "Potion_Stamina_Cooldown",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 15.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Stamina.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "75": {
+      "id": "Lava_Burn",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 16,
+          "green": 6,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": -49,
+          "green": 35,
+          "blue": 2
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Fire",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Fire.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 35,
+        "soundEventIndexWorld": 650,
+        "modelVFXId": "Burn",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 5.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Burn.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 1.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "9": {
+      "id": "Food_Stamina_Regen_Small",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 120.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "9": 0.08
+      },
+      "valueType": "Absolute"
+    },
+    "157": {
+      "id": "***Plant_Crop_Mushroom_Glowing_Violet_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "108": {
+      "id": "Food_Health_Restore_Small",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "141": {
+      "id": "***Potion_Mana_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "57": {
+      "id": "Potion_Health_Instant_Greater",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 25.0
+      },
+      "valueType": "Percent"
+    },
+    "139": {
+      "id": "***Potion_Mana_Small_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "24": {
+      "id": "Food_Buff_Medium_T1",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Tiny.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Percent"
+    },
+    "59": {
+      "id": "Food_Stamina_Regen_Medium",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 240.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Medium.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "9": 0.1
+      },
+      "valueType": "Absolute"
+    },
+    "26": {
+      "id": "Dagger_Signature",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Dagger_Signature",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "23": {
+      "id": "Stun",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -1,
+          "green": -87,
+          "blue": 63
+        },
+        "entityTopTint": {
+          "red": -38,
+          "green": 114,
+          "blue": -1
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Stunned",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Entity",
+            "targetNodeName": "Head",
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Snow.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": {
+          "disableForward": true,
+          "disableBackward": true,
+          "disableLeft": true,
+          "disableRight": true,
+          "disableSprint": true,
+          "disableJump": true,
+          "disableCrouch": true
+        },
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": {
+          "disabled": [
+            "Primary",
+            "Secondary",
+            "Ability1",
+            "Ability3"
+          ]
+        }
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 10.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "106": {
+      "id": "Stamina_Broken_Immune",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "27": {
+      "id": "Disappear",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Test2",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "60": {
+      "id": "Food_Health_Regen_Medium",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 180.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Medium.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 2.0,
+      "statModifiers": {
+        "8": 2.0
+      },
+      "valueType": "Absolute"
+    },
+    "56": {
+      "id": "Food_Stamina_Boost_Tiny",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddStamina/Tiny.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Percent"
+    },
+    "138": {
+      "id": "***Potion_Stamina_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "109": {
+      "id": "Stamina_Error_State",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "39": {
+      "id": "Intangible_Smol",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Daggers_Dash_Status",
+            "scale": 1.0,
+            "color": {
+              "red": 28,
+              "green": 30,
+              "blue": 35
+            },
+            "targetEntityPart": "Entity",
+            "targetNodeName": "Hip",
+            "positionOffset": {
+              "x": 0.0,
+              "y": 1.0,
+              "z": 0.0
+            },
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "142": {
+      "id": "***Potion_Regen_Stamina_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.5,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "122": {
+      "id": "Food_Stamina_Restore_Medium",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 40.0
+      },
+      "valueType": "Absolute"
+    },
+    "55": {
+      "id": "FruitVeggie_Buff_T3",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 360.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Stamina/Medium.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.10000000149011612,
+      "statModifiers": {
+        "9": 0.05
+      },
+      "valueType": "Absolute"
+    },
+    "38": {
+      "id": "Mana_Drain",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": -100.0
+      },
+      "valueType": "Absolute"
+    },
+    "40": {
+      "id": "Damage_High",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": -1,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -1,
+          "blue": 0
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Poison.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": {
+        "model": "VFX/Spells/Roots/Model.blockymodel",
+        "texture": "VFX/Spells/Roots/Model.png",
+        "animationSets": {
+          "Despawn": {
+            "id": "Despawn",
+            "animations": [
+              {
+                "name": "VFX/Spells/Roots/Despawn.blockyanim",
+                "speed": 1.0,
+                "blendingDuration": 0.2,
+                "looping": false,
+                "weight": 1.0,
+                "footstepIntervals": [],
+                "soundEventIndex": 0,
+                "passiveLoopCount": 1
+              }
+            ],
+            "nextAnimationDelay": {
+              "min": 2.0,
+              "max": 10.0
+            }
+          },
+          "Spawn": {
+            "id": "Spawn",
+            "animations": [
+              {
+                "name": "VFX/Spells/Roots/Spawn.blockyanim",
+                "speed": 1.0,
+                "blendingDuration": 0.2,
+                "looping": false,
+                "weight": 1.0,
+                "footstepIntervals": [],
+                "soundEventIndex": 0,
+                "passiveLoopCount": 1
+              }
+            ],
+            "nextAnimationDelay": {
+              "min": 2.0,
+              "max": 10.0
+            }
+          }
+        }
+      },
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "123": {
+      "id": "FruitVeggie_Buff_T1",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 45.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Stamina/Tiny.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.10000000149011612,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "43": {
+      "id": "Food_Health_Boost_Large",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 480.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Large.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "41": {
+      "id": "Drop_Rare",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 88,
+          "green": 117,
+          "blue": -34
+        },
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Drop_Rare",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Drop_Rare",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "121": {
+      "id": "Food_Health_Restore_Medium",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 15.0
+      },
+      "valueType": "Absolute"
+    },
+    "42": {
+      "id": "Mana_Regen_Low",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.25,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 1.0
+      },
+      "valueType": "Absolute"
+    },
+    "44": {
+      "id": "Food_Instant_Heal_T2",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 10.0
+      },
+      "valueType": "Percent"
+    },
+    "124": {
+      "id": "Rat_Transform",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 10.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "45": {
+      "id": "Crossbow_Combo_1",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 5.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "125": {
+      "id": "Poison_T1",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Poison_T1.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 16.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "126": {
+      "id": "Poison_T2",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 16.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "127": {
+      "id": "Poison_T3",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 31.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "103": {
+      "id": "Npc_Heal_Low",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 5.0
+      },
+      "valueType": "Absolute"
+    },
+    "128": {
+      "id": "*Common_StatAmmoReload_StatModifier_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "3": 1.0
+      },
+      "valueType": "Absolute"
+    },
+    "111": {
+      "id": "Creative",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -1,
+          "green": 122,
+          "blue": -25
+        },
+        "entityTopTint": {
+          "red": 87,
+          "green": -14,
+          "blue": -1
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Creative_Switch",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 113,
+        "soundEventIndexWorld": 368,
+        "modelVFXId": "Creative",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.2,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "4": {
+      "id": "HealthRegen_Buff_T1",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 45.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/HealthRegen.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 2.0,
+      "statModifiers": {
+        "8": 1.0
+      },
+      "valueType": "Percent"
+    },
+    "119": {
+      "id": "Food_Health_Boost_Small",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 120.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "12": {
+      "id": "Food_Health_Restore_Tiny",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "71": {
+      "id": "Dodge_Right",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": "DashRight",
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.25,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "28": {
+      "id": "Food_Health_Boost_Tiny",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Tiny.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Percent"
+    },
+    "95": {
+      "id": "Sword_Signature_SpinStab",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Mace_Signature",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "53": {
+      "id": "Meat_Buff_T2",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 150.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "136": {
+      "id": "***Potion_Stamina_Large_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "30": {
+      "id": "Immunity_Environmental",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "69": {
+      "id": "Mana_High",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "6": 25.0
+      },
+      "valueType": "Absolute"
+    },
+    "61": {
+      "id": "Intangible_Dark",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Daggers_Dash_Status",
+            "scale": 1.0,
+            "color": {
+              "red": 28,
+              "green": 30,
+              "blue": 35
+            },
+            "targetEntityPart": "Entity",
+            "targetNodeName": "Hip",
+            "positionOffset": {
+              "x": 0.0,
+              "y": 1.0,
+              "z": 0.0
+            },
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Intangible_Dark",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.4,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "152": {
+      "id": "***Potion_Regen_Health_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 4.0,
+      "statModifiers": {
+        "8": 5.0
+      },
+      "valueType": "Absolute"
+    },
+    "105": {
+      "id": "Dagger_Dash",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Daggers_Dash_Straight",
+            "scale": 1.0,
+            "color": {
+              "red": -41,
+              "green": -27,
+              "blue": -20
+            },
+            "targetEntityPart": "Entity",
+            "targetNodeName": "Hip",
+            "positionOffset": {
+              "x": 0.0,
+              "y": 1.0,
+              "z": 0.0
+            },
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Dagger_Dash",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.25,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "20": {
+      "id": "Root",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Poison.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": {
+          "disableForward": true,
+          "disableBackward": true,
+          "disableLeft": true,
+          "disableRight": true,
+          "disableSprint": true,
+          "disableJump": true,
+          "disableCrouch": true
+        },
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": {
+        "model": "VFX/Spells/Roots/Model.blockymodel",
+        "texture": "VFX/Spells/Roots/Model.png",
+        "animationSets": {
+          "Despawn": {
+            "id": "Despawn",
+            "animations": [
+              {
+                "name": "VFX/Spells/Roots/Despawn.blockyanim",
+                "speed": 1.0,
+                "blendingDuration": 0.2,
+                "looping": false,
+                "weight": 1.0,
+                "footstepIntervals": [],
+                "soundEventIndex": 0,
+                "passiveLoopCount": 1
+              }
+            ],
+            "nextAnimationDelay": {
+              "min": 2.0,
+              "max": 10.0
+            }
+          },
+          "Spawn": {
+            "id": "Spawn",
+            "animations": [
+              {
+                "name": "VFX/Spells/Roots/Spawn.blockyanim",
+                "speed": 1.0,
+                "blendingDuration": 0.2,
+                "looping": false,
+                "weight": 1.0,
+                "footstepIntervals": [],
+                "soundEventIndex": 0,
+                "passiveLoopCount": 1
+              }
+            ],
+            "nextAnimationDelay": {
+              "min": 2.0,
+              "max": 10.0
+            }
+          }
+        }
+      },
+      "duration": 10.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "144": {
+      "id": "***Potion_Health_Small_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 20.0
+      },
+      "valueType": "Percent"
+    },
+    "146": {
+      "id": "***Template_Weapon_Crossbow_InteractionVars_Reload_StatModifier_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "3": 1.0
+      },
+      "valueType": "Absolute"
+    },
+    "22": {
+      "id": "Mace_Signature",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Mace_Signature",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "63": {
+      "id": "Battleaxe_Whirlwind",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.25,
+        "mouseSensitivityAdjustmentDuration": 0.1,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "101": {
+      "id": "Food_Buff_Small_T2",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 240.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Medium.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "8": 15.0
+      },
+      "valueType": "Absolute"
+    },
+    "2": {
+      "id": "Dodge_Invulnerability",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.25,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "97": {
+      "id": "Food_Buff_Small_T3",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 360.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Large.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "8": 10.0
+      },
+      "valueType": "Absolute"
+    },
+    "6": {
+      "id": "Potion_Signature_Greater_Regen",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 30.05,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "Icons/ItemsGenerated/Potion_Regen_Mana.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "5": 13.33
+      },
+      "valueType": "Percent"
+    },
+    "172": {
+      "id": "*****CAE_Test_Combat_Knight_CombatActionEvaluator_AvailableActions_SwordStrafeSignature_Ability_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "5": -100.0
+      },
+      "valueType": "Percent"
+    },
+    "89": {
+      "id": "Slow",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -128,
+          "green": -20,
+          "blue": -1
+        },
+        "entityTopTint": {
+          "red": -38,
+          "green": 114,
+          "blue": -1
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Snow.png",
+        "horizontalSpeedMultiplier": 0.5,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Intangible_Dark",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 10.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "162": {
+      "id": "***Plant_Seaweed_Winter_Blue_Interactions_Collision_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Water_Splash",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.2,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "4": 2.0
+      },
+      "valueType": "Absolute"
+    },
+    "14": {
+      "id": "Food_Stamina_Regen_Tiny",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/Regen/Tiny.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": {
+        "9": 0.5
+      },
+      "valueType": "Absolute"
+    },
+    "154": {
+      "id": "***Potion_Regen_Health_Large_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Health_Potion.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 4.0,
+      "statModifiers": {
+        "8": 5.0
+      },
+      "valueType": "Absolute"
+    },
+    "160": {
+      "id": "***Plant_Crop_Mushroom_Glowing_Red_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "158": {
+      "id": "***Plant_Crop_Mushroom_Glowing_Green_InteractionVars_Effect_Interactions_0_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -128,
+          "blue": 0
+        },
+        "entityAnimationId": "Hurt",
+        "particles": [
+          {
+            "systemId": "Effect_Poison",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 130,
+        "soundEventIndexWorld": 931,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Poison.png",
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 5.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "93": {
+      "id": "Slowness_Totem_Slow",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": 0,
+          "green": -1,
+          "blue": -1
+        },
+        "entityTopTint": {
+          "red": 0,
+          "green": -66,
+          "blue": -1
+        },
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 0.5,
+        "soundEventIndexLocal": 47,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": true,
+      "statusEffectIcon": "UI/StatusEffects/Icon_Slow.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "73": {
+      "id": "Food_EffectCondition_Buff_Small",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "10": {
+      "id": "Food_Buff_Medium_T3",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 240.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Medium.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "168": {
+      "id": "****Survival_Trap_Spike_Iron_Interactions_Collision_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "166": {
+      "id": "****Fluid_Lava_Interactions_Collision_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 0.5,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 1.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "164": {
+      "id": "****Survival_Trap_Snapjaw_Interactions_CollisionEnter_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 0.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.2,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "170": {
+      "id": "*****CAE_Test_Combat_Elite_Goblin_CombatActionEvaluator_AvailableActions_SwordStrafeSignature_Ability_Interactions_0_Next_EffectId",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "5": -100.0
+      },
+      "valueType": "Percent"
+    },
+    "77": {
+      "id": "Food_Instant_Heal_Bread",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 15.0
+      },
+      "valueType": "Percent"
+    },
+    "174": {
+      "id": "**Test_Entity_Effect_CombatConfig_EntityEffect",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": {
+          "red": -128,
+          "green": -20,
+          "blue": -1
+        },
+        "entityTopTint": {
+          "red": -38,
+          "green": 114,
+          "blue": -1
+        },
+        "entityAnimationId": null,
+        "particles": [
+          {
+            "systemId": "Effect_Snow",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          },
+          {
+            "systemId": "Effect_Snow_Impact",
+            "scale": 1.0,
+            "color": null,
+            "targetEntityPart": "Self",
+            "targetNodeName": null,
+            "positionOffset": null,
+            "rotationOffset": null,
+            "detachedFromModel": false
+          }
+        ],
+        "firstPersonParticles": null,
+        "screenEffect": "ScreenEffects/Snow.png",
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": "Freeze",
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.0,
+        "mouseSensitivityAdjustmentDuration": 0.0,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "79": {
+      "id": "Food_Stamina_Boost_Small",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 60.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddStamina/Small.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Percent"
+    },
+    "83": {
+      "id": "Return_Home_Healing",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 2.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Extend",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "8": 25.0
+      },
+      "valueType": "Absolute"
+    },
+    "85": {
+      "id": "Food_Stamina_Restore_Small",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.1,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": {
+        "9": 20.0
+      },
+      "valueType": "Absolute"
+    },
+    "87": {
+      "id": "Battleaxe_Downstrike_Jump",
+      "name": null,
+      "applicationEffects": {
+        "entityBottomTint": null,
+        "entityTopTint": null,
+        "entityAnimationId": null,
+        "particles": null,
+        "firstPersonParticles": null,
+        "screenEffect": null,
+        "horizontalSpeedMultiplier": 1.0,
+        "soundEventIndexLocal": 0,
+        "soundEventIndexWorld": 0,
+        "modelVFXId": null,
+        "movementEffects": null,
+        "mouseSensitivityAdjustmentTarget": 0.25,
+        "mouseSensitivityAdjustmentDuration": 0.1,
+        "abilityEffects": null
+      },
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 5.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "81": {
+      "id": "Meat_Buff_T3",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 360.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/AddHealth/Medium.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    },
+    "99": {
+      "id": "HealthRegen_Buff_T3",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 360.0,
+      "infinite": false,
+      "debuff": false,
+      "statusEffectIcon": "UI/StatusEffects/HealthRegen.png",
+      "overlapBehavior": "Overwrite",
+      "damageCalculatorCooldown": 2.0,
+      "statModifiers": {
+        "8": 2.0
+      },
+      "valueType": "Percent"
+    },
+    "33": {
+      "id": "Immunity_Fire",
+      "name": null,
+      "applicationEffects": null,
+      "worldRemovalSoundEventIndex": 0,
+      "localRemovalSoundEventIndex": 0,
+      "modelOverride": null,
+      "duration": 0.0,
+      "infinite": true,
+      "debuff": false,
+      "statusEffectIcon": null,
+      "overlapBehavior": "Ignore",
+      "damageCalculatorCooldown": 0.0,
+      "statModifiers": null,
+      "valueType": "Absolute"
+    }
+  }
+}
