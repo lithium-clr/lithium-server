@@ -1,0 +1,113 @@
+{
+  "type": "Init",
+  "maxId": 3,
+  "itemReticleConfigs": {
+    "0": {
+      "id": null,
+      "base": [
+        "UI/Reticles/Default.png"
+      ],
+      "serverEvents": null,
+      "clientEvents": null
+    },
+    "2": {
+      "id": null,
+      "base": [
+        "UI/Reticles/Melee.png"
+      ],
+      "serverEvents": {
+        "2": {
+          "hideBase": true,
+          "parts": [
+            "UI/Reticles/ServerEvents/OnKill/Default.png",
+            "UI/Reticles/ServerEvents/OnKill/Melee.png"
+          ],
+          "duration": 0.25
+        },
+        "1": {
+          "hideBase": false,
+          "parts": [
+            "UI/Reticles/ServerEvents/OnHit/Default.png"
+          ],
+          "duration": 0.25
+        }
+      },
+      "clientEvents": {
+        "OnHit": {
+          "hideBase": false,
+          "parts": [
+            "UI/Reticles/ServerEvents/OnHit/Default.png"
+          ],
+          "duration": 0.0
+        },
+        "Wielding": {
+          "hideBase": true,
+          "parts": [
+            "UI/Reticles/ClientEvents/Wielding/Blocking.png"
+          ],
+          "duration": 0.0
+        },
+        "OnMovementLeft": {
+          "hideBase": false,
+          "parts": [
+            "UI/Reticles/ClientEvents/OnMovementLeft/Default.png"
+          ],
+          "duration": 0.0
+        },
+        "OnMovementRight": {
+          "hideBase": false,
+          "parts": [
+            "UI/Reticles/ClientEvents/OnMovementRight/Default.png"
+          ],
+          "duration": 0.0
+        },
+        "OnMovementBack": {
+          "hideBase": false,
+          "parts": [
+            "UI/Reticles/ClientEvents/OnMovementBack/Default.png"
+          ],
+          "duration": 0.0
+        }
+      }
+    },
+    "1": {
+      "id": null,
+      "base": [
+        "UI/Reticles/Melee.png"
+      ],
+      "serverEvents": {
+        "2": {
+          "hideBase": true,
+          "parts": [
+            "UI/Reticles/ServerEvents/OnKill/Default.png",
+            "UI/Reticles/ServerEvents/OnKill/Melee.png"
+          ],
+          "duration": 0.25
+        },
+        "1": {
+          "hideBase": false,
+          "parts": [
+            "UI/Reticles/ServerEvents/OnHit/Default.png"
+          ],
+          "duration": 0.25
+        }
+      },
+      "clientEvents": {
+        "OnHit": {
+          "hideBase": false,
+          "parts": [
+            "UI/Reticles/ServerEvents/OnHit/Default.png"
+          ],
+          "duration": 0.0
+        },
+        "Wielding": {
+          "hideBase": true,
+          "parts": [
+            "UI/Reticles/ClientEvents/Wielding/Blocking.png"
+          ],
+          "duration": 0.0
+        }
+      }
+    }
+  }
+}
