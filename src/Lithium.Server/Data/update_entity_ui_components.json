@@ -1,0 +1,85 @@
+{
+  "type": "Init",
+  "maxId": 2,
+  "components": {
+    "0": {
+      "type": "CombatText",
+      "hitboxOffset": {
+        "x": 0.0,
+        "y": -100.0
+      },
+      "unknown": false,
+      "entityStatIndex": 0,
+      "combatTextRandomPositionOffsetRange": {
+        "x": {
+          "min": 20.0,
+          "max": 60.0
+        },
+        "y": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "combatTextViewportMargin": 100.0,
+      "combatTextDuration": 0.4,
+      "combatTextHitAngleModifierStrength": 2.0,
+      "combatTextFontSize": 48.0,
+      "combatTextColor": {
+        "red": -1,
+        "green": -1,
+        "blue": -1
+      },
+      "combatTextAnimationEvents": [
+        {
+          "type": "Scale",
+          "startAt": 0.0,
+          "endAt": 0.4,
+          "startScale": 1.0,
+          "endScale": 0.5,
+          "positionOffset": null,
+          "startOpacity": 0.0,
+          "endOpacity": 0.0
+        },
+        {
+          "type": "Position",
+          "startAt": 0.1,
+          "endAt": 1.0,
+          "startScale": 0.0,
+          "endScale": 0.0,
+          "positionOffset": {
+            "x": 0.0,
+            "y": -80.0
+          },
+          "startOpacity": 0.0,
+          "endOpacity": 0.0
+        },
+        {
+          "type": "Opacity",
+          "startAt": 0.4,
+          "endAt": 1.0,
+          "startScale": 0.0,
+          "endScale": 0.0,
+          "positionOffset": null,
+          "startOpacity": 1.0,
+          "endOpacity": 0.0
+        }
+      ]
+    },
+    "1": {
+      "type": "EntityStat",
+      "hitboxOffset": {
+        "x": 0.0,
+        "y": -30.0
+      },
+      "unknown": false,
+      "entityStatIndex": 8,
+      "combatTextRandomPositionOffsetRange": null,
+      "combatTextViewportMargin": 0.0,
+      "combatTextDuration": 0.0,
+      "combatTextHitAngleModifierStrength": 0.0,
+      "combatTextFontSize": 0.0,
+      "combatTextColor": null,
+      "combatTextAnimationEvents": null
+    }
+  }
+}
