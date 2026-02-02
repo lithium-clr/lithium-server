@@ -426,6 +426,13 @@ public sealed class SetupPacketRouter(
         
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_reverb_effects.json"));
+            var packet = JsonSerializer.Deserialize<UpdateReverbEffectsPacket>(packetFile);
+        
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
