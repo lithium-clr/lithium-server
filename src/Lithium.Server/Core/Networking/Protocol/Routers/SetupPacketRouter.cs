@@ -387,12 +387,12 @@ public sealed class SetupPacketRouter(
             await client.SendPacketAsync(packet);
         }
         
-        // {
-        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_interactions.json"));
-        //     var packet = JsonSerializer.Deserialize<UpdateInteractionsPacket>(packetFile);
-        //
-        //     await client.SendPacketAsync(packet);
-        // }
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_interactions.json"));
+            var packet = JsonSerializer.Deserialize<UpdateInteractionsPacket>(packetFile);
+        
+            await client.SendPacketAsync(packet);
+        }
         
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_root_interactions.json"));

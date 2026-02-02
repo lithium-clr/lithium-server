@@ -187,6 +187,16 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
         _position = savedPos;
         return obj;
     }
+
+    public TObject ReadObjectAt<TObject>(int offset, Func<PacketReader, TObject> factory)
+    {
+        if (offset == -1) return default;
+        var savedPos = _position;
+        _position = packetInfo.VariableBlockStart + offset;
+        var obj = factory(this);
+        _position = savedPos;
+        return obj;
+    }
     
     public T[] ReadObjectArrayAt<T>(int offset) where T : INetworkSerializable, new()
     {

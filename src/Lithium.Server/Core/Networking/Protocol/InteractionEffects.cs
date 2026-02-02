@@ -113,8 +113,7 @@ public sealed class InteractionEffects : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        var bits = new BitSet(reader.ReadUInt8());
-        var currentPos = reader.GetPosition();
+        var bits = reader.ReadBits();
 
         WorldSoundEventIndex = reader.ReadInt32();
         LocalSoundEventIndex = reader.ReadInt32();
@@ -122,48 +121,20 @@ public sealed class InteractionEffects : INetworkSerializable
         ClearAnimationOnFinish = reader.ReadBoolean();
         ClearSoundEventOnFinish = reader.ReadBoolean();
 
-        if (bits.IsSet(1)) CameraShake = reader.ReadObject<CameraShakeEffect>(); else for(int i=0; i<9; i++) reader.ReadUInt8();
-        if (bits.IsSet(2)) MovementEffects = reader.ReadObject<MovementEffects>(); else for(int i=0; i<7; i++) reader.ReadUInt8();
+        if (bits.IsSet(1)) CameraShake = reader.ReadObject<CameraShakeEffect>();
+        else reader.SeekTo(reader.GetPosition() + 9);
+
+        if (bits.IsSet(2)) MovementEffects = reader.ReadObject<MovementEffects>();
+        else reader.SeekTo(reader.GetPosition() + 7);
+
         StartDelay = reader.ReadFloat32();
 
         var offsets = reader.ReadOffsets(5);
 
-        if (bits.IsSet(4))
-        {
-            reader.SeekTo(reader.VariableBlockStart + offsets[0]);
-            var count = reader.ReadVarInt32();
-            Particles = new ModelParticle[count];
-            for (var i = 0; i < count; i++)
-            {
-                Particles[i] = reader.ReadObject<ModelParticle>();
-            }
-        }
-
-        if (bits.IsSet(8))
-        {
-            reader.SeekTo(reader.VariableBlockStart + offsets[1]);
-            var count = reader.ReadVarInt32();
-            FirstPersonParticles = new ModelParticle[count];
-            for (var i = 0; i < count; i++)
-            {
-                FirstPersonParticles[i] = reader.ReadObject<ModelParticle>();
-            }
-        }
-
-        if (bits.IsSet(16))
-        {
-            reader.SeekTo(reader.VariableBlockStart + offsets[2]);
-            var count = reader.ReadVarInt32();
-            Trails = new ModelTrail[count];
-            for (var i = 0; i < count; i++)
-            {
-                Trails[i] = reader.ReadObject<ModelTrail>();
-            }
-        }
-
+        if (bits.IsSet(4))  Particles = reader.ReadArrayAt(offsets[0], r => r.ReadObject<ModelParticle>());
+        if (bits.IsSet(8))  FirstPersonParticles = reader.ReadArrayAt(offsets[1], r => r.ReadObject<ModelParticle>());
+        if (bits.IsSet(16)) Trails = reader.ReadArrayAt(offsets[2], r => r.ReadObject<ModelTrail>());
         if (bits.IsSet(32)) ItemPlayerAnimationsId = reader.ReadVarUtf8StringAt(offsets[3]);
         if (bits.IsSet(64)) ItemAnimationId = reader.ReadVarUtf8StringAt(offsets[4]);
-        
-        reader.SeekTo(currentPos);
     }
 }

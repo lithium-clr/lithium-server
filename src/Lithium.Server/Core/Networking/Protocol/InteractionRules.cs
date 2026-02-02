@@ -92,8 +92,7 @@ public sealed class InteractionRules : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        var bits = new BitSet(reader.ReadUInt8());
-        var currentPos = reader.GetPosition();
+        var bits = reader.ReadBits();
 
         BlockedByBypassIndex = reader.ReadInt32();
         BlockingBypassIndex = reader.ReadInt32();
@@ -102,50 +101,9 @@ public sealed class InteractionRules : INetworkSerializable
 
         var offsets = reader.ReadOffsets(4);
 
-        if (bits.IsSet(1))
-        {
-            reader.SeekTo(reader.VariableBlockStart + offsets[0]);
-            var count = reader.ReadVarInt32();
-            BlockedBy = new InteractionType[count];
-            for (var i = 0; i < count; i++)
-            {
-                BlockedBy[i] = reader.ReadEnum<InteractionType>();
-            }
-        }
-
-        if (bits.IsSet(2))
-        {
-            reader.SeekTo(reader.VariableBlockStart + offsets[1]);
-            var count = reader.ReadVarInt32();
-            Blocking = new InteractionType[count];
-            for (var i = 0; i < count; i++)
-            {
-                Blocking[i] = reader.ReadEnum<InteractionType>();
-            }
-        }
-
-        if (bits.IsSet(4))
-        {
-            reader.SeekTo(reader.VariableBlockStart + offsets[2]);
-            var count = reader.ReadVarInt32();
-            InterruptedBy = new InteractionType[count];
-            for (var i = 0; i < count; i++)
-            {
-                InterruptedBy[i] = reader.ReadEnum<InteractionType>();
-            }
-        }
-
-        if (bits.IsSet(8))
-        {
-            reader.SeekTo(reader.VariableBlockStart + offsets[3]);
-            var count = reader.ReadVarInt32();
-            Interrupting = new InteractionType[count];
-            for (var i = 0; i < count; i++)
-            {
-                Interrupting[i] = reader.ReadEnum<InteractionType>();
-            }
-        }
-        
-        reader.SeekTo(currentPos);
+        if (bits.IsSet(1)) BlockedBy = reader.ReadArrayAt(offsets[0], r => r.ReadEnum<InteractionType>());
+        if (bits.IsSet(2)) Blocking = reader.ReadArrayAt(offsets[1], r => r.ReadEnum<InteractionType>());
+        if (bits.IsSet(4)) InterruptedBy = reader.ReadArrayAt(offsets[2], r => r.ReadEnum<InteractionType>());
+        if (bits.IsSet(8)) Interrupting = reader.ReadArrayAt(offsets[3], r => r.ReadEnum<InteractionType>());
     }
 }

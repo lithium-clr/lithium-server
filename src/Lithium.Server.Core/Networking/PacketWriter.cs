@@ -286,6 +286,15 @@ public sealed class PacketWriter(int initialCapacity = 256)
         obj.Serialize(this);
     }
 
+    public static int GetVarIntSize(int value)
+    {
+        if ((value & -128) == 0) return 1;
+        if ((value & -16384) == 0) return 2;
+        if ((value & -2097152) == 0) return 3;
+        if ((value & -268435456) == 0) return 4;
+        return 5;
+    }
+
     // ============================================================
     // HEADER
     // ============================================================
