@@ -412,6 +412,13 @@ public sealed class SetupPacketRouter(
         
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_recipes.json"));
+            var packet = JsonSerializer.Deserialize<UpdateRecipesPacket>(packetFile);
+        
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
