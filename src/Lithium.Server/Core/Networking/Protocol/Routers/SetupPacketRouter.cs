@@ -207,12 +207,12 @@ public sealed class SetupPacketRouter(
 
         // Direction: Inbound
         // Id: 50
-        // {
-        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_particle_spawners.json"));
-        //     var packet = JsonSerializer.Deserialize<UpdateParticleSpawnersPacket>(packetFile);
-        //
-        //     await client.SendPacketAsync(packet);
-        // }
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_particle_spawners.json"));
+            var packet = JsonSerializer.Deserialize<UpdateParticleSpawnersPacket>(packetFile);
+        
+            await client.SendPacketAsync(packet);
+        }
 
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_unarmed_interactions.json"));
@@ -228,22 +228,22 @@ public sealed class SetupPacketRouter(
             await client.SendPacketAsync(packet);
         }
 
-        // {
-        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_ambience_fx.json"));
-        //     // var options = new JsonSerializerOptions
-        //     // {
-        //     //     Converters = { new IntKeyDictionaryConverter<AmbienceFx>(), new JsonStringEnumConverter() }
-        //     // };
-        //     var packet = JsonSerializer.Deserialize<UpdateAmbienceFxPacket>(packetFile);
-        //
-        //     logger.LogInformation("Send UpdateAmbienceFxPacket: \n" + JsonSerializer.Serialize(packet, new JsonSerializerOptions
-        //     {
-        //         WriteIndented = true,
-        //         // Converters = { new JsonStringEnumConverter() }
-        //     }));
-        //     
-        //     await client.SendPacketAsync(packet);
-        // }
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_ambience_fx.json"));
+            // var options = new JsonSerializerOptions
+            // {
+            //     Converters = { new IntKeyDictionaryConverter<AmbienceFx>(), new JsonStringEnumConverter() }
+            // };
+            var packet = JsonSerializer.Deserialize<UpdateAmbienceFxPacket>(packetFile);
+        
+            // logger.LogInformation("Send UpdateAmbienceFxPacket: \n" + JsonSerializer.Serialize(packet, new JsonSerializerOptions
+            // {
+            //     WriteIndented = true,
+            //     // Converters = { new JsonStringEnumConverter() }
+            // }));
+            
+            await client.SendPacketAsync(packet);
+        }
 
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_groups.json"));
