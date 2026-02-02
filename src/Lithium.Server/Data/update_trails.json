@@ -1,0 +1,1865 @@
+{
+  "type": "Init",
+  "trails": {
+    "Large_Charged_Black": {
+      "id": "Large_Charged_Black",
+      "texture": "Trails/Charged_Black.png",
+      "lifeSpan": 8,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.6
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Orb_Trail_Green": {
+      "id": "Orb_Trail_Green",
+      "texture": "Trails/Daggers_Dash.png",
+      "lifeSpan": 10,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -57,
+          "green": -1,
+          "blue": 98
+        },
+        "width": 0.3
+      },
+      "end": {
+        "color": {
+          "alpha": -64,
+          "red": 38,
+          "green": -109,
+          "blue": 97
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": {
+        "x": 128,
+        "y": 64
+      },
+      "frameRange": {
+        "min": 0,
+        "max": 0
+      },
+      "frameLifeSpan": 0
+    },
+    "Small_Projectile": {
+      "id": "Small_Projectile",
+      "texture": "Trails/White.png",
+      "lifeSpan": 15,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 101,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Memory_Trail": {
+      "id": "Memory_Trail",
+      "texture": "Trails/Ice.png",
+      "lifeSpan": 10,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -35,
+          "red": 0,
+          "green": -23,
+          "blue": -1
+        },
+        "width": 10.0
+      },
+      "end": {
+        "color": {
+          "alpha": -72,
+          "red": 0,
+          "green": 12,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.516,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": false,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Large_Charged_Red": {
+      "id": "Large_Charged_Red",
+      "texture": "Trails/Charged_Red.png",
+      "lifeSpan": 8,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.6
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Mace_Signature2": {
+      "id": "Mace_Signature2",
+      "texture": "Trails/Signature_Mace2.png",
+      "lifeSpan": 8,
+      "roll": 180.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.35
+      },
+      "end": {
+        "color": {
+          "alpha": 60,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.3
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Mace_Signature": {
+      "id": "Mace_Signature",
+      "texture": "Trails/Signature_Mace.png",
+      "lifeSpan": 8,
+      "roll": 180.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.35
+      },
+      "end": {
+        "color": {
+          "alpha": 60,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.3
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Large_Default": {
+      "id": "Large_Default",
+      "texture": "Trails/White.png",
+      "lifeSpan": 5,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 102,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.6
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Small_Charged": {
+      "id": "Small_Charged",
+      "texture": "Trails/Charged.png",
+      "lifeSpan": 8,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Arrow_Ricochet": {
+      "id": "Arrow_Ricochet",
+      "texture": "Trails/Charged_Blue.png",
+      "lifeSpan": 10,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.01
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Arrow": {
+      "id": "Arrow",
+      "texture": "Trails/Arrow.png",
+      "lifeSpan": 20,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": 64,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Charged": {
+      "id": "Medium_Charged",
+      "texture": "Trails/Charged.png",
+      "lifeSpan": 7,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Charged_Basic": {
+      "id": "Charged_Basic",
+      "texture": "Trails/Charged.png",
+      "lifeSpan": 5,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -26,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.45
+      },
+      "end": {
+        "color": {
+          "alpha": 78,
+          "red": -1,
+          "green": -64,
+          "blue": 51
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Sword_Distortion": {
+      "id": "Sword_Distortion",
+      "texture": "Trails/Distortion_Sword.png",
+      "lifeSpan": 12,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "Distortion",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Crawler_Void_Claw": {
+      "id": "Crawler_Void_Claw",
+      "texture": "Trails/Claws/Claw.png",
+      "lifeSpan": 3,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -52,
+          "red": 21,
+          "green": 4,
+          "blue": 34
+        },
+        "width": 0.075
+      },
+      "end": {
+        "color": {
+          "alpha": -122,
+          "red": -42,
+          "green": -93,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.5,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Small_Default": {
+      "id": "Small_Default",
+      "texture": "Trails/White.png",
+      "lifeSpan": 5,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 101,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Orb_Trail_White": {
+      "id": "Orb_Trail_White",
+      "texture": "Trails/White.png",
+      "lifeSpan": 10,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -8,
+          "green": -1,
+          "blue": -105
+        },
+        "width": 0.08
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -10,
+          "green": -1,
+          "blue": -93
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Dagger_Claw": {
+      "id": "Dagger_Claw",
+      "texture": "Trails/Claws/Claw_3.png",
+      "lifeSpan": 5,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 127,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.15
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Fire_Trap_Fire": {
+      "id": "Fire_Trap_Fire",
+      "texture": "Trails/Daggers_Dash.png",
+      "lifeSpan": 20,
+      "roll": -45.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -19,
+          "green": -1,
+          "blue": 108
+        },
+        "width": 0.6
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": 31,
+          "blue": 31
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "Erosion",
+      "intersectionHighlight": {
+        "highlightThreshold": 0.84,
+        "highlightColor": {
+          "red": -1,
+          "green": 0,
+          "blue": 0
+        }
+      },
+      "smooth": true,
+      "frameSize": {
+        "x": 256,
+        "y": 96
+      },
+      "frameRange": {
+        "min": 0,
+        "max": 3
+      },
+      "frameLifeSpan": 5
+    },
+    "Bullet": {
+      "id": "Bullet",
+      "texture": "Trails/Swipe.png",
+      "lifeSpan": 10,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": false,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Daggers_Dash_Dark": {
+      "id": "Daggers_Dash_Dark",
+      "texture": "Trails/Daggers_Dash.png",
+      "lifeSpan": 8,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": 33,
+          "green": 34,
+          "blue": 38
+        },
+        "width": 0.7
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": 44,
+          "green": 45,
+          "blue": 51
+        },
+        "width": 0.3
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": {
+        "x": 256,
+        "y": 96
+      },
+      "frameRange": {
+        "min": 0,
+        "max": 2
+      },
+      "frameLifeSpan": 2
+    },
+    "Unarmed": {
+      "id": "Unarmed",
+      "texture": "Trails/Arrow.png",
+      "lifeSpan": 10,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": 64,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Bear_Claw": {
+      "id": "Bear_Claw",
+      "texture": "Trails/Claws/Claw_4.png",
+      "lifeSpan": 7,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -52,
+          "red": -1,
+          "green": 127,
+          "blue": 49
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": -122,
+          "red": -1,
+          "green": 0,
+          "blue": 0
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.5,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Critical": {
+      "id": "Critical",
+      "texture": "Trails/Critical.png",
+      "lifeSpan": 6,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.45
+      },
+      "end": {
+        "color": {
+          "alpha": 103,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Fire_Trap_Trail2": {
+      "id": "Fire_Trap_Trail2",
+      "texture": "Trails/Basic2.png",
+      "lifeSpan": 10,
+      "roll": -45.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -41,
+          "blue": 46
+        },
+        "width": 1.0
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": 31,
+          "blue": 31
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": false,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Void_Green": {
+      "id": "Void_Green",
+      "texture": "Trails/Void_Green.png",
+      "lifeSpan": 6,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.3,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Rubble": {
+      "id": "Rubble",
+      "texture": "Trails/Arrow.png",
+      "lifeSpan": 5,
+      "roll": 80.0,
+      "start": {
+        "color": {
+          "alpha": -128,
+          "red": -128,
+          "green": -128,
+          "blue": -128
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": 96,
+          "red": 96,
+          "green": 96,
+          "blue": 96
+        },
+        "width": 0.2
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Arrow_Vamp": {
+      "id": "Arrow_Vamp",
+      "texture": "Trails/Critical.png",
+      "lifeSpan": 10,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": 85,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.01
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Acid": {
+      "id": "Acid",
+      "texture": "Trails/Acid.png",
+      "lifeSpan": 6,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -27,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.28
+      },
+      "end": {
+        "color": {
+          "alpha": 102,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Arrow_Ricochet_Signature": {
+      "id": "Arrow_Ricochet_Signature",
+      "texture": "Trails/Charged.png",
+      "lifeSpan": 10,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.01
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Daggers_Dash_Straight": {
+      "id": "Daggers_Dash_Straight",
+      "texture": "Trails/White.png",
+      "lifeSpan": 8,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -105,
+          "red": -63,
+          "green": -27,
+          "blue": -19
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": 18,
+          "red": -23,
+          "green": -23,
+          "blue": -23
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Large_Charged": {
+      "id": "Large_Charged",
+      "texture": "Trails/Charged.png",
+      "lifeSpan": 8,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.6
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Daggers_Dash_Distortion": {
+      "id": "Daggers_Dash_Distortion",
+      "texture": "Trails/Distortion_Dagger.png",
+      "lifeSpan": 12,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 39,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.7
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "Distortion",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Daggers_Dash": {
+      "id": "Daggers_Dash",
+      "texture": "Trails/Daggers_Dash.png",
+      "lifeSpan": 8,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.5
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": {
+        "x": 256,
+        "y": 96
+      },
+      "frameRange": {
+        "min": 0,
+        "max": 3
+      },
+      "frameLifeSpan": 2
+    },
+    "Weapon_Sword_Frost": {
+      "id": "Weapon_Sword_Frost",
+      "texture": "Trails/Ice.png",
+      "lifeSpan": 4,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.65
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": 72,
+          "green": 61,
+          "blue": 106
+        },
+        "width": 0.4
+      },
+      "lightInfluence": 0.1,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Mace_Charged": {
+      "id": "Medium_Mace_Charged",
+      "texture": "Trails/Charged_Mace.png",
+      "lifeSpan": 8,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -53,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.8
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Projectile": {
+      "id": "Medium_Projectile",
+      "texture": "Trails/White.png",
+      "lifeSpan": 15,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 101,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Arrow_Vamp_Signature": {
+      "id": "Arrow_Vamp_Signature",
+      "texture": "Trails/Critical.png",
+      "lifeSpan": 10,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.01
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Daggers_Dash2": {
+      "id": "Daggers_Dash2",
+      "texture": "Trails/Daggers_Dash2.png",
+      "lifeSpan": 8,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.5
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Dagger_Basic": {
+      "id": "Dagger_Basic",
+      "texture": "Trails/Basic.png",
+      "lifeSpan": 4,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -86,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.5
+      },
+      "end": {
+        "color": {
+          "alpha": 16,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Kunai": {
+      "id": "Kunai",
+      "texture": "Trails/Arrow.png",
+      "lifeSpan": 20,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": 64,
+          "red": 0,
+          "green": 0,
+          "blue": -1
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": 0,
+          "green": 0,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Sword_Strong": {
+      "id": "Medium_Sword_Strong",
+      "texture": "Trails/Basic_Strong.png",
+      "lifeSpan": 7,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -60,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 1.0
+      },
+      "end": {
+        "color": {
+          "alpha": 54,
+          "red": -1,
+          "green": -40,
+          "blue": 79
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.308,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Weapon_Mace_Prisma": {
+      "id": "Weapon_Mace_Prisma",
+      "texture": "Trails/Gold.png",
+      "lifeSpan": 15,
+      "roll": -90.0,
+      "start": {
+        "color": {
+          "alpha": -49,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": -60,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Small_Flame": {
+      "id": "Small_Flame",
+      "texture": "Trails/Fire.png",
+      "lifeSpan": 5,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -27,
+          "red": -1,
+          "green": -49,
+          "blue": 0
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": 102,
+          "red": -1,
+          "green": 44,
+          "blue": 0
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "SkeletonMage": {
+      "id": "SkeletonMage",
+      "texture": "Trails/Claws/Claw.png",
+      "lifeSpan": 10,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": 108,
+          "green": -72,
+          "blue": 57
+        },
+        "width": 0.3
+      },
+      "end": {
+        "color": {
+          "alpha": 102,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.2
+      },
+      "lightInfluence": 0.8,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Default": {
+      "id": "Medium_Default",
+      "texture": "Trails/White.png",
+      "lifeSpan": 8,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 101,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.524,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Small_Sword_Strong": {
+      "id": "Small_Sword_Strong",
+      "texture": "Trails/Basic_Strong.png",
+      "lifeSpan": 7,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -60,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.5
+      },
+      "end": {
+        "color": {
+          "alpha": 54,
+          "red": -1,
+          "green": -40,
+          "blue": 79
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.308,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Bomb": {
+      "id": "Bomb",
+      "texture": "Trails/White.png",
+      "lifeSpan": 20,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -103,
+          "red": -1,
+          "green": 102,
+          "blue": 0
+        },
+        "width": 0.3
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": 0,
+          "green": 0,
+          "blue": 0
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Mace_Normal": {
+      "id": "Medium_Mace_Normal",
+      "texture": "Trails/Basic.png",
+      "lifeSpan": 8,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -59,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.8
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Flame": {
+      "id": "Medium_Flame",
+      "texture": "Trails/Fire.png",
+      "lifeSpan": 5,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -27,
+          "red": -1,
+          "green": -49,
+          "blue": 0
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": 102,
+          "red": -1,
+          "green": 44,
+          "blue": 0
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Signature": {
+      "id": "Medium_Signature",
+      "texture": "Trails/Signature.png",
+      "lifeSpan": 6,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.35
+      },
+      "end": {
+        "color": {
+          "alpha": 62,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Large_Projectile": {
+      "id": "Large_Projectile",
+      "texture": "Trails/White.png",
+      "lifeSpan": 15,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 102,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.6
+      },
+      "end": {
+        "color": {
+          "alpha": 0,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Medium_Sword_Basic": {
+      "id": "Medium_Sword_Basic",
+      "texture": "Trails/Basic.png",
+      "lifeSpan": 7,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -86,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.8
+      },
+      "end": {
+        "color": {
+          "alpha": 16,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Large_Flame": {
+      "id": "Large_Flame",
+      "texture": "Trails/Fire.png",
+      "lifeSpan": 5,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -27,
+          "red": -1,
+          "green": -49,
+          "blue": 0
+        },
+        "width": 0.6
+      },
+      "end": {
+        "color": {
+          "alpha": 102,
+          "red": -1,
+          "green": 44,
+          "blue": 0
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Daggers_Signature": {
+      "id": "Daggers_Signature",
+      "texture": "Trails/Dagger_Signature.png",
+      "lifeSpan": 8,
+      "roll": 180.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.35
+      },
+      "end": {
+        "color": {
+          "alpha": 60,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Wind": {
+      "id": "Wind",
+      "texture": "Trails/Wind.png",
+      "lifeSpan": 250,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.25
+      },
+      "end": {
+        "color": {
+          "alpha": -1,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Fen_Stalker_Claw": {
+      "id": "Fen_Stalker_Claw",
+      "texture": "Trails/Claws/Claw_3.png",
+      "lifeSpan": 7,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": -52,
+          "red": -1,
+          "green": 127,
+          "blue": 49
+        },
+        "width": 0.2
+      },
+      "end": {
+        "color": {
+          "alpha": -122,
+          "red": -1,
+          "green": 0,
+          "blue": 0
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 0.5,
+      "renderMode": "BlendAdd",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Huge_Default": {
+      "id": "Huge_Default",
+      "texture": "Trails/White.png",
+      "lifeSpan": 5,
+      "roll": 0.0,
+      "start": {
+        "color": {
+          "alpha": 102,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 1.0
+      },
+      "end": {
+        "color": {
+          "alpha": 68,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.0
+      },
+      "lightInfluence": 1.0,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    },
+    "Void": {
+      "id": "Void",
+      "texture": "Trails/Void.png",
+      "lifeSpan": 6,
+      "roll": 90.0,
+      "start": {
+        "color": {
+          "alpha": -27,
+          "red": -1,
+          "green": -1,
+          "blue": -1
+        },
+        "width": 0.4
+      },
+      "end": {
+        "color": {
+          "alpha": -70,
+          "red": 47,
+          "green": 15,
+          "blue": 83
+        },
+        "width": 0.1
+      },
+      "lightInfluence": 0.3,
+      "renderMode": "BlendLinear",
+      "intersectionHighlight": null,
+      "smooth": true,
+      "frameSize": null,
+      "frameRange": null,
+      "frameLifeSpan": 0
+    }
+  }
+}

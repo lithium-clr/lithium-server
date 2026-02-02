@@ -5,10 +5,10 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 [Packet(
     NullableBitFieldSize = 0,
-    FixedBlockSize = 4,
+    FixedBlockSize = 8,
     VariableFieldCount = 0,
-    VariableBlockStart = 4,
-    MaxSize = 4
+    VariableBlockStart = 8,
+    MaxSize = 8
 )]
 public sealed class RangeInt : INetworkSerializable
 {

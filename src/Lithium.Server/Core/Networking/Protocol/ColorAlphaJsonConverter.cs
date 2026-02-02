@@ -3,19 +3,19 @@ using System.Text.Json.Serialization;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public sealed class ColorJsonConverter : JsonConverter<Color>
+public sealed class ColorAlphaJsonConverter : JsonConverter<ColorAlpha>
 {
-    public override Color Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override ColorAlpha Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType is not JsonTokenType.StartObject)
             throw new JsonException("Expected StartObject token");
 
-        var color = new Color();
+        var colorAlpha = new ColorAlpha();
 
         while (reader.Read())
         {
             if (reader.TokenType is JsonTokenType.EndObject)
-                return color;
+                return colorAlpha;
 
             if (reader.TokenType is not JsonTokenType.PropertyName)
                 throw new JsonException("Expected PropertyName token");
@@ -27,14 +27,17 @@ public sealed class ColorJsonConverter : JsonConverter<Color>
 
             switch (propertyName)
             {
+                case "alpha":
+                    colorAlpha.Alpha = value;
+                    break;
                 case "red":
-                    color.Red = value;
+                    colorAlpha.Red = value;
                     break;
                 case "green":
-                    color.Green = value;
+                    colorAlpha.Green = value;
                     break;
                 case "blue":
-                    color.Blue = value;
+                    colorAlpha.Blue = value;
                     break;
             }
         }
@@ -53,9 +56,11 @@ public sealed class ColorJsonConverter : JsonConverter<Color>
         throw new JsonException($"Cannot convert {reader.TokenType} to byte");
     }
 
-    public override void Write(Utf8JsonWriter writer, Color value, JsonSerializerOptions options)
+
+    public override void Write(Utf8JsonWriter writer, ColorAlpha value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
+        writer.WriteNumber("alpha", value.Alpha);
         writer.WriteNumber("red", value.Red);
         writer.WriteNumber("green", value.Green);
         writer.WriteNumber("blue", value.Blue);

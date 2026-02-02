@@ -419,6 +419,13 @@ public sealed class SetupPacketRouter(
         
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_trails.json"));
+            var packet = JsonSerializer.Deserialize<UpdateTrailsPacket>(packetFile);
+        
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
