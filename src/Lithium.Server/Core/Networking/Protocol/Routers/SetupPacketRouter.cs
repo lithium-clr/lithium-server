@@ -134,24 +134,25 @@ public sealed class SetupPacketRouter(
 
     private async Task SendFakeAssets(IClient client)
     {
-        const string BasePath = @"C:\Users\bubbl\Desktop\Lithium\lithium-server\src\Lithium.Server\Data";
-
+        var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../")).Replace("\\", "/");
+        var basePath = Path.Combine(root, "Data");
+        
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_sound_sets.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_sound_sets.json"));
             var packet = JsonSerializer.Deserialize<UpdateBlockSoundSetsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_sound_sets.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_sound_sets.json"));
             var packet = JsonSerializer.Deserialize<UpdateSoundSetsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_types.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_types.json"));
             packetFile = SanitizeJson(packetFile);
 
             var packet = JsonSerializer.Deserialize<UpdateBlockTypesPacket>(packetFile);
@@ -171,182 +172,182 @@ public sealed class SetupPacketRouter(
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_player_animations.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_player_animations.json"));
             var packet = JsonSerializer.Deserialize<UpdateItemPlayerAnimationsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_categories.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_categories.json"));
             var packet = JsonSerializer.Deserialize<UpdateItemCategoriesPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_breaking_decals.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_breaking_decals.json"));
             var packet = JsonSerializer.Deserialize<UpdateBlockBreakingDecalsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_fieldcraft_categories.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_fieldcraft_categories.json"));
             var packet = JsonSerializer.Deserialize<UpdateFieldcraftCategoriesPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_qualities.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_qualities.json"));
             var packet = JsonSerializer.Deserialize<UpdateItemQualitiesPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_particle_spawners.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_particle_spawners.json"));
             var packet = JsonSerializer.Deserialize<UpdateParticleSpawnersPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_unarmed_interactions.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_unarmed_interactions.json"));
             var packet = JsonSerializer.Deserialize<UpdateUnarmedInteractionsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_particle_sets.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_particle_sets.json"));
             var packet = JsonSerializer.Deserialize<UpdateBlockParticleSetsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_ambience_fx.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_ambience_fx.json"));
             var packet = JsonSerializer.Deserialize<UpdateAmbienceFxPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_groups.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_groups.json"));
             var packet = JsonSerializer.Deserialize<UpdateBlockGroupsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_view_bobbing.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_view_bobbing.json"));
             var packet = JsonSerializer.Deserialize<UpdateViewBobbingPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_fluids.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_fluids.json"));
             var packet = JsonSerializer.Deserialize<UpdateFluidsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_camera_shake.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_camera_shake.json"));
             var packet = JsonSerializer.Deserialize<UpdateCameraShakePacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
 
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_projectile_configs.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_projectile_configs.json"));
             var packet = JsonSerializer.Deserialize<UpdateProjectileConfigsPacket>(packetFile);
             
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_model_vfxs.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_model_vfxs.json"));
             var packet = JsonSerializer.Deserialize<UpdateModelVFXsPacket>(packetFile);
             
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_sound_sets.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_sound_sets.json"));
             var packet = JsonSerializer.Deserialize<UpdateItemSoundSetsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_entity_effects.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_entity_effects.json"));
             var packet = JsonSerializer.Deserialize<UpdateEntityEffectsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_audio_categories.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_audio_categories.json"));
             var packet = JsonSerializer.Deserialize<UpdateAudioCategoriesPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_environments.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_environments.json"));
             var packet = JsonSerializer.Deserialize<UpdateEnvironmentsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_item_reticles.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_reticles.json"));
             var packet = JsonSerializer.Deserialize<UpdateItemReticlesPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_repulsion_config.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_repulsion_config.json"));
             var packet = JsonSerializer.Deserialize<UpdateRepulsionConfigPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_resource_types.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_resource_types.json"));
             var packet = JsonSerializer.Deserialize<UpdateResourceTypesPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_equalizer_effects.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_equalizer_effects.json"));
             var packet = JsonSerializer.Deserialize<UpdateEqualizerEffectsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_entity_stat_types.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_entity_stat_types.json"));
             var packet = JsonSerializer.Deserialize<UpdateEntityStatTypesPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_entity_ui_components.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_entity_ui_components.json"));
             var packet = JsonSerializer.Deserialize<UpdateEntityUIComponentsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_sets.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_sets.json"));
             var packet = JsonSerializer.Deserialize<UpdateBlockSetsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
@@ -360,91 +361,91 @@ public sealed class SetupPacketRouter(
         // }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_hitbox_collision_config.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_hitbox_collision_config.json"));
             var packet = JsonSerializer.Deserialize<UpdateHitboxCollisionConfigPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_sound_events.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_sound_events.json"));
             var packet = JsonSerializer.Deserialize<UpdateSoundEventsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_fluid_fx.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_fluid_fx.json"));
             var packet = JsonSerializer.Deserialize<UpdateFluidFXPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_particle_systems.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_particle_systems.json"));
             var packet = JsonSerializer.Deserialize<UpdateParticleSystemsPacket>(packetFile);
 
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_interactions.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_interactions.json"));
             var packet = JsonSerializer.Deserialize<UpdateInteractionsPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_root_interactions.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_root_interactions.json"));
             var packet = JsonSerializer.Deserialize<UpdateRootInteractionsPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_recipes.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_recipes.json"));
             var packet = JsonSerializer.Deserialize<UpdateRecipesPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_trails.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_trails.json"));
             var packet = JsonSerializer.Deserialize<UpdateTrailsPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_reverb_effects.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_reverb_effects.json"));
             var packet = JsonSerializer.Deserialize<UpdateReverbEffectsPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_tag_patterns.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_tag_patterns.json"));
             var packet = JsonSerializer.Deserialize<UpdateTagPatternsPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_weathers.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_weathers.json"));
             var packet = JsonSerializer.Deserialize<UpdateWeathersPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_translations.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_translations.json"));
             var packet = JsonSerializer.Deserialize<UpdateTranslationsPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
         
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_hitboxes.json"));
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_hitboxes.json"));
             var packet = JsonSerializer.Deserialize<UpdateBlockHitboxesPacket>(packetFile);
         
             await client.SendPacketAsync(packet);

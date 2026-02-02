@@ -15,7 +15,8 @@ public interface IAssetStore
 
 public sealed class AssetStore<T>(
     ILogger<AssetStore<T>> logger,
-    IOptions<AssetStoreOptions> options
+    IOptions<AssetStoreOptions> options,
+    IServerConfigurationProvider configurationProvider
 ) : IAssetStore where T : AssetResource
 {
     private List<T> _assets = [];
@@ -27,8 +28,8 @@ public sealed class AssetStore<T>(
 
     public async Task LoadAssetsAsync(CancellationToken cancellationToken = default)
     {
-        var fullPath = System.IO.Path.Combine(@"C:\Users\bubbl\Desktop\assets\Server", Path);
-
+        var fullPath = System.IO.Path.Combine(configurationProvider.Configuration.AssetsPath, "Server", Path).Replace("\\", "/");
+        
         if (!Directory.Exists(fullPath))
         {
             logger.LogError("Asset directory does not exist: {Path}", fullPath);
