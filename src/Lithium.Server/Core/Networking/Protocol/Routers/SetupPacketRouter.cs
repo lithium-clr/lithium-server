@@ -433,6 +433,13 @@ public sealed class SetupPacketRouter(
         
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_tag_patterns.json"));
+            var packet = JsonSerializer.Deserialize<UpdateTagPatternsPacket>(packetFile);
+        
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
