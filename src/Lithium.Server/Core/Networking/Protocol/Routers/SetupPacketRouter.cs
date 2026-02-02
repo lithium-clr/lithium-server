@@ -1,7 +1,5 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Lithium.Server.Core.AssetStore;
-using Lithium.Server.Core.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
 
@@ -254,13 +252,6 @@ public sealed class SetupPacketRouter(
             await client.SendPacketAsync(packet);
         }
 
-        // {
-        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_interactions.json"));
-        //     var packet = JsonSerializer.Deserialize<UpdateInteractionsPacket>(packetFile);
-        //
-        //     await client.SendPacketAsync(packet);
-        // }
-
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_view_bobbing.json"));
             var packet = JsonSerializer.Deserialize<UpdateViewBobbingPacket>(packetFile);
@@ -405,6 +396,20 @@ public sealed class SetupPacketRouter(
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_particle_systems.json"));
             var packet = JsonSerializer.Deserialize<UpdateParticleSystemsPacket>(packetFile);
 
+            await client.SendPacketAsync(packet);
+        }
+        
+        // {
+        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_interactions.json"));
+        //     var packet = JsonSerializer.Deserialize<UpdateInteractionsPacket>(packetFile);
+        //
+        //     await client.SendPacketAsync(packet);
+        // }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_root_interactions.json"));
+            var packet = JsonSerializer.Deserialize<UpdateRootInteractionsPacket>(packetFile);
+        
             await client.SendPacketAsync(packet);
         }
     }

@@ -5,7 +5,7 @@ using Lithium.Server.Core.Networking.Protocol.Attributes;
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
 
 [Packet(
-    Id = 66,
+    Id = 67,
     IsCompressed = true,
     NullableBitFieldSize = 1,
     FixedBlockSize = 6,
@@ -13,7 +13,7 @@ namespace Lithium.Server.Core.Networking.Protocol.Packets;
     VariableBlockStart = 6,
     MaxSize = 1677721600
 )]
-public sealed class UpdateInteractionsPacket : INetworkSerializable
+public sealed class UpdateRootInteractionsPacket : INetworkSerializable
 {
     [JsonPropertyName("type")]
     public UpdateType Type { get; set; } = UpdateType.Init;
@@ -22,8 +22,8 @@ public sealed class UpdateInteractionsPacket : INetworkSerializable
     public int MaxId { get; set; }
 
     [JsonPropertyName("interactions")]
-    // [JsonConverter(typeof(IntKeyDictionaryConverter<Interaction>))]
-    public Dictionary<int, Interaction>? Interactions { get; set; }
+    // [JsonConverter(typeof(IntKeyDictionaryConverter<RootInteraction>))]
+    public Dictionary<int, RootInteraction>? Interactions { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -41,7 +41,7 @@ public sealed class UpdateInteractionsPacket : INetworkSerializable
             foreach (var (key, value) in Interactions)
             {
                 writer.WriteInt32(key);
-                value.SerializeWithTypeId(writer);
+                value.Serialize(writer);
             }
         }
     }
@@ -49,17 +49,19 @@ public sealed class UpdateInteractionsPacket : INetworkSerializable
     public void Deserialize(PacketReader reader)
     {
         var bits = reader.ReadBits();
+
         Type = reader.ReadEnum<UpdateType>();
         MaxId = reader.ReadInt32();
 
         if (bits.IsSet(1))
         {
             var count = reader.ReadVarInt32();
-            Interactions = new Dictionary<int, Interaction>(count);
+            Interactions = new Dictionary<int, RootInteraction>(count);
             for (var i = 0; i < count; i++)
             {
                 var key = reader.ReadInt32();
-                var value = Interaction.ReadPolymorphic(reader);
+                var value = new RootInteraction();
+                value.Deserialize(reader);
                 Interactions[key] = value;
             }
         }

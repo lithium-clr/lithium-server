@@ -6,5 +6,6 @@ namespace Lithium.Server.Core.Networking.Protocol;
 public enum UpdateType : byte
 {
     Init = 0,
-    Update = 1
+    AddOrUpdate = 1,
+    Remove = 2
 }

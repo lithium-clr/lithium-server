@@ -1,35 +1,40 @@
 using System.Text.Json.Serialization;
-using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-[Packet(
-    NullableBitFieldSize = 1,
-    FixedBlockSize = 17,
-    VariableFieldCount = 4,
-    VariableBlockStart = 33,
-    MaxSize = 16384053)
-]
 public sealed class InteractionRules : INetworkSerializable
 {
-    [JsonPropertyName("blockedBy")] public InteractionType[]? BlockedBy { get; set; }
-    [JsonPropertyName("blocking")] public InteractionType[]? Blocking { get; set; }
-    [JsonPropertyName("interruptedBy")] public InteractionType[]? InterruptedBy { get; set; }
-    [JsonPropertyName("interrupting")] public InteractionType[]? Interrupting { get; set; }
-    [JsonPropertyName("blockedByBypassIndex")] public int BlockedByBypassIndex { get; set; }
-    [JsonPropertyName("blockingBypassIndex")] public int BlockingBypassIndex { get; set; }
-    [JsonPropertyName("interruptedByBypassIndex")] public int InterruptedByBypassIndex { get; set; }
-    [JsonPropertyName("interruptingBypassIndex")] public int InterruptingBypassIndex { get; set; }
+    [JsonPropertyName("blockedBy")]
+    public InteractionType[]? BlockedBy { get; set; }
+
+    [JsonPropertyName("blocking")]
+    public InteractionType[]? Blocking { get; set; }
+
+    [JsonPropertyName("interruptedBy")]
+    public InteractionType[]? InterruptedBy { get; set; }
+
+    [JsonPropertyName("interrupting")]
+    public InteractionType[]? Interrupting { get; set; }
+
+    [JsonPropertyName("blockedByBypassIndex")]
+    public int BlockedByBypassIndex { get; set; }
+
+    [JsonPropertyName("blockingBypassIndex")]
+    public int BlockingBypassIndex { get; set; }
+
+    [JsonPropertyName("interruptedByBypassIndex")]
+    public int InterruptedByBypassIndex { get; set; }
+
+    [JsonPropertyName("interruptingBypassIndex")]
+    public int InterruptingBypassIndex { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
         var bits = new BitSet(1);
-
         if (BlockedBy is not null) bits.SetBit(1);
         if (Blocking is not null) bits.SetBit(2);
         if (InterruptedBy is not null) bits.SetBit(4);
         if (Interrupting is not null) bits.SetBit(8);
-
         writer.WriteBits(bits);
 
         writer.WriteInt32(BlockedByBypassIndex);
@@ -44,42 +49,51 @@ public sealed class InteractionRules : INetworkSerializable
 
         var varBlockStart = writer.Position;
 
+        writer.WriteOffsetAt(blockedByOffsetSlot, BlockedBy is not null ? writer.Position - varBlockStart : -1);
         if (BlockedBy is not null)
         {
-            writer.WriteOffsetAt(blockedByOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(BlockedBy.Length);
-            foreach (var item in BlockedBy) writer.WriteEnum(item);
+            foreach (var item in BlockedBy)
+            {
+                writer.WriteEnum(item);
+            }
         }
-        else writer.WriteOffsetAt(blockedByOffsetSlot, -1);
 
+        writer.WriteOffsetAt(blockingOffsetSlot, Blocking is not null ? writer.Position - varBlockStart : -1);
         if (Blocking is not null)
         {
-            writer.WriteOffsetAt(blockingOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(Blocking.Length);
-            foreach (var item in Blocking) writer.WriteEnum(item);
+            foreach (var item in Blocking)
+            {
+                writer.WriteEnum(item);
+            }
         }
-        else writer.WriteOffsetAt(blockingOffsetSlot, -1);
 
+        writer.WriteOffsetAt(interruptedByOffsetSlot, InterruptedBy is not null ? writer.Position - varBlockStart : -1);
         if (InterruptedBy is not null)
         {
-            writer.WriteOffsetAt(interruptedByOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(InterruptedBy.Length);
-            foreach (var item in InterruptedBy) writer.WriteEnum(item);
+            foreach (var item in InterruptedBy)
+            {
+                writer.WriteEnum(item);
+            }
         }
-        else writer.WriteOffsetAt(interruptedByOffsetSlot, -1);
 
+        writer.WriteOffsetAt(interruptingOffsetSlot, Interrupting is not null ? writer.Position - varBlockStart : -1);
         if (Interrupting is not null)
         {
-            writer.WriteOffsetAt(interruptingOffsetSlot, writer.Position - varBlockStart);
             writer.WriteVarInt(Interrupting.Length);
-            foreach (var item in Interrupting) writer.WriteEnum(item);
+            foreach (var item in Interrupting)
+            {
+                writer.WriteEnum(item);
+            }
         }
-        else writer.WriteOffsetAt(interruptingOffsetSlot, -1);
     }
 
     public void Deserialize(PacketReader reader)
     {
-        var bits = reader.ReadBits();
+        var bits = new BitSet(reader.ReadUInt8());
+        var currentPos = reader.GetPosition();
 
         BlockedByBypassIndex = reader.ReadInt32();
         BlockingBypassIndex = reader.ReadInt32();
@@ -88,9 +102,50 @@ public sealed class InteractionRules : INetworkSerializable
 
         var offsets = reader.ReadOffsets(4);
 
-        if (bits.IsSet(1)) BlockedBy = reader.ReadArrayAt(offsets[0], r => r.ReadEnum<InteractionType>());
-        if (bits.IsSet(2)) Blocking = reader.ReadArrayAt(offsets[1], r => r.ReadEnum<InteractionType>());
-        if (bits.IsSet(4)) InterruptedBy = reader.ReadArrayAt(offsets[2], r => r.ReadEnum<InteractionType>());
-        if (bits.IsSet(8)) Interrupting = reader.ReadArrayAt(offsets[3], r => r.ReadEnum<InteractionType>());
+        if (bits.IsSet(1))
+        {
+            reader.SeekTo(reader.VariableBlockStart + offsets[0]);
+            var count = reader.ReadVarInt32();
+            BlockedBy = new InteractionType[count];
+            for (var i = 0; i < count; i++)
+            {
+                BlockedBy[i] = reader.ReadEnum<InteractionType>();
+            }
+        }
+
+        if (bits.IsSet(2))
+        {
+            reader.SeekTo(reader.VariableBlockStart + offsets[1]);
+            var count = reader.ReadVarInt32();
+            Blocking = new InteractionType[count];
+            for (var i = 0; i < count; i++)
+            {
+                Blocking[i] = reader.ReadEnum<InteractionType>();
+            }
+        }
+
+        if (bits.IsSet(4))
+        {
+            reader.SeekTo(reader.VariableBlockStart + offsets[2]);
+            var count = reader.ReadVarInt32();
+            InterruptedBy = new InteractionType[count];
+            for (var i = 0; i < count; i++)
+            {
+                InterruptedBy[i] = reader.ReadEnum<InteractionType>();
+            }
+        }
+
+        if (bits.IsSet(8))
+        {
+            reader.SeekTo(reader.VariableBlockStart + offsets[3]);
+            var count = reader.ReadVarInt32();
+            Interrupting = new InteractionType[count];
+            for (var i = 0; i < count; i++)
+            {
+                Interrupting[i] = reader.ReadEnum<InteractionType>();
+            }
+        }
+        
+        reader.SeekTo(currentPos);
     }
 }
