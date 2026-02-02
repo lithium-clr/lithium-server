@@ -440,6 +440,13 @@ public sealed class SetupPacketRouter(
         
             await client.SendPacketAsync(packet);
         }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_weathers.json"));
+            var packet = JsonSerializer.Deserialize<UpdateWeathersPacket>(packetFile);
+        
+            await client.SendPacketAsync(packet);
+        }
     }
 
     [PacketHandler]
