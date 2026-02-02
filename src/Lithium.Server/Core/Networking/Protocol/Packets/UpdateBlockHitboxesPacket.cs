@@ -14,8 +14,11 @@ namespace Lithium.Server.Core.Networking.Protocol.Packets;
 )]
 public sealed class UpdateBlockHitboxesPacket : INetworkSerializable
 {
-    [JsonPropertyName("type")] public UpdateType Type { get; set; } = UpdateType.Init;
-    [JsonPropertyName("maxId")] public int MaxId { get; set; }
+    [JsonPropertyName("type")]
+    public UpdateType Type { get; set; } = UpdateType.Init;
+
+    [JsonPropertyName("maxId")]
+    public int MaxId { get; set; }
 
     [JsonPropertyName("blockBaseHitboxes")]
     public Dictionary<int, Hitbox[]>? BlockBaseHitboxes { get; set; }
@@ -53,18 +56,19 @@ public sealed class UpdateBlockHitboxesPacket : INetworkSerializable
 
         if (bits.IsSet(1))
         {
-            var dictCount = reader.ReadVarInt32();
-            BlockBaseHitboxes = new Dictionary<int, Hitbox[]>(dictCount);
-            for (var i = 0; i < dictCount; i++)
+            var count = reader.ReadVarInt32();
+            BlockBaseHitboxes = new Dictionary<int, Hitbox[]>(count);
+            for (var i = 0; i < count; i++)
             {
                 var key = reader.ReadInt32();
-                var arrayCount = reader.ReadVarInt32();
-                var hitboxes = new Hitbox[arrayCount];
-                for (var j = 0; j < arrayCount; j++)
+                var arrayLength = reader.ReadVarInt32();
+                var hitboxes = new Hitbox[arrayLength];
+                for (var j = 0; j < arrayLength; j++)
                 {
-                    hitboxes[j] = reader.ReadObject<Hitbox>();
+                    var hitbox = new Hitbox();
+                    hitbox.Deserialize(reader);
+                    hitboxes[j] = hitbox;
                 }
-
                 BlockBaseHitboxes[key] = hitboxes;
             }
         }

@@ -205,8 +205,6 @@ public sealed class SetupPacketRouter(
             await client.SendPacketAsync(packet);
         }
 
-        // Direction: Inbound
-        // Id: 50
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_particle_spawners.json"));
             var packet = JsonSerializer.Deserialize<UpdateParticleSpawnersPacket>(packetFile);
@@ -230,18 +228,8 @@ public sealed class SetupPacketRouter(
 
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_ambience_fx.json"));
-            // var options = new JsonSerializerOptions
-            // {
-            //     Converters = { new IntKeyDictionaryConverter<AmbienceFx>(), new JsonStringEnumConverter() }
-            // };
             var packet = JsonSerializer.Deserialize<UpdateAmbienceFxPacket>(packetFile);
         
-            // logger.LogInformation("Send UpdateAmbienceFxPacket: \n" + JsonSerializer.Serialize(packet, new JsonSerializerOptions
-            // {
-            //     WriteIndented = true,
-            //     // Converters = { new JsonStringEnumConverter() }
-            // }));
-            
             await client.SendPacketAsync(packet);
         }
 
@@ -451,6 +439,13 @@ public sealed class SetupPacketRouter(
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_translations.json"));
             var packet = JsonSerializer.Deserialize<UpdateTranslationsPacket>(packetFile);
+        
+            await client.SendPacketAsync(packet);
+        }
+        
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_block_hitboxes.json"));
+            var packet = JsonSerializer.Deserialize<UpdateBlockHitboxesPacket>(packetFile);
         
             await client.SendPacketAsync(packet);
         }
