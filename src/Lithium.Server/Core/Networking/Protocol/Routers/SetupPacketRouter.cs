@@ -68,15 +68,9 @@ public sealed class SetupPacketRouter(
         logger.LogInformation("Received request assets packet: {Length}", packet.Assets?.Length);
         assets.Sent(packet.Assets);
 
-        await client.SendPacketAsync(new WorldLoadProgressPacket
-            { Status = "Send assets ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
-        
         // await SendAssetsToClient(client, packet.Assets ?? []);
 
         logger.LogInformation("Assets sent.");
-        
-        await client.SendPacketAsync(new WorldLoadProgressPacket
-            { Status = "Send fake assets ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
         
         await SendFakeAssets(client);
 
@@ -191,49 +185,50 @@ public sealed class SetupPacketRouter(
     
     private async Task SendFakeAssets(IClient client)
     {
-        await SendFakeAsset<UpdateBlockSoundSetsPacket>(client, "update_block_sound_sets.json");
-        await SendFakeAsset<UpdateSoundSetsPacket>(client, "update_sound_sets.json");
-        await SendFakeAsset<UpdateBlockTypesPacket>(client, "update_block_types.json");
-        await SendFakeAsset<UpdateItemPlayerAnimationsPacket>(client, "update_item_player_animations.json");
-        await SendFakeAsset<UpdateItemCategoriesPacket>(client, "update_item_categories.json");
-        await SendFakeAsset<UpdateBlockBreakingDecalsPacket>(client, "update_block_breaking_decals.json");
-        await SendFakeAsset<UpdateFieldcraftCategoriesPacket>(client, "update_fieldcraft_categories.json");
-        await SendFakeAsset<UpdateItemQualitiesPacket>(client, "update_item_qualities.json");
-        await SendFakeAsset<UpdateParticleSpawnersPacket>(client, "update_particle_spawners.json");
-        await SendFakeAsset<UpdateUnarmedInteractionsPacket>(client, "update_unarmed_interactions.json");
-        await SendFakeAsset<UpdateBlockParticleSetsPacket>(client, "update_block_particle_sets.json");
-        await SendFakeAsset<UpdateAmbienceFxPacket>(client, "update_ambience_fx.json");
-        await SendFakeAsset<UpdateBlockGroupsPacket>(client, "update_block_groups.json");
-        await SendFakeAsset<UpdateViewBobbingPacket>(client, "update_view_bobbing.json");
-        await SendFakeAsset<UpdateFluidsPacket>(client, "update_fluids.json");
-        await SendFakeAsset<UpdateCameraShakePacket>(client, "update_camera_shake.json");
-        await SendFakeAsset<UpdateProjectileConfigsPacket>(client, "update_projectile_configs.json");
-        await SendFakeAsset<UpdateModelVFXsPacket>(client, "update_model_vfxs.json");
-        await SendFakeAsset<UpdateItemSoundSetsPacket>(client, "update_item_sound_sets.json");
-        await SendFakeAsset<UpdateEntityEffectsPacket>(client, "update_entity_effects.json");
-        await SendFakeAsset<UpdateAudioCategoriesPacket>(client, "update_audio_categories.json");
-        await SendFakeAsset<UpdateEnvironmentsPacket>(client, "update_environments.json");
-        await SendFakeAsset<UpdateItemReticlesPacket>(client, "update_item_reticles.json");
-        await SendFakeAsset<UpdateRepulsionConfigPacket>(client, "update_repulsion_config.json");
-        await SendFakeAsset<UpdateResourceTypesPacket>(client, "update_resource_types.json");
-        await SendFakeAsset<UpdateEqualizerEffectsPacket>(client, "update_equalizer_effects.json");
         await SendFakeAsset<UpdateEntityStatTypesPacket>(client, "update_entity_stat_types.json");
-        await SendFakeAsset<UpdateEntityUIComponentsPacket>(client, "update_entity_ui_components.json");
+        await SendFakeAsset<UpdateItemSoundSetsPacket>(client, "update_item_sound_sets.json");
+        await SendFakeAsset<UpdateReverbEffectsPacket>(client, "update_reverb_effects.json");
+        await SendFakeAsset<UpdateItemReticlesPacket>(client, "update_item_reticles.json");
+        await SendFakeAsset<UpdateBlockHitboxesPacket>(client, "update_block_hitboxes.json");
         await SendFakeAsset<UpdateBlockSetsPacket>(client, "update_block_sets.json");
-        await SendFakeAsset<UpdateItemsPacket>(client, "update_items.json");
-        await SendFakeAsset<UpdateHitboxCollisionConfigPacket>(client, "update_hitbox_collision_config.json");
-        await SendFakeAsset<UpdateSoundEventsPacket>(client, "update_sound_events.json");
+        await SendFakeAsset<UpdateFieldcraftCategoriesPacket>(client, "update_fieldcraft_categories.json");
         await SendFakeAsset<UpdateFluidFXPacket>(client, "update_fluid_fx.json");
-        await SendFakeAsset<UpdateParticleSystemsPacket>(client, "update_particle_systems.json");
+        await SendFakeAsset<UpdateWeathersPacket>(client, "update_weathers.json");
+        await SendFakeAsset<UpdateAudioCategoriesPacket>(client, "update_audio_categories.json");
+        await SendFakeAsset<UpdateModelVFXsPacket>(client, "update_model_vfxs.json");
         await SendFakeAsset<UpdateInteractionsPacket>(client, "update_interactions.json");
         await SendFakeAsset<UpdateRootInteractionsPacket>(client, "update_root_interactions.json");
-        await SendFakeAsset<UpdateRecipesPacket>(client, "update_recipes.json");
-        await SendFakeAsset<UpdateTrailsPacket>(client, "update_trails.json");
-        await SendFakeAsset<UpdateReverbEffectsPacket>(client, "update_reverb_effects.json");
+        await SendFakeAsset<UpdateSoundSetsPacket>(client, "update_sound_sets.json");
+        await SendFakeAsset<UpdateEntityUIComponentsPacket>(client, "update_entity_ui_components.json");
+        await SendFakeAsset<UpdateInteractionsPacket>(client, "update_interactions.json");
+        await SendFakeAsset<UpdateEnvironmentsPacket>(client, "update_environments.json");
+        await SendFakeAsset<UpdateItemCategoriesPacket>(client, "update_item_categories.json");
+        await SendFakeAsset<UpdateBlockParticleSetsPacket>(client, "update_block_particle_sets.json");
+        await SendFakeAsset<UpdateBlockTypesPacket>(client, "update_block_types.json");
         await SendFakeAsset<UpdateTagPatternsPacket>(client, "update_tag_patterns.json");
-        await SendFakeAsset<UpdateWeathersPacket>(client, "update_weathers.json");
+        await SendFakeAsset<UpdateRepulsionConfigPacket>(client, "update_repulsion_config.json");
+        await SendFakeAsset<UpdateCameraShakePacket>(client, "update_camera_shake.json");
+        await SendFakeAsset<UpdateItemPlayerAnimationsPacket>(client, "update_item_player_animations.json");
+        await SendFakeAsset<UpdateUnarmedInteractionsPacket>(client, "update_unarmed_interactions.json");
+        await SendFakeAsset<UpdateResourceTypesPacket>(client, "update_resource_types.json");
+        await SendFakeAsset<UpdateRecipesPacket>(client, "update_recipes.json");
+        await SendFakeAsset<UpdateFluidsPacket>(client, "update_fluids.json");
+        await SendFakeAsset<UpdateHitboxCollisionConfigPacket>(client, "update_hitbox_collision_config.json");
+        await SendFakeAsset<UpdateEntityEffectsPacket>(client, "update_entity_effects.json");
+        await SendFakeAsset<UpdateItemQualitiesPacket>(client, "update_item_qualities.json");
+        await SendFakeAsset<UpdateBlockSoundSetsPacket>(client, "update_block_sound_sets.json");
+        await SendFakeAsset<UpdateBlockBreakingDecalsPacket>(client, "update_block_breaking_decals.json");
+        await SendFakeAsset<UpdateParticleSpawnersPacket>(client, "update_particle_spawners.json");
+        await SendFakeAsset<UpdateSoundEventsPacket>(client, "update_sound_events.json");
+        await SendFakeAsset<UpdateProjectileConfigsPacket>(client, "update_projectile_configs.json");
+        await SendFakeAsset<UpdateViewBobbingPacket>(client, "update_view_bobbing.json");
+        await SendFakeAsset<UpdateAmbienceFxPacket>(client, "update_ambience_fx.json");
+        await SendFakeAsset<UpdateItemsPacket>(client, "update_items.json");
+        await SendFakeAsset<UpdateBlockGroupsPacket>(client, "update_block_groups.json");
+        await SendFakeAsset<UpdateParticleSystemsPacket>(client, "update_particle_systems.json");
+        await SendFakeAsset<UpdateEqualizerEffectsPacket>(client, "update_equalizer_effects.json");
+        await SendFakeAsset<UpdateTrailsPacket>(client, "update_trails.json");
         await SendFakeAsset<UpdateTranslationsPacket>(client, "update_translations.json");
-        await SendFakeAsset<UpdateBlockHitboxesPacket>(client, "update_block_hitboxes.json");
     }
 
     [PacketHandler]
