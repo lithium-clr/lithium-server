@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class FirstClickInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 18;
     
     [JsonPropertyName("click")] public int Click { get; set; } = int.MinValue;

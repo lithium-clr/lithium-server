@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ChangeActiveSlotInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 24;
     
     [JsonPropertyName("targetSlot")] public int TargetSlot { get; set; } = int.MinValue;

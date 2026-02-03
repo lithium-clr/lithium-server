@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class SpawnDeployableFromRaycastInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 42;
     
     [JsonPropertyName("deployableConfig")] public DeployableConfig? DeployableConfig { get; set; }

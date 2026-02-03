@@ -13,8 +13,8 @@ namespace Lithium.Server.Core.Networking.Protocol;
 )]
 public sealed class RailPoint : INetworkSerializable
 {
-    [JsonPropertyName("point")] public Vector3? Point { get; set; }
-    [JsonPropertyName("normal")] public Vector3? Normal { get; set; }
+    [JsonPropertyName("point")] public Vector3Float? Point { get; set; }
+    [JsonPropertyName("normal")] public Vector3Float? Normal { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -27,9 +27,9 @@ public sealed class RailPoint : INetworkSerializable
 
         if (Point is not null)
         {
-            writer.WriteFloat32(Point.Value.X);
-            writer.WriteFloat32(Point.Value.Y);
-            writer.WriteFloat32(Point.Value.Z);
+            writer.WriteFloat32(Point.X);
+            writer.WriteFloat32(Point.Y);
+            writer.WriteFloat32(Point.Z);
         }
         else
         {
@@ -40,9 +40,9 @@ public sealed class RailPoint : INetworkSerializable
 
         if (Normal is not null)
         {
-            writer.WriteFloat32(Normal.Value.X);
-            writer.WriteFloat32(Normal.Value.Y);
-            writer.WriteFloat32(Normal.Value.Z);
+            writer.WriteFloat32(Normal.X);
+            writer.WriteFloat32(Normal.Y);
+            writer.WriteFloat32(Normal.Z);
         }
         else
         {
@@ -58,7 +58,7 @@ public sealed class RailPoint : INetworkSerializable
 
         if (bits.IsSet(1))
         {
-            Point = new Vector3(
+            Point = new Vector3Float(
                 reader.ReadFloat32(),
                 reader.ReadFloat32(),
                 reader.ReadFloat32()
@@ -73,7 +73,7 @@ public sealed class RailPoint : INetworkSerializable
 
         if (bits.IsSet(2))
         {
-            Normal = new Vector3(
+            Normal = new Vector3Float(
                 reader.ReadFloat32(),
                 reader.ReadFloat32(),
                 reader.ReadFloat32()

@@ -12,10 +12,10 @@ namespace Lithium.Server.Core.Networking.Protocol;
 )]
 public sealed class AngledDamage : INetworkSerializable
 {
-    [JsonPropertyName("angle")]          public double          Angle          { get; set; }
-    [JsonPropertyName("angleDistance")]  public double          AngleDistance  { get; set; }
-    [JsonPropertyName("damageEffects")]  public DamageEffects? DamageEffects { get; set; }
-    [JsonPropertyName("next")]           public int             Next           { get; set; }
+    [JsonPropertyName("angle")] public double Angle { get; set; }
+    [JsonPropertyName("angleDistance")] public double AngleDistance { get; set; }
+    [JsonPropertyName("damageEffects")] public DamageEffects? DamageEffects { get; set; }
+    [JsonPropertyName("next")] public int Next { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -33,11 +33,15 @@ public sealed class AngledDamage : INetworkSerializable
     public void Deserialize(PacketReader reader)
     {
         var bits = reader.ReadBits();
-        Angle         = reader.ReadFloat64();
+        Angle = reader.ReadFloat64();
         AngleDistance = reader.ReadFloat64();
-        Next          = reader.ReadInt32();
+        Next = reader.ReadInt32();
 
-        if (bits.IsSet(1)) { DamageEffects = new DamageEffects(); DamageEffects.Deserialize(reader); }
+        if (bits.IsSet(1))
+        {
+            DamageEffects = new DamageEffects();
+            DamageEffects.Deserialize(reader);
+        }
     }
 
     public int ComputeSize()
@@ -57,9 +61,9 @@ public sealed class AngledDamage : INetworkSerializable
 )]
 public sealed class TargetedDamage : INetworkSerializable
 {
-    [JsonPropertyName("index")]         public int             Index         { get; set; }
+    [JsonPropertyName("index")] public int Index { get; set; }
     [JsonPropertyName("damageEffects")] public DamageEffects? DamageEffects { get; set; }
-    [JsonPropertyName("next")]          public int             Next          { get; set; }
+    [JsonPropertyName("next")] public int Next { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -77,9 +81,13 @@ public sealed class TargetedDamage : INetworkSerializable
     {
         var bits = reader.ReadBits();
         Index = reader.ReadInt32();
-        Next  = reader.ReadInt32();
+        Next = reader.ReadInt32();
 
-        if (bits.IsSet(1)) { DamageEffects = new DamageEffects(); DamageEffects.Deserialize(reader); }
+        if (bits.IsSet(1))
+        {
+            DamageEffects = new DamageEffects();
+            DamageEffects.Deserialize(reader);
+        }
     }
 
     public int ComputeSize()
@@ -99,10 +107,14 @@ public sealed class TargetedDamage : INetworkSerializable
 )]
 public sealed class EntityStatOnHit : INetworkSerializable
 {
-    [JsonPropertyName("entityStatIndex")]           public int     EntityStatIndex           { get; set; }
-    [JsonPropertyName("amount")]                    public float   Amount                    { get; set; }
-    [JsonPropertyName("multipliersPerEntitiesHit")] public float[]? MultipliersPerEntitiesHit { get; set; }
-    [JsonPropertyName("multiplierPerExtraEntityHit")] public float   MultiplierPerExtraEntityHit { get; set; }
+    [JsonPropertyName("entityStatIndex")] public int EntityStatIndex { get; set; }
+    [JsonPropertyName("amount")] public float Amount { get; set; }
+
+    [JsonPropertyName("multipliersPerEntitiesHit")]
+    public float[]? MultipliersPerEntitiesHit { get; set; }
+
+    [JsonPropertyName("multiplierPerExtraEntityHit")]
+    public float MultiplierPerExtraEntityHit { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -124,8 +136,8 @@ public sealed class EntityStatOnHit : INetworkSerializable
     public void Deserialize(PacketReader reader)
     {
         var bits = reader.ReadBits();
-        EntityStatIndex           = reader.ReadInt32();
-        Amount                    = reader.ReadFloat32();
+        EntityStatIndex = reader.ReadInt32();
+        Amount = reader.ReadFloat32();
         MultiplierPerExtraEntityHit = reader.ReadFloat32();
 
         if (bits.IsSet(1))
@@ -139,7 +151,8 @@ public sealed class EntityStatOnHit : INetworkSerializable
     public int ComputeSize()
     {
         int size = 13;
-        if (MultipliersPerEntitiesHit is not null) size += PacketWriter.GetVarIntSize(MultipliersPerEntitiesHit.Length) + MultipliersPerEntitiesHit.Length * 4;
+        if (MultipliersPerEntitiesHit is not null)
+            size += PacketWriter.GetVarIntSize(MultipliersPerEntitiesHit.Length) + MultipliersPerEntitiesHit.Length * 4;
         return size;
     }
 }

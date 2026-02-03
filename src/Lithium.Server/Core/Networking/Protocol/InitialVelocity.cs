@@ -13,13 +13,13 @@ namespace Lithium.Server.Core.Networking.Protocol;
 public sealed class InitialVelocity : INetworkSerializable
 {
     [JsonPropertyName("yaw")]
-    public FloatRange? Yaw { get; set; }
+    public RangeFloat? Yaw { get; set; }
 
     [JsonPropertyName("pitch")]
-    public FloatRange? Pitch { get; set; }
+    public RangeFloat? Pitch { get; set; }
 
     [JsonPropertyName("speed")]
-    public FloatRange? Speed { get; set; }
+    public RangeFloat? Speed { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -47,21 +47,21 @@ public sealed class InitialVelocity : INetworkSerializable
 
         if (bits.IsSet(1))
         {
-            Yaw = new FloatRange();
+            Yaw = new RangeFloat();
             Yaw.Deserialize(reader);
         }
         else reader.SeekTo(reader.GetPosition() + 8);
 
         if (bits.IsSet(2))
         {
-            Pitch = new FloatRange();
+            Pitch = new RangeFloat();
             Pitch.Deserialize(reader);
         }
         else reader.SeekTo(reader.GetPosition() + 8);
 
         if (bits.IsSet(4))
         {
-            Speed = new FloatRange();
+            Speed = new RangeFloat();
             Speed.Deserialize(reader);
         }
         else reader.SeekTo(reader.GetPosition() + 8);

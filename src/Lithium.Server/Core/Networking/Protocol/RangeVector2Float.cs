@@ -6,10 +6,10 @@ namespace Lithium.Server.Core.Networking.Protocol;
 public sealed class RangeVector2Float : INetworkSerializable
 {
     [JsonPropertyName("x")]
-    public FloatRange? X { get; set; }
+    public RangeFloat? X { get; set; }
 
     [JsonPropertyName("y")]
-    public FloatRange? Y { get; set; }
+    public RangeFloat? Y { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -43,7 +43,7 @@ public sealed class RangeVector2Float : INetworkSerializable
 
         if (bits.IsSet(1))
         {
-            X = reader.ReadObject<FloatRange>();
+            X = reader.ReadObject<RangeFloat>();
         }
         else
         {
@@ -53,7 +53,7 @@ public sealed class RangeVector2Float : INetworkSerializable
 
         if (bits.IsSet(2))
         {
-            Y = reader.ReadObject<FloatRange>();
+            Y = reader.ReadObject<RangeFloat>();
         }
         else
         {

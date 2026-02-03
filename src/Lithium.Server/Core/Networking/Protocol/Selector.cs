@@ -6,15 +6,22 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 [JsonConverter(typeof(SelectorConverter))]
 [Packet(MaxSize = 42)]
-public abstract class Selector : INetworkSerializable
+public class Selector : INetworkSerializable
 {
-    [JsonIgnore]
-    [JsonPropertyName("typeId")]
-    public abstract int TypeId { get; }
+    [JsonIgnore] public virtual int TypeId { get; }
 
-    public abstract void Serialize(PacketWriter writer);
-    public abstract void Deserialize(PacketReader reader);
-    public abstract int ComputeSize();
+    public virtual void Serialize(PacketWriter writer)
+    {
+    }
+
+    public virtual void Deserialize(PacketReader reader)
+    {
+    }
+
+    public virtual int ComputeSize()
+    {
+        return 0;
+    }
 
     public void SerializeWithTypeId(PacketWriter writer)
     {
@@ -57,8 +64,9 @@ public sealed class SelectorConverter : PolymorphicConverter<Selector>
 
 public sealed class AOECircleSelector : Selector
 {
-    public override int TypeId => 0;
-    [JsonPropertyName("range")]  public float Range { get; set; }
+    [JsonIgnore] public override int TypeId => 0;
+
+    [JsonPropertyName("range")] public float Range { get; set; }
     [JsonPropertyName("offset")] public Vector3Float? Offset { get; set; }
 
     public override void Serialize(PacketWriter writer)
@@ -84,8 +92,9 @@ public sealed class AOECircleSelector : Selector
 
 public sealed class AOECylinderSelector : Selector
 {
-    public override int TypeId => 1;
-    [JsonPropertyName("range")]  public float Range { get; set; }
+    [JsonIgnore] public override int TypeId => 1;
+
+    [JsonPropertyName("range")] public float Range { get; set; }
     [JsonPropertyName("height")] public float Height { get; set; }
     [JsonPropertyName("offset")] public Vector3Float? Offset { get; set; }
 
@@ -114,12 +123,15 @@ public sealed class AOECylinderSelector : Selector
 
 public sealed class RaycastSelector : Selector
 {
-    public override int TypeId => 2;
-    [JsonPropertyName("offset")]                       public Vector3Float? Offset { get; set; }
-    [JsonPropertyName("distance")]                     public int Distance { get; set; }
-    [JsonPropertyName("blockTagIndex")]                public int BlockTagIndex { get; set; } = int.MinValue;
-    [JsonPropertyName("ignoreFluids")]                 public bool IgnoreFluids { get; set; }
-    [JsonPropertyName("ignoreEmptyCollisionMaterial")] public bool IgnoreEmptyCollisionMaterial { get; set; }
+    [JsonIgnore] public override int TypeId => 2;
+
+    [JsonPropertyName("offset")] public Vector3Float? Offset { get; set; }
+    [JsonPropertyName("distance")] public int Distance { get; set; }
+    [JsonPropertyName("blockTagIndex")] public int BlockTagIndex { get; set; } = int.MinValue;
+    [JsonPropertyName("ignoreFluids")] public bool IgnoreFluids { get; set; }
+
+    [JsonPropertyName("ignoreEmptyCollisionMaterial")]
+    public bool IgnoreEmptyCollisionMaterial { get; set; }
 
     public override void Serialize(PacketWriter writer)
     {
@@ -157,16 +169,20 @@ public enum HorizontalSelectorDirection : byte
 
 public sealed class HorizontalSelector : Selector
 {
-    public override int TypeId => 3;
-    [JsonPropertyName("extendTop")]      public float ExtendTop      { get; set; }
-    [JsonPropertyName("extendBottom")]   public float ExtendBottom   { get; set; }
-    [JsonPropertyName("yawLength")]      public float YawLength      { get; set; }
+    [JsonIgnore] public override int TypeId => 3;
+
+    [JsonPropertyName("extendTop")] public float ExtendTop { get; set; }
+    [JsonPropertyName("extendBottom")] public float ExtendBottom { get; set; }
+    [JsonPropertyName("yawLength")] public float YawLength { get; set; }
     [JsonPropertyName("yawStartOffset")] public float YawStartOffset { get; set; }
-    [JsonPropertyName("pitchOffset")]    public float PitchOffset    { get; set; }
-    [JsonPropertyName("rollOffset")]     public float RollOffset     { get; set; }
-    [JsonPropertyName("startDistance")]  public float StartDistance  { get; set; }
-    [JsonPropertyName("endDistance")]    public float EndDistance    { get; set; }
-    [JsonPropertyName("direction")]      public HorizontalSelectorDirection Direction { get; set; } = HorizontalSelectorDirection.ToLeft;
+    [JsonPropertyName("pitchOffset")] public float PitchOffset { get; set; }
+    [JsonPropertyName("rollOffset")] public float RollOffset { get; set; }
+    [JsonPropertyName("startDistance")] public float StartDistance { get; set; }
+    [JsonPropertyName("endDistance")] public float EndDistance { get; set; }
+
+    [JsonPropertyName("direction")]
+    public HorizontalSelectorDirection Direction { get; set; } = HorizontalSelectorDirection.ToLeft;
+
     [JsonPropertyName("testLineOfSight")] public bool TestLineOfSight { get; set; }
 
     public override void Serialize(PacketWriter writer)
@@ -185,15 +201,15 @@ public sealed class HorizontalSelector : Selector
 
     public override void Deserialize(PacketReader reader)
     {
-        ExtendTop       = reader.ReadFloat32();
-        ExtendBottom    = reader.ReadFloat32();
-        YawLength       = reader.ReadFloat32();
-        YawStartOffset  = reader.ReadFloat32();
-        PitchOffset     = reader.ReadFloat32();
-        RollOffset      = reader.ReadFloat32();
-        StartDistance   = reader.ReadFloat32();
-        EndDistance     = reader.ReadFloat32();
-        Direction       = reader.ReadEnum<HorizontalSelectorDirection>();
+        ExtendTop = reader.ReadFloat32();
+        ExtendBottom = reader.ReadFloat32();
+        YawLength = reader.ReadFloat32();
+        YawStartOffset = reader.ReadFloat32();
+        PitchOffset = reader.ReadFloat32();
+        RollOffset = reader.ReadFloat32();
+        StartDistance = reader.ReadFloat32();
+        EndDistance = reader.ReadFloat32();
+        Direction = reader.ReadEnum<HorizontalSelectorDirection>();
         TestLineOfSight = reader.ReadBoolean();
     }
 
@@ -202,16 +218,17 @@ public sealed class HorizontalSelector : Selector
 
 public sealed class StabSelector : Selector
 {
-    public override int TypeId => 4;
-    [JsonPropertyName("extendTop")]      public float ExtendTop      { get; set; }
-    [JsonPropertyName("extendBottom")]   public float ExtendBottom   { get; set; }
-    [JsonPropertyName("extendLeft")]     public float ExtendLeft     { get; set; }
-    [JsonPropertyName("extendRight")]    public float ExtendRight    { get; set; }
-    [JsonPropertyName("yawOffset")]      public float YawOffset      { get; set; }
-    [JsonPropertyName("pitchOffset")]    public float PitchOffset    { get; set; }
-    [JsonPropertyName("rollOffset")]     public float RollOffset     { get; set; }
-    [JsonPropertyName("startDistance")]  public float StartDistance  { get; set; }
-    [JsonPropertyName("endDistance")]    public float EndDistance    { get; set; }
+    [JsonIgnore] public override int TypeId => 4;
+
+    [JsonPropertyName("extendTop")] public float ExtendTop { get; set; }
+    [JsonPropertyName("extendBottom")] public float ExtendBottom { get; set; }
+    [JsonPropertyName("extendLeft")] public float ExtendLeft { get; set; }
+    [JsonPropertyName("extendRight")] public float ExtendRight { get; set; }
+    [JsonPropertyName("yawOffset")] public float YawOffset { get; set; }
+    [JsonPropertyName("pitchOffset")] public float PitchOffset { get; set; }
+    [JsonPropertyName("rollOffset")] public float RollOffset { get; set; }
+    [JsonPropertyName("startDistance")] public float StartDistance { get; set; }
+    [JsonPropertyName("endDistance")] public float EndDistance { get; set; }
     [JsonPropertyName("testLineOfSight")] public bool TestLineOfSight { get; set; }
 
     public override void Serialize(PacketWriter writer)
@@ -230,15 +247,15 @@ public sealed class StabSelector : Selector
 
     public override void Deserialize(PacketReader reader)
     {
-        ExtendTop       = reader.ReadFloat32();
-        ExtendBottom    = reader.ReadFloat32();
-        ExtendLeft      = reader.ReadFloat32();
-        ExtendRight     = reader.ReadFloat32();
-        YawOffset       = reader.ReadFloat32();
-        PitchOffset     = reader.ReadFloat32();
-        RollOffset      = reader.ReadFloat32();
-        StartDistance   = reader.ReadFloat32();
-        EndDistance     = reader.ReadFloat32();
+        ExtendTop = reader.ReadFloat32();
+        ExtendBottom = reader.ReadFloat32();
+        ExtendLeft = reader.ReadFloat32();
+        ExtendRight = reader.ReadFloat32();
+        YawOffset = reader.ReadFloat32();
+        PitchOffset = reader.ReadFloat32();
+        RollOffset = reader.ReadFloat32();
+        StartDistance = reader.ReadFloat32();
+        EndDistance = reader.ReadFloat32();
         TestLineOfSight = reader.ReadBoolean();
     }
 

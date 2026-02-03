@@ -7,6 +7,6 @@ public enum SoundCategory : byte
 {
     Music = 0,
     Ambient = 1,
-    Sfx = 2,
-    Ui = 3
+    SFX = 2,
+    UI = 3
 }

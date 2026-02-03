@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ApplyForceInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 26;
     
     [JsonPropertyName("velocityConfig")] public VelocityConfig? VelocityConfig { get; set; }

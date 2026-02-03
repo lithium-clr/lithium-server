@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ChainFlagInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 37;
     
     [JsonPropertyName("chainId")] public string? ChainId { get; set; }

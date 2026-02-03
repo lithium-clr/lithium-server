@@ -14,7 +14,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 public sealed class InteractionCamera : INetworkSerializable
 {
     [JsonPropertyName("time")] public float Time { get; set; }
-    [JsonPropertyName("position")] public Vector3? Position { get; set; }
+    [JsonPropertyName("position")] public Vector3Float? Position { get; set; }
     [JsonPropertyName("rotation")] public Direction? Rotation { get; set; }
 
     public void Serialize(PacketWriter writer)
@@ -30,9 +30,9 @@ public sealed class InteractionCamera : INetworkSerializable
 
         if (Position is not null)
         {
-            writer.WriteFloat32(Position.Value.X);
-            writer.WriteFloat32(Position.Value.Y);
-            writer.WriteFloat32(Position.Value.Z);
+            writer.WriteFloat32(Position.X);
+            writer.WriteFloat32(Position.Y);
+            writer.WriteFloat32(Position.Z);
         }
         else
         {
@@ -61,7 +61,7 @@ public sealed class InteractionCamera : INetworkSerializable
 
         if (bits.IsSet(1))
         {
-            Position = new Vector3(reader.ReadFloat32(), reader.ReadFloat32(), reader.ReadFloat32());
+            Position = new Vector3Float(reader.ReadFloat32(), reader.ReadFloat32(), reader.ReadFloat32());
         }
         else
         {

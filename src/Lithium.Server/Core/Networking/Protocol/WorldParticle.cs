@@ -12,23 +12,23 @@ namespace Lithium.Server.Core.Networking.Protocol;
 )]
 public sealed class WorldParticle : INetworkSerializable
 {
-    [JsonPropertyName("systemId")]       public string?  SystemId       { get; set; }
-    [JsonPropertyName("scale")]          public float    Scale          { get; set; }
-    [JsonPropertyName("color")]          public Color?   Color          { get; set; }
+    [JsonPropertyName("systemId")] public string? SystemId { get; set; }
+    [JsonPropertyName("scale")] public float Scale { get; set; }
+    [JsonPropertyName("color")] public Color? Color { get; set; }
     [JsonPropertyName("positionOffset")] public Vector3Float? PositionOffset { get; set; }
     [JsonPropertyName("rotationOffset")] public Direction? RotationOffset { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
         var bits = new BitSet(1);
-        if (Color is not null)          bits.SetBit(1);
+        if (Color is not null) bits.SetBit(1);
         if (PositionOffset is not null) bits.SetBit(2);
         if (RotationOffset is not null) bits.SetBit(4);
-        if (SystemId is not null)       bits.SetBit(8);
+        if (SystemId is not null) bits.SetBit(8);
         writer.WriteBits(bits);
 
         writer.WriteFloat32(Scale);
-        
+
         if (Color is not null) Color.Serialize(writer);
         else writer.WriteZero(3);
 

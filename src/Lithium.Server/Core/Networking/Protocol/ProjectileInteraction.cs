@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ProjectileInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 32;
     
     [JsonPropertyName("configId")] public string? ConfigId { get; set; }

@@ -6,13 +6,13 @@ namespace Lithium.Server.Core.Networking.Protocol;
 public sealed class RangeVector3Float : INetworkSerializable
 {
     [JsonPropertyName("x")]
-    public FloatRange? X { get; set; }
+    public RangeFloat? X { get; set; }
 
     [JsonPropertyName("y")]
-    public FloatRange? Y { get; set; }
+    public RangeFloat? Y { get; set; }
 
     [JsonPropertyName("z")]
-    public FloatRange? Z { get; set; }
+    public RangeFloat? Z { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -31,8 +31,8 @@ public sealed class RangeVector3Float : INetworkSerializable
     {
         var bits = new BitSet(reader.ReadUInt8());
 
-        if (bits.IsSet(1)) X = reader.ReadObject<FloatRange>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
-        if (bits.IsSet(2)) Y = reader.ReadObject<FloatRange>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
-        if (bits.IsSet(4)) Z = reader.ReadObject<FloatRange>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
+        if (bits.IsSet(1)) X = reader.ReadObject<RangeFloat>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
+        if (bits.IsSet(2)) Y = reader.ReadObject<RangeFloat>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
+        if (bits.IsSet(4)) Z = reader.ReadObject<RangeFloat>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
     }
 }

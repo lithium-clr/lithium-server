@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class RemoveEntityInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 33;
     
     [JsonPropertyName("entityTarget")] public InteractionTarget EntityTarget { get; set; } = InteractionTarget.User;

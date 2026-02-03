@@ -12,11 +12,11 @@ namespace Lithium.Server.Core.Networking.Protocol;
 )]
 public sealed class ChargingDelay : INetworkSerializable
 {
-    [JsonPropertyName("minDelay")]      public float MinDelay      { get; set; }
-    [JsonPropertyName("maxDelay")]      public float MaxDelay      { get; set; }
+    [JsonPropertyName("minDelay")] public float MinDelay { get; set; }
+    [JsonPropertyName("maxDelay")] public float MaxDelay { get; set; }
     [JsonPropertyName("maxTotalDelay")] public float MaxTotalDelay { get; set; }
-    [JsonPropertyName("minHealth")]     public float MinHealth     { get; set; }
-    [JsonPropertyName("maxHealth")]     public float MaxHealth     { get; set; }
+    [JsonPropertyName("minHealth")] public float MinHealth { get; set; }
+    [JsonPropertyName("maxHealth")] public float MaxHealth { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -29,10 +29,10 @@ public sealed class ChargingDelay : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        MinDelay      = reader.ReadFloat32();
-        MaxDelay      = reader.ReadFloat32();
+        MinDelay = reader.ReadFloat32();
+        MaxDelay = reader.ReadFloat32();
         MaxTotalDelay = reader.ReadFloat32();
-        MinHealth     = reader.ReadFloat32();
-        MaxHealth     = reader.ReadFloat32();
+        MinHealth = reader.ReadFloat32();
+        MaxHealth = reader.ReadFloat32();
     }
 }

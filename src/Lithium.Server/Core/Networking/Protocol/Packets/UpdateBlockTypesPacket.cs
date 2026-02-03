@@ -7,7 +7,8 @@ namespace Lithium.Server.Core.Networking.Protocol.Packets;
     VariableBlockStart = 10, MaxSize = 1677721600)]
 public sealed class UpdateBlockTypesPacket : INetworkSerializable
 {
-    [JsonPropertyName("type")] 
+    [JsonPropertyName("type")]
+    [JsonConverter(typeof(JsonStringEnumConverter<UpdateType>))]
     public UpdateType Type { get; set; } = UpdateType.Init;
     
     [JsonPropertyName("maxId")] 

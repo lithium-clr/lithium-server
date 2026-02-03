@@ -44,9 +44,19 @@ public sealed class BlockType : INetworkSerializable
     public ConnectedBlockRuleSet? ConnectedBlockRuleSet { get; set; }
 
     [JsonPropertyName("unknown")] public bool Unknown { get; set; }
-    [JsonPropertyName("drawType")] public DrawType DrawType { get; set; } = DrawType.Empty;
-    [JsonPropertyName("material")] public BlockMaterial Material { get; set; } = BlockMaterial.Empty;
-    [JsonPropertyName("opacity")] public Opacity Opacity { get; set; } = Opacity.Solid;
+    
+    [JsonPropertyName("drawType")]
+    [JsonConverter(typeof(JsonStringEnumConverter<DrawType>))]
+    public DrawType DrawType { get; set; } = DrawType.Empty;
+
+    [JsonPropertyName("material")]
+    [JsonConverter(typeof(JsonStringEnumConverter<BlockMaterial>))]
+    public BlockMaterial Material { get; set; } = BlockMaterial.Empty;
+
+    [JsonPropertyName("opacity")]
+    [JsonConverter(typeof(JsonStringEnumConverter<Opacity>))]
+    public Opacity Opacity { get; set; } = Opacity.Solid;
+    
     [JsonPropertyName("hitbox")] public int Hitbox { get; set; }
 
     [JsonPropertyName("interactionHitbox")]
@@ -59,16 +69,26 @@ public sealed class BlockType : INetworkSerializable
     public int MaxSupportDistance { get; set; }
 
     [JsonPropertyName("blockSupportsRequiredFor")]
+    [JsonConverter(typeof(JsonStringEnumConverter<BlockSupportsRequiredForType>))]
     public BlockSupportsRequiredForType BlockSupportsRequiredFor { get; set; } = BlockSupportsRequiredForType.Any;
 
     [JsonPropertyName("requiresAlphaBlending")]
     public bool RequiresAlphaBlending { get; set; }
 
-    [JsonPropertyName("cubeShadingMode")] public ShadingMode CubeShadingMode { get; set; } = ShadingMode.Standard;
-    [JsonPropertyName("randomRotation")] public RandomRotation RandomRotation { get; set; } = RandomRotation.None;
-    [JsonPropertyName("variantRotation")] public VariantRotation VariantRotation { get; set; } = VariantRotation.None;
+    [JsonPropertyName("cubeShadingMode")]
+    [JsonConverter(typeof(JsonStringEnumConverter<ShadingMode>))]
+    public ShadingMode CubeShadingMode { get; set; } = ShadingMode.Standard;
+
+    [JsonPropertyName("randomRotation")]
+    [JsonConverter(typeof(JsonStringEnumConverter<RandomRotation>))]
+    public RandomRotation RandomRotation { get; set; } = RandomRotation.None;
+
+    [JsonPropertyName("variantRotation")]
+    [JsonConverter(typeof(JsonStringEnumConverter<VariantRotation>))]
+    public VariantRotation VariantRotation { get; set; } = VariantRotation.None;
 
     [JsonPropertyName("rotationYawPlacementOffset")]
+    [JsonConverter(typeof(JsonStringEnumConverter<Rotation>))]
     public Rotation RotationYawPlacementOffset { get; set; } = Rotation.None;
 
     [JsonPropertyName("blockSoundSetIndex")]

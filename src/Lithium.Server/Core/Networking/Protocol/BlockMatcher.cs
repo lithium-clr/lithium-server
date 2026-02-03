@@ -24,14 +24,14 @@ public enum BlockFace : byte
 )]
 public sealed class BlockIdMatcher : INetworkSerializable
 {
-    [JsonPropertyName("id")]       public string? Id       { get; set; }
-    [JsonPropertyName("state")]    public string? State    { get; set; }
-    [JsonPropertyName("tagIndex")] public int     TagIndex { get; set; }
+    [JsonPropertyName("id")] public string? Id { get; set; }
+    [JsonPropertyName("state")] public string? State { get; set; }
+    [JsonPropertyName("tagIndex")] public int TagIndex { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
         var bits = new BitSet(1);
-        if (Id is not null)    bits.SetBit(1);
+        if (Id is not null) bits.SetBit(1);
         if (State is not null) bits.SetBit(2);
         writer.WriteBits(bits);
 
@@ -80,9 +80,9 @@ public sealed class BlockIdMatcher : INetworkSerializable
 )]
 public sealed class BlockMatcher : INetworkSerializable
 {
-    [JsonPropertyName("block")]      public BlockIdMatcher? Block      { get; set; }
-    [JsonPropertyName("face")]       public BlockFace       Face       { get; set; } = BlockFace.None;
-    [JsonPropertyName("staticFace")] public bool            StaticFace { get; set; }
+    [JsonPropertyName("block")] public BlockIdMatcher? Block { get; set; }
+    [JsonPropertyName("face")] public BlockFace Face { get; set; } = BlockFace.None;
+    [JsonPropertyName("staticFace")] public bool StaticFace { get; set; }
 
     public void Serialize(PacketWriter writer)
     {

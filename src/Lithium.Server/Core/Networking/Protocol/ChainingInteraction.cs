@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ChainingInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 11;
     
     [JsonPropertyName("chainId")] public string? ChainId { get; set; }

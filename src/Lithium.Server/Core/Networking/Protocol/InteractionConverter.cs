@@ -1,13 +1,11 @@
 using System.Text.Json;
-using Lithium.Server.Core.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
-public sealed class InteractionConverter : PolymorphicConverter<Interaction>
+public sealed class InteractionConverter : JsonConverter<Interaction>
 {
-    protected override string DiscriminatorPropertyName => "typeId";
-
-    protected override Dictionary<int, Type> DerivedTypes => new()
+    private static readonly Dictionary<int, Type> IdToType = new()
     {
         { 0, typeof(SimpleBlockInteraction) },
         { 1, typeof(SimpleInteraction) },
@@ -55,26 +53,62 @@ public sealed class InteractionConverter : PolymorphicConverter<Interaction>
         { 44, typeof(ToggleGliderInteraction) }
     };
 
-    protected override int DefaultTypeId => 1; // SimpleInteraction is a safer default than SimpleBlockInteraction
+    private const int DefaultTypeId = 1;
 
-    protected override int InferTypeId(JsonElement root)
+    // =========================
+    // WRITE
+    // =========================
+
+    public override void Write(Utf8JsonWriter writer, Interaction value, JsonSerializerOptions options)
     {
-        // ParallelInteraction has "next" as an array
-        if (root.TryGetProperty("next", out var nextProp) && nextProp.ValueKind == JsonValueKind.Array)
+        // Sérialise le type runtime directement
+        JsonSerializer.Serialize(writer, value, value.GetType(), options);
+    }
+
+    // =========================
+    // READ
+    // =========================
+
+    public override Interaction Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        using var doc = JsonDocument.ParseValue(ref reader);
+        var root = doc.RootElement;
+
+        var typeId = InferTypeId(root);
+
+        if (!IdToType.TryGetValue(typeId, out var targetType))
+            targetType = IdToType[DefaultTypeId];
+
+        var json = root.GetRawText();
+
+        return (Interaction)JsonSerializer.Deserialize(json, targetType, options)!;
+    }
+
+    // =========================
+    // TYPE INFERENCE (métier)
+    // =========================
+
+    private static int InferTypeId(JsonElement root)
+    {
+        // ParallelInteraction → next array
+        if (root.TryGetProperty("next", out var nextProp) &&
+            nextProp.ValueKind == JsonValueKind.Array)
             return 23;
 
-        // SimpleBlockInteraction has "useLatestTarget"
+        // SimpleBlockInteraction
         if (root.TryGetProperty("useLatestTarget", out _))
             return 0;
 
-        // MemoriesConditionInteraction has "memoriesNext"
+        // MemoriesConditionInteraction
         if (root.TryGetProperty("memoriesNext", out _))
             return 43;
 
-        // DamageEntityInteraction has "damageEffects" or "angledDamage"
-        if (root.TryGetProperty("damageEffects", out _) || root.TryGetProperty("angledDamage", out _))
+        // DamageEntityInteraction
+        if (root.TryGetProperty("damageEffects", out _) ||
+            root.TryGetProperty("angledDamage", out _))
             return 21;
 
+        // fallback
         return DefaultTypeId;
     }
 }

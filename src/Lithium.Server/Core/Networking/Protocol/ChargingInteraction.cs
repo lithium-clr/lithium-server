@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ChargingInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 9;
     
     [JsonPropertyName("failed")] public int Failed { get; set; } = int.MinValue;

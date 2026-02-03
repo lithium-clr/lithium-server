@@ -19,12 +19,15 @@ public enum VelocityThresholdStyle : byte
 )]
 public sealed class VelocityConfig : INetworkSerializable
 {
-    [JsonPropertyName("groundResistance")]    public float                  GroundResistance    { get; set; }
-    [JsonPropertyName("groundResistanceMax")] public float                  GroundResistanceMax { get; set; }
-    [JsonPropertyName("airResistance")]       public float                  AirResistance       { get; set; }
-    [JsonPropertyName("airResistanceMax")]    public float                  AirResistanceMax    { get; set; }
-    [JsonPropertyName("threshold")]           public float                  Threshold           { get; set; }
-    [JsonPropertyName("style")]               public VelocityThresholdStyle Style               { get; set; } = VelocityThresholdStyle.Linear;
+    [JsonPropertyName("groundResistance")] public float GroundResistance { get; set; }
+
+    [JsonPropertyName("groundResistanceMax")]
+    public float GroundResistanceMax { get; set; }
+
+    [JsonPropertyName("airResistance")] public float AirResistance { get; set; }
+    [JsonPropertyName("airResistanceMax")] public float AirResistanceMax { get; set; }
+    [JsonPropertyName("threshold")] public float Threshold { get; set; }
+    [JsonPropertyName("style")] public VelocityThresholdStyle Style { get; set; } = VelocityThresholdStyle.Linear;
 
     public void Serialize(PacketWriter writer)
     {
@@ -38,12 +41,12 @@ public sealed class VelocityConfig : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        GroundResistance    = reader.ReadFloat32();
+        GroundResistance = reader.ReadFloat32();
         GroundResistanceMax = reader.ReadFloat32();
-        AirResistance       = reader.ReadFloat32();
-        AirResistanceMax    = reader.ReadFloat32();
-        Threshold           = reader.ReadFloat32();
-        Style               = reader.ReadEnum<VelocityThresholdStyle>();
+        AirResistance = reader.ReadFloat32();
+        AirResistanceMax = reader.ReadFloat32();
+        Threshold = reader.ReadFloat32();
+        Style = reader.ReadEnum<VelocityThresholdStyle>();
     }
 
     public int ComputeSize() => 21;
@@ -58,9 +61,9 @@ public sealed class VelocityConfig : INetworkSerializable
 )]
 public sealed class AppliedForce : INetworkSerializable
 {
-    [JsonPropertyName("direction")]      public Vector3Float? Direction      { get; set; }
-    [JsonPropertyName("adjustVertical")] public bool         AdjustVertical { get; set; }
-    [JsonPropertyName("force")]          public float        Force          { get; set; }
+    [JsonPropertyName("direction")] public Vector3Float? Direction { get; set; }
+    [JsonPropertyName("adjustVertical")] public bool AdjustVertical { get; set; }
+    [JsonPropertyName("force")] public float Force { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -82,7 +85,7 @@ public sealed class AppliedForce : INetworkSerializable
         else reader.SeekTo(reader.GetPosition() + 12);
 
         AdjustVertical = reader.ReadBoolean();
-        Force          = reader.ReadFloat32();
+        Force = reader.ReadFloat32();
     }
 
     public int ComputeSize() => 18;

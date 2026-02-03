@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class StatsConditionInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 13;
     
     [JsonPropertyName("costs")] public Dictionary<int, float>? Costs { get; set; }

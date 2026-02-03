@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
+using Lithium.Server.Core.Networking.Protocol.Packets;
 
 namespace Lithium.Server.Core.Networking.Protocol;
 
@@ -29,57 +30,74 @@ public sealed class Weather : INetworkSerializable
     public Cloud[]? Clouds { get; set; }
 
     [JsonPropertyName("sunlightDampingMultiplier")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<float>))]
     public Dictionary<float, float>? SunlightDampingMultiplier { get; set; }
 
     [JsonPropertyName("sunlightColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<Color>))]
     public Dictionary<float, Color>? SunlightColors { get; set; }
 
     [JsonPropertyName("skyTopColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<ColorAlpha>))]
     public Dictionary<float, ColorAlpha>? SkyTopColors { get; set; }
 
     [JsonPropertyName("skyBottomColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<ColorAlpha>))]
     public Dictionary<float, ColorAlpha>? SkyBottomColors { get; set; }
 
     [JsonPropertyName("skySunsetColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<ColorAlpha>))]
     public Dictionary<float, ColorAlpha>? SkySunsetColors { get; set; }
 
     [JsonPropertyName("sunColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<Color>))]
     public Dictionary<float, Color>? SunColors { get; set; }
 
     [JsonPropertyName("sunScales")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<float>))]
     public Dictionary<float, float>? SunScales { get; set; }
 
     [JsonPropertyName("sunGlowColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<ColorAlpha>))]
     public Dictionary<float, ColorAlpha>? SunGlowColors { get; set; }
 
     [JsonPropertyName("moonColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<ColorAlpha>))]
     public Dictionary<float, ColorAlpha>? MoonColors { get; set; }
 
     [JsonPropertyName("moonScales")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<float>))]
     public Dictionary<float, float>? MoonScales { get; set; }
 
     [JsonPropertyName("moonGlowColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<ColorAlpha>))]
     public Dictionary<float, ColorAlpha>? MoonGlowColors { get; set; }
 
     [JsonPropertyName("fogColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<Color>))]
     public Dictionary<float, Color>? FogColors { get; set; }
 
     [JsonPropertyName("fogHeightFalloffs")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<float>))]
     public Dictionary<float, float>? FogHeightFalloffs { get; set; }
 
     [JsonPropertyName("fogDensities")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<float>))]
     public Dictionary<float, float>? FogDensities { get; set; }
 
     [JsonPropertyName("screenEffect")]
     public string? ScreenEffect { get; set; }
 
     [JsonPropertyName("screenEffectColors")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<ColorAlpha>))]
     public Dictionary<float, ColorAlpha>? ScreenEffectColors { get; set; }
 
     [JsonPropertyName("colorFilters")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<Color>))]
     public Dictionary<float, Color>? ColorFilters { get; set; }
 
     [JsonPropertyName("waterTints")]
+    [JsonConverter(typeof(FloatKeyDictionaryConverter<Color>))]
     public Dictionary<float, Color>? WaterTints { get; set; }
 
     [JsonPropertyName("particle")]

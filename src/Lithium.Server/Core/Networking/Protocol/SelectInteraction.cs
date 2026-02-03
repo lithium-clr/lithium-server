@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class SelectInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 20;
     
     [JsonPropertyName("selector")] public Selector? Selector { get; set; }

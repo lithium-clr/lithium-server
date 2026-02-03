@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class BlockConditionInteraction : SimpleBlockInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 14;
     
     [JsonPropertyName("matchers")] public BlockMatcher[]? Matchers { get; set; }

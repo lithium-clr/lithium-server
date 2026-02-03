@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class WieldingInteraction : ChargingInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 10;
     
     [JsonPropertyName("blockedEffects")] public DamageEffects? BlockedEffects { get; set; }

@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ParallelInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 23;
     
     [JsonPropertyName("next")] public int[]? Next { get; set; }

@@ -20,7 +20,7 @@ public enum EntityMatcherType : byte
 )]
 public sealed class EntityMatcher : INetworkSerializable
 {
-    [JsonPropertyName("type")]   public EntityMatcherType Type { get; set; } = EntityMatcherType.Server;
+    [JsonPropertyName("type")] public EntityMatcherType Type { get; set; } = EntityMatcherType.Server;
     [JsonPropertyName("invert")] public bool Invert { get; set; }
 
     public void Serialize(PacketWriter writer)
@@ -47,7 +47,7 @@ public sealed class EntityMatcher : INetworkSerializable
 )]
 public sealed class HitEntity : INetworkSerializable
 {
-    [JsonPropertyName("next")]     public int Next { get; set; }
+    [JsonPropertyName("next")] public int Next { get; set; }
     [JsonPropertyName("matchers")] public EntityMatcher[]? Matchers { get; set; }
 
     public void Serialize(PacketWriter writer)

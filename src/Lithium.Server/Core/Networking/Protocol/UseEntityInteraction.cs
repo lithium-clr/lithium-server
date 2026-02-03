@@ -1,7 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace Lithium.Server.Core.Networking.Protocol;
 
 public class UseEntityInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 6;
 
     public override void Serialize(PacketWriter writer)

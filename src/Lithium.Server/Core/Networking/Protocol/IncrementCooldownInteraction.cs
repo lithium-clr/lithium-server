@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class IncrementCooldownInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 38;
     
     [JsonPropertyName("cooldownId")] public string? CooldownId { get; set; }

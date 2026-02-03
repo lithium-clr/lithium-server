@@ -22,7 +22,6 @@ public sealed class UpdateInteractionsPacket : INetworkSerializable
     public int MaxId { get; set; }
 
     [JsonPropertyName("interactions")]
-    // [JsonConverter(typeof(IntKeyDictionaryConverter<Interaction>))]
     public Dictionary<int, Interaction>? Interactions { get; set; }
 
     public void Serialize(PacketWriter writer)

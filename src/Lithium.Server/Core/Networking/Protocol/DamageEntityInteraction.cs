@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class DamageEntityInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 21;
     
     [JsonPropertyName("next")] public int Next { get; set; } = int.MinValue;

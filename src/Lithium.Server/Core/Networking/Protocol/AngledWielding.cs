@@ -12,9 +12,9 @@ namespace Lithium.Server.Core.Networking.Protocol;
 )]
 public sealed class AngledWielding : INetworkSerializable
 {
-    [JsonPropertyName("angleRad")]         public float AngleRad         { get; set; }
+    [JsonPropertyName("angleRad")] public float AngleRad { get; set; }
     [JsonPropertyName("angleDistanceRad")] public float AngleDistanceRad { get; set; }
-    [JsonPropertyName("hasModifiers")]     public bool  HasModifiers     { get; set; }
+    [JsonPropertyName("hasModifiers")] public bool HasModifiers { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
@@ -25,8 +25,8 @@ public sealed class AngledWielding : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        AngleRad         = reader.ReadFloat32();
+        AngleRad = reader.ReadFloat32();
         AngleDistanceRad = reader.ReadFloat32();
-        HasModifiers     = reader.ReadBoolean();
+        HasModifiers = reader.ReadBoolean();
     }
 }

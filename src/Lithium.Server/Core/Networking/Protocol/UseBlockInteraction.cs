@@ -1,7 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace Lithium.Server.Core.Networking.Protocol;
 
 public class UseBlockInteraction : SimpleBlockInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 5;
 
     public override void Serialize(PacketWriter writer)

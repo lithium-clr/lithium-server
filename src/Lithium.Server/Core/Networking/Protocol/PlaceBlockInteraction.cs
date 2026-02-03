@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class PlaceBlockInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 2;
     
     [JsonPropertyName("blockId")] public int BlockId { get; set; }

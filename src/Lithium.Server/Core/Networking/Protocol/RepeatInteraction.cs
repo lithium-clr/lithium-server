@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class RepeatInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 22;
     
     [JsonPropertyName("forkInteractions")] public int ForkInteractions { get; set; }

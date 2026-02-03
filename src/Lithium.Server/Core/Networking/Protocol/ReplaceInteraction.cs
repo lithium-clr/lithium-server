@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ReplaceInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 15;
     
     [JsonPropertyName("defaultValue")] public int DefaultValue { get; set; }

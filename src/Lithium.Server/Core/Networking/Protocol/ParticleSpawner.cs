@@ -35,13 +35,13 @@ public sealed class ParticleSpawner : INetworkSerializable
     public float LifeSpan { get; set; }
 
     [JsonPropertyName("spawnRate")]
-    public FloatRange? SpawnRate { get; set; }
+    public RangeFloat? SpawnRate { get; set; }
 
     [JsonPropertyName("spawnBurst")]
     public bool SpawnBurst { get; set; }
 
     [JsonPropertyName("waveDelay")]
-    public FloatRange? WaveDelay { get; set; }
+    public RangeFloat? WaveDelay { get; set; }
 
     [JsonPropertyName("totalParticles")]
     public RangeInt? TotalParticles { get; set; }
@@ -85,7 +85,7 @@ public sealed class ParticleSpawner : INetworkSerializable
     public bool LinearFiltering { get; set; }
 
     [JsonPropertyName("particleLifeSpan")]
-    public FloatRange? ParticleLifeSpan { get; set; }
+    public RangeFloat? ParticleLifeSpan { get; set; }
 
     [JsonPropertyName("uvMotion")]
     public UVMotion? UVMotion { get; set; }
@@ -218,12 +218,12 @@ public sealed class ParticleSpawner : INetworkSerializable
         UseEmitDirection = reader.ReadBoolean();
         LifeSpan = reader.ReadFloat32();
 
-        if (bits.IsSet(2)) SpawnRate = reader.ReadObject<FloatRange>();
+        if (bits.IsSet(2)) SpawnRate = reader.ReadObject<RangeFloat>();
         else reader.SeekTo(reader.GetPosition() + 8);
 
         SpawnBurst = reader.ReadBoolean();
 
-        if (bits.IsSet(4)) WaveDelay = reader.ReadObject<FloatRange>();
+        if (bits.IsSet(4)) WaveDelay = reader.ReadObject<RangeFloat>();
         else reader.SeekTo(reader.GetPosition() + 8);
 
         if (bits.IsSet(8)) TotalParticles = reader.ReadObject<RangeInt>();
@@ -248,7 +248,7 @@ public sealed class ParticleSpawner : INetworkSerializable
         LightInfluence = reader.ReadFloat32();
         LinearFiltering = reader.ReadBoolean();
 
-        if (bits.IsSet(64)) ParticleLifeSpan = reader.ReadObject<FloatRange>();
+        if (bits.IsSet(64)) ParticleLifeSpan = reader.ReadObject<RangeFloat>();
         else reader.SeekTo(reader.GetPosition() + 8);
 
         if (bits.IsSet(128)) IntersectionHighlight = reader.ReadObject<IntersectionHighlight>();

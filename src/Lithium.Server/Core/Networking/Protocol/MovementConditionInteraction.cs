@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class MovementConditionInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 31;
     
     [JsonPropertyName("forward")] public int Forward { get; set; }

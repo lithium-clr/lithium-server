@@ -6,11 +6,9 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 [JsonConverter(typeof(InteractionConverter))]
 [Packet(MaxSize = 1677721605)]
-public abstract class Interaction : INetworkSerializable
+public class Interaction : INetworkSerializable
 {
-    [JsonIgnore]
-    [JsonPropertyName("typeId")]
-    public abstract int TypeId { get; }
+    [JsonIgnore] public virtual int TypeId { get; }
 
     [JsonPropertyName("waitForDataFrom")]
     [JsonConverter(typeof(JsonStringEnumConverter<WaitForDataFrom>))]
@@ -36,11 +34,18 @@ public abstract class Interaction : INetworkSerializable
 
     [JsonPropertyName("camera")] public InteractionCameraSettings? Camera { get; set; }
 
-    public abstract void Serialize(PacketWriter writer);
+    public virtual void Serialize(PacketWriter writer)
+    {
+    }
 
-    public abstract void Deserialize(PacketReader reader);
+    public virtual void Deserialize(PacketReader reader)
+    {
+    }
 
-    public abstract int ComputeSize();
+    public virtual int ComputeSize()
+    {
+        return 0;
+    }
 
     public static Interaction ReadPolymorphic(PacketReader reader)
     {

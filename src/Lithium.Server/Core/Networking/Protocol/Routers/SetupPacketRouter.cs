@@ -1,4 +1,7 @@
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 using Lithium.Server.Core.AssetStore;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
@@ -22,17 +25,25 @@ public sealed class SetupPacketRouter(
         var client = clientManager.GetClient(channel);
         if (client is null) return;
 
-        var requiredAssets = assetManager.Assets;
-        logger.LogInformation("Initializing assets: {Count}", requiredAssets.Count);
+        // var requiredAssets = assetManager.Assets;
+        var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../")).Replace("\\", "/");
+        var basePath = Path.Combine(root, "Data");
 
-        assets.Initialize(requiredAssets);
+        var json = await File.ReadAllTextAsync(Path.Combine(basePath, "world_settings.json"));
+        var worldSettings = JsonSerializer.Deserialize<WorldSettingsPacket>(json);
+        
+        logger.LogInformation("Initializing assets: {Count}", worldSettings.RequiredAssets.Length);
+
+        assets.Initialize(worldSettings.RequiredAssets);
         logger.LogInformation("Assets initialized.");
 
-        await client.SendPacketAsync(new WorldSettingsPacket
-        {
-            WorldHeight = 320,
-            RequiredAssets = [.. requiredAssets]
-        });
+        await client.SendPacketAsync(worldSettings);
+        
+        // await client.SendPacketAsync(new WorldSettingsPacket
+        // {
+        //     WorldHeight = 320,
+        //     RequiredAssets = [.. requiredAssets]
+        // });
 
         logger.LogInformation("Sending server info packet...");
 
@@ -57,72 +68,17 @@ public sealed class SetupPacketRouter(
         logger.LogInformation("Received request assets packet: {Length}", packet.Assets?.Length);
         assets.Sent(packet.Assets);
 
-        await SendAssetsToClient(client, packet.Assets ?? []);
+        await client.SendPacketAsync(new WorldLoadProgressPacket
+            { Status = "Send assets ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
+        
+        // await SendAssetsToClient(client, packet.Assets ?? []);
 
         logger.LogInformation("Assets sent.");
-
-        // var blockSoundSet = new BlockSoundSet
-        // {
-        //     Id = "Coins",
-        //     SoundEventIndices = new Dictionary<BlockSoundEvent, int>
-        //     {
-        //         [BlockSoundEvent.Build] = 540,
-        //         [BlockSoundEvent.Hit] = 1102,
-        //         [BlockSoundEvent.Break] = 692,
-        //         [BlockSoundEvent.Walk] = 810,
-        //         [BlockSoundEvent.Land] = 794,
-        //     }
-        // };
-
-        // {
-        //     var blockSoundSet = new BlockSoundSet
-        //     {
-        //         Id = "Empty",
-        //         SoundEventIndices = new Dictionary<BlockSoundEvent, int>()
-        //     };
-        //
-        //     var blockSoundSets = Enumerable.Range(0, 53)
-        //         .ToDictionary(i => i, _ => blockSoundSet);
-        //
-        //     // TODO - AssetRegistryLoader.sendAssets(this);
-        //     var updateBlockSoundSetsPacket = new UpdateBlockSoundSetsPacket
-        //     {
-        //         MaxId = 53,
-        //         Type = UpdateType.Init,
-        //         BlockSoundSets = blockSoundSets
-        //     };
-        //
-        //     logger.LogInformation("Send UpdateBlockSoundSetsPacket");
-        //     await client.SendPacketAsync(updateBlockSoundSetsPacket);
-        //     logger.LogInformation("UpdateBlockSoundSetsPacket sent.");
-        // }
-
-        // var store = assetStoreRegistry.GetStore<AudioCategoryResource>();
-        // var categories = new Dictionary<int, AudioCategory>();
-        //
-        // for (var i = 0; i < store.Assets.Count; i++)
-        // {
-        //     var asset = store.Assets[i];
-        //     categories[i] = (AudioCategory)asset.ToPacket();
-        // }
-        //
-        // var updateAudioCategoriesPacket = new UpdateAudioCategoriesPacket
-        // {
-        //     Type = UpdateType.Init,
-        //     MaxId = store.Assets.Count,
-        //     Categories = categories
-        // };
-        //
-        // logger.LogInformation("Send UpdateAudioCategoriesPacket: \n" + JsonSerializer.Serialize(updateAudioCategoriesPacket));
-        // await client.SendPacketAsync(updateAudioCategoriesPacket);
-        // logger.LogInformation("UpdateAudioCategoriesPacket sent.");
-
+        
+        await client.SendPacketAsync(new WorldLoadProgressPacket
+            { Status = "Send fake assets ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
+        
         await SendFakeAssets(client);
-
-        // TODO - I18nModule.get().sendTranslations(this, this.language);
-
-        // await client.SendPacketAsync(new WorldLoadProgressPacket
-        //     { Status = "Loading assets ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
 
         await client.SendPacketAsync(new WorldLoadProgressPacket
             { Status = "Loading world ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
@@ -131,353 +87,163 @@ public sealed class SetupPacketRouter(
 
         await client.SendPacketAsync(new WorldLoadFinishedPacket());
     }
+    
+    // [PacketHandler]
+    // public async Task HandleRequestAssets(RequestAssetsPacket packet)
+    // {
+    //     var client = Context.Client;
+    //     if (client is null || !client.IsActive) return;
+    //
+    //     logger.LogInformation("Received request assets packet: {Length}", packet.Assets?.Length);
+    //     assets.Sent(packet.Assets);
+    //
+    //     await SendAssetsToClient(client, packet.Assets ?? []);
+    //
+    //     logger.LogInformation("Assets sent.");
+    //     
+    //     // var store = assetStoreRegistry.GetStore<AudioCategoryResource>();
+    //     // var categories = new Dictionary<int, AudioCategory>();
+    //     //
+    //     // for (var i = 0; i < store.Assets.Count; i++)
+    //     // {
+    //     //     var asset = store.Assets[i];
+    //     //     categories[i] = (AudioCategory)asset.ToPacket();
+    //     // }
+    //     //
+    //     // var updateAudioCategoriesPacket = new UpdateAudioCategoriesPacket
+    //     // {
+    //     //     Type = UpdateType.Init,
+    //     //     MaxId = store.Assets.Count,
+    //     //     Categories = categories
+    //     // };
+    //     //
+    //     // logger.LogInformation("Send UpdateAudioCategoriesPacket: \n" + JsonSerializer.Serialize(updateAudioCategoriesPacket));
+    //     // await client.SendPacketAsync(updateAudioCategoriesPacket);
+    //     // logger.LogInformation("UpdateAudioCategoriesPacket sent.");
+    //
+    //     await SendFakeAssets(client);
+    //
+    //     // return;
+    //
+    //     // TODO - I18nModule.get().sendTranslations(this, this.language);
+    //
+    //     // await client.SendPacketAsync(new WorldLoadProgressPacket
+    //     //     { Status = "Loading assets ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
+    //
+    //     await client.SendPacketAsync(new WorldLoadProgressPacket
+    //         { Status = "Loading world ...", PercentComplete = 0, PercentCompleteSubitem = 0 });
+    //
+    //     logger.LogInformation("WorldLoadProgressPacket sent.");
+    //
+    //     await client.SendPacketAsync(new WorldLoadFinishedPacket());
+    // }
 
-    private async Task SendFakeAssets(IClient client)
+    private async Task SendFakeAsset<TPacket>(IClient client, string path) where TPacket : INetworkSerializable
     {
         var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../")).Replace("\\", "/");
         var basePath = Path.Combine(root, "Data");
-        
+
+        var options = new JsonSerializerOptions
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_sound_sets.json"));
-            var packet = JsonSerializer.Deserialize<UpdateBlockSoundSetsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_sound_sets.json"));
-            var packet = JsonSerializer.Deserialize<UpdateSoundSetsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_types.json"));
-            packetFile = SanitizeJson(packetFile);
-
-            var packet = JsonSerializer.Deserialize<UpdateBlockTypesPacket>(packetFile);
-            await client.SendPacketAsync(packet);
-
-            static string SanitizeJson(string json)
+            WriteIndented = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters =
             {
-                // Replace all NaN/Infinity non quoted values by valid values
-                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*NaN\b", ": 0.0");
-                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*Infinity\b",
-                    ": 3.4028235E+38"); // float.MaxValue
-                json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*-Infinity\b",
-                    ": -3.4028235E+38"); // float.MinValue
-
-                return json;
+                new JsonStringEnumConverter(),
+                new FloatOneDecimalConverter(),
+                new FloatKeyDictionaryConverter<Color>(),
+                new FloatKeyDictionaryConverter<ColorAlpha>(),
+                new FloatKeyDictionaryConverter<float>()
             }
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_player_animations.json"));
-            var packet = JsonSerializer.Deserialize<UpdateItemPlayerAnimationsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_categories.json"));
-            var packet = JsonSerializer.Deserialize<UpdateItemCategoriesPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_breaking_decals.json"));
-            var packet = JsonSerializer.Deserialize<UpdateBlockBreakingDecalsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_fieldcraft_categories.json"));
-            var packet = JsonSerializer.Deserialize<UpdateFieldcraftCategoriesPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_qualities.json"));
-            var packet = JsonSerializer.Deserialize<UpdateItemQualitiesPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_particle_spawners.json"));
-            var packet = JsonSerializer.Deserialize<UpdateParticleSpawnersPacket>(packetFile);
+        };
         
-            await client.SendPacketAsync(packet);
-        }
+        var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, path));
+        packetFile = SanitizeJson(packetFile);
+        
+        var packet = JsonSerializer.Deserialize<TPacket>(packetFile, options);
+        var packetJson = JsonSerializer.Serialize(packet, options);
+        
+        // var bytes = writer.WrittenMemory.Span;
+        // var hex = Convert.ToHexString(bytes); // .NET 5+
+        // await File.WriteAllTextAsync(
+        //     "C:\\Users\\bubbl\\Desktop\\packet.hex",
+        //     hex
+        // );
+        
+        await File.WriteAllTextAsync("C:\\Users\\bubbl\\Desktop\\p\\" + path, packetJson);
+        await client.SendPacketAsync(packet);
 
+        return;
+        
+        static string SanitizeJson(string json)
         {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_unarmed_interactions.json"));
-            var packet = JsonSerializer.Deserialize<UpdateUnarmedInteractionsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
+            // Replace all NaN/Infinity non quoted values by valid values
+            json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*NaN\b", ": 0.0");
+            json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*Infinity\b",
+                ": 3.4028235E+38"); // float.MaxValue
+            json = System.Text.RegularExpressions.Regex.Replace(json, @":\s*-Infinity\b",
+                ": -3.4028235E+38"); // float.MinValue
+        
+            return json;
         }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_particle_sets.json"));
-            var packet = JsonSerializer.Deserialize<UpdateBlockParticleSetsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_ambience_fx.json"));
-            var packet = JsonSerializer.Deserialize<UpdateAmbienceFxPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_groups.json"));
-            var packet = JsonSerializer.Deserialize<UpdateBlockGroupsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_view_bobbing.json"));
-            var packet = JsonSerializer.Deserialize<UpdateViewBobbingPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_fluids.json"));
-            var packet = JsonSerializer.Deserialize<UpdateFluidsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_camera_shake.json"));
-            var packet = JsonSerializer.Deserialize<UpdateCameraShakePacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_projectile_configs.json"));
-            var packet = JsonSerializer.Deserialize<UpdateProjectileConfigsPacket>(packetFile);
-            
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_model_vfxs.json"));
-            var packet = JsonSerializer.Deserialize<UpdateModelVFXsPacket>(packetFile);
-            
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_sound_sets.json"));
-            var packet = JsonSerializer.Deserialize<UpdateItemSoundSetsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_entity_effects.json"));
-            var packet = JsonSerializer.Deserialize<UpdateEntityEffectsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_audio_categories.json"));
-            var packet = JsonSerializer.Deserialize<UpdateAudioCategoriesPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_environments.json"));
-            var packet = JsonSerializer.Deserialize<UpdateEnvironmentsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_item_reticles.json"));
-            var packet = JsonSerializer.Deserialize<UpdateItemReticlesPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_repulsion_config.json"));
-            var packet = JsonSerializer.Deserialize<UpdateRepulsionConfigPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_resource_types.json"));
-            var packet = JsonSerializer.Deserialize<UpdateResourceTypesPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_equalizer_effects.json"));
-            var packet = JsonSerializer.Deserialize<UpdateEqualizerEffectsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_entity_stat_types.json"));
-            var packet = JsonSerializer.Deserialize<UpdateEntityStatTypesPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_entity_ui_components.json"));
-            var packet = JsonSerializer.Deserialize<UpdateEntityUIComponentsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_sets.json"));
-            var packet = JsonSerializer.Deserialize<UpdateBlockSetsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_items.json"));
-            var packet = JsonSerializer.Deserialize<UpdateItemsPacket>(packetFile);
-            // packet.Items = [];
-            
-            var packetJson = JsonSerializer.Serialize(packet, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
-        
-            await File.WriteAllTextAsync("C:\\Users\\bubbl\\Desktop\\packet.json", packetJson);
-            // logger.LogInformation("Json: " + packetJson);
-        
-            await client.SendPacketAsync(packet);
-            var writer = new PacketWriter();
-            packet.Serialize(writer);
-            
-            var bytes = writer.WrittenMemory.Span;
-            var hex = Convert.ToHexString(bytes); // .NET 5+
-            await File.WriteAllTextAsync(
-                "C:\\Users\\bubbl\\Desktop\\packet.hex",
-                hex
-            );
-
-            // await File.WriteAllBytesAsync("C:\\Users\\bubbl\\Desktop\\packet.hex", writer.WrittenMemory);
-        }
-
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_hitbox_collision_config.json"));
-            var packet = JsonSerializer.Deserialize<UpdateHitboxCollisionConfigPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_sound_events.json"));
-            var packet = JsonSerializer.Deserialize<UpdateSoundEventsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_fluid_fx.json"));
-            var packet = JsonSerializer.Deserialize<UpdateFluidFXPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_particle_systems.json"));
-            var packet = JsonSerializer.Deserialize<UpdateParticleSystemsPacket>(packetFile);
-
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_interactions.json"));
-            var packet = JsonSerializer.Deserialize<UpdateInteractionsPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_root_interactions.json"));
-            var packet = JsonSerializer.Deserialize<UpdateRootInteractionsPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_recipes.json"));
-            var packet = JsonSerializer.Deserialize<UpdateRecipesPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_trails.json"));
-            var packet = JsonSerializer.Deserialize<UpdateTrailsPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_reverb_effects.json"));
-            var packet = JsonSerializer.Deserialize<UpdateReverbEffectsPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_tag_patterns.json"));
-            var packet = JsonSerializer.Deserialize<UpdateTagPatternsPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_weathers.json"));
-            var packet = JsonSerializer.Deserialize<UpdateWeathersPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_translations.json"));
-            var packet = JsonSerializer.Deserialize<UpdateTranslationsPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
-        
-        {
-            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_block_hitboxes.json"));
-            var packet = JsonSerializer.Deserialize<UpdateBlockHitboxesPacket>(packetFile);
-        
-            await client.SendPacketAsync(packet);
-        }
+    }
+    
+    private async Task SendFakeAssets(IClient client)
+    {
+        await SendFakeAsset<UpdateBlockSoundSetsPacket>(client, "update_block_sound_sets.json");
+        await SendFakeAsset<UpdateSoundSetsPacket>(client, "update_sound_sets.json");
+        await SendFakeAsset<UpdateBlockTypesPacket>(client, "update_block_types.json");
+        await SendFakeAsset<UpdateItemPlayerAnimationsPacket>(client, "update_item_player_animations.json");
+        await SendFakeAsset<UpdateItemCategoriesPacket>(client, "update_item_categories.json");
+        await SendFakeAsset<UpdateBlockBreakingDecalsPacket>(client, "update_block_breaking_decals.json");
+        await SendFakeAsset<UpdateFieldcraftCategoriesPacket>(client, "update_fieldcraft_categories.json");
+        await SendFakeAsset<UpdateItemQualitiesPacket>(client, "update_item_qualities.json");
+        await SendFakeAsset<UpdateParticleSpawnersPacket>(client, "update_particle_spawners.json");
+        await SendFakeAsset<UpdateUnarmedInteractionsPacket>(client, "update_unarmed_interactions.json");
+        await SendFakeAsset<UpdateBlockParticleSetsPacket>(client, "update_block_particle_sets.json");
+        await SendFakeAsset<UpdateAmbienceFxPacket>(client, "update_ambience_fx.json");
+        await SendFakeAsset<UpdateBlockGroupsPacket>(client, "update_block_groups.json");
+        await SendFakeAsset<UpdateViewBobbingPacket>(client, "update_view_bobbing.json");
+        await SendFakeAsset<UpdateFluidsPacket>(client, "update_fluids.json");
+        await SendFakeAsset<UpdateCameraShakePacket>(client, "update_camera_shake.json");
+        await SendFakeAsset<UpdateProjectileConfigsPacket>(client, "update_projectile_configs.json");
+        await SendFakeAsset<UpdateModelVFXsPacket>(client, "update_model_vfxs.json");
+        await SendFakeAsset<UpdateItemSoundSetsPacket>(client, "update_item_sound_sets.json");
+        await SendFakeAsset<UpdateEntityEffectsPacket>(client, "update_entity_effects.json");
+        await SendFakeAsset<UpdateAudioCategoriesPacket>(client, "update_audio_categories.json");
+        await SendFakeAsset<UpdateEnvironmentsPacket>(client, "update_environments.json");
+        await SendFakeAsset<UpdateItemReticlesPacket>(client, "update_item_reticles.json");
+        await SendFakeAsset<UpdateRepulsionConfigPacket>(client, "update_repulsion_config.json");
+        await SendFakeAsset<UpdateResourceTypesPacket>(client, "update_resource_types.json");
+        await SendFakeAsset<UpdateEqualizerEffectsPacket>(client, "update_equalizer_effects.json");
+        await SendFakeAsset<UpdateEntityStatTypesPacket>(client, "update_entity_stat_types.json");
+        await SendFakeAsset<UpdateEntityUIComponentsPacket>(client, "update_entity_ui_components.json");
+        await SendFakeAsset<UpdateBlockSetsPacket>(client, "update_block_sets.json");
+        await SendFakeAsset<UpdateItemsPacket>(client, "update_items.json");
+        await SendFakeAsset<UpdateHitboxCollisionConfigPacket>(client, "update_hitbox_collision_config.json");
+        await SendFakeAsset<UpdateSoundEventsPacket>(client, "update_sound_events.json");
+        await SendFakeAsset<UpdateFluidFXPacket>(client, "update_fluid_fx.json");
+        await SendFakeAsset<UpdateParticleSystemsPacket>(client, "update_particle_systems.json");
+        await SendFakeAsset<UpdateInteractionsPacket>(client, "update_interactions.json");
+        await SendFakeAsset<UpdateRootInteractionsPacket>(client, "update_root_interactions.json");
+        await SendFakeAsset<UpdateRecipesPacket>(client, "update_recipes.json");
+        await SendFakeAsset<UpdateTrailsPacket>(client, "update_trails.json");
+        await SendFakeAsset<UpdateReverbEffectsPacket>(client, "update_reverb_effects.json");
+        await SendFakeAsset<UpdateTagPatternsPacket>(client, "update_tag_patterns.json");
+        await SendFakeAsset<UpdateWeathersPacket>(client, "update_weathers.json");
+        await SendFakeAsset<UpdateTranslationsPacket>(client, "update_translations.json");
+        await SendFakeAsset<UpdateBlockHitboxesPacket>(client, "update_block_hitboxes.json");
     }
 
     [PacketHandler]
     public Task HandleViewRadius(ViewRadiusPacket packet)
     {
+        logger.LogInformation("Received view radius packet: {Value}", packet.Value);
+        
         var client = Context.Client;
-
         client?.ViewRadiusChunks = MathF.Ceiling(packet.Value / 32.0F);
+        
         return Task.CompletedTask;
     }
 
@@ -490,7 +256,6 @@ public sealed class SetupPacketRouter(
         if (packet.Skin is not null)
         {
             logger.LogInformation("Received skin options for {Username}", client.Username);
-            // TODO - Apply skin
         }
 
         return Task.CompletedTask;

@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ConditionInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 12;
     
     [JsonPropertyName("requiredGameMode")] public GameMode? RequiredGameMode { get; set; }

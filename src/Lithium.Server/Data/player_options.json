@@ -1,0 +1,24 @@
+{
+  "skin": {
+    "bodyCharacteristic": "Muscular.49",
+    "underwear": "Bandeau.Pink",
+    "face": "Face_MakeUp",
+    "eyes": "Plain_Eyes.BrownDark",
+    "ears": "Elf_Ears_Large_Down",
+    "mouth": "Mouth_Default",
+    "facialHair": "Short_Trimmed.Bubblegum",
+    "haircut": null,
+    "eyebrows": "RoundThin.BlondSand",
+    "pants": "BulkySuede.Brown",
+    "overpants": "LongSocks_Striped.Yellow",
+    "undertop": "VikingShirt.Blue",
+    "overtop": "ShortTartan.Charcoal",
+    "shoes": "ElfBoots.Pink",
+    "headAccessory": null,
+    "faceAccessory": null,
+    "earAccessory": null,
+    "skinFeature": null,
+    "gloves": null,
+    "cape": null
+  }
+}

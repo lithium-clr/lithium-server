@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol;
@@ -11,12 +12,12 @@ namespace Lithium.Server.Core.Networking.Protocol;
 )]
 public sealed class Tint : INetworkSerializable
 {
-    public int Top { get; set; }
-    public int Bottom { get; set; }
-    public int Front { get; set; }
-    public int Back { get; set; }
-    public int Left { get; set; }
-    public int Right { get; set; }
+    [JsonPropertyName("top")] public int Top { get; set; }
+    [JsonPropertyName("bottom")] public int Bottom { get; set; }
+    [JsonPropertyName("front")] public int Front { get; set; }
+    [JsonPropertyName("back")] public int Back { get; set; }
+    [JsonPropertyName("left")] public int Left { get; set; }
+    [JsonPropertyName("right")] public int Right { get; set; }
 
     public void Serialize(PacketWriter writer)
     {

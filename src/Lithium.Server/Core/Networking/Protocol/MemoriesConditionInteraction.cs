@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class MemoriesConditionInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 43;
     
     [JsonPropertyName("memoriesNext")] public Dictionary<int, int>? MemoriesNext { get; set; }

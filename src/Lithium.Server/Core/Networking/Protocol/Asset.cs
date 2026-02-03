@@ -1,9 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Lithium.Server.Core.Networking.Protocol;
 
 public sealed record Asset : INetworkSerializable
 {
-    public string Hash { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
+    [JsonPropertyName("hash")] public string Hash { get; set; } = string.Empty;
+    [JsonPropertyName("name")] public string Name { get; set; } = string.Empty;
 
     public void Serialize(PacketWriter writer)
     {

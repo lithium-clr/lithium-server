@@ -20,10 +20,10 @@ public sealed class ParticleSpawnerGroup : INetworkSerializable
     public float StartDelay { get; set; }
 
     [JsonPropertyName("spawnRate")]
-    public FloatRange? SpawnRate { get; set; }
+    public RangeFloat? SpawnRate { get; set; }
 
     [JsonPropertyName("waveDelay")]
-    public FloatRange? WaveDelay { get; set; }
+    public RangeFloat? WaveDelay { get; set; }
 
     [JsonPropertyName("totalSpawners")]
     public int TotalSpawners { get; set; }
@@ -38,7 +38,7 @@ public sealed class ParticleSpawnerGroup : INetworkSerializable
     public RangeVector3Float? EmitOffset { get; set; }
 
     [JsonPropertyName("lifeSpan")]
-    public FloatRange? LifeSpan { get; set; }
+    public RangeFloat? LifeSpan { get; set; }
 
     [JsonPropertyName("attractors")]
     public ParticleAttractor[]? Attractors { get; set; }
@@ -101,13 +101,13 @@ public sealed class ParticleSpawnerGroup : INetworkSerializable
         if (bits.IsSet(2)) RotationOffset = reader.ReadObject<Direction>(); else for(int i=0; i<12; i++) reader.ReadUInt8();
         FixedRotation = reader.ReadBoolean();
         StartDelay = reader.ReadFloat32();
-        if (bits.IsSet(4)) SpawnRate = reader.ReadObject<FloatRange>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
-        if (bits.IsSet(8)) WaveDelay = reader.ReadObject<FloatRange>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
+        if (bits.IsSet(4)) SpawnRate = reader.ReadObject<RangeFloat>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
+        if (bits.IsSet(8)) WaveDelay = reader.ReadObject<RangeFloat>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
         TotalSpawners = reader.ReadInt32();
         MaxConcurrent = reader.ReadInt32();
         if (bits.IsSet(16)) InitialVelocity = reader.ReadObject<InitialVelocity>(); else for(int i=0; i<25; i++) reader.ReadUInt8();
         if (bits.IsSet(32)) EmitOffset = reader.ReadObject<RangeVector3Float>(); else for(int i=0; i<25; i++) reader.ReadUInt8();
-        if (bits.IsSet(64)) LifeSpan = reader.ReadObject<FloatRange>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
+        if (bits.IsSet(64)) LifeSpan = reader.ReadObject<RangeFloat>(); else for(int i=0; i<8; i++) reader.ReadUInt8();
 
         // Read Offsets
         var offsets = reader.ReadOffsets(2);

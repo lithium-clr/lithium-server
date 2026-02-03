@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class SerialInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 29;
 
     [JsonPropertyName("serialInteractions")]

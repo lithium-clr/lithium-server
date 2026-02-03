@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class BreakBlockInteraction : SimpleBlockInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 3;
     
     [JsonPropertyName("harvest")] public bool Harvest { get; set; }

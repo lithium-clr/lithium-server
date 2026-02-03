@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ApplyEffectInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 27;
     
     [JsonPropertyName("effectId")] public int EffectId { get; set; }

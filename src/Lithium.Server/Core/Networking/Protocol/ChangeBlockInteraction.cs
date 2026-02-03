@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class ChangeBlockInteraction : SimpleBlockInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 16;
     
     [JsonPropertyName("blockChanges")] public Dictionary<int, int>? BlockChanges { get; set; }

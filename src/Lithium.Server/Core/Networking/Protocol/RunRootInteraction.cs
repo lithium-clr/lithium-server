@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class RunRootInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 40;
     
     [JsonPropertyName("rootInteraction")] public int RootInteraction { get; set; }

@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class CameraInteraction : SimpleInteraction
 {
+    [JsonIgnore]
     public override int TypeId => 41;
 
     [JsonPropertyName("cameraAction")]

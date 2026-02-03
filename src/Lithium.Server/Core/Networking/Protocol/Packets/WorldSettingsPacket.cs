@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 
 namespace Lithium.Server.Core.Networking.Protocol.Packets;
@@ -6,8 +7,8 @@ namespace Lithium.Server.Core.Networking.Protocol.Packets;
     VariableBlockStart = 5, MaxSize = 1677721600)]
 public sealed class WorldSettingsPacket : INetworkSerializable
 {
-    public int WorldHeight { get; set; }
-    public Asset[]? RequiredAssets { get; set; }
+    [JsonPropertyName("worldHeight")] public int WorldHeight { get; set; }
+    [JsonPropertyName("requiredAssets")] public Asset[]? RequiredAssets { get; set; }
 
     public void Serialize(PacketWriter writer)
     {

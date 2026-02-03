@@ -27,20 +27,22 @@ public enum CameraPerspectiveType : byte
 )]
 public sealed class DeployableConfig : INetworkSerializable
 {
-    [JsonPropertyName("model")]            public Model? Model            { get; set; }
-    [JsonPropertyName("modelPreview")]     public Model? ModelPreview     { get; set; }
-    [JsonPropertyName("allowPlaceOnWalls")] public bool   AllowPlaceOnWalls { get; set; }
+    [JsonPropertyName("model")] public Model? Model { get; set; }
+    [JsonPropertyName("modelPreview")] public Model? ModelPreview { get; set; }
+
+    [JsonPropertyName("allowPlaceOnWalls")]
+    public bool AllowPlaceOnWalls { get; set; }
 
     public void Serialize(PacketWriter writer)
     {
         var bits = new BitSet(1);
-        if (Model is not null)        bits.SetBit(1);
+        if (Model is not null) bits.SetBit(1);
         if (ModelPreview is not null) bits.SetBit(2);
         writer.WriteBits(bits);
 
         writer.WriteBoolean(AllowPlaceOnWalls);
 
-        var modelOffsetSlot        = writer.ReserveOffset();
+        var modelOffsetSlot = writer.ReserveOffset();
         var modelPreviewOffsetSlot = writer.ReserveOffset();
 
         var varBlockStart = writer.Position;

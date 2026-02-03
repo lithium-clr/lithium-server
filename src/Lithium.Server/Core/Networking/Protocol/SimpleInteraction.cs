@@ -4,6 +4,7 @@ namespace Lithium.Server.Core.Networking.Protocol;
 
 public class SimpleInteraction : Interaction
 {
+    [JsonIgnore]
     public override int TypeId => 1;
     
     [JsonPropertyName("next")] public int Next { get; set; } = int.MinValue;

@@ -17,7 +17,7 @@ public sealed class Particle : INetworkSerializable
     public string? TexturePath { get; set; }
 
     [JsonPropertyName("frameSize")]
-    public Vector2Int? FrameSize { get; set; }
+    public Size? FrameSize { get; set; }
 
     [JsonPropertyName("uvOption")]
     [JsonConverter(typeof(JsonStringEnumConverter<ParticleUVOption>))]
@@ -109,7 +109,7 @@ public sealed class Particle : INetworkSerializable
     {
         var bits = reader.ReadBits();
 
-        if (bits.IsSet(1)) FrameSize = reader.ReadObject<Vector2Int>();
+        if (bits.IsSet(1)) FrameSize = reader.ReadObject<Size>();
         else reader.SeekTo(reader.GetPosition() + 8);
 
         UvOption = reader.ReadEnum<ParticleUVOption>();
