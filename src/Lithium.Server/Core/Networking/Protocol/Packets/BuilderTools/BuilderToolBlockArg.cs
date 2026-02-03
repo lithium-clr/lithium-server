@@ -13,10 +13,7 @@ public sealed class BuilderToolBlockArg : INetworkSerializable
     public void Serialize(PacketWriter writer)
     {
         var bits = new BitSet(1);
-        if (DefaultValue is not null)
-        {
-            bits.SetBit(1);
-        }
+        if (DefaultValue is not null) bits.SetBit(1);
         writer.WriteBits(bits);
 
         writer.WriteBoolean(AllowPattern);
@@ -29,7 +26,7 @@ public sealed class BuilderToolBlockArg : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        var bits = new BitSet(reader.ReadUInt8());
+        var bits = reader.ReadBits();
 
         AllowPattern = reader.ReadBoolean();
 

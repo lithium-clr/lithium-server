@@ -60,8 +60,8 @@ public sealed class InteractionConfiguration : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
+        var instanceStart = reader.GetPosition();
         var bits = new BitSet(reader.ReadUInt8());
-        var currentPos = reader.GetPosition();
 
         DisplayOutlines = reader.ReadBoolean();
         DebugOutlines = reader.ReadBoolean();
@@ -71,22 +71,31 @@ public sealed class InteractionConfiguration : INetworkSerializable
 
         if (bits.IsSet(1))
         {
-            UseDistance = reader.ReadDictionaryAt(
-                offsets[0],
-                r => r.ReadEnum<GameMode>(),
-                r => r.ReadFloat32()
-            );
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 12 + offsets[0]);
+            var count = reader.ReadVarInt32();
+            UseDistance = new Dictionary<GameMode, float>(count);
+            for (var i = 0; i < count; i++)
+            {
+                UseDistance[reader.ReadEnum<GameMode>()] = reader.ReadFloat32();
+            }
+            reader.SeekTo(savedPos);
         }
 
         if (bits.IsSet(2))
         {
-            Priorities = reader.ReadDictionaryAt(
-                offsets[1],
-                r => r.ReadEnum<InteractionType>(),
-                r => r.ReadObject<InteractionPriority>()
-            );
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 12 + offsets[1]);
+            var count = reader.ReadVarInt32();
+            Priorities = new Dictionary<InteractionType, InteractionPriority>(count);
+            for (var i = 0; i < count; i++)
+            {
+                var key = reader.ReadEnum<InteractionType>();
+                var val = new InteractionPriority();
+                val.Deserialize(reader);
+                Priorities[key] = val;
+            }
+            reader.SeekTo(savedPos);
         }
-        
-        reader.SeekTo(currentPos);
     }
 }

@@ -168,6 +168,13 @@ public sealed class PacketReader(ReadOnlyMemory<byte> buffer, PacketInfo packetI
         return Encoding.UTF8.GetString(buffer.Span.Slice(dataPos, length));
     }
 
+    public string ReadVarStringAtAbsolute(int absolutePos)
+    {
+        var (length, bytesRead) = ReadVarIntAt(absolutePos);
+        var dataPos = absolutePos + bytesRead;
+        return Encoding.UTF8.GetString(buffer.Span.Slice(dataPos, length));
+    }
+
     public byte[] ReadVarBytesAt(int offset)
     {
         if (offset == -1) return null;

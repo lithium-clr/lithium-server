@@ -46,19 +46,24 @@ public sealed class BuilderToolArg : INetworkSerializable
 
     public void Serialize(PacketWriter writer)
     {
-        var bits = new BitSet(2);
-        if (BoolArg is not null) bits.SetBit(1);
-        if (FloatArg is not null) bits.SetBit(2);
-        if (IntArg is not null) bits.SetBit(4);
-        if (BrushShapeArg is not null) bits.SetBit(8);
-        if (BrushOriginArg is not null) bits.SetBit(16);
-        if (BrushAxisArg is not null) bits.SetBit(32);
-        if (RotationArg is not null) bits.SetBit(64);
-        if (StringArg is not null) bits.SetBit(128);
-        if (BlockArg is not null) bits.SetBit(256);
-        if (MaskArg is not null) bits.SetBit(512);
-        if (OptionArg is not null) bits.SetBit(1024);
-        writer.WriteBits(bits);
+        var nullBits = new byte[2];
+        if (BoolArg is not null) nullBits[0] |= 1;
+        if (FloatArg is not null) nullBits[0] |= 2;
+        if (IntArg is not null) nullBits[0] |= 4;
+        if (BrushShapeArg is not null) nullBits[0] |= 8;
+        if (BrushOriginArg is not null) nullBits[0] |= 16;
+        if (BrushAxisArg is not null) nullBits[0] |= 32;
+        if (RotationArg is not null) nullBits[0] |= 64;
+        if (StringArg is not null) nullBits[0] |= 128;
+
+        if (BlockArg is not null) nullBits[1] |= 1;
+        if (MaskArg is not null) nullBits[1] |= 2;
+        if (OptionArg is not null) nullBits[1] |= 4;
+
+        foreach (var b in nullBits)
+        {
+            writer.WriteUInt8(b);
+        }
 
         writer.WriteBoolean(Required);
         writer.WriteEnum(ArgType);
@@ -96,30 +101,61 @@ public sealed class BuilderToolArg : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        var bits = reader.ReadBits(2);
-        var currentPos = reader.GetPosition();
+        var instanceStart = reader.GetPosition();
+        var nullBits = new byte[2];
+        nullBits[0] = reader.ReadUInt8();
+        nullBits[1] = reader.ReadUInt8();
 
         Required = reader.ReadBoolean();
         ArgType = reader.ReadEnum<BuilderToolArgType>();
 
         // Fixed Block
-        if (bits.IsSet(1)) BoolArg = reader.ReadObject<BuilderToolBoolArg>(); else reader.ReadUInt8();
-        if (bits.IsSet(2)) FloatArg = reader.ReadObject<BuilderToolFloatArg>(); else for(int i=0; i<12; i++) reader.ReadUInt8();
-        if (bits.IsSet(4)) IntArg = reader.ReadObject<BuilderToolIntArg>(); else for(int i=0; i<12; i++) reader.ReadUInt8();
-        if (bits.IsSet(8)) BrushShapeArg = reader.ReadObject<BuilderToolBrushShapeArg>(); else reader.ReadUInt8();
-        if (bits.IsSet(16)) BrushOriginArg = reader.ReadObject<BuilderToolBrushOriginArg>(); else reader.ReadUInt8();
-        if (bits.IsSet(32)) BrushAxisArg = reader.ReadObject<BuilderToolBrushAxisArg>(); else reader.ReadUInt8();
-        if (bits.IsSet(64)) RotationArg = reader.ReadObject<BuilderToolRotationArg>(); else reader.ReadUInt8();
+        if ((nullBits[0] & 1) != 0) BoolArg = reader.ReadObject<BuilderToolBoolArg>(); else reader.ReadUInt8();
+        if ((nullBits[0] & 2) != 0) FloatArg = reader.ReadObject<BuilderToolFloatArg>(); else for(int i=0; i<12; i++) reader.ReadUInt8();
+        if ((nullBits[0] & 4) != 0) IntArg = reader.ReadObject<BuilderToolIntArg>(); else for(int i=0; i<12; i++) reader.ReadUInt8();
+        if ((nullBits[0] & 8) != 0) BrushShapeArg = reader.ReadObject<BuilderToolBrushShapeArg>(); else reader.ReadUInt8();
+        if ((nullBits[0] & 16) != 0) BrushOriginArg = reader.ReadObject<BuilderToolBrushOriginArg>(); else reader.ReadUInt8();
+        if ((nullBits[0] & 32) != 0) BrushAxisArg = reader.ReadObject<BuilderToolBrushAxisArg>(); else reader.ReadUInt8();
+        if ((nullBits[0] & 64) != 0) RotationArg = reader.ReadObject<BuilderToolRotationArg>(); else reader.ReadUInt8();
 
         // Read Offsets
         var offsets = reader.ReadOffsets(4);
 
         // Variable Block
-        if (bits.IsSet(128)) StringArg = reader.ReadObjectAt<BuilderToolStringArg>(offsets[0]);
-        if (bits.IsSet(256)) BlockArg = reader.ReadObjectAt<BuilderToolBlockArg>(offsets[1]);
-        if (bits.IsSet(512)) MaskArg = reader.ReadObjectAt<BuilderToolMaskArg>(offsets[2]);
-        if (bits.IsSet(1024)) OptionArg = reader.ReadObjectAt<BuilderToolOptionArg>(offsets[3]);
-        
-        reader.SeekTo(currentPos);
+        if ((nullBits[0] & 128) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 49 + offsets[0]);
+            StringArg = new BuilderToolStringArg();
+            StringArg.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[1] & 1) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 49 + offsets[1]);
+            BlockArg = new BuilderToolBlockArg();
+            BlockArg.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[1] & 2) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 49 + offsets[2]);
+            MaskArg = new BuilderToolMaskArg();
+            MaskArg.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[1] & 4) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 49 + offsets[3]);
+            OptionArg = new BuilderToolOptionArg();
+            OptionArg.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
     }
 }

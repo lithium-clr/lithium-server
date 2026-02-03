@@ -91,8 +91,8 @@ public sealed class ItemAppearanceCondition : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
+        var instanceStart = reader.GetPosition();
         var bits = new BitSet(reader.ReadUInt8());
-        var currentPos = reader.GetPosition();
 
         // Fixed Block
         if (bits.IsSet(1)) Condition = reader.ReadObject<FloatRange>(); else { reader.ReadFloat32(); reader.ReadFloat32(); }
@@ -106,30 +106,32 @@ public sealed class ItemAppearanceCondition : INetworkSerializable
         // Variable Block
         if (bits.IsSet(2))
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[0]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 38 + offsets[0]);
             var count = reader.ReadVarInt32();
             Particles = new ModelParticle[count];
             for (var i = 0; i < count; i++)
             {
                 Particles[i] = reader.ReadObject<ModelParticle>();
             }
+            reader.SeekTo(savedPos);
         }
 
         if (bits.IsSet(4))
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[1]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 38 + offsets[1]);
             var count = reader.ReadVarInt32();
             FirstPersonParticles = new ModelParticle[count];
             for (var i = 0; i < count; i++)
             {
                 FirstPersonParticles[i] = reader.ReadObject<ModelParticle>();
             }
+            reader.SeekTo(savedPos);
         }
 
-        if (bits.IsSet(8)) Model = reader.ReadVarUtf8StringAt(offsets[2]);
-        if (bits.IsSet(16)) Texture = reader.ReadVarUtf8StringAt(offsets[3]);
-        if (bits.IsSet(32)) ModelVFXId = reader.ReadVarUtf8StringAt(offsets[4]);
-        
-        reader.SeekTo(currentPos);
+        if (bits.IsSet(8)) Model = reader.ReadVarStringAtAbsolute(instanceStart + 38 + offsets[2]);
+        if (bits.IsSet(16)) Texture = reader.ReadVarStringAtAbsolute(instanceStart + 38 + offsets[3]);
+        if (bits.IsSet(32)) ModelVFXId = reader.ReadVarStringAtAbsolute(instanceStart + 38 + offsets[4]);
     }
 }

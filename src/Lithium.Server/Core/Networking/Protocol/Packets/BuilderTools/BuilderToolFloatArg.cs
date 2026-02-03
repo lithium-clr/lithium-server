@@ -6,7 +6,7 @@ public sealed class BuilderToolFloatArg : INetworkSerializable
 {
     [JsonPropertyName("defaultValue")]
     public float DefaultValue { get; set; }
-    
+
     [JsonPropertyName("min")]
     public float Min { get; set; }
 

@@ -88,11 +88,23 @@ public sealed class ItemPullbackConfiguration : INetworkSerializable
             LeftOffsetOverride = new Vector3Float();
             LeftOffsetOverride.Deserialize(reader);
         }
+        else
+        {
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+        }
 
         if (bits.IsSet(2))
         {
             LeftRotationOverride = new Vector3Float();
             LeftRotationOverride.Deserialize(reader);
+        }
+        else
+        {
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+            reader.ReadFloat32();
         }
 
         if (bits.IsSet(4))
@@ -100,11 +112,23 @@ public sealed class ItemPullbackConfiguration : INetworkSerializable
             RightOffsetOverride = new Vector3Float();
             RightOffsetOverride.Deserialize(reader);
         }
+        else
+        {
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+        }
 
         if (bits.IsSet(8))
         {
             RightRotationOverride = new Vector3Float();
             RightRotationOverride.Deserialize(reader);
+        }
+        else
+        {
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+            reader.ReadFloat32();
         }
     }
 }

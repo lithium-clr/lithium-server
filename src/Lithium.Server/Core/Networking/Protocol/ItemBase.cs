@@ -344,14 +344,13 @@ public sealed class ItemBase : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
+        var instanceStart = reader.GetPosition();
         var nullBits = new byte[4];
         for (int i = 0; i < 4; i++)
         {
             nullBits[i] = reader.ReadUInt8();
         }
         
-        var currentPos = reader.GetPosition();
-
         // Fixed Block
         Scale = reader.ReadFloat32();
         UsePlayerAnimations = reader.ReadBoolean();
@@ -377,80 +376,174 @@ public sealed class ItemBase : INetworkSerializable
         var offsets = reader.ReadOffsets(26);
 
         // Variable Block
-        if ((nullBits[0] & 32) != 0) Id = reader.ReadVarUtf8StringAt(offsets[0]);
-        if ((nullBits[0] & 64) != 0) Model = reader.ReadVarUtf8StringAt(offsets[1]);
-        if ((nullBits[0] & 128) != 0) Texture = reader.ReadVarUtf8StringAt(offsets[2]);
+        if ((nullBits[0] & 32) != 0) Id = reader.ReadVarStringAtAbsolute(instanceStart + 251 + offsets[0]);
+        if ((nullBits[0] & 64) != 0) Model = reader.ReadVarStringAtAbsolute(instanceStart + 251 + offsets[1]);
+        if ((nullBits[0] & 128) != 0) Texture = reader.ReadVarStringAtAbsolute(instanceStart + 251 + offsets[2]);
         
-        if ((nullBits[1] & 1) != 0) Animation = reader.ReadVarUtf8StringAt(offsets[3]);
-        if ((nullBits[1] & 2) != 0) PlayerAnimationsId = reader.ReadVarUtf8StringAt(offsets[4]);
-        if ((nullBits[1] & 4) != 0) Icon = reader.ReadVarUtf8StringAt(offsets[5]);
-        if ((nullBits[1] & 8) != 0) TranslationProperties = reader.ReadObjectAt<ItemTranslationProperties>(offsets[6]);
+        if ((nullBits[1] & 1) != 0) Animation = reader.ReadVarStringAtAbsolute(instanceStart + 251 + offsets[3]);
+        if ((nullBits[1] & 2) != 0) PlayerAnimationsId = reader.ReadVarStringAtAbsolute(instanceStart + 251 + offsets[4]);
+        if ((nullBits[1] & 4) != 0) Icon = reader.ReadVarStringAtAbsolute(instanceStart + 251 + offsets[5]);
+        
+        if ((nullBits[1] & 8) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[6]);
+            TranslationProperties = new ItemTranslationProperties();
+            TranslationProperties.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
         
         if ((nullBits[1] & 16) != 0)
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[7]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[7]);
             var count = reader.ReadVarInt32();
             ResourceTypes = new ItemResourceType[count];
             for (var i = 0; i < count; i++) ResourceTypes[i] = reader.ReadObject<ItemResourceType>();
+            reader.SeekTo(savedPos);
         }
 
-        if ((nullBits[1] & 32) != 0) Tool = reader.ReadObjectAt<ItemTool>(offsets[8]);
-        if ((nullBits[1] & 64) != 0) Weapon = reader.ReadObjectAt<ItemWeapon>(offsets[9]);
-        if ((nullBits[1] & 128) != 0) Armor = reader.ReadObjectAt<ItemArmor>(offsets[10]);
+        if ((nullBits[1] & 32) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[8]);
+            Tool = new ItemTool();
+            Tool.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
 
-        if ((nullBits[2] & 1) != 0) Utility = reader.ReadObjectAt<ItemUtility>(offsets[11]);
-        if ((nullBits[2] & 2) != 0) BuilderToolData = reader.ReadObjectAt<ItemBuilderToolData>(offsets[12]);
-        if ((nullBits[2] & 4) != 0) ItemEntity = reader.ReadObjectAt<ItemEntityConfig>(offsets[13]);
-        if ((nullBits[2] & 8) != 0) Set = reader.ReadVarUtf8StringAt(offsets[14]);
+        if ((nullBits[1] & 64) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[9]);
+            Weapon = new ItemWeapon();
+            Weapon.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[1] & 128) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[10]);
+            Armor = new ItemArmor();
+            Armor.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[2] & 1) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[11]);
+            Utility = new ItemUtility();
+            Utility.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[2] & 2) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[12]);
+            BuilderToolData = new ItemBuilderToolData();
+            BuilderToolData.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[2] & 4) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[13]);
+            ItemEntity = new ItemEntityConfig();
+            ItemEntity.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[2] & 8) != 0) Set = reader.ReadVarStringAtAbsolute(instanceStart + 251 + offsets[14]);
 
         if ((nullBits[2] & 16) != 0)
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[15]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[15]);
             var count = reader.ReadVarInt32();
             Categories = new string[count];
             for (var i = 0; i < count; i++) Categories[i] = reader.ReadUtf8String();
+            reader.SeekTo(savedPos);
         }
 
         if ((nullBits[2] & 32) != 0)
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[16]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[16]);
             var count = reader.ReadVarInt32();
             Particles = new ModelParticle[count];
             for (var i = 0; i < count; i++) Particles[i] = reader.ReadObject<ModelParticle>();
+            reader.SeekTo(savedPos);
         }
 
         if ((nullBits[2] & 64) != 0)
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[17]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[17]);
             var count = reader.ReadVarInt32();
             FirstPersonParticles = new ModelParticle[count];
             for (var i = 0; i < count; i++) FirstPersonParticles[i] = reader.ReadObject<ModelParticle>();
+            reader.SeekTo(savedPos);
         }
 
         if ((nullBits[2] & 128) != 0)
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[18]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[18]);
             var count = reader.ReadVarInt32();
             Trails = new ModelTrail[count];
             for (var i = 0; i < count; i++) Trails[i] = reader.ReadObject<ModelTrail>();
+            reader.SeekTo(savedPos);
         }
 
-        if ((nullBits[3] & 1) != 0) Interactions = reader.ReadDictionaryAt(offsets[19], r => r.ReadEnum<InteractionType>(), r => r.ReadInt32());
-        if ((nullBits[3] & 2) != 0) InteractionVars = reader.ReadDictionaryAt(offsets[20], r => r.ReadUtf8String(), r => r.ReadInt32());
-        if ((nullBits[3] & 4) != 0) InteractionConfig = reader.ReadObjectAt<InteractionConfiguration>(offsets[21]);
-        if ((nullBits[3] & 8) != 0) DroppedItemAnimation = reader.ReadVarUtf8StringAt(offsets[22]);
+        if ((nullBits[3] & 1) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[19]);
+            var count = reader.ReadVarInt32();
+            Interactions = new Dictionary<InteractionType, int>(count);
+            for (var i = 0; i < count; i++) Interactions[reader.ReadEnum<InteractionType>()] = reader.ReadInt32();
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[3] & 2) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[20]);
+            var count = reader.ReadVarInt32();
+            InteractionVars = new Dictionary<string, int>(count);
+            for (var i = 0; i < count; i++) InteractionVars[reader.ReadUtf8String()] = reader.ReadInt32();
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[3] & 4) != 0)
+        {
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[21]);
+            InteractionConfig = new InteractionConfiguration();
+            InteractionConfig.Deserialize(reader);
+            reader.SeekTo(savedPos);
+        }
+
+        if ((nullBits[3] & 8) != 0) DroppedItemAnimation = reader.ReadVarStringAtAbsolute(instanceStart + 251 + offsets[22]);
 
         if ((nullBits[3] & 16) != 0)
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[23]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[23]);
             var count = reader.ReadVarInt32();
             TagIndexes = new int[count];
             for (var i = 0; i < count; i++) TagIndexes[i] = reader.ReadInt32();
+            reader.SeekTo(savedPos);
         }
 
         if ((nullBits[3] & 32) != 0)
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[24]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[24]);
             var dictCount = reader.ReadVarInt32();
             ItemAppearanceConditions = new Dictionary<int, ItemAppearanceCondition[]>(dictCount);
             for (var i = 0; i < dictCount; i++)
@@ -461,16 +554,17 @@ public sealed class ItemBase : INetworkSerializable
                 for (var j = 0; j < arrayCount; j++) conditions[j] = reader.ReadObject<ItemAppearanceCondition>();
                 ItemAppearanceConditions.Add(key, conditions);
             }
+            reader.SeekTo(savedPos);
         }
 
         if ((nullBits[3] & 64) != 0)
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[25]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 251 + offsets[25]);
             var count = reader.ReadVarInt32();
             DisplayEntityStatsHUD = new int[count];
             for (var i = 0; i < count; i++) DisplayEntityStatsHUD[i] = reader.ReadInt32();
+            reader.SeekTo(savedPos);
         }
-        
-        reader.SeekTo(currentPos);
     }
 }

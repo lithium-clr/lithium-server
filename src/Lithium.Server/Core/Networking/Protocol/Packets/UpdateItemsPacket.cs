@@ -70,8 +70,8 @@ public sealed class UpdateItemsPacket : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
-        var bits = new BitSet(reader.ReadUInt8());
-        var currentPos = reader.GetPosition();
+        var instanceStart = reader.GetPosition();
+        var bits = reader.ReadBits();
 
         Type = reader.ReadEnum<UpdateType>();
         UpdateModels = reader.ReadBoolean();
@@ -81,24 +81,30 @@ public sealed class UpdateItemsPacket : INetworkSerializable
 
         if (bits.IsSet(1))
         {
-            Items = reader.ReadDictionaryAt(
-                offsets[0],
-                r => r.ReadUtf8String(),
-                r => r.ReadObject<ItemBase>()
-            );
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 12 + offsets[0]);
+            var itemsCount = reader.ReadVarInt32();
+            Items = new Dictionary<string, ItemBase>(itemsCount);
+            for (var i = 0; i < itemsCount; i++)
+            {
+                var key = reader.ReadUtf8String();
+                var val = reader.ReadObject<ItemBase>();
+                Items[key] = val;
+            }
+            reader.SeekTo(savedPos);
         }
 
         if (bits.IsSet(2))
         {
-            reader.SeekTo(reader.VariableBlockStart + offsets[1]);
+            var savedPos = reader.GetPosition();
+            reader.SeekTo(instanceStart + 12 + offsets[1]);
             var count = reader.ReadVarInt32();
             RemovedItems = new string[count];
             for (var i = 0; i < count; i++)
             {
                 RemovedItems[i] = reader.ReadUtf8String();
             }
+            reader.SeekTo(savedPos);
         }
-        
-        reader.SeekTo(currentPos);
     }
 }

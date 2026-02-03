@@ -175,21 +175,22 @@ public sealed class PacketWriter(int initialCapacity = 256)
 
     public void WriteVarInt(int value)
     {
-        if (value < 128)
+        var unsignedValue = (uint)value;
+        if (unsignedValue < 128)
         {
-            WriteUInt8((byte)value);
+            WriteUInt8((byte)unsignedValue);
             return;
         }
 
         Span<byte> buffer = stackalloc byte[5];
         var index = 0;
-        while ((value & ~VarIntDataMask) is not 0)
+        while ((unsignedValue & ~VarIntDataMask) is not 0)
         {
-            buffer[index++] = (byte)((value & VarIntDataMask) | VarIntContinuationMask);
-            value >>= VarIntShiftSize;
+            buffer[index++] = (byte)((unsignedValue & VarIntDataMask) | VarIntContinuationMask);
+            unsignedValue >>= VarIntShiftSize;
         }
 
-        buffer[index++] = (byte)(value & VarIntDataMask);
+        buffer[index++] = (byte)(unsignedValue & VarIntDataMask);
         var span = _writer.GetSpan(index);
         buffer[..index].CopyTo(span);
         _writer.Advance(index);

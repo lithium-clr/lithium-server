@@ -31,17 +31,18 @@ public sealed class ItemTranslationProperties : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
+        var instanceStart = reader.GetPosition();
         var bits = new BitSet(reader.ReadUInt8());
         var offsets = reader.ReadOffsets(2);
 
         if (bits.IsSet(1))
         {
-            Name = reader.ReadVarUtf8StringAt(offsets[0]);
+            Name = reader.ReadVarStringAtAbsolute(instanceStart + 9 + offsets[0]);
         }
 
         if (bits.IsSet(2))
         {
-            Description = reader.ReadVarUtf8StringAt(offsets[1]);
+            Description = reader.ReadVarStringAtAbsolute(instanceStart + 9 + offsets[1]);
         }
     }
 }

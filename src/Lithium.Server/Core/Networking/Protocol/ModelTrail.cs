@@ -66,6 +66,7 @@ public sealed class ModelTrail : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
+        var instanceStart = reader.GetPosition();
         var bits = reader.ReadBits();
 
         // FIXED BLOCK
@@ -73,18 +74,30 @@ public sealed class ModelTrail : INetworkSerializable
 
         if (bits.IsSet(1))
             PositionOffset = reader.ReadObject<Vector3Float>();
+        else
+        {
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+        }
 
         if (bits.IsSet(2))
             RotationOffset = reader.ReadObject<Direction>();
+        else
+        {
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+        }
 
         FixedRotation = reader.ReadBoolean();
 
         var offsets = reader.ReadOffsets(2);
 
         if (bits.IsSet(4))
-            TrailId = reader.ReadVarUtf8StringAt(offsets[0]);
+            TrailId = reader.ReadVarStringAtAbsolute(instanceStart + 35 + offsets[0]);
 
         if (bits.IsSet(8))
-            TargetNodeName = reader.ReadVarUtf8StringAt(offsets[1]);
+            TargetNodeName = reader.ReadVarStringAtAbsolute(instanceStart + 35 + offsets[1]);
     }
 }

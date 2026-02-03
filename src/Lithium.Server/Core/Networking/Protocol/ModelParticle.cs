@@ -78,6 +78,7 @@ public sealed class ModelParticle : INetworkSerializable
 
     public void Deserialize(PacketReader reader)
     {
+        var instanceStart = reader.GetPosition();
         var bits = reader.ReadBits();
 
         // FIXED BLOCK
@@ -85,23 +86,41 @@ public sealed class ModelParticle : INetworkSerializable
 
         if (bits.IsSet(1))
             Color = reader.ReadObject<Color>();
+        else
+        {
+            reader.ReadInt8();
+            reader.ReadInt8();
+            reader.ReadInt8();
+        }
 
         TargetEntityPart = reader.ReadEnum<EntityPart>();
 
         if (bits.IsSet(2))
             PositionOffset = reader.ReadObject<Vector3Float>();
+        else
+        {
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+        }
 
         if (bits.IsSet(4))
             RotationOffset = reader.ReadObject<Direction>();
+        else
+        {
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+            reader.ReadFloat32();
+        }
 
         DetachedFromModel = reader.ReadBoolean();
 
         var offsets = reader.ReadOffsets(2);
 
         if (bits.IsSet(8))
-            SystemId = reader.ReadVarUtf8StringAt(offsets[0]);
+            SystemId = reader.ReadVarStringAtAbsolute(instanceStart + 42 + offsets[0]);
 
         if (bits.IsSet(16))
-            TargetNodeName = reader.ReadVarUtf8StringAt(offsets[1]);
+            TargetNodeName = reader.ReadVarStringAtAbsolute(instanceStart + 42 + offsets[1]);
     }
 }

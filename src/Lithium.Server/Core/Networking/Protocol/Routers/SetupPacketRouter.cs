@@ -353,13 +353,33 @@ public sealed class SetupPacketRouter(
             await client.SendPacketAsync(packet);
         }
         
-        // {
-        //     var packetFile = await File.ReadAllTextAsync(Path.Combine(BasePath, "update_items.json"));
-        //     var packet = JsonSerializer.Deserialize<UpdateItemsPacket>(packetFile);
-        //
-        //     await client.SendPacketAsync(packet);
-        // }
+        {
+            var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_items.json"));
+            var packet = JsonSerializer.Deserialize<UpdateItemsPacket>(packetFile);
+            // packet.Items = [];
+            
+            var packetJson = JsonSerializer.Serialize(packet, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
         
+            await File.WriteAllTextAsync("C:\\Users\\bubbl\\Desktop\\packet.json", packetJson);
+            // logger.LogInformation("Json: " + packetJson);
+        
+            await client.SendPacketAsync(packet);
+            var writer = new PacketWriter();
+            packet.Serialize(writer);
+            
+            var bytes = writer.WrittenMemory.Span;
+            var hex = Convert.ToHexString(bytes); // .NET 5+
+            await File.WriteAllTextAsync(
+                "C:\\Users\\bubbl\\Desktop\\packet.hex",
+                hex
+            );
+
+            // await File.WriteAllBytesAsync("C:\\Users\\bubbl\\Desktop\\packet.hex", writer.WrittenMemory);
+        }
+
         {
             var packetFile = await File.ReadAllTextAsync(Path.Combine(basePath, "update_hitbox_collision_config.json"));
             var packet = JsonSerializer.Deserialize<UpdateHitboxCollisionConfigPacket>(packetFile);
