@@ -1,7 +1,6 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.Unicode;
 using Lithium.Server.Core.AssetStore;
 using Lithium.Server.Core.Networking.Protocol.Attributes;
 using Lithium.Server.Core.Networking.Protocol.Packets;
@@ -229,6 +228,11 @@ public sealed class SetupPacketRouter(
         await SendFakeAsset<UpdateEqualizerEffectsPacket>(client, "update_equalizer_effects.json");
         await SendFakeAsset<UpdateTrailsPacket>(client, "update_trails.json");
         await SendFakeAsset<UpdateTranslationsPacket>(client, "update_translations.json");
+
+        await SendFakeAsset<AddToServerPlayerListPacket>(client, "add_to_server_playerlist.json");
+        await SendFakeAsset<ServerTagsPacket>(client, "server_tags.json");
+        await SendFakeAsset<UpdateServerPlayerListPacket>(client, "update_server_player_list.json");
+        // await SendFakeAsset<JoinWorldPacket>(client, "join_world.json");
     }
 
     [PacketHandler]
